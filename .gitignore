@@ -1,0 +1,47 @@
+HELP.md
+.gradle
+build/
+**/target
+log/
+**/*.log
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+src/main/generated
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+nb-configuration.xml
+**/SandBox.java
+
+### VS Code ###
+.vscode/
+
+### Other ###
+*.swp
+*-non-free.bmf
+
+*.tmp
+buildtmp/
+.run/
+
