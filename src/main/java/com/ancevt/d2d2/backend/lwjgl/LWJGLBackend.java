@@ -147,7 +147,6 @@ public class LWJGLBackend implements D2D2Backend {
     @Override
     public void create() {
         stage = new Stage();
-        stage.setSize(width, height);
         stage.onResize(width, height);
         renderer = new LWJGLRenderer(stage, this);
         ((LWJGLRenderer) renderer).setLWJGLTextureEngine((LWJGLTextureEngine) D2D2.getTextureManager().getTextureEngine());

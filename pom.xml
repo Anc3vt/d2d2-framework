@@ -436,7 +436,7 @@
                             <archive>
                                 <manifest>
                                     <addClasspath/>
-                                    <mainClass>com.ancevt.d2d2.dev.Tests_Fullscreen</mainClass>
+                                    <mainClass>com.ancevt.d2d2.dev.Tests_Input</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
