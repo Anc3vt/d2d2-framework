@@ -97,8 +97,6 @@ public interface IDisplayObject extends IEventDispatcher {
 
     float getAbsoluteRotation();
 
-    Stage getStage();
-
     void removeFromParent();
 
     String toString();

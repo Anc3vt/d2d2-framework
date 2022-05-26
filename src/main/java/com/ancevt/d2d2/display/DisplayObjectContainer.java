@@ -24,8 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static com.ancevt.commons.unix.UnixDisplay.debug;
-
 public class DisplayObjectContainer extends DisplayObject implements IDisplayObjectContainer {
 
     static final int MAX_X = 1048576;
@@ -44,7 +42,7 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
         children.remove(child);
         children.add(child);
 
-        if (this.getStage() != null) Stage.dispatchAddToStage(child);
+        Stage.dispatchAddToStage(child);
     }
 
     @Override
@@ -55,7 +53,7 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
         children.remove(child);
         children.add(index, child);
 
-        if (this.getStage() != null) Stage.dispatchAddToStage(child);
+        Stage.dispatchAddToStage(child);
     }
 
     @Override
@@ -67,8 +65,7 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
         children.remove(child);
         children.add(child);
 
-        if (this.getStage() != null) Stage.dispatchAddToStage(child);
-
+        Stage.dispatchAddToStage(child);
     }
 
     @Override
@@ -80,19 +77,15 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
         children.remove(child);
         children.add(index, child);
 
-        if (this.getStage() != null) Stage.dispatchAddToStage(child);
+        Stage.dispatchAddToStage(child);
     }
 
     @Override
     public void remove(@NotNull IDisplayObject child) {
-        final boolean removedFromStage = child.getStage() != null;
-
+        Stage.dispatchRemoveFromStage(child);
         ((DisplayObject) child).setParent(null);
         child.dispatchEvent(EventPool.createEvent(Event.REMOVE, this));
-
         children.remove(child);
-
-        if (removedFromStage) Stage.dispatchRemoveFromStage(child);
     }
 
     @Override
@@ -108,9 +101,12 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
     @Override
     public IDisplayObject getChild(int index) {
         IDisplayObject child = children.get(index);
-        if(child == null) {
-            debug("DisplayObjectContainer:112: <A>");
-            try { throw new Exception(); } catch (Exception e) { e.printStackTrace(); }
+        if (child == null) {
+            try {
+                throw new Exception();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return child;
     }

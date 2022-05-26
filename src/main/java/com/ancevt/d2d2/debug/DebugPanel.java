@@ -292,7 +292,7 @@ public class DebugPanel extends DisplayObjectContainer {
 
     public static class Button extends BorderedRect {
 
-        private static final float DEFAULT_WIDTH = 35f;
+        private static final float DEFAULT_WIDTH = 50f;
         private static final float DEFAULT_HEIGHT = 12f;
 
         private final TouchButton touchButton;

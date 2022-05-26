@@ -15,7 +15,6 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.EventDispatcher;
 
 public abstract class DisplayObject extends EventDispatcher implements IDisplayObject {
@@ -242,21 +241,6 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
     }
 
     @Override
-    public Stage getStage() {
-        return D2D2.getStage();
-        /*IDisplayObjectContainer currentParent = getParent();
-
-        if (currentParent instanceof Stage stage) return stage;
-
-        while (currentParent != null) {
-            currentParent = currentParent.getParent();
-            if (currentParent instanceof Stage stage) return stage;
-        }
-
-        return null;*/
-    }
-
-    @Override
     public final void removeFromParent() {
         if (getParent() != null) {
             getParent().remove(this);
@@ -289,20 +273,3 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
