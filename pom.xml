@@ -40,10 +40,6 @@
         <ancevt-commons.version>1.0.0.4</ancevt-commons.version>
         <texttable.version>0.0.1</texttable.version>
 
-        <!-- Github -->
-        <github.global.server>github</github.global.server>
-        <github.maven-plugin>0.12</github.maven-plugin>
-
         <!-- Log -->
         <logback.version>1.2.11</logback.version>
 
