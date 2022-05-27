@@ -23,6 +23,7 @@ public class Root extends DisplayObjectContainer {
 
     public Root() {
         setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+        setName("_" + getClass().getSimpleName() + displayObjectId());
     }
 
     public Color getBackgroundColor() {

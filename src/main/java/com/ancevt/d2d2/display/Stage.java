@@ -30,6 +30,7 @@ public class Stage extends DisplayObjectContainer {
     private Root root;
 
     public Stage() {
+        setName("_" + getClass().getSimpleName() + displayObjectId());
     }
 
     public void setSize(float width, float height) {

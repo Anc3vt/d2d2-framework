@@ -51,6 +51,7 @@ public class BitmapText extends DisplayObject implements IColored {
 		setBoundWidth(boundWidth);
 		setBoundHeight(boundHeight);
 		setText(text);
+		setName("_" + getClass().getSimpleName() + displayObjectId());
 	}
 
 	public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight) {

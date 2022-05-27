@@ -28,7 +28,7 @@ import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.TouchButtonEvent;
 import com.ancevt.d2d2.input.MouseButton;
-import com.ancevt.d2d2.touch.TouchButton;
+import com.ancevt.d2d2.interactive.TouchButton;
 import com.ancevt.localstorage.FileLocalStorage;
 import com.ancevt.localstorage.LocalStorage;
 import com.ancevt.localstorage.LocalStorageBuilder;

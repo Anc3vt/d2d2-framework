@@ -24,7 +24,7 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.touch.TouchProcessor;
+import com.ancevt.d2d2.interactive.TouchProcessor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

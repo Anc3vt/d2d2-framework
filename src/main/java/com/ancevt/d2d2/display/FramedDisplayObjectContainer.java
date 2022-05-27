@@ -34,6 +34,7 @@ public class FramedDisplayObjectContainer extends DisplayObjectContainer impleme
     public FramedDisplayObjectContainer(ISprite[] frameSprites, boolean cloneEach) {
         this();
         setFrameSprites(frameSprites, cloneEach);
+        setName("_" + getClass().getSimpleName() + displayObjectId());
     }
 
     public FramedDisplayObjectContainer(ISprite[] frameSprites) {

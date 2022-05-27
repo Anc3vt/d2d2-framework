@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.touch;
+package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 
@@ -29,7 +29,7 @@ public class TouchButton extends DisplayObjectContainer {
 
     public TouchButton(float width, float height) {
         touchArea = new TouchArea(0, 0, width, height);
-        setName("touchButton" + hashCode());
+        setName("_" + getClass().getSimpleName() + displayObjectId());
     }
 
     public TouchButton(float width, float height, boolean enabled) {

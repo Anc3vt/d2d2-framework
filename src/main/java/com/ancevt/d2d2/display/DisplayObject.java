@@ -19,11 +19,9 @@ import com.ancevt.d2d2.event.EventDispatcher;
 
 public abstract class DisplayObject extends EventDispatcher implements IDisplayObject {
 
-    private static final String NAME_PREFIX = "_displayObject";
+    private static int displayObjectIdCounter;
 
-    private static long displayObjectIdCounter;
-
-    private final long displayObjectId;
+    private final int displayObjectId;
     private String name;
     private DisplayObjectContainer parent;
 
@@ -41,17 +39,14 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
 
     protected DisplayObject() {
         displayObjectId = displayObjectIdCounter++;
-        name = NAME_PREFIX + displayObjectId;
         visible = true;
-
-        scaleX =
-                scaleY = 1.0f;
-
+        scaleX = scaleY = 1.0f;
         alpha = 1.0f;
+        name = "_" + getClass().getSimpleName() + displayObjectId();
     }
 
     @Override
-    public long displayObjectId() {
+    public int displayObjectId() {
         return displayObjectId;
     }
 

@@ -21,7 +21,7 @@ import com.ancevt.d2d2.event.IEventDispatcher;
 
 public interface IDisplayObject extends IEventDispatcher {
 
-    long displayObjectId();
+    int displayObjectId();
 
     String getName();
 

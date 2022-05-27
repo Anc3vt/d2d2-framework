@@ -33,6 +33,7 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
 
     public DisplayObjectContainer() {
         children = new CopyOnWriteArrayList<>();
+        setName("_" + getClass().getSimpleName() + displayObjectId());
     }
 
     @Override

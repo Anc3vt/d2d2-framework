@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.touch;
+package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.event.TouchButtonEvent;
 import com.ancevt.d2d2.input.MouseButton;

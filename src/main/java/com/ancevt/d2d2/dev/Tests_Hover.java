@@ -7,7 +7,7 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Root;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.TouchButtonEvent;
-import com.ancevt.d2d2.touch.TouchButton;
+import com.ancevt.d2d2.interactive.TouchButton;
 
 public class Tests_Hover {
 
