@@ -15,27 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- *     Copyright 2015-2022 Ancevt (me@ancevt.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "LICENSE");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *          http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.event.TouchButtonEvent;
 import com.ancevt.d2d2.input.MouseButton;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -96,7 +80,7 @@ public class TouchProcessor {
                 final boolean onArea = x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH;
 
                 touchButton.dispatchEvent(TouchButtonEvent.builder()
-                        .type(TouchButtonEvent.TOUCH_UP)
+                        .type(TouchButtonEvent.UP)
                         .x((int) (x - tcX))
                         .y((int) (y - tcY))
                         .mouseButton(button)
@@ -119,11 +103,21 @@ public class TouchProcessor {
             final float tcW = touchButton.getTouchArea().getWidth() * touchButton.getAbsoluteScaleX();
             final float tcH = touchButton.getTouchArea().getHeight() * touchButton.getAbsoluteScaleY();
 
+
+            if(touchButton.getName().equals("___")) {
+                System.out.println("[\n" +
+                        touchButton.isOnScreen() + ", " +
+                                x + " " + tcX + " " + tcW + " " + down
+                );
+            }
+
+
             if (touchButton.isOnScreen() && x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH && down) {
+
                 t.setTouchButton(touchButton);
                 t.getTouchButton().setDragging(true);
                 touchButton.dispatchEvent(TouchButtonEvent.builder()
-                        .type(TouchButtonEvent.TOUCH_DOWN)
+                        .type(TouchButtonEvent.DOWN)
                         .x((int) (x - tcX))
                         .y((int) (y - tcY))
                         .mouseButton(button)
@@ -149,7 +143,7 @@ public class TouchProcessor {
 
             if (touchButton.isOnScreen() && touchButton.isDragging()) {
                 touchButton.dispatchEvent(TouchButtonEvent.builder()
-                        .type(TouchButtonEvent.TOUCH_DRAG)
+                        .type(TouchButtonEvent.DRAG)
                         .x((int) (x - tcX))
                         .y((int) (y - tcY))
                         .onArea(onArea)
@@ -166,7 +160,7 @@ public class TouchProcessor {
                     touchButton.setHovering(true);
 
                     touchButton.dispatchEvent(TouchButtonEvent.builder()
-                            .type(TouchButtonEvent.TOUCH_HOVER)
+                            .type(TouchButtonEvent.HOVER)
                             .x((int) (x - tcX))
                             .y((int) (y - tcY))
                             .onArea(true)
@@ -180,7 +174,7 @@ public class TouchProcessor {
                     touchButton.setHovering(false);
 
                     touchButton.dispatchEvent(TouchButtonEvent.builder()
-                            .type(TouchButtonEvent.TOUCH_HOVER_OUT)
+                            .type(TouchButtonEvent.OUT)
                             .x((int) (x - tcX))
                             .y((int) (y - tcY))
                             .onArea(false)
@@ -218,7 +212,7 @@ class Touch {
 
     private static final Touch[] touches = new Touch[MAX_TOUCHES];
 
-    public static @Nullable Touch touch(final int pointer) {
+    public static Touch touch(final int pointer) {
         for (Touch value : touches) {
             if (pointer >= MAX_TOUCHES) return null;
             if (value != null && value.getPointer() == pointer) return value;
@@ -286,23 +280,3 @@ class Touch {
         this.component = component;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

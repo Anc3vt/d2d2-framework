@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ancevt.d2d2.dev;
 
 import com.ancevt.d2d2.D2D2;
@@ -23,8 +22,8 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.DebugGrid;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.display.Root;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -34,30 +33,27 @@ public class Tests_Input {
 
 
     private static IDisplayObject cursor;
+    private static Stage stage;
 
     public static void main(String[] args) {
-        D2D2.init(new LWJGLBackend(800, 600, Tests_Input.class.getName() + "(floating)"));
+        stage = D2D2.init(new LWJGLBackend(800, 600, Tests_Input.class.getName() + "(floating)"));
 
-        Root root = D2D2.getStage().getRoot();
-
-        root.addEventListener(InputEvent.KEY_DOWN, Tests_Input::keyDown);
-        root.addEventListener(InputEvent.KEY_UP, Tests_Input::keyUp);
-        root.addEventListener(InputEvent.MOUSE_DOWN, Tests_Input::mouseDown);
-        root.addEventListener(InputEvent.MOUSE_MOVE, Tests_Input::mouseMove);
-        root.addEventListener(InputEvent.MOUSE_WHEEL, Tests_Input::mouseWheel);
+        stage.addEventListener(InputEvent.KEY_DOWN, Tests_Input::keyDown);
+        stage.addEventListener(InputEvent.KEY_UP, Tests_Input::keyUp);
+        stage.addEventListener(InputEvent.MOUSE_DOWN, Tests_Input::mouseDown);
+        stage.addEventListener(InputEvent.MOUSE_MOVE, Tests_Input::mouseMove);
+        stage.addEventListener(InputEvent.MOUSE_WHEEL, Tests_Input::mouseWheel);
 
         DisplayObjectContainer container = new DisplayObjectContainer();
         Sprite sprite = new Sprite("satellite");
 
         container.add(sprite, -sprite.getWidth() / 2, -sprite.getHeight() / 2);
-        root.add(container, Mouse.getX(), Mouse.getY());
+        stage.add(container, Mouse.getX(), Mouse.getY());
 
         cursor = container;
-        //cursor.setAlpha(0.25f);
 
         DebugGrid debugGrid = new DebugGrid();
-        //debugGrid.setScale(2f,2f);
-        root.add(debugGrid);
+        stage.add(debugGrid);
 
         D2D2.loop();
     }
@@ -98,9 +94,9 @@ public class Tests_Input {
     private static void keyDown(Event event) {
         InputEvent e = (InputEvent) event;
 
-        if (e.getKeyCode() == 259) {
+        if (e.getKeyCode() == KeyCode.DELETE) {
             System.out.println("Removed");
-            ((Root) e.getSource()).removeAllEventListeners(InputEvent.KEY_DOWN);
+            stage.removeAllEventListeners(InputEvent.KEY_DOWN);
         }
 
         System.out.println(e);

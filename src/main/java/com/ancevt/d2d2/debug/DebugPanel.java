@@ -15,21 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- *     Copyright 2015-2022 Ancevt (me@ancevt.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "LICENSE");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *          http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
@@ -39,7 +24,6 @@ import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
-import com.ancevt.d2d2.display.Root;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
@@ -101,8 +85,8 @@ public class DebugPanel extends DisplayObjectContainer {
         add(text, 1, 1);
 
         touchButton = new TouchButton(width, height, true);
-        touchButton.addEventListener(TouchButtonEvent.TOUCH_DOWN, this::touchButton_touchDown);
-        touchButton.addEventListener(TouchButtonEvent.TOUCH_DRAG, this::touchButton_touchDrag);
+        touchButton.addEventListener(TouchButtonEvent.DOWN, this::touchButton_touchDown);
+        touchButton.addEventListener(TouchButtonEvent.DRAG, this::touchButton_touchDrag);
 
         addEventListener(this, Event.ADD_TO_STAGE, this::this_addToStage);
 
@@ -133,10 +117,8 @@ public class DebugPanel extends DisplayObjectContainer {
 
     private void this_addToStage(Event event) {
         removeEventListener(this, Event.ADD_TO_STAGE);
-        load();
-        Root root = D2D2.getStage().getRoot();
-        root.addEventListener(InputEvent.KEY_DOWN, this::root_keyDown);
-        root.addEventListener(InputEvent.KEY_UP, this::root_keyUp);
+        D2D2.stage().addEventListener(InputEvent.KEY_DOWN, this::root_keyDown);
+        D2D2.stage().addEventListener(InputEvent.KEY_UP, this::root_keyUp);
     }
 
     private void root_keyDown(Event event) {
@@ -264,7 +246,7 @@ public class DebugPanel extends DisplayObjectContainer {
                 debugPanel = new DebugPanel(propertyName);
             }
 
-            D2D2.getStage().getRoot().add(debugPanel);
+            D2D2.stage().add(debugPanel);
             if (propertyName != null) {
                 System.setProperty(propertyName, String.valueOf(value));
             }
@@ -282,8 +264,8 @@ public class DebugPanel extends DisplayObjectContainer {
     }
 
     public static void main(String[] args) {
-        Root root = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        root.setBackgroundColor(Color.DARK_GRAY);
+        D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        D2D2.stage().setBackgroundColor(Color.DARK_GRAY);
 
         DebugPanel.setEnabled(true);
 
@@ -325,7 +307,7 @@ public class DebugPanel extends DisplayObjectContainer {
             add(touchButton);
             add(bitmapText, 2, -2);
 
-            touchButton.addEventListener(TouchButtonEvent.TOUCH_DOWN, this::touchButton_touchDown);
+            touchButton.addEventListener(TouchButtonEvent.DOWN, this::touchButton_touchDown);
 
             addEventListener(this, Event.REMOVE_FROM_STAGE, this::this_removeFromStage);
         }
