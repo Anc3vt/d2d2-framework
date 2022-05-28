@@ -15,14 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ancevt.d2d2.dev;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Root;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.display.texture.TextureCombiner;
@@ -32,24 +31,21 @@ import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 
 public class Tests_TextureCombiner {
-    private static Root root;
     private static Sprite sprite;
     private static Sprite sprite2;
+    private static Stage stage;
 
     public static void main(String[] args) {
-        D2D2.init(new LWJGLBackend(800, 600, "D2D2Demo TextureCombiner (floating)"));
+        stage = D2D2.init(new LWJGLBackend(800, 600, "D2D2Demo TextureCombiner (floating)"));
 
-        root = new Root();
-        root.addEventListener(InputEvent.KEY_DOWN, Tests_TextureCombiner::keyDown);
+        stage.addEventListener(InputEvent.KEY_DOWN, Tests_TextureCombiner::keyDown);
 
         start();
 
         sprite2 = new Sprite(D2D2.getTextureManager().loadTextureAtlas("d2d2-logo.png").createTexture());
-        root.add(sprite2, 100, 100);
+        stage.add(sprite2, 100, 100);
 
-
-        root.add(new FpsMeter());
-        D2D2.getStage().setRoot(root);
+        stage.add(new FpsMeter());
         D2D2.loop();
     }
 
@@ -79,7 +75,7 @@ public class Tests_TextureCombiner {
         System.out.println("id : " + atlas.getId());
 
         sprite = new Sprite(atlas.createTexture());
-        root.add(sprite);
+        stage.add(sprite);
     }
 
     private static void keyDown(Event event) {
@@ -91,9 +87,9 @@ public class Tests_TextureCombiner {
             D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
 
             Sprite sprite = new Sprite(D2D2.getTextureManager().loadTextureAtlas("d2d2-logo.png").createTexture());
-            root.add(sprite);
+            stage.add(sprite);
         } else if (inputEvent.getKeyChar() == 'S') {
-            root.addEventListener(Event.EACH_FRAME, e -> {
+            stage.addEventListener(Event.EACH_FRAME, e -> {
                 for (int i = 0; i < 1; i++) {
                     D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
                     sprite.removeFromParent();

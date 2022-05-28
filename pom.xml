@@ -9,7 +9,7 @@
 
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2</version>
 
     <url>https://github.com/Anc3vt/d2d2</url>
 
@@ -27,6 +27,38 @@
             <email>me@ancevt.com</email>
         </developer>
     </developers>
+
+    <distributionManagement>
+        <repository>
+            <id>ancevt</id>
+            <name>Ancevt packages repository</name>
+            <url>https://packages.ancevt.com/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>ancevt-snapshots</id>
+            <name>Ancevt packages repository (snapshots)</name>
+            <url>https://packages.ancevt.com/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>ancevt</id>
+            <url>https://packages.ancevt.com/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ancevt-snapshot</id>
+            <url>https://packages.ancevt.com/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -72,45 +104,6 @@
         <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>ancevt</id>
-            <name>Ancevt packages repository</name>
-            <url>https://packages.ancevt.com/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>ancevt-snapshots</id>
-            <name>Ancevt packages repository (snapshots)</name>
-            <url>https://packages.ancevt.com/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>ancevt</id>
-            <url>https://packages.ancevt.com/releases</url>
-            <snapshots>
-                <enabled>false</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>ancevt-snapshot</id>
-            <url>https://packages.ancevt.com/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>oss.sonatype.org</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <dependencies>
 

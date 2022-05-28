@@ -15,39 +15,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ancevt.d2d2.dev;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
-import com.ancevt.d2d2.display.Root;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
-import com.ancevt.d2d2.event.TextureUrlLoaderEvent;
 import com.ancevt.d2d2.display.texture.TextureUrlLoader;
+import com.ancevt.d2d2.event.TextureUrlLoaderEvent;
 
 public class Tests_TextureAtlasWebLoader {
 
     public static void main(String[] args) {
-        D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        Root root = D2D2.getStage().getRoot();
-
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
 
         Preloader preloader = new Preloader();
         preloader.setScale(0.5f, 0.5f);
 
         TextureUrlLoader loader = new TextureUrlLoader("https://d2d2.world/test.png");
-        loader.addEventListener(TextureUrlLoaderEvent.TEXTURE_LOAD_START, event -> {
-            root.add(preloader, 252 / 2, 167 / 2);
-        });
+        loader.addEventListener(TextureUrlLoaderEvent.TEXTURE_LOAD_START, event -> stage.add(preloader, 252f / 2, 167f / 2));
         loader.addEventListener(TextureUrlLoaderEvent.TEXTURE_LOAD_COMPLETE, event -> {
             TextureAtlas atlas = loader.getLastLoadedTextureAtlas();
             Sprite sprite = new Sprite(atlas.createTexture());
-            root.add(sprite);
-            root.remove(preloader);
-            root.add(new FpsMeter());
+            stage.add(sprite);
+            stage.remove(preloader);
+            stage.add(new FpsMeter());
         });
         loader.load();
 

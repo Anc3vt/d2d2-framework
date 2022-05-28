@@ -21,8 +21,8 @@ package com.ancevt.d2d2.dev;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.FpsMeter;
-import com.ancevt.d2d2.display.Root;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.input.Mouse;
 
@@ -32,7 +32,7 @@ public class Tests_PictureTest {
     private static float _y;
 
     public static void main(String[] args) {
-        Root root = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
 
         Sprite sprite = new Sprite(
                 D2D2.getTextureManager()
@@ -47,8 +47,8 @@ public class Tests_PictureTest {
         sprite.addEventListener(Event.EACH_FRAME, event -> {
             float x = Mouse.getX();
             float y = Mouse.getY();
-            float cx = D2D2.getStage().getWidth() / 2;
-            float cy = D2D2.getStage().getHeight() / 2;
+            float cx = D2D2.stage().getWidth() / 2;
+            float cy = D2D2.stage().getHeight() / 2;
 
             float mx = (cx - x) / 100f;
             float my = (cy - y) / 100f;
@@ -62,10 +62,9 @@ public class Tests_PictureTest {
             if (sprite.getY() < -sprite.getHeight() * repeat) sprite.setY(0);
         });
 
-        root.add(sprite);
-        root.add(new FpsMeter(), 10, 10);
-
-        root.add(new Sprite("satellite"), 100, 100);
+        stage.add(sprite);
+        stage.add(new FpsMeter(), 10, 10);
+        stage.add(new Sprite("satellite"), 100, 100);
         D2D2.loop();
     }
 }

@@ -15,25 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- *     Copyright 2015-2022 Ancevt (me@ancevt.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "LICENSE");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *          http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.ancevt.d2d2.backend.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.IDisplayObjectContainer;
@@ -121,7 +105,7 @@ public class LWJGLRenderer implements IRenderer {
     private final double[] mouseY = new double[1];
 
     private void clear() {
-        Color backgroundColor = stage.getRoot().getBackgroundColor();
+        Color backgroundColor = stage.getBackgroundColor();
         float backgroundColorRed = backgroundColor.getR() / 255.0f;
         float backgroundColorGreen = backgroundColor.getG() / 255.0f;
         float backgroundColorBlue = backgroundColor.getB() / 255.0f;
@@ -231,33 +215,6 @@ public class LWJGLRenderer implements IRenderer {
 
         double vertexBleedingFix = sprite.getVertexBleedingFix();
         double textureBleedingFix = sprite.getTextureBleedingFix();
-
-
-        if (sprite.getName().equals("_renderer_test_1")) {
-
-            DebugPanel.show("debug.d2d2.renderer.bleedingFix",
-
-                    """
-                            textureBleedingFix: \s""" + textureBleedingFix + """
-                                                
-                            vertexBleedingFix:  \s""" + vertexBleedingFix + """
-                                            
-                            """
-            ).ifPresent(debugPanel -> {
-                debugPanel.addButton("tbf-", () -> {
-                            sprite.setTextureBleedingFix(sprite.getTextureBleedingFix() - 0.005d);
-                        })
-                        .addButton("tbf+", () -> {
-                            sprite.setTextureBleedingFix(sprite.getTextureBleedingFix() + 0.005d);
-                        })
-                        .addButton("vbf-", () -> {
-                            sprite.setVertexBleedingFix(sprite.getVertexBleedingFix() - 0.5d);
-                        })
-                        .addButton("vbf+", () -> {
-                            sprite.setVertexBleedingFix(sprite.getVertexBleedingFix() + 0.5d);
-                        });
-            });
-        }
 
         for (int rY = 0; rY < repeatY; rY++) {
             for (int rX = 0; rX < repeatX; rX++) {

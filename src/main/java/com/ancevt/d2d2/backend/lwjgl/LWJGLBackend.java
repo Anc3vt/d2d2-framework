@@ -15,21 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- *     Copyright 2015-2022 Ancevt (me@ancevt.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "LICENSE");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *          http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.ancevt.d2d2.backend.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
@@ -276,7 +261,7 @@ public class LWJGLBackend implements D2D2Backend {
         glfwSetScrollCallback(windowId, new GLFWScrollCallback() {
             @Override
             public void invoke(long win, double dx, double dy) {
-                stage.getRoot().dispatchEvent(InputEvent.builder()
+                stage.dispatchEvent(InputEvent.builder()
                         .type(InputEvent.MOUSE_WHEEL)
                         .x(Mouse.getX())
                         .y(Mouse.getY())
@@ -288,18 +273,18 @@ public class LWJGLBackend implements D2D2Backend {
 
         glfwSetMouseButtonCallback(windowId, new GLFWMouseButtonCallback() {
             @Override
-            public void invoke(long window, int button, int action, int mods) {
+            public void invoke(long window, int mouseButton, int action, int mods) {
                 isDown = action == 1;
 
-                stage.getRoot().dispatchEvent(InputEvent.builder()
+                stage.dispatchEvent(InputEvent.builder()
                         .type(action == 1 ? InputEvent.MOUSE_DOWN : InputEvent.MOUSE_UP)
                         .x(Mouse.getX())
                         .y(Mouse.getY())
                         .drag(isDown)
-                        .mouseButton(button)
+                        .mouseButton(mouseButton)
                         .build());
 
-                TouchProcessor.instance.screenTouch(mouseX, mouseY, 0, button, isDown);
+                TouchProcessor.instance.screenTouch(mouseX, mouseY, 0, mouseButton, isDown);
             }
         });
 
@@ -312,7 +297,7 @@ public class LWJGLBackend implements D2D2Backend {
                 //Mouse.setXY(getTransformedX(mouseX), getTransformedY(mouseY));
                 Mouse.setXY(mouseX, mouseY);
 
-                stage.getRoot().dispatchEvent(InputEvent.builder()
+                stage.dispatchEvent(InputEvent.builder()
                         .type(InputEvent.MOUSE_MOVE)
                         .x(Mouse.getX())
                         .y(Mouse.getY())
@@ -324,7 +309,7 @@ public class LWJGLBackend implements D2D2Backend {
         });
 
         glfwSetCharCallback(windowId, (window, codepoint) -> {
-            stage.getRoot().dispatchEvent(InputEvent.builder()
+            stage.dispatchEvent(InputEvent.builder()
                     .type(InputEvent.KEY_TYPE)
                     .x(Mouse.getX())
                     .y(Mouse.getY())
@@ -336,7 +321,7 @@ public class LWJGLBackend implements D2D2Backend {
 
         glfwSetKeyCallback(windowId, (window, key, scancode, action, mods) -> {
             if (action == GLFW_PRESS) {
-                stage.getRoot().dispatchEvent(InputEvent.builder()
+                stage.dispatchEvent(InputEvent.builder()
                         .type(InputEvent.KEY_DOWN)
                         .x(Mouse.getX())
                         .y(Mouse.getY())
@@ -348,7 +333,7 @@ public class LWJGLBackend implements D2D2Backend {
                         .alt((mods & GLFW_MOD_ALT) != 0)
                         .build());
             } else if (action == GLFW_RELEASE) {
-                stage.getRoot().dispatchEvent(InputEvent.builder()
+                stage.dispatchEvent(InputEvent.builder()
                         .type(InputEvent.KEY_UP)
                         .x(Mouse.getX())
                         .y(Mouse.getY())
@@ -569,21 +554,3 @@ public class LWJGLBackend implements D2D2Backend {
         return buffer.asIntBuffer();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -15,25 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ancevt.d2d2.dev;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.FramedDisplayObjectContainer;
 import com.ancevt.d2d2.display.FramedSprite;
 import com.ancevt.d2d2.display.IFramedDisplayObject;
 import com.ancevt.d2d2.display.ISprite;
-import com.ancevt.d2d2.display.Root;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.display.texture.TextureManager;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 
 public class Tests_IFramed {
 
     public static void main(String[] args) {
-        D2D2.init(new LWJGLBackend(800, 600, Tests_IFramed.class.getName() + " (floating)"));
-        Root root = D2D2.getStage().getRoot();
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, Tests_IFramed.class.getName() + " (floating)"));
 
         ISprite[] frames = new ISprite[]{
                 new Sprite("frame0"),
@@ -53,7 +51,7 @@ public class Tests_IFramed {
         IFramedDisplayObject framedDisplayObject = new FramedDisplayObjectContainer(frames, true);
         framedDisplayObject.setLoop(true);
         framedDisplayObject.play();
-        root.add(framedDisplayObject);
+        stage.add(framedDisplayObject);
 
         TextureManager tm = D2D2.getTextureManager();
 
@@ -76,7 +74,7 @@ public class Tests_IFramed {
         framedDisplayObject.setLoop(true);
         framedDisplayObject.play();
         framedDisplayObject.setSlowing(6);
-        root.add(framedDisplayObject, 0, 16);
+        stage.add(framedDisplayObject, 0, 16);
 
         D2D2.loop();
     }

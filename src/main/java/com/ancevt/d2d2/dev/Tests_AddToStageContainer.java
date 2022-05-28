@@ -15,21 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ancevt.d2d2.dev;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
-import com.ancevt.d2d2.display.Root;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 
 public class Tests_AddToStageContainer {
     public static void main(String[] args) {
-        D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        Root root = D2D2.getStage().getRoot();
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
 
         DisplayObjectContainer container = new DisplayObjectContainer();
 
@@ -38,13 +36,11 @@ public class Tests_AddToStageContainer {
             addEventListener(Event.REMOVE_FROM_STAGE, e -> System.out.println("REMOVE " + e));
         }};
 
-        // sprite.dispatchEvent(EventPool.simpleEventSingleton(Event.ADD_TO_STAGE, sprite));
-
         DisplayObjectContainer almostRootContainer = new DisplayObjectContainer();
 
         almostRootContainer.add(container);
         container.add(sprite);
-        root.add(almostRootContainer);
+        stage.add(almostRootContainer);
 
         // ----------------------------------
 
@@ -55,7 +51,7 @@ public class Tests_AddToStageContainer {
             debugPanel.addButton("rmspt", sprite::removeFromParent);
         });
         DebugPanel.show("debug-add-to-stage", "").ifPresent(debugPanel -> {
-            debugPanel.addButton("adamc", () -> root.add(almostRootContainer));
+            debugPanel.addButton("adamc", () -> stage.add(almostRootContainer));
             debugPanel.addButton("adcnt", () -> almostRootContainer.add(container));
             debugPanel.addButton("adspt", () -> container.add(sprite));
         });
