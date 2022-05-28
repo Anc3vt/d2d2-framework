@@ -27,9 +27,9 @@ import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.TouchButtonEvent;
+import com.ancevt.d2d2.event.InteractiveButtonEvent;
 import com.ancevt.d2d2.input.MouseButton;
-import com.ancevt.d2d2.interactive.TouchButton;
+import com.ancevt.d2d2.interactive.InteractiveButton;
 import com.ancevt.localstorage.FileLocalStorage;
 import com.ancevt.localstorage.LocalStorage;
 import com.ancevt.localstorage.LocalStorageBuilder;
@@ -54,7 +54,7 @@ public class DebugPanel extends DisplayObjectContainer {
     private final BitmapText text;
     private final String systemPropertyName;
     private final PlainRect bg;
-    private final TouchButton touchButton;
+    private final InteractiveButton interactiveButton;
     private int oldX;
     private int oldY;
     private boolean shiftDown;
@@ -84,13 +84,13 @@ public class DebugPanel extends DisplayObjectContainer {
         text.setBounds(width, height);
         add(text, 1, 1);
 
-        touchButton = new TouchButton(width, height, true);
-        touchButton.addEventListener(TouchButtonEvent.DOWN, this::touchButton_touchDown);
-        touchButton.addEventListener(TouchButtonEvent.DRAG, this::touchButton_touchDrag);
+        interactiveButton = new InteractiveButton(width, height, true);
+        interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this::interactiveButton_down);
+        interactiveButton.addEventListener(InteractiveButtonEvent.DRAG, this::interactiveButton_drag);
 
         addEventListener(this, Event.ADD_TO_STAGE, this::this_addToStage);
 
-        add(touchButton);
+        add(interactiveButton);
 
         setScale(scale, scale);
     }
@@ -135,8 +135,8 @@ public class DebugPanel extends DisplayObjectContainer {
         }
     }
 
-    private void touchButton_touchDown(Event event) {
-        var e = (TouchButtonEvent) event;
+    private void interactiveButton_down(Event event) {
+        var e = (InteractiveButtonEvent) event;
 
         mouseButton = e.getMouseButton();
 
@@ -145,8 +145,8 @@ public class DebugPanel extends DisplayObjectContainer {
         dispatchEvent(event);
     }
 
-    private void touchButton_touchDrag(Event event) {
-        var e = (TouchButtonEvent) event;
+    private void interactiveButton_drag(Event event) {
+        var e = (InteractiveButtonEvent) event;
 
         if (mouseButton == MouseButton.RIGHT) {
             bg.setSize(e.getX() + 1, e.getY() + 1);
@@ -158,7 +158,7 @@ public class DebugPanel extends DisplayObjectContainer {
             }
 
             text.setBounds(bg.getWidth(), bg.getHeight());
-            touchButton.setSize(bg.getWidth(), bg.getHeight());
+            interactiveButton.setSize(bg.getWidth(), bg.getHeight());
             return;
         }
 
@@ -214,7 +214,7 @@ public class DebugPanel extends DisplayObjectContainer {
 
             bg.setSize(w, h);
             text.setBounds(w, h);
-            touchButton.setSize(w, h);
+            interactiveButton.setSize(w, h);
             text.setText(data);
         }
     }
@@ -294,25 +294,25 @@ public class DebugPanel extends DisplayObjectContainer {
         private static final float DEFAULT_WIDTH = 50f;
         private static final float DEFAULT_HEIGHT = 12f;
 
-        private final TouchButton touchButton;
+        private final InteractiveButton interactiveButton;
 
         private Runnable pressFunction;
 
         public Button(Object text) {
             super(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK, Color.WHITE);
             setBorderWidth(0.2f);
-            touchButton = new TouchButton((int) DEFAULT_WIDTH, (int) DEFAULT_HEIGHT, true);
+            interactiveButton = new InteractiveButton((int) DEFAULT_WIDTH, (int) DEFAULT_HEIGHT, true);
             BitmapText bitmapText = new BitmapText(String.valueOf(text));
 
-            add(touchButton);
+            add(interactiveButton);
             add(bitmapText, 2, -2);
 
-            touchButton.addEventListener(TouchButtonEvent.DOWN, this::touchButton_touchDown);
+            interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this::interactiveButton_down);
 
             addEventListener(this, Event.REMOVE_FROM_STAGE, this::this_removeFromStage);
         }
 
-        private void touchButton_touchDown(Event event) {
+        private void interactiveButton_down(Event event) {
             if (pressFunction != null) {
                 pressFunction.run();
             }
@@ -320,7 +320,7 @@ public class DebugPanel extends DisplayObjectContainer {
 
         private void this_removeFromStage(Event event) {
             removeEventListener(this, Event.REMOVE_FROM_STAGE);
-            touchButton.setEnabled(false);
+            interactiveButton.setEnabled(false);
         }
 
     }

@@ -17,14 +17,14 @@
  */
 package com.ancevt.d2d2.interactive;
 
-class TouchArea {
+class InteractiveArea {
 
     private float x;
     private float y;
     private float width;
     private float height;
 
-    TouchArea(final float x, final float y, final float width, final float height) {
+    InteractiveArea(final float x, final float y, final float width, final float height) {
         setUp(x, y, width, height);
     }
 

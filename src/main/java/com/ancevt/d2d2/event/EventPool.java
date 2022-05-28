@@ -31,16 +31,6 @@ public class EventPool {
         return createEvent(type, null);
     }
 
-    public static TouchButtonEvent createTouchButtonEvent(String type, int x, int y, int button, boolean onArea) {
-        return TouchButtonEvent.builder()
-                .type(type)
-                .x(x)
-                .y(y)
-                .mouseButton(button)
-                .onArea(onArea)
-                .build();
-    }
-
     public static Event simpleEventSingleton(String type, IEventDispatcher source) {
         SIMPLE_EVENT_SINGLETON.type = type;
         SIMPLE_EVENT_SINGLETON.source = source;

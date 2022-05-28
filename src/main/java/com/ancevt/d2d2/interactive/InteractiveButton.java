@@ -19,71 +19,71 @@ package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 
-public class TouchButton extends DisplayObjectContainer {
+public class InteractiveButton extends DisplayObjectContainer {
 
     private static final float DEFAULT_WIDTH = 1;
     private static final float DEFAULT_HEIGHT = 1;
 
-    private final TouchArea touchArea;
+    private final InteractiveArea interactiveArea;
     private boolean enabled;
     private boolean dragging;
     private boolean hovering;
 
-    public TouchButton(float width, float height) {
-        touchArea = new TouchArea(0, 0, width, height);
+    public InteractiveButton(float width, float height) {
+        interactiveArea = new InteractiveArea(0, 0, width, height);
         setName("_" + getClass().getSimpleName() + displayObjectId());
     }
 
-    public TouchButton(float width, float height, boolean enabled) {
+    public InteractiveButton(float width, float height, boolean enabled) {
         this(width, height);
         setEnabled(enabled);
     }
 
-    public TouchButton() {
+    public InteractiveButton() {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    public TouchButton(boolean enabled) {
+    public InteractiveButton(boolean enabled) {
         this();
         setEnabled(enabled);
     }
 
     public void setSize(float width, float height) {
-        touchArea.setWidth(width);
-        touchArea.setHeight(height);
+        interactiveArea.setWidth(width);
+        interactiveArea.setHeight(height);
     }
 
     public void setWidth(float width) {
-        touchArea.setWidth(width);
+        interactiveArea.setWidth(width);
     }
 
     public void setHeight(float height) {
-        touchArea.setHeight(height);
+        interactiveArea.setHeight(height);
     }
 
-    public TouchArea getTouchArea() {
-        return touchArea;
+    public InteractiveArea getInteractiveArea() {
+        return interactiveArea;
     }
 
     @Override
     public float getWidth() {
-        return touchArea.getWidth();
+        return interactiveArea.getWidth();
     }
 
     @Override
     public float getHeight() {
-        return touchArea.getHeight();
+        return interactiveArea.getHeight();
     }
 
     @Override
     public void setX(float value) {
-        touchArea.setUp((float) value, touchArea.getY(), touchArea.getWidth(), touchArea.getHeight());
+        interactiveArea.setUp(value, interactiveArea.getY(), interactiveArea.getWidth(), interactiveArea.getHeight());
         super.setX(value);
     }
 
     @Override
     public void setY(float value) {
-        touchArea.setUp(touchArea.getX(), (float) value, touchArea.getWidth(), touchArea.getHeight());
+        interactiveArea.setUp(interactiveArea.getX(), value, interactiveArea.getWidth(), interactiveArea.getHeight());
         super.setY(value);
     }
 
@@ -103,10 +103,10 @@ public class TouchButton extends DisplayObjectContainer {
 
         this.enabled = enabled;
 
-        TouchProcessor touchProcessor = TouchProcessor.instance;
+        InteractiveProcessor touchProcessor = InteractiveProcessor.instance;
 
         if (enabled)
-            touchProcessor.registerTouchableComponent(this);
+            touchProcessor.registerInteractiveButton(this);
         else
             touchProcessor.unregisterTouchableComponent(this);
     }
@@ -127,27 +127,3 @@ public class TouchButton extends DisplayObjectContainer {
         return hovering;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

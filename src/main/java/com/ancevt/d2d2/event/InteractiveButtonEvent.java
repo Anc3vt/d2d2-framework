@@ -25,13 +25,13 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class TouchButtonEvent extends Event {
+public class InteractiveButtonEvent extends Event {
 
-    public static final String DOWN  = "touchButtonDown";
-    public static final String UP    = "touchButtonUp";
-    public static final String DRAG  = "touchButtonDrag";
-    public static final String HOVER = "touchButtonHover";
-    public static final String OUT   = "touchButtonOut";
+    public static final String DOWN  = "interactiveButtonDown";
+    public static final String UP    = "interactiveButtonUp";
+    public static final String DRAG  = "interactiveButtonDrag";
+    public static final String HOVER = "interactiveButtonHover";
+    public static final String OUT   = "interactiveButtonOut";
 
     private final int x;
     private final int y;

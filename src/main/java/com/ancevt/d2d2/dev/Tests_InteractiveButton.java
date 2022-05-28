@@ -23,10 +23,10 @@ import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.TouchButtonEvent;
-import com.ancevt.d2d2.interactive.TouchButton;
+import com.ancevt.d2d2.event.InteractiveButtonEvent;
+import com.ancevt.d2d2.interactive.InteractiveButton;
 
-public class Tests_TouchButton {
+public class Tests_InteractiveButton {
 
     public static void main(String[] args) {
         D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
@@ -37,7 +37,7 @@ public class Tests_TouchButton {
         D2D2.loop();
     }
 
-    private static class Button extends TouchButton {
+    private static class Button extends InteractiveButton {
 
         private final PlainRect bg = new PlainRect();
 
@@ -47,18 +47,18 @@ public class Tests_TouchButton {
             setSize(100, 100);
             add(bg);
 
-            addEventListener(this, TouchButtonEvent.DOWN, this::this_touchDown);
-            addEventListener(this, TouchButtonEvent.UP, this::this_touchUp);
-            addEventListener(this, TouchButtonEvent.HOVER, this::this_touchHover);
-            addEventListener(this, TouchButtonEvent.OUT, this::this_touchHoverOut);
+            addEventListener(this, InteractiveButtonEvent.DOWN, this::this_down);
+            addEventListener(this, InteractiveButtonEvent.UP, this::this_up);
+            addEventListener(this, InteractiveButtonEvent.HOVER, this::this_hover);
+            addEventListener(this, InteractiveButtonEvent.OUT, this::this_out);
 
-            TouchButton tb = new TouchButton(50, 50, true);
-            tb.addEventListener(TouchButtonEvent.DOWN, event -> {
+            InteractiveButton tb = new InteractiveButton(50, 50, true);
+            tb.addEventListener(InteractiveButtonEvent.DOWN, event -> {
                 System.out.println("SMALL BUTTON PRESSED");
 
                 Button button = new Button();
-                button.addEventListener(TouchButtonEvent.DOWN, event1 -> {
-                    var e = (TouchButtonEvent) event1;
+                button.addEventListener(InteractiveButtonEvent.DOWN, event1 -> {
+                    var e = (InteractiveButtonEvent) event1;
                     button.bg.setColor(Color.YELLOW);
 
                 });
@@ -68,19 +68,19 @@ public class Tests_TouchButton {
             add(tb);
         }
 
-        private void this_touchUp(Event event) {
+        private void this_up(Event event) {
             bg.setColor(Color.GRAY);
         }
 
-        private void this_touchDown(Event event) {
+        private void this_down(Event event) {
             bg.setColor(Color.YELLOW);
         }
 
-        private void this_touchHoverOut(Event event) {
+        private void this_out(Event event) {
             bg.setColor(Color.GRAY);
         }
 
-        private void this_touchHover(Event event) {
+        private void this_hover(Event event) {
             bg.setColor(Color.GREEN);
         }
 

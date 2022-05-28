@@ -26,7 +26,7 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.interactive.TouchProcessor;
+import com.ancevt.d2d2.interactive.InteractiveProcessor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -284,7 +284,7 @@ public class LWJGLBackend implements D2D2Backend {
                         .mouseButton(mouseButton)
                         .build());
 
-                TouchProcessor.instance.screenTouch(mouseX, mouseY, 0, mouseButton, isDown);
+                InteractiveProcessor.instance.screenTouch(mouseX, mouseY, 0, mouseButton, isDown);
             }
         });
 
@@ -304,7 +304,7 @@ public class LWJGLBackend implements D2D2Backend {
                         .drag(isDown)
                         .build());
 
-                TouchProcessor.instance.screenDrag(0, mouseX, mouseY);
+                InteractiveProcessor.instance.screenDrag(0, mouseX, mouseY);
             }
         });
 

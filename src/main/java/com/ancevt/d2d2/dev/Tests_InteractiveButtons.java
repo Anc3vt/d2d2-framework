@@ -24,16 +24,16 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventListener;
-import com.ancevt.d2d2.event.TouchButtonEvent;
+import com.ancevt.d2d2.event.InteractiveButtonEvent;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.interactive.TouchButton;
+import com.ancevt.d2d2.interactive.InteractiveButton;
 
 import java.util.Objects;
 
-public class Tests_TouchButtons {
+public class Tests_InteractiveButtons {
 
     public static void main(String[] args) {
-        D2D2.init(new LWJGLBackend(800, 600, Tests_TouchButtons.class.getName() + "(floating)"));
+        D2D2.init(new LWJGLBackend(800, 600, Tests_InteractiveButtons.class.getName() + "(floating)"));
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -53,28 +53,27 @@ public class Tests_TouchButtons {
 
         public Button(int w, int h) {
             plainRect = new PlainRect(w, h, Color.DARK_GRAY);
-            TouchButton touchButton = new TouchButton(w, h);
-            touchButton.setEnabled(true);
-            touchButton.addEventListener(TouchButtonEvent.DOWN, this);
-            touchButton.addEventListener(TouchButtonEvent.DRAG, this::touchDrag);
-            touchButton.addEventListener(TouchButtonEvent.HOVER, this::touchHover);
-            touchButton.addEventListener(TouchButtonEvent.OUT, this::touchHoverOut);
+            InteractiveButton interactiveButton = new InteractiveButton(w, h);
+            interactiveButton.setEnabled(true);
+            interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this);
+            interactiveButton.addEventListener(InteractiveButtonEvent.DRAG, this::interactiveButton_drag);
+            interactiveButton.addEventListener(InteractiveButtonEvent.HOVER, this::interactiveButton_hover);
+            interactiveButton.addEventListener(InteractiveButtonEvent.OUT, this::interactiveButton_out);
 
             add(plainRect);
-            add(touchButton);
+            add(interactiveButton);
         }
 
-        private void touchHoverOut(Event event) {
+        private void interactiveButton_out(Event event) {
             plainRect.setColor(Color.DARK_GRAY);
         }
 
-        private void touchHover(Event event) {
-            TouchButtonEvent e = (TouchButtonEvent) event;
+        private void interactiveButton_hover(Event event) {
             plainRect.setColor(Color.GRAY);
         }
 
-        private void touchDrag(Event event) {
-            TouchButtonEvent e = (TouchButtonEvent) event;
+        private void interactiveButton_drag(Event event) {
+            InteractiveButtonEvent e = (InteractiveButtonEvent) event;
             if (e.isOnArea()) {
                 plainRect.setColor(Color.DARK_GREEN);
             } else {
@@ -84,7 +83,7 @@ public class Tests_TouchButtons {
 
         @Override
         public void onEvent(Event event) {
-            if(Objects.equals(event.getType(), TouchButtonEvent.DOWN)) {
+            if(Objects.equals(event.getType(), InteractiveButtonEvent.DOWN)) {
                 System.out.println(this);
             }
         }
