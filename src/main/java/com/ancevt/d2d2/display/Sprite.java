@@ -184,26 +184,3 @@ public class Sprite extends DisplayObject implements ISprite {
         return vertexBleedingFix;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -20,6 +20,7 @@ package com.ancevt.d2d2.dev;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.DebugPanel;
+import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
@@ -28,6 +29,7 @@ import com.ancevt.d2d2.event.Event;
 public class Tests_AddToStageContainer {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        stage.setBackgroundColor(Color.DARK_GRAY);
 
         DisplayObjectContainer container = new DisplayObjectContainer();
 

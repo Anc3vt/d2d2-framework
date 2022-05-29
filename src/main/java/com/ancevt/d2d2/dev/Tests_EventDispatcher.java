@@ -24,7 +24,7 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventDispatcher;
-import com.ancevt.d2d2.event.TouchButtonEvent;
+import com.ancevt.d2d2.event.InteractiveButtonEvent;
 
 public class Tests_EventDispatcher {
 
@@ -41,8 +41,8 @@ public class Tests_EventDispatcher {
 
         DebugPanel.show("dispatch_event1").ifPresent(debugPanel -> {
             debugPanel.setXY(100, 100);
-            debugPanel.addEventListener(TouchButtonEvent.DOWN, event -> {
-                var e = (TouchButtonEvent) event;
+            debugPanel.addEventListener(InteractiveButtonEvent.DOWN, event -> {
+                var e = (InteractiveButtonEvent) event;
                 if (e.isLeftMouseButton()) {
                     dispatcher.dispatchEvent(Event.builder()
                             .type("event1")
@@ -53,8 +53,8 @@ public class Tests_EventDispatcher {
 
         DebugPanel.show("dispatch_event2").ifPresent(debugPanel -> {
             debugPanel.setXY(100, 200);
-            debugPanel.addEventListener(TouchButtonEvent.DOWN, event -> {
-                var e = (TouchButtonEvent) event;
+            debugPanel.addEventListener(InteractiveButtonEvent.DOWN, event -> {
+                var e = (InteractiveButtonEvent) event;
                 if (e.isLeftMouseButton()) {
                     dispatcher.dispatchEvent(Event.builder()
                             .type("event2")
@@ -65,8 +65,8 @@ public class Tests_EventDispatcher {
 
         DebugPanel.show("remove_event1_listener").ifPresent(debugPanel -> {
             debugPanel.setXY(100, 300);
-            debugPanel.addEventListener(TouchButtonEvent.DOWN, event -> {
-                var e = (TouchButtonEvent) event;
+            debugPanel.addEventListener(InteractiveButtonEvent.DOWN, event -> {
+                var e = (InteractiveButtonEvent) event;
                 if (e.isLeftMouseButton()) {
                     dispatcher.removeEventListener(dispatcher, "event1");
                 }
@@ -75,8 +75,8 @@ public class Tests_EventDispatcher {
 
         DebugPanel.show("remove_event2_listener").ifPresent(debugPanel -> {
             debugPanel.setXY(100, 300);
-            debugPanel.addEventListener(TouchButtonEvent.DOWN, event -> {
-                var e = (TouchButtonEvent) event;
+            debugPanel.addEventListener(InteractiveButtonEvent.DOWN, event -> {
+                var e = (InteractiveButtonEvent) event;
                 if (e.isLeftMouseButton()) {
                     dispatcher.removeEventListener(dispatcher, "event2");
                 }

@@ -22,6 +22,7 @@ import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.IColored;
+import com.ancevt.d2d2.display.IDisplayObjectContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 
@@ -102,7 +103,7 @@ public class DebugGrid extends DisplayObjectContainer implements IColored {
         }
 
         private void eachFrame(Event event) {
-            DisplayObjectContainer parent = getParent();
+            IDisplayObjectContainer parent = getParent();
             switch (orientation) {
                 case HORIZONTAL:
                     setScaleY(1.0f / parent.getAbsoluteScaleY());
