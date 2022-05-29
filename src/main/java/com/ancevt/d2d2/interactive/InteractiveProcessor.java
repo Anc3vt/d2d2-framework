@@ -20,7 +20,6 @@ package com.ancevt.d2d2.interactive;
 import com.ancevt.d2d2.event.InteractiveButtonEvent;
 import com.ancevt.d2d2.input.MouseButton;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -33,6 +32,10 @@ public class InteractiveProcessor {
     private boolean leftMouseButton;
     private boolean rightMouseButton;
     private boolean middleMouseButton;
+
+    private InteractiveButton pressedInteractiveButton;
+    private InteractiveButton hoveredInteractiveButton;
+
 
     private InteractiveProcessor() {
         interactiveButtons = new CopyOnWriteArrayList<>();
@@ -62,10 +65,7 @@ public class InteractiveProcessor {
 
         if (down) {
 
-            List<InteractiveButton> onAreaButtons = new ArrayList<>();
-
             int maxIndex = 0;
-            InteractiveButton upperButton = null;
             float _tcX = 0.0f, _tcY = 0.0f;
 
             for (InteractiveButton interactiveButton : interactiveButtons) {
@@ -75,20 +75,18 @@ public class InteractiveProcessor {
                 final float tcH = interactiveButton.getInteractiveArea().getHeight() * interactiveButton.getAbsoluteScaleY();
 
                 if (interactiveButton.isOnScreen() && x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH) {
-                    onAreaButtons.add(interactiveButton);
-                    int index = interactiveButton.getParent().indexOf(interactiveButton);
-                    if(index > maxIndex) {
-                        upperButton = interactiveButton;
+                    int index = interactiveButton.getAbsoluteZOrderIndex();
+                    if (index >= maxIndex) {
+                        pressedInteractiveButton = interactiveButton;
                         maxIndex = index;
                         _tcX = tcX;
                         _tcY = tcY;
                     }
-
                 }
             }
 
-            if(upperButton != null ) {
-                upperButton.dispatchEvent(InteractiveButtonEvent.builder()
+            if (pressedInteractiveButton != null) {
+                pressedInteractiveButton.dispatchEvent(InteractiveButtonEvent.builder()
                         .type(InteractiveButtonEvent.DOWN)
                         .x((int) (x - _tcX))
                         .y((int) (y - _tcY))
@@ -100,10 +98,8 @@ public class InteractiveProcessor {
                         .build()
                 );
 
-                upperButton.setDragging(true);
+                pressedInteractiveButton.setDragging(true);
             }
-
-
 
         } else {
             for (InteractiveButton interactiveButton : interactiveButtons) {
@@ -139,7 +135,11 @@ public class InteractiveProcessor {
 
     }
 
-    public final void screenDrag(int i, final int x, final int y) {
+    public final void screenDrag(int pointer, final int x, final int y) {
+
+        float _tcX = 0.0f, _tcY = 0.0f;
+        int maxIndex = 0;
+        InteractiveButton upperButton = null;
 
         for (final InteractiveButton interactiveButton : interactiveButtons) {
             final float tcX = interactiveButton.getAbsoluteX();
@@ -147,34 +147,36 @@ public class InteractiveProcessor {
             final float tcW = interactiveButton.getInteractiveArea().getWidth() * interactiveButton.getAbsoluteScaleX();
             final float tcH = interactiveButton.getInteractiveArea().getHeight() * interactiveButton.getAbsoluteScaleY();
 
+            final boolean onScreen = interactiveButton.isOnScreen();
             final boolean onArea = x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH;
 
-            if (interactiveButton.isOnScreen() && interactiveButton.isDragging()) {
-                interactiveButton.dispatchEvent(InteractiveButtonEvent.builder()
-                        .type(InteractiveButtonEvent.DRAG)
-                        .x((int) (x - tcX))
-                        .y((int) (y - tcY))
-                        .onArea(onArea)
-                        .leftMouseButton(leftMouseButton)
-                        .rightMouseButton(rightMouseButton)
-                        .middleMouseButton(middleMouseButton)
-                        .build()
-                );
-            }
-            if (interactiveButton.isOnScreen()) {
-                if (!interactiveButton.isHovering() && onArea) {
-                    interactiveButton.setHovering(true);
+            if (onScreen) {
+
+
+                if (onArea) {
+                    int index = interactiveButton.getAbsoluteZOrderIndex();
+                    if (index >= maxIndex) {
+                        maxIndex = index;
+                        _tcX = tcX;
+                        _tcY = tcY;
+                        upperButton = interactiveButton;
+                    }
+                }
+
+                if (interactiveButton.isDragging()) {
                     interactiveButton.dispatchEvent(InteractiveButtonEvent.builder()
-                            .type(InteractiveButtonEvent.HOVER)
+                            .type(InteractiveButtonEvent.DRAG)
                             .x((int) (x - tcX))
                             .y((int) (y - tcY))
-                            .onArea(true)
+                            .onArea(onArea)
                             .leftMouseButton(leftMouseButton)
                             .rightMouseButton(rightMouseButton)
                             .middleMouseButton(middleMouseButton)
                             .build()
                     );
-                } else if (interactiveButton.isHovering() && !onArea) {
+                }
+
+                if (interactiveButton.isHovering() && !onArea) {
                     interactiveButton.setHovering(false);
                     interactiveButton.dispatchEvent(InteractiveButtonEvent.builder()
                             .type(InteractiveButtonEvent.OUT)
@@ -188,6 +190,38 @@ public class InteractiveProcessor {
                     );
                 }
 
+            }
+
+        }
+        if (upperButton != null) {
+            if (!upperButton.isHovering()) {
+                if (hoveredInteractiveButton != null) {
+                    hoveredInteractiveButton.dispatchEvent(InteractiveButtonEvent.builder()
+                            .type(InteractiveButtonEvent.OUT)
+                            .x((int) (x - _tcX))
+                            .y((int) (y - _tcY))
+                            .onArea(false)
+                            .leftMouseButton(leftMouseButton)
+                            .rightMouseButton(rightMouseButton)
+                            .middleMouseButton(middleMouseButton)
+                            .build()
+                    );
+                    hoveredInteractiveButton.setHovering(false);
+                }
+
+                hoveredInteractiveButton = upperButton;
+
+                upperButton.setHovering(true);
+                upperButton.dispatchEvent(InteractiveButtonEvent.builder()
+                        .type(InteractiveButtonEvent.HOVER)
+                        .x((int) (x - _tcX))
+                        .y((int) (y - _tcY))
+                        .onArea(true)
+                        .leftMouseButton(leftMouseButton)
+                        .rightMouseButton(rightMouseButton)
+                        .middleMouseButton(middleMouseButton)
+                        .build()
+                );
             }
         }
     }

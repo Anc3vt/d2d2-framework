@@ -99,6 +99,10 @@ public interface IDisplayObject extends IEventDispatcher {
 
     float getAbsoluteRotation();
 
+    void setAbsoluteZOrderIndex(int zOrder);
+
+    int getAbsoluteZOrderIndex();
+
     void removeFromParent();
 
     String toString();

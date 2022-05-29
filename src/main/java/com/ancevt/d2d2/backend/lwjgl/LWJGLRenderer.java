@@ -50,6 +50,7 @@ public class LWJGLRenderer implements IRenderer {
     private final LWJGLBackend lwjglBackend;
     boolean smoothMode = false;
     private LWJGLTextureEngine textureEngine;
+    private int zOrderCounter;
 
     public LWJGLRenderer(Stage stage, LWJGLBackend lwjglStarter) {
         this.stage = stage;
@@ -84,6 +85,8 @@ public class LWJGLRenderer implements IRenderer {
         clear();
 
         GL20.glLoadIdentity();
+
+        zOrderCounter = 0;
 
         renderDisplayObject(stage,
                 0,
@@ -124,6 +127,8 @@ public class LWJGLRenderer implements IRenderer {
 
         if (!displayObject.isVisible()) return;
 
+        zOrderCounter ++;
+        displayObject.setAbsoluteZOrderIndex(zOrderCounter);
         displayObject.onEachFrame();
         displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EACH_FRAME, displayObject));
 

@@ -38,6 +38,7 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
     private float rotation;
 
     private boolean visible;
+    private int zOrderIndex;
 
     protected DisplayObject() {
         displayObjectId = displayObjectIdCounter++;
@@ -62,12 +63,22 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
         this.name = value;
     }
 
+    @Override
+    public void setAbsoluteZOrderIndex(int zOrder) {
+        this.zOrderIndex = zOrder;
+    }
+
+    @Override
+    public int getAbsoluteZOrderIndex() {
+        return zOrderIndex;
+    }
+
     final void setParent(final DisplayObjectContainer container) {
         this.parent = container;
     }
 
     @Override
-    public DisplayObjectContainer getParent() {
+    public IDisplayObjectContainer getParent() {
         return parent;
     }
 

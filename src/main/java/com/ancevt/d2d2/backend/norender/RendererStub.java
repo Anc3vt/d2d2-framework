@@ -28,6 +28,7 @@ import com.ancevt.d2d2.event.EventPool;
 public class RendererStub implements IRenderer {
 
     private final Stage stage;
+    private int zOrderCounter;
 
     public RendererStub(Stage stage) {
         this.stage = stage;
@@ -45,11 +46,15 @@ public class RendererStub implements IRenderer {
 
     @Override
     public void renderFrame() {
+        zOrderCounter = 0;
         renderDisplayObject(stage);
     }
 
     private void renderDisplayObject(IDisplayObject displayObject) {
         if (!displayObject.isVisible()) return;
+
+        zOrderCounter++;
+        displayObject.setAbsoluteZOrderIndex(zOrderCounter);
 
         if (displayObject instanceof IDisplayObjectContainer) {
             IDisplayObjectContainer container = (IDisplayObjectContainer) displayObject;

@@ -24,6 +24,7 @@ import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.IDisplayObjectContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
@@ -144,6 +145,11 @@ public class DebugPanel extends DisplayObjectContainer {
 
         oldX = (int) (e.getX() + getX());
         oldY = (int) (e.getY() + getY());
+
+        IDisplayObjectContainer parent = getParent();
+        parent.remove(this);
+        parent.add(this);
+
         dispatchEvent(event);
     }
 

@@ -19,7 +19,6 @@ package com.ancevt.d2d2.dev;
 
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.BorderedRect;
-import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
@@ -34,24 +33,19 @@ public class Tests_InteractiveButtonLayering {
 
     public static void main(String[] args) {
         init(new LWJGLBackend(800, 600, "(floating)"));
-        DebugPanel.setEnabled(true);
 
         stage().setBackgroundColor(Color.of(0x001122));
 
 
-        Button button1 = new Button();
-        button1.setName("___1");
-        stage().add(button1, 0, 0);
-
-        Button button2 = new Button();
-        button2.setName("___2");
-        stage().add(button2, 50, 50);
+        for (int i = 0; i < 2500; i++) {
+            Button button = new Button();
+            button.setName("__" + i);
+            stage().add(button, (float) (Math.random() * 800), (float) (Math.random() * 600));
+        }
 
         stage().add(new FpsMeter());
 
         loop();
-
-        DebugPanel.saveAll();
     }
 
     private static class Button extends InteractiveButton {
@@ -74,29 +68,23 @@ public class Tests_InteractiveButtonLayering {
 
         private void this_drag(Event event) {
             bg.setFillColor(Color.BLUE);
-
-            DebugPanel.show("test_" + getName(), getName() + " DRAG");
         }
 
         private void this_up(Event event) {
-            bg.setFillColor(Color.GRAY);
-
-            DebugPanel.show("test_" + getName(), getName() + " UP");
+            var e = (InteractiveButtonEvent) event;
+            bg.setFillColor(e.isOnArea() ? Color.GREEN : Color.GRAY);
         }
 
         private void this_down(Event event) {
             bg.setFillColor(Color.YELLOW);
-            DebugPanel.show("test_" + getName(), getName() + " DOWN");
         }
 
         private void this_out(Event event) {
             bg.setFillColor(Color.GRAY);
-            DebugPanel.show("test_" + getName(), getName() + " OUT");
         }
 
         private void this_hover(Event event) {
             bg.setFillColor(Color.GREEN);
-            DebugPanel.show("test_" + getName(), getName() + " HOVER");
         }
 
         @Override
