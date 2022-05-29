@@ -37,7 +37,7 @@ public interface IDisplayObjectContainer extends IDisplayObject {
 
 	@NotNull IDisplayObject getChild(int index);
 
-	IDisplayObject getChild(String name);
+	@NotNull IDisplayObject getChild(String name);
 
 	boolean contains(@NotNull IDisplayObject child);
 
