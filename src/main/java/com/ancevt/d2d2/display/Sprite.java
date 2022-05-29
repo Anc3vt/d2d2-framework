@@ -29,9 +29,9 @@ public class Sprite extends DisplayObject implements ISprite {
     private int repeatY;
     private Color color;
     private Texture texture;
+    private double vertexBleedingFix = 0.05d;
     private double textureBleedingFix = 0.00005d;
     private ShaderProgram shaderProgram;
-    private double vertexBleedingFix = 0.5;
 
     public Sprite() {
         setColor(DEFAULT_COLOR);

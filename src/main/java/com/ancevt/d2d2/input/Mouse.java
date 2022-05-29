@@ -18,6 +18,10 @@
 package com.ancevt.d2d2.input;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.event.Event;
+
+import static com.ancevt.d2d2.D2D2.stage;
 
 public class Mouse {
 
@@ -44,4 +48,6 @@ public class Mouse {
     public static boolean isVisible() {
         return D2D2.getBackend().isMouseVisible();
     }
+
+
 }
