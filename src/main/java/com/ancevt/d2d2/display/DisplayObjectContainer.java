@@ -21,6 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.texture.TextureManager;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
+import com.ancevt.d2d2.exception.ContainerException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -102,7 +103,7 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
     }
 
     @Override
-    public IDisplayObject getChild(int index) {
+    public @NotNull IDisplayObject getChild(int index) {
         IDisplayObject child = children.get(index);
         if (child == null) {
             try {
@@ -112,6 +113,14 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
             }
         }
         return child;
+    }
+
+    @Override
+    public IDisplayObject getChild(String name) {
+        for (IDisplayObject displayObject : children) {
+            if (displayObject.getName().equals(name)) return displayObject;
+        }
+        throw new ContainerException("No such display object with name \"%s\" in container \"%s\"".formatted(name, getName()));
     }
 
     @Override

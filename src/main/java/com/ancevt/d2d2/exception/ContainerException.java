@@ -15,31 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.display;
+package com.ancevt.d2d2.exception;
 
-import org.jetbrains.annotations.NotNull;
+public class ContainerException extends RuntimeException{
+    public ContainerException() {
+    }
 
-public interface IDisplayObjectContainer extends IDisplayObject {
+    public ContainerException(String message) {
+        super(message);
+    }
 
-	void add(@NotNull IDisplayObject child);
+    public ContainerException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	void add(@NotNull IDisplayObject child, int index);
-	
-	void add(@NotNull IDisplayObject child, float x, float y);
-	
-	void add(@NotNull IDisplayObject child, int index, float x, float y);
-	
-	void remove(@NotNull IDisplayObject child);
-	
-	int indexOf(@NotNull IDisplayObject child);
+    public ContainerException(Throwable cause) {
+        super(cause);
+    }
 
-	int getChildCount();
-
-	@NotNull IDisplayObject getChild(int index);
-
-	IDisplayObject getChild(String name);
-
-	boolean contains(@NotNull IDisplayObject child);
-
-	void removeAllChildren();
+    public ContainerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }

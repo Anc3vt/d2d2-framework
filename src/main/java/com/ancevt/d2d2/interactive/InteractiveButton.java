@@ -104,9 +104,9 @@ public class InteractiveButton extends DisplayObjectContainer {
         this.enabled = enabled;
 
         if (enabled)
-            InteractiveProcessor.instance.registerInteractiveButton(this);
+            InteractiveProcessor.INSTANCE.registerInteractiveButton(this);
         else
-            InteractiveProcessor.instance.unregisterInteractiveButton(this);
+            InteractiveProcessor.INSTANCE.unregisterInteractiveButton(this);
     }
 
     public boolean isDragging() {
@@ -123,5 +123,25 @@ public class InteractiveButton extends DisplayObjectContainer {
 
     public boolean isHovering() {
         return hovering;
+    }
+
+    public void focus() {
+        InteractiveProcessor.INSTANCE.setFocused(this);
+    }
+
+    public boolean isFocused() {
+        return InteractiveProcessor.INSTANCE.getFocused() == this;
+    }
+
+    public static void setTabbingEnabled(boolean tabbingEnabled) {
+        InteractiveProcessor.INSTANCE.setTabbingEnabled(tabbingEnabled);
+    }
+
+    public static boolean isTabbingEnabled() {
+        return InteractiveProcessor.INSTANCE.isTabbingEnabled();
+    }
+
+    public static void resetFocus() {
+        InteractiveProcessor.INSTANCE.resetFocus();
     }
 }
