@@ -15,31 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.display;
+package com.ancevt.d2d2.event;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
-public interface IDisplayObjectContainer extends IDisplayObject {
+@Data
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public class FocusEvent extends Event {
 
-	void add(@NotNull IDisplayObject child);
-
-	void add(@NotNull IDisplayObject child, int index);
-	
-	void add(@NotNull IDisplayObject child, float x, float y);
-	
-	void add(@NotNull IDisplayObject child, int index, float x, float y);
-	
-	void remove(@NotNull IDisplayObject child);
-	
-	int indexOf(@NotNull IDisplayObject child);
-
-	int getChildCount();
-
-	@NotNull IDisplayObject getChild(int index);
-
-	IDisplayObject getChild(String name);
-
-	boolean contains(@NotNull IDisplayObject child);
-
-	void removeAllChildren();
+    public static final String FOCUS_IN = "interactiveButtonFocusIn";
+    public static final String FOCUS_OUT = "interactiveButtonFocusOut";
 }
