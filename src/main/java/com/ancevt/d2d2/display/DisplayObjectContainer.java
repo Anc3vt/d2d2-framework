@@ -103,24 +103,19 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
     }
 
     @Override
-    public @NotNull IDisplayObject getChild(int index) {
-        IDisplayObject child = children.get(index);
-        if (child == null) {
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return child;
+    public IDisplayObject getChild(int index) {
+        if (index < 0 || index >= children.size())
+            throw new ContainerException("Child index %d out of bounds (0-%d)".formatted(index, children.size() - 1));
+
+        return children.get(index);
     }
 
     @Override
-    public IDisplayObject getChild(String name) {
+    public @NotNull IDisplayObject getChild(String name) {
         for (IDisplayObject displayObject : children) {
             if (displayObject.getName().equals(name)) return displayObject;
         }
-        throw new ContainerException("No such display object with name \"%s\" in container \"%s\"".formatted(name, getName()));
+        throw new ContainerException("No such display object named \"%s\" in container \"%s\"".formatted(name, getName()));
     }
 
     @Override
