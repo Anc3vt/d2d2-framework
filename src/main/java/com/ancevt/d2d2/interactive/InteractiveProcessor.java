@@ -19,8 +19,8 @@ package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.event.InteractiveButtonEvent;
 import com.ancevt.d2d2.input.MouseButton;
-import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -43,7 +43,7 @@ public class InteractiveProcessor {
             interactiveButtons.add(interactiveButton);
     }
 
-    public final void unregisterTouchableComponent(final InteractiveButton interactiveButton) {
+    public final void unregisterInteractiveButton(final InteractiveButton interactiveButton) {
         interactiveButtons.remove(interactiveButton);
     }
 
@@ -54,69 +54,44 @@ public class InteractiveProcessor {
     }
 
     public final void screenTouch(final int x, final int y, final int pointer, int mouseButton, final boolean down) {
-        final Touch t = Touch.touch(pointer);
-        if (t == null) return;
-
-        t.setUp(x, y, down);
-
         switch (mouseButton) {
             case MouseButton.LEFT -> leftMouseButton = down;
             case MouseButton.RIGHT -> rightMouseButton = down;
             case MouseButton.MIDDLE -> middleMouseButton = down;
         }
 
-        if (!down && t.getInteractiveButton() != null) {
+        if (down) {
 
-            final InteractiveButton interactiveButton = t.getInteractiveButton();
+            List<InteractiveButton> onAreaButtons = new ArrayList<>();
 
-            if (interactiveButton.isOnScreen()) {
+            int maxIndex = 0;
+            InteractiveButton upperButton = null;
+            float _tcX = 0.0f, _tcY = 0.0f;
 
+            for (InteractiveButton interactiveButton : interactiveButtons) {
                 final float tcX = interactiveButton.getAbsoluteX();
                 final float tcY = interactiveButton.getAbsoluteY();
                 final float tcW = interactiveButton.getInteractiveArea().getWidth() * interactiveButton.getAbsoluteScaleX();
                 final float tcH = interactiveButton.getInteractiveArea().getHeight() * interactiveButton.getAbsoluteScaleY();
 
-                final boolean onArea = x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH;
+                if (interactiveButton.isOnScreen() && x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH) {
+                    onAreaButtons.add(interactiveButton);
+                    int index = interactiveButton.getParent().indexOf(interactiveButton);
+                    if(index > maxIndex) {
+                        upperButton = interactiveButton;
+                        maxIndex = index;
+                        _tcX = tcX;
+                        _tcY = tcY;
+                    }
 
-                interactiveButton.dispatchEvent(InteractiveButtonEvent.builder()
-                        .type(InteractiveButtonEvent.UP)
-                        .x((int) (x - tcX))
-                        .y((int) (y - tcY))
-                        .mouseButton(mouseButton)
-                        .onArea(onArea)
-                        .leftMouseButton(leftMouseButton)
-                        .rightMouseButton(rightMouseButton)
-                        .middleMouseButton(middleMouseButton)
-                        .build()
-                );
-
-                interactiveButton.setDragging(false);
-                t.setInteractiveButton(null);
-                return;
-            }
-        }
-
-        for (final InteractiveButton interactiveButton : interactiveButtons) {
-            final float tcX = interactiveButton.getAbsoluteX();
-            final float tcY = interactiveButton.getAbsoluteY();
-            final float tcW = interactiveButton.getInteractiveArea().getWidth() * interactiveButton.getAbsoluteScaleX();
-            final float tcH = interactiveButton.getInteractiveArea().getHeight() * interactiveButton.getAbsoluteScaleY();
-
-            if (interactiveButton.getName().equals("___")) {
-                System.out.println("[\n" +
-                        interactiveButton.isOnScreen() + ", " +
-                        x + " " + tcX + " " + tcW + " " + down
-                );
+                }
             }
 
-            if (interactiveButton.isOnScreen() && x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH && down) {
-
-                t.setInteractiveButton(interactiveButton);
-                t.getInteractiveButton().setDragging(true);
-                interactiveButton.dispatchEvent(InteractiveButtonEvent.builder()
+            if(upperButton != null ) {
+                upperButton.dispatchEvent(InteractiveButtonEvent.builder()
                         .type(InteractiveButtonEvent.DOWN)
-                        .x((int) (x - tcX))
-                        .y((int) (y - tcY))
+                        .x((int) (x - _tcX))
+                        .y((int) (y - _tcY))
                         .mouseButton(mouseButton)
                         .onArea(true)
                         .leftMouseButton(leftMouseButton)
@@ -124,8 +99,44 @@ public class InteractiveProcessor {
                         .middleMouseButton(middleMouseButton)
                         .build()
                 );
+
+                upperButton.setDragging(true);
+            }
+
+
+
+        } else {
+            for (InteractiveButton interactiveButton : interactiveButtons) {
+                if (interactiveButton != null) {
+
+                    if (interactiveButton.isOnScreen()) {
+                        final float tcX = interactiveButton.getAbsoluteX();
+                        final float tcY = interactiveButton.getAbsoluteY();
+                        final float tcW = interactiveButton.getInteractiveArea().getWidth() * interactiveButton.getAbsoluteScaleX();
+                        final float tcH = interactiveButton.getInteractiveArea().getHeight() * interactiveButton.getAbsoluteScaleY();
+
+                        final boolean onArea = x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH;
+
+                        if (interactiveButton.isDragging()) {
+                            interactiveButton.dispatchEvent(InteractiveButtonEvent.builder()
+                                    .type(InteractiveButtonEvent.UP)
+                                    .x((int) (x - tcX))
+                                    .y((int) (y - tcY))
+                                    .mouseButton(mouseButton)
+                                    .onArea(onArea)
+                                    .leftMouseButton(leftMouseButton)
+                                    .rightMouseButton(rightMouseButton)
+                                    .middleMouseButton(middleMouseButton)
+                                    .build()
+                            );
+
+                            interactiveButton.setDragging(false);
+                        }
+                    }
+                }
             }
         }
+
     }
 
     public final void screenDrag(int i, final int x, final int y) {
@@ -181,95 +192,8 @@ public class InteractiveProcessor {
         }
     }
 
-    public final @NotNull String getActiveList() {
-        final StringBuilder sb = new StringBuilder();
-
-        for (InteractiveButton current : interactiveButtons) {
-            final String s = current.toString();
-            sb.append(s).append("\n");
-        }
-
-        return sb.toString();
-    }
-
     @Override
     public String toString() {
         return "InteractiveProcessor{interactiveButtons.size=" + interactiveButtons.size() + '}';
     }
-
-    private static class Touch {
-
-        private static final int MAX_TOUCHES = 4;
-
-        private static final Touch[] touches = new Touch[MAX_TOUCHES];
-
-        public static Touch touch(final int pointer) {
-            for (Touch value : touches) {
-                if (pointer >= MAX_TOUCHES) return null;
-                if (value != null && value.getPointer() == pointer) return value;
-            }
-
-            final Touch touch = new Touch(pointer);
-            touches[pointer] = touch;
-
-            return touch;
-        }
-
-        private final int pointer;
-        private int x;
-        private int y;
-        private boolean down;
-        private InteractiveButton component;
-
-        private Touch(final int pointer) {
-            this.pointer = pointer;
-        }
-
-        public final int getPointer() {
-            return pointer;
-        }
-
-        public final void setUp(final int x, final int y, boolean down) {
-            setLocation(x, y);
-            setDown(down);
-        }
-
-        public final void setLocation(final int x, final int y) {
-            setX(x);
-            setY(y);
-        }
-
-        public final int getY() {
-            return y;
-        }
-
-        public final void setY(int y) {
-            this.y = y;
-        }
-
-        public final int getX() {
-            return x;
-        }
-
-        public final void setX(int x) {
-            this.x = x;
-        }
-
-        public boolean isDown() {
-            return down;
-        }
-
-        public void setDown(boolean down) {
-            this.down = down;
-        }
-
-        public final void setInteractiveButton(InteractiveButton interactiveButton) {
-            this.component = interactiveButton;
-        }
-
-        public final InteractiveButton getInteractiveButton() {
-            return component;
-        }
-    }
-
 }

@@ -92,6 +92,8 @@ public class DebugPanel extends DisplayObjectContainer {
 
         add(interactiveButton);
 
+        load();
+
         setScale(scale, scale);
     }
 

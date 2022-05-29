@@ -108,7 +108,7 @@ public class InteractiveButton extends DisplayObjectContainer {
         if (enabled)
             touchProcessor.registerInteractiveButton(this);
         else
-            touchProcessor.unregisterTouchableComponent(this);
+            touchProcessor.unregisterInteractiveButton(this);
     }
 
     public boolean isDragging() {
