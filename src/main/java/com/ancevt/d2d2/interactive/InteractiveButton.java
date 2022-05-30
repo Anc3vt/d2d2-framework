@@ -19,6 +19,8 @@ package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 
+import java.util.List;
+
 public class InteractiveButton extends DisplayObjectContainer {
 
     private static final float DEFAULT_WIDTH = 1;
@@ -28,10 +30,13 @@ public class InteractiveButton extends DisplayObjectContainer {
     private boolean enabled;
     private boolean dragging;
     private boolean hovering;
+    private boolean tabbingEnabled;
+    private List<InteractiveButton> tabbingGroup;
 
     public InteractiveButton(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
         setName("_" + getClass().getSimpleName() + displayObjectId());
+        tabbingGroup = InteractiveProcessor.INSTANCE.getDefaultTabbingGroup();
     }
 
     public InteractiveButton(float width, float height, boolean enabled) {
@@ -46,6 +51,30 @@ public class InteractiveButton extends DisplayObjectContainer {
     public InteractiveButton(boolean enabled) {
         this();
         setEnabled(enabled);
+    }
+
+    public void setDefaultTabbingGroup() {
+        tabbingGroup = InteractiveProcessor.INSTANCE.getDefaultTabbingGroup();
+    }
+
+    public void setTabbingGroup(List<InteractiveButton> tabbingGroup) {
+        if (tabbingGroup == null) {
+            setDefaultTabbingGroup();
+        } else {
+            this.tabbingGroup = tabbingGroup;
+        }
+    }
+
+    public List<InteractiveButton> getTabbingGroup() {
+        return tabbingGroup;
+    }
+
+    public void setTabbingEnabled(boolean tabbingEnabled) {
+        this.tabbingEnabled = tabbingEnabled;
+    }
+
+    public boolean isTabbingEnabled() {
+        return tabbingEnabled;
     }
 
     public void setSize(float width, float height) {
@@ -133,11 +162,11 @@ public class InteractiveButton extends DisplayObjectContainer {
         return InteractiveProcessor.INSTANCE.getFocused() == this;
     }
 
-    public static void setTabbingEnabled(boolean tabbingEnabled) {
+    public static void setGlobalTabbingEnabled(boolean tabbingEnabled) {
         InteractiveProcessor.INSTANCE.setTabbingEnabled(tabbingEnabled);
     }
 
-    public static boolean isTabbingEnabled() {
+    public static boolean isGlobalTabbingEnabled() {
         return InteractiveProcessor.INSTANCE.isTabbingEnabled();
     }
 
