@@ -40,6 +40,8 @@ public class InteractiveProcessor {
     public static final InteractiveProcessor INSTANCE = new InteractiveProcessor();
 
     private final List<InteractiveButton> interactiveButtons;
+    private final List<InteractiveButton> defaultTabbingGroup;
+    private static final int KEY_HOLD_TIME = 30;
 
     private boolean leftMouseButton;
     private boolean rightMouseButton;
@@ -50,20 +52,30 @@ public class InteractiveProcessor {
     private InteractiveButton focusedInteractiveButton;
     private int focusedInteractiveButtonIndex;
     private boolean tabbingEnabled;
-
+    private int keyHoldTime = KEY_HOLD_TIME;
+    private int keyHoldTabDirection;
 
     private InteractiveProcessor() {
         interactiveButtons = new CopyOnWriteArrayList<>();
+        defaultTabbingGroup = new CopyOnWriteArrayList<>();
         focusedInteractiveButtonIndex = -1;
     }
 
     public void registerInteractiveButton(final InteractiveButton interactiveButton) {
         if (!interactiveButtons.contains(interactiveButton))
             interactiveButtons.add(interactiveButton);
+
+        defaultTabbingGroup.remove(interactiveButton);
+        defaultTabbingGroup.add(interactiveButton);
     }
 
     public final void unregisterInteractiveButton(final InteractiveButton interactiveButton) {
         interactiveButtons.remove(interactiveButton);
+        defaultTabbingGroup.remove(interactiveButton);
+    }
+
+    public List<InteractiveButton> getDefaultTabbingGroup() {
+        return defaultTabbingGroup;
     }
 
     public final void clear() {
@@ -248,13 +260,15 @@ public class InteractiveProcessor {
     public void setFocused(InteractiveButton interactiveButton) {
         if (focusedInteractiveButton == interactiveButton) return;
 
+        List<InteractiveButton> tabbingGroup = interactiveButton.getTabbingGroup();
+
         if (focusedInteractiveButton != null) {
             focusedInteractiveButton.dispatchEvent(FocusEvent.builder()
                     .type(FocusEvent.FOCUS_OUT)
                     .build());
         }
 
-        int index = interactiveButtons.indexOf(interactiveButton);
+        int index = tabbingGroup.indexOf(interactiveButton);
         if (index == -1)
             throw new InteractiveButtonException("Unable to focus unregistered InteractiveButton " + interactiveButton);
 
@@ -296,7 +310,7 @@ public class InteractiveProcessor {
     }
 
     public void focusNext() {
-        if (interactiveButtons.size() == 0) return;
+        if (interactiveButtons.size() == 0 || getTabbingEnabledCount() <= 1) return;
         focusedInteractiveButtonIndex++;
         if (focusedInteractiveButtonIndex >= interactiveButtons.size()) focusedInteractiveButtonIndex = 0;
 
@@ -305,10 +319,12 @@ public class InteractiveProcessor {
         }
 
         setFocused(focusedInteractiveButtonIndex);
+
+        if(!getFocused().isTabbingEnabled()) focusNext();
     }
 
     public void focusPrevious() {
-        if (interactiveButtons.size() == 0) return;
+        if (interactiveButtons.size() == 0 || getTabbingEnabledCount() <= 1) return;
         focusedInteractiveButtonIndex--;
         if (focusedInteractiveButtonIndex < 0) focusedInteractiveButtonIndex = interactiveButtons.size() - 1;
 
@@ -317,11 +333,17 @@ public class InteractiveProcessor {
         }
 
         setFocused(focusedInteractiveButtonIndex);
+
+        if(!getFocused().isTabbingEnabled()) focusPrevious();
     }
 
-    private static final int KEY_HOLD_TIME = 30;
-    private int keyHoldTime = KEY_HOLD_TIME;
-    private int keyHoldTabDirection;
+    public int getTabbingEnabledCount() {
+        int count = 0;
+        for(InteractiveButton interactiveButton : interactiveButtons) {
+            if(interactiveButton.isTabbingEnabled()) count++;
+        }
+        return count;
+    }
 
     public void setTabbingEnabled(boolean tabbingEnabled) {
         if (this.tabbingEnabled == tabbingEnabled) return;

@@ -32,7 +32,7 @@ public class Tests_InteractiveButtonsFocus {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
 
-        InteractiveButton.setTabbingEnabled(true);
+        InteractiveButton.setGlobalTabbingEnabled(true);
 
         stage.setBackgroundColor(Color.WHITE);
 

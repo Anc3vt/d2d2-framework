@@ -97,6 +97,18 @@ public class LWJGLRenderer implements IRenderer {
                 stage.getRotation(),
                 stage.getAlpha());
 
+        IDisplayObject cursor = D2D2.getCursor();
+        if (cursor != null) {
+            renderDisplayObject(cursor,
+                    0,
+                    cursor.getX(),
+                    cursor.getY(),
+                    cursor.getScaleX(),
+                    cursor.getScaleY(),
+                    cursor.getRotation(),
+                    cursor.getAlpha());
+        }
+
         textureEngine.unloadTextureAtlases();
 
         GLFW.glfwGetCursorPos(lwjglBackend.windowId, mouseX, mouseY);
