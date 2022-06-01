@@ -118,9 +118,9 @@ public class InteractiveContainer extends DisplayObjectContainer implements Inte
         this.enabled = enabled;
 
         if (enabled)
-            InteractiveManager.getInstance().registerInteractiveContainer(this);
+            InteractiveManager.getInstance().registerInteractive(this);
         else
-            InteractiveManager.getInstance().unregisterInteractiveContainer(this);
+            InteractiveManager.getInstance().unregisterInteractive(this);
     }
 
     @Override
@@ -128,11 +128,13 @@ public class InteractiveContainer extends DisplayObjectContainer implements Inte
         return dragging;
     }
 
-    void setDragging(boolean dragging) {
+    @Override
+    public void setDragging(boolean dragging) {
         this.dragging = dragging;
     }
 
-    void setHovering(boolean hovering) {
+    @Override
+    public void setHovering(boolean hovering) {
         this.hovering = hovering;
     }
 
