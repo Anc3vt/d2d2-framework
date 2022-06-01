@@ -109,12 +109,19 @@ public class InteractiveProcessor {
     }
 
     public void registerInteractiveContainer(final InteractiveContainer interactiveContainer) {
-        if (!interactiveContainers.contains(interactiveContainer))
+        if (!interactiveContainers.contains(interactiveContainer)) {
+            interactiveContainer.addEventListener(this, Event.REMOVE_FROM_STAGE, event -> {
+                if (interactiveContainer.isFocused()) {
+                    resetFocus();
+                }
+            });
             interactiveContainers.add(interactiveContainer);
+        }
     }
 
     public final void unregisterInteractiveContainer(final InteractiveContainer interactiveContainer) {
         interactiveContainers.remove(interactiveContainer);
+        interactiveContainer.removeEventListener(this, Event.REMOVE_FROM_STAGE);
     }
 
     public final void clear() {
@@ -345,9 +352,9 @@ public class InteractiveProcessor {
     }
 
     public void focusNext() {
-        System.out.println("focusNext " + interactiveContainers.size() + " " + getTabbingEnabledCount());
+        System.out.println("focusNext " + interactiveContainers.size() + " " + getTabbingEnabledAndOnScreenAndVisibleCount());
 
-        if (interactiveContainers.size() == 0 || getTabbingEnabledCount() <= 1) return;
+        if (interactiveContainers.size() == 0 || getTabbingEnabledAndOnScreenAndVisibleCount() <= 1) return;
         focusedInteractiveContainerIndex++;
         if (focusedInteractiveContainerIndex >= interactiveContainers.size()) focusedInteractiveContainerIndex = 0;
 
@@ -357,11 +364,11 @@ public class InteractiveProcessor {
 
         setFocused(focusedInteractiveContainerIndex);
 
-        if (!getFocused().isTabbingEnabled()) focusNext();
+        if (!getFocused().isTabbingEnabled() || !getFocused().isOnScreen() || !getFocused().isVisible()) focusNext();
     }
 
     public void focusPrevious() {
-        if (interactiveContainers.size() == 0 || getTabbingEnabledCount() <= 1) return;
+        if (interactiveContainers.size() == 0 || getTabbingEnabledAndOnScreenAndVisibleCount() <= 1) return;
         focusedInteractiveContainerIndex--;
         if (focusedInteractiveContainerIndex < 0) focusedInteractiveContainerIndex = interactiveContainers.size() - 1;
 
@@ -371,18 +378,20 @@ public class InteractiveProcessor {
 
         setFocused(focusedInteractiveContainerIndex);
 
-        if (!getFocused().isTabbingEnabled()) focusPrevious();
+        if (!getFocused().isTabbingEnabled() || !getFocused().isOnScreen() || !getFocused().isVisible())
+            focusPrevious();
     }
 
-    public int getTabbingEnabledCount() {
+    private int getTabbingEnabledAndOnScreenAndVisibleCount() {
         int count = 0;
         for (InteractiveContainer interactiveContainer : interactiveContainers) {
-            if (interactiveContainer.isTabbingEnabled()) count++;
+            if (interactiveContainer.isTabbingEnabled() && interactiveContainer.isOnScreen() && interactiveContainer.isVisible())
+                count++;
         }
         return count;
     }
 
-    public void setTabbingEnabled(boolean tabbingEnabled) {
+    void setTabbingEnabled(boolean tabbingEnabled) {
         if (this.tabbingEnabled == tabbingEnabled) return;
 
         this.tabbingEnabled = tabbingEnabled;
@@ -444,6 +453,10 @@ public class InteractiveProcessor {
         }
     }
 
+    boolean isTabbingEnabled() {
+        return tabbingEnabled;
+    }
+
     public void resetFocus() {
         if (focusedInteractiveContainer != null) {
             focusedInteractiveContainer.dispatchEvent(InteractiveEvent.builder()
@@ -455,10 +468,6 @@ public class InteractiveProcessor {
 
         focusedInteractiveContainerIndex = -1;
         focusedInteractiveContainer = null;
-    }
-
-    public boolean isTabbingEnabled() {
-        return tabbingEnabled;
     }
 
     private static void dispatch(InteractiveContainer interactiveContainer,

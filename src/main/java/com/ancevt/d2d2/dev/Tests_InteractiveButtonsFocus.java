@@ -49,6 +49,8 @@ public class Tests_InteractiveButtonsFocus {
             Button button = new Button(100, 50);
             button.setName("button_2_" + i);
             doc2.add(button, 0, i * 55);
+
+            if(i == 5) button.removeFromParent();
         }
 
         stage.add(doc1, 50, 50);
