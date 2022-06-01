@@ -27,13 +27,14 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
+import com.ancevt.d2d2.interactive.InteractiveManager;
 
 public class Tests_InteractiveButtonsFocus {
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
 
-        InteractiveContainer.setGlobalTabbingEnabled(true);
+        InteractiveManager.getInstance().setTabbingEnabled(true);
 
         stage.setBackgroundColor(Color.BLACK);
 

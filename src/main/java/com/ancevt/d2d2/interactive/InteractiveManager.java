@@ -34,12 +34,12 @@ import static com.ancevt.d2d2.event.InteractiveEvent.HOVER;
 import static com.ancevt.d2d2.event.InteractiveEvent.OUT;
 import static com.ancevt.d2d2.event.InteractiveEvent.UP;
 
-public class InteractiveProcessor {
+public class InteractiveManager {
 
-    private static InteractiveProcessor instance;
+    private static InteractiveManager instance;
 
-    public static InteractiveProcessor getInstance() {
-        return instance == null ? instance = new InteractiveProcessor() : instance;
+    public static InteractiveManager getInstance() {
+        return instance == null ? instance = new InteractiveManager() : instance;
     }
 
     private final List<InteractiveContainer> interactiveContainers;
@@ -57,7 +57,7 @@ public class InteractiveProcessor {
     private int keyHoldTime = KEY_HOLD_TIME;
     private int keyHoldTabDirection;
 
-    private InteractiveProcessor() {
+    private InteractiveManager() {
         interactiveContainers = new CopyOnWriteArrayList<>();
         focusedInteractiveContainerIndex = -1;
 
@@ -391,7 +391,7 @@ public class InteractiveProcessor {
         return count;
     }
 
-    void setTabbingEnabled(boolean tabbingEnabled) {
+    public void setTabbingEnabled(boolean tabbingEnabled) {
         if (this.tabbingEnabled == tabbingEnabled) return;
 
         this.tabbingEnabled = tabbingEnabled;
@@ -453,7 +453,7 @@ public class InteractiveProcessor {
         }
     }
 
-    boolean isTabbingEnabled() {
+    public boolean isTabbingEnabled() {
         return tabbingEnabled;
     }
 

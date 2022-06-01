@@ -19,7 +19,7 @@ package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 
-public class InteractiveContainer extends DisplayObjectContainer {
+public class InteractiveContainer extends DisplayObjectContainer implements Interactive {
 
     private static final float DEFAULT_WIDTH = 1;
     private static final float DEFAULT_HEIGHT = 1;
@@ -49,10 +49,12 @@ public class InteractiveContainer extends DisplayObjectContainer {
         setEnabled(enabled);
     }
 
+    @Override
     public void setTabbingEnabled(boolean tabbingEnabled) {
         this.tabbingEnabled = tabbingEnabled;
     }
 
+    @Override
     public boolean isTabbingEnabled() {
         return tabbingEnabled;
     }
@@ -70,6 +72,7 @@ public class InteractiveContainer extends DisplayObjectContainer {
         interactiveArea.setHeight(height);
     }
 
+    @Override
     public InteractiveArea getInteractiveArea() {
         return interactiveArea;
     }
@@ -103,21 +106,24 @@ public class InteractiveContainer extends DisplayObjectContainer {
         super.setXY(x, y);
     }
 
+    @Override
     public boolean isEnabled() {
         return enabled;
     }
 
+    @Override
     public void setEnabled(boolean enabled) {
         if (this.enabled == enabled) return;
 
         this.enabled = enabled;
 
         if (enabled)
-            InteractiveProcessor.getInstance().registerInteractiveContainer(this);
+            InteractiveManager.getInstance().registerInteractiveContainer(this);
         else
-            InteractiveProcessor.getInstance().unregisterInteractiveContainer(this);
+            InteractiveManager.getInstance().unregisterInteractiveContainer(this);
     }
 
+    @Override
     public boolean isDragging() {
         return dragging;
     }
@@ -130,27 +136,19 @@ public class InteractiveContainer extends DisplayObjectContainer {
         this.hovering = hovering;
     }
 
+    @Override
     public boolean isHovering() {
         return hovering;
     }
 
+    @Override
     public void focus() {
-        InteractiveProcessor.getInstance().setFocused(this);
+        InteractiveManager.getInstance().setFocused(this);
     }
 
+    @Override
     public boolean isFocused() {
-        return InteractiveProcessor.getInstance().getFocused() == this;
+        return InteractiveManager.getInstance().getFocused() == this;
     }
 
-    public static void setGlobalTabbingEnabled(boolean tabbingEnabled) {
-        InteractiveProcessor.getInstance().setTabbingEnabled(tabbingEnabled);
-    }
-
-    public static boolean isGlobalTabbingEnabled() {
-        return InteractiveProcessor.getInstance().isTabbingEnabled();
-    }
-
-    public static void resetFocus() {
-        InteractiveProcessor.getInstance().resetFocus();
-    }
 }
