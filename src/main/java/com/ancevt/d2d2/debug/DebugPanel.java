@@ -229,9 +229,6 @@ public class DebugPanel extends DisplayObjectContainer {
 
     public DebugPanel addButton(String text, Runnable onPress) {
         if (!buttonMap.containsKey(text)) {
-
-            System.out.println(onPress);
-
             Button button = new Button(text);
             button.pressFunction = onPress;
             add(button, buttonList.size() * (Button.DEFAULT_WIDTH + 1), -Button.DEFAULT_HEIGHT);
