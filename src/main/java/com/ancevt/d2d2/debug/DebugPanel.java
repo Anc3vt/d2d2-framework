@@ -28,9 +28,9 @@ import com.ancevt.d2d2.display.IDisplayObjectContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.InteractiveButtonEvent;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.MouseButton;
-import com.ancevt.d2d2.interactive.InteractiveButton;
+import com.ancevt.d2d2.interactive.InteractiveContainer;
 import com.ancevt.localstorage.FileLocalStorage;
 import com.ancevt.localstorage.LocalStorage;
 import com.ancevt.localstorage.LocalStorageBuilder;
@@ -55,7 +55,7 @@ public class DebugPanel extends DisplayObjectContainer {
     private final BitmapText text;
     private final String systemPropertyName;
     private final PlainRect bg;
-    private final InteractiveButton interactiveButton;
+    private final InteractiveContainer interactiveButton;
     private int oldX;
     private int oldY;
     private boolean shiftDown;
@@ -85,9 +85,9 @@ public class DebugPanel extends DisplayObjectContainer {
         text.setBounds(width, height);
         add(text, 1, 1);
 
-        interactiveButton = new InteractiveButton(width, height, true);
-        interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this::interactiveButton_down);
-        interactiveButton.addEventListener(InteractiveButtonEvent.DRAG, this::interactiveButton_drag);
+        interactiveButton = new InteractiveContainer(width, height, true);
+        interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
+        interactiveButton.addEventListener(InteractiveEvent.DRAG, this::interactiveButton_drag);
 
         addEventListener(this, Event.ADD_TO_STAGE, this::this_addToStage);
 
@@ -139,7 +139,7 @@ public class DebugPanel extends DisplayObjectContainer {
     }
 
     private void interactiveButton_down(Event event) {
-        var e = (InteractiveButtonEvent) event;
+        var e = (InteractiveEvent) event;
 
         mouseButton = e.getMouseButton();
 
@@ -154,7 +154,7 @@ public class DebugPanel extends DisplayObjectContainer {
     }
 
     private void interactiveButton_drag(Event event) {
-        var e = (InteractiveButtonEvent) event;
+        var e = (InteractiveEvent) event;
 
         if (mouseButton == MouseButton.RIGHT) {
             bg.setSize(e.getX() + 1, e.getY() + 1);
@@ -302,20 +302,20 @@ public class DebugPanel extends DisplayObjectContainer {
         private static final float DEFAULT_WIDTH = 50f;
         private static final float DEFAULT_HEIGHT = 12f;
 
-        private final InteractiveButton interactiveButton;
+        private final InteractiveContainer interactiveButton;
 
         private Runnable pressFunction;
 
         public Button(Object text) {
             super(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK, Color.WHITE);
             setBorderWidth(0.2f);
-            interactiveButton = new InteractiveButton((int) DEFAULT_WIDTH, (int) DEFAULT_HEIGHT, true);
+            interactiveButton = new InteractiveContainer((int) DEFAULT_WIDTH, (int) DEFAULT_HEIGHT, true);
             BitmapText bitmapText = new BitmapText(String.valueOf(text));
 
             add(interactiveButton);
             add(bitmapText, 2, -2);
 
-            interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this::interactiveButton_down);
+            interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
 
             addEventListener(this, Event.REMOVE_FROM_STAGE, this::this_removeFromStage);
         }

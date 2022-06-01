@@ -19,9 +19,7 @@ package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 
-import java.util.List;
-
-public class InteractiveButton extends DisplayObjectContainer {
+public class InteractiveContainer extends DisplayObjectContainer implements Interactive {
 
     private static final float DEFAULT_WIDTH = 1;
     private static final float DEFAULT_HEIGHT = 1;
@@ -31,48 +29,32 @@ public class InteractiveButton extends DisplayObjectContainer {
     private boolean dragging;
     private boolean hovering;
     private boolean tabbingEnabled;
-    private List<InteractiveButton> tabbingGroup;
 
-    public InteractiveButton(float width, float height) {
+    public InteractiveContainer(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
         setName("_" + getClass().getSimpleName() + displayObjectId());
-        tabbingGroup = InteractiveProcessor.INSTANCE.getDefaultTabbingGroup();
     }
 
-    public InteractiveButton(float width, float height, boolean enabled) {
+    public InteractiveContainer(float width, float height, boolean enabled) {
         this(width, height);
         setEnabled(enabled);
     }
 
-    public InteractiveButton() {
+    public InteractiveContainer() {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    public InteractiveButton(boolean enabled) {
+    public InteractiveContainer(boolean enabled) {
         this();
         setEnabled(enabled);
     }
 
-    public void setDefaultTabbingGroup() {
-        tabbingGroup = InteractiveProcessor.INSTANCE.getDefaultTabbingGroup();
-    }
-
-    public void setTabbingGroup(List<InteractiveButton> tabbingGroup) {
-        if (tabbingGroup == null) {
-            setDefaultTabbingGroup();
-        } else {
-            this.tabbingGroup = tabbingGroup;
-        }
-    }
-
-    public List<InteractiveButton> getTabbingGroup() {
-        return tabbingGroup;
-    }
-
+    @Override
     public void setTabbingEnabled(boolean tabbingEnabled) {
         this.tabbingEnabled = tabbingEnabled;
     }
 
+    @Override
     public boolean isTabbingEnabled() {
         return tabbingEnabled;
     }
@@ -90,6 +72,7 @@ public class InteractiveButton extends DisplayObjectContainer {
         interactiveArea.setHeight(height);
     }
 
+    @Override
     public InteractiveArea getInteractiveArea() {
         return interactiveArea;
     }
@@ -123,54 +106,51 @@ public class InteractiveButton extends DisplayObjectContainer {
         super.setXY(x, y);
     }
 
+    @Override
     public boolean isEnabled() {
         return enabled;
     }
 
+    @Override
     public void setEnabled(boolean enabled) {
         if (this.enabled == enabled) return;
 
         this.enabled = enabled;
 
         if (enabled)
-            InteractiveProcessor.INSTANCE.registerInteractiveButton(this);
+            InteractiveManager.getInstance().registerInteractive(this);
         else
-            InteractiveProcessor.INSTANCE.unregisterInteractiveButton(this);
+            InteractiveManager.getInstance().unregisterInteractive(this);
     }
 
+    @Override
     public boolean isDragging() {
         return dragging;
     }
 
-    void setDragging(boolean dragging) {
+    @Override
+    public void setDragging(boolean dragging) {
         this.dragging = dragging;
     }
 
-    void setHovering(boolean hovering) {
+    @Override
+    public void setHovering(boolean hovering) {
         this.hovering = hovering;
     }
 
+    @Override
     public boolean isHovering() {
         return hovering;
     }
 
+    @Override
     public void focus() {
-        InteractiveProcessor.INSTANCE.setFocused(this);
+        InteractiveManager.getInstance().setFocused(this);
     }
 
+    @Override
     public boolean isFocused() {
-        return InteractiveProcessor.INSTANCE.getFocused() == this;
+        return InteractiveManager.getInstance().getFocused() == this;
     }
 
-    public static void setGlobalTabbingEnabled(boolean tabbingEnabled) {
-        InteractiveProcessor.INSTANCE.setTabbingEnabled(tabbingEnabled);
-    }
-
-    public static boolean isGlobalTabbingEnabled() {
-        return InteractiveProcessor.INSTANCE.isTabbingEnabled();
-    }
-
-    public static void resetFocus() {
-        InteractiveProcessor.INSTANCE.resetFocus();
-    }
 }

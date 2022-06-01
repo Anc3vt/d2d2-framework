@@ -17,23 +17,23 @@
  */
 package com.ancevt.d2d2.exception;
 
-public class InteractiveButtonException extends RuntimeException{
-    public InteractiveButtonException() {
+public class InteractiveException extends RuntimeException{
+    public InteractiveException() {
     }
 
-    public InteractiveButtonException(String message) {
+    public InteractiveException(String message) {
         super(message);
     }
 
-    public InteractiveButtonException(String message, Throwable cause) {
+    public InteractiveException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public InteractiveButtonException(Throwable cause) {
+    public InteractiveException(Throwable cause) {
         super(cause);
     }
 
-    public InteractiveButtonException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public InteractiveException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

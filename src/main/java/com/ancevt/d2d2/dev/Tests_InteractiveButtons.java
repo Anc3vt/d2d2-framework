@@ -24,9 +24,9 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventListener;
-import com.ancevt.d2d2.event.InteractiveButtonEvent;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.interactive.InteractiveButton;
+import com.ancevt.d2d2.interactive.InteractiveContainer;
 
 import java.util.Objects;
 
@@ -53,12 +53,12 @@ public class Tests_InteractiveButtons {
 
         public Button(int w, int h) {
             plainRect = new PlainRect(w, h, Color.DARK_GRAY);
-            InteractiveButton interactiveButton = new InteractiveButton(w, h);
+            InteractiveContainer interactiveButton = new InteractiveContainer(w, h);
             interactiveButton.setEnabled(true);
-            interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this);
-            interactiveButton.addEventListener(InteractiveButtonEvent.DRAG, this::interactiveButton_drag);
-            interactiveButton.addEventListener(InteractiveButtonEvent.HOVER, this::interactiveButton_hover);
-            interactiveButton.addEventListener(InteractiveButtonEvent.OUT, this::interactiveButton_out);
+            interactiveButton.addEventListener(InteractiveEvent.DOWN, this);
+            interactiveButton.addEventListener(InteractiveEvent.DRAG, this::interactiveButton_drag);
+            interactiveButton.addEventListener(InteractiveEvent.HOVER, this::interactiveButton_hover);
+            interactiveButton.addEventListener(InteractiveEvent.OUT, this::interactiveButton_out);
 
             add(plainRect);
             add(interactiveButton);
@@ -73,7 +73,7 @@ public class Tests_InteractiveButtons {
         }
 
         private void interactiveButton_drag(Event event) {
-            InteractiveButtonEvent e = (InteractiveButtonEvent) event;
+            InteractiveEvent e = (InteractiveEvent) event;
             if (e.isOnArea()) {
                 plainRect.setColor(Color.DARK_GREEN);
             } else {
@@ -83,7 +83,7 @@ public class Tests_InteractiveButtons {
 
         @Override
         public void onEvent(Event event) {
-            if(Objects.equals(event.getType(), InteractiveButtonEvent.DOWN)) {
+            if(Objects.equals(event.getType(), InteractiveEvent.DOWN)) {
                 System.out.println(this);
             }
         }

@@ -17,8 +17,6 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.texture.TextureManager;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.exception.ContainerException;
@@ -126,11 +124,6 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
     @Override
     public boolean contains(@NotNull IDisplayObject child) {
         return children.contains(child);
-    }
-
-    @Override
-    public TextureManager textureManager() {
-        return D2D2.getTextureManager();
     }
 
     @Override

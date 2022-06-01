@@ -15,17 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.event;
+package com.ancevt.d2d2.interactive;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.SuperBuilder;
+import com.ancevt.d2d2.display.IDisplayObject;
 
-@Data
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-public class FocusEvent extends Event {
+public interface Interactive extends IDisplayObject {
 
-    public static final String FOCUS_IN = "interactiveButtonFocusIn";
-    public static final String FOCUS_OUT = "interactiveButtonFocusOut";
+    void setTabbingEnabled(boolean tabbingEnabled);
+
+    boolean isTabbingEnabled();
+
+    InteractiveArea getInteractiveArea();
+
+    void setEnabled(boolean enabled);
+
+    boolean isEnabled();
+
+    void setDragging(boolean dragging);
+
+    boolean isDragging();
+
+    void setHovering(boolean hovering);
+
+    boolean isHovering();
+
+    void focus();
+
+    boolean isFocused();
 }
