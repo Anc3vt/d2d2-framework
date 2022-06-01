@@ -22,8 +22,8 @@ import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveButtonEvent;
-import com.ancevt.d2d2.interactive.InteractiveButton;
+import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.interactive.InteractiveContainer;
 
 import static com.ancevt.d2d2.D2D2.init;
 import static com.ancevt.d2d2.D2D2.loop;
@@ -42,15 +42,17 @@ public class Tests_InteractiveButtonInInteractiveButton {
         Button inner = new Button(100, 100);
         stage().add(inner, 250, 250);
 
-        Button inner2 = new Button(50, 50);
-        inner.add(inner2, 25, 25);
+        Button innerInner = new Button(50, 50);
+        inner.add(innerInner, 25, 25);
+
+
 
         stage().add(new FpsMeter());
 
         loop();
     }
 
-    private static class Button extends InteractiveButton {
+    private static class Button extends InteractiveContainer {
 
         private final BorderedRect bg = new BorderedRect();
 
@@ -61,11 +63,11 @@ public class Tests_InteractiveButtonInInteractiveButton {
             setSize(width, height);
             add(bg);
 
-            addEventListener(this, InteractiveButtonEvent.DOWN, this::this_down);
-            addEventListener(this, InteractiveButtonEvent.UP, this::this_up);
-            addEventListener(this, InteractiveButtonEvent.HOVER, this::this_hover);
-            addEventListener(this, InteractiveButtonEvent.OUT, this::this_out);
-            addEventListener(this, InteractiveButtonEvent.DRAG, this::this_drag);
+            addEventListener(this, InteractiveEvent.DOWN, this::this_down);
+            addEventListener(this, InteractiveEvent.UP, this::this_up);
+            addEventListener(this, InteractiveEvent.HOVER, this::this_hover);
+            addEventListener(this, InteractiveEvent.OUT, this::this_out);
+            addEventListener(this, InteractiveEvent.DRAG, this::this_drag);
         }
 
         private void this_drag(Event event) {
@@ -73,12 +75,13 @@ public class Tests_InteractiveButtonInInteractiveButton {
         }
 
         private void this_up(Event event) {
-            var e = (InteractiveButtonEvent) event;
+            var e = (InteractiveEvent) event;
             bg.setFillColor(e.isOnArea() ? Color.GREEN : Color.GRAY);
         }
 
         private void this_down(Event event) {
             bg.setFillColor(Color.YELLOW);
+            System.out.println(getName() + " DOWN");
         }
 
         private void this_out(Event event) {

@@ -284,7 +284,7 @@ public class LWJGLBackend implements D2D2Backend {
                         .mouseButton(mouseButton)
                         .build());
 
-                InteractiveProcessor.INSTANCE.screenTouch(mouseX, mouseY, 0, mouseButton, isDown);
+                InteractiveProcessor.getInstance().screenTouch(mouseX, mouseY, 0, mouseButton, isDown);
             }
         });
 
@@ -304,7 +304,7 @@ public class LWJGLBackend implements D2D2Backend {
                         .drag(isDown)
                         .build());
 
-                InteractiveProcessor.INSTANCE.screenDrag(0, mouseX, mouseY);
+                InteractiveProcessor.getInstance().screenDrag(0, mouseX, mouseY);
             }
         });
 

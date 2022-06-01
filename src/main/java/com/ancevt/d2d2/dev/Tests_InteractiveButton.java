@@ -23,8 +23,8 @@ import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveButtonEvent;
-import com.ancevt.d2d2.interactive.InteractiveButton;
+import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.interactive.InteractiveContainer;
 
 public class Tests_InteractiveButton {
 
@@ -37,7 +37,7 @@ public class Tests_InteractiveButton {
         D2D2.loop();
     }
 
-    private static class Button extends InteractiveButton {
+    private static class Button extends InteractiveContainer {
 
         private final PlainRect bg = new PlainRect();
 
@@ -47,18 +47,18 @@ public class Tests_InteractiveButton {
             setSize(100, 100);
             add(bg);
 
-            addEventListener(this, InteractiveButtonEvent.DOWN, this::this_down);
-            addEventListener(this, InteractiveButtonEvent.UP, this::this_up);
-            addEventListener(this, InteractiveButtonEvent.HOVER, this::this_hover);
-            addEventListener(this, InteractiveButtonEvent.OUT, this::this_out);
+            addEventListener(this, InteractiveEvent.DOWN, this::this_down);
+            addEventListener(this, InteractiveEvent.UP, this::this_up);
+            addEventListener(this, InteractiveEvent.HOVER, this::this_hover);
+            addEventListener(this, InteractiveEvent.OUT, this::this_out);
 
-            InteractiveButton tb = new InteractiveButton(50, 50, true);
-            tb.addEventListener(InteractiveButtonEvent.DOWN, event -> {
+            InteractiveContainer tb = new InteractiveContainer(50, 50, true);
+            tb.addEventListener(InteractiveEvent.DOWN, event -> {
                 System.out.println("SMALL BUTTON PRESSED");
 
                 Button button = new Button();
-                button.addEventListener(InteractiveButtonEvent.DOWN, event1 -> {
-                    var e = (InteractiveButtonEvent) event1;
+                button.addEventListener(InteractiveEvent.DOWN, event1 -> {
+                    var e = (InteractiveEvent) event1;
                     button.bg.setColor(Color.YELLOW);
 
                 });

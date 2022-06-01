@@ -18,10 +18,9 @@
 package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.FocusEvent;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.InteractiveButtonEvent;
-import com.ancevt.d2d2.exception.InteractiveButtonException;
+import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.exception.InteractiveContainerException;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 
@@ -29,58 +28,98 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.ancevt.d2d2.D2D2.stage;
-import static com.ancevt.d2d2.event.InteractiveButtonEvent.DOWN;
-import static com.ancevt.d2d2.event.InteractiveButtonEvent.DRAG;
-import static com.ancevt.d2d2.event.InteractiveButtonEvent.HOVER;
-import static com.ancevt.d2d2.event.InteractiveButtonEvent.OUT;
-import static com.ancevt.d2d2.event.InteractiveButtonEvent.UP;
+import static com.ancevt.d2d2.event.InteractiveEvent.DOWN;
+import static com.ancevt.d2d2.event.InteractiveEvent.DRAG;
+import static com.ancevt.d2d2.event.InteractiveEvent.HOVER;
+import static com.ancevt.d2d2.event.InteractiveEvent.OUT;
+import static com.ancevt.d2d2.event.InteractiveEvent.UP;
 
 public class InteractiveProcessor {
 
-    public static final InteractiveProcessor INSTANCE = new InteractiveProcessor();
+    private static InteractiveProcessor instance;
 
-    private final List<InteractiveButton> interactiveButtons;
-    private final List<InteractiveButton> defaultTabbingGroup;
+    public static InteractiveProcessor getInstance() {
+        return instance == null ? instance = new InteractiveProcessor() : instance;
+    }
+
+    private final List<InteractiveContainer> interactiveContainers;
     private static final int KEY_HOLD_TIME = 30;
 
     private boolean leftMouseButton;
     private boolean rightMouseButton;
     private boolean middleMouseButton;
 
-    private InteractiveButton hoveredInteractiveButton;
+    private InteractiveContainer hoveredInteractiveContainer;
 
-    private InteractiveButton focusedInteractiveButton;
-    private int focusedInteractiveButtonIndex;
+    private InteractiveContainer focusedInteractiveContainer;
+    private int focusedInteractiveContainerIndex;
     private boolean tabbingEnabled;
     private int keyHoldTime = KEY_HOLD_TIME;
     private int keyHoldTabDirection;
 
     private InteractiveProcessor() {
-        interactiveButtons = new CopyOnWriteArrayList<>();
-        defaultTabbingGroup = new CopyOnWriteArrayList<>();
-        focusedInteractiveButtonIndex = -1;
+        interactiveContainers = new CopyOnWriteArrayList<>();
+        focusedInteractiveContainerIndex = -1;
+
+        stage().addEventListener(InputEvent.KEY_DOWN, event -> {
+            var e = (InputEvent) event;
+            InteractiveContainer focused = getFocused();
+            if (focused != null) {
+                focused.dispatchEvent(InteractiveEvent.builder()
+                        .type(InteractiveEvent.KEY_DOWN)
+                        .keyChar(e.getKeyChar())
+                        .keyCode(e.getKeyCode())
+                        .alt(e.isAlt())
+                        .control(e.isControl())
+                        .shift(e.isShift())
+                        .build());
+            }
+        });
+
+        stage().addEventListener(InputEvent.KEY_UP, event -> {
+            var e = (InputEvent) event;
+            InteractiveContainer focused = getFocused();
+            if (focused != null) {
+                focused.dispatchEvent(InteractiveEvent.builder()
+                        .type(InteractiveEvent.KEY_UP)
+                        .keyChar(e.getKeyChar())
+                        .keyCode(e.getKeyCode())
+                        .alt(e.isAlt())
+                        .control(e.isControl())
+                        .shift(e.isShift())
+                        .build());
+            }
+        });
+
+        stage().addEventListener(InputEvent.KEY_TYPE, event -> {
+            var e = (InputEvent) event;
+            InteractiveContainer focused = getFocused();
+            if (focused != null) {
+                focused.dispatchEvent(InteractiveEvent.builder()
+                        .type(InteractiveEvent.KEY_TYPE)
+                        .keyChar(e.getKeyChar())
+                        .keyCode(e.getKeyCode())
+                        .keyType(e.getKeyType())
+                        .alt(e.isAlt())
+                        .control(e.isControl())
+                        .shift(e.isShift())
+                        .build());
+            }
+        });
     }
 
-    public void registerInteractiveButton(final InteractiveButton interactiveButton) {
-        if (!interactiveButtons.contains(interactiveButton))
-            interactiveButtons.add(interactiveButton);
-
-        defaultTabbingGroup.remove(interactiveButton);
-        defaultTabbingGroup.add(interactiveButton);
+    public void registerInteractiveContainer(final InteractiveContainer interactiveContainer) {
+        if (!interactiveContainers.contains(interactiveContainer))
+            interactiveContainers.add(interactiveContainer);
     }
 
-    public final void unregisterInteractiveButton(final InteractiveButton interactiveButton) {
-        interactiveButtons.remove(interactiveButton);
-        defaultTabbingGroup.remove(interactiveButton);
-    }
-
-    public List<InteractiveButton> getDefaultTabbingGroup() {
-        return defaultTabbingGroup;
+    public final void unregisterInteractiveContainer(final InteractiveContainer interactiveContainer) {
+        interactiveContainers.remove(interactiveContainer);
     }
 
     public final void clear() {
-        while (!interactiveButtons.isEmpty()) {
-            interactiveButtons.remove(0);
+        while (!interactiveContainers.isEmpty()) {
+            interactiveContainers.remove(0);
         }
     }
 
@@ -91,23 +130,23 @@ public class InteractiveProcessor {
             case MouseButton.MIDDLE -> middleMouseButton = down;
         }
 
-        InteractiveButton pressedInteractiveButton = null;
+        InteractiveContainer pressedInteractiveContainer = null;
 
         if (down) {
 
             int maxIndex = 0;
             float _tcX = 0.0f, _tcY = 0.0f;
 
-            for (InteractiveButton interactiveButton : interactiveButtons) {
-                final float tcX = interactiveButton.getAbsoluteX();
-                final float tcY = interactiveButton.getAbsoluteY();
-                final float tcW = interactiveButton.getInteractiveArea().getWidth() * interactiveButton.getAbsoluteScaleX();
-                final float tcH = interactiveButton.getInteractiveArea().getHeight() * interactiveButton.getAbsoluteScaleY();
+            for (InteractiveContainer interactiveContainer : interactiveContainers) {
+                final float tcX = interactiveContainer.getAbsoluteX();
+                final float tcY = interactiveContainer.getAbsoluteY();
+                final float tcW = interactiveContainer.getInteractiveArea().getWidth() * interactiveContainer.getAbsoluteScaleX();
+                final float tcH = interactiveContainer.getInteractiveArea().getHeight() * interactiveContainer.getAbsoluteScaleY();
 
-                if (interactiveButton.isOnScreen() && x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH) {
-                    int index = interactiveButton.getAbsoluteZOrderIndex();
+                if (interactiveContainer.isOnScreen() && x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH) {
+                    int index = interactiveContainer.getAbsoluteZOrderIndex();
                     if (index >= maxIndex) {
-                        pressedInteractiveButton = interactiveButton;
+                        pressedInteractiveContainer = interactiveContainer;
                         maxIndex = index;
                         _tcX = tcX;
                         _tcY = tcY;
@@ -115,11 +154,10 @@ public class InteractiveProcessor {
                 }
             }
 
-            if (pressedInteractiveButton != null) {
+            if (pressedInteractiveContainer != null) {
+                setFocused(pressedInteractiveContainer);
 
-                setFocused(pressedInteractiveButton);
-
-                dispatch(pressedInteractiveButton,
+                dispatch(pressedInteractiveContainer,
                         DOWN,
                         (int) (x - _tcX),
                         (int) (y - _tcY),
@@ -130,23 +168,23 @@ public class InteractiveProcessor {
                         mouseButton
                 );
 
-                pressedInteractiveButton.setDragging(true);
+                pressedInteractiveContainer.setDragging(true);
             }
 
         } else {
-            for (InteractiveButton interactiveButton : interactiveButtons) {
-                if (interactiveButton != null) {
+            for (InteractiveContainer interactiveContainer : interactiveContainers) {
+                if (interactiveContainer != null) {
 
-                    if (interactiveButton.isOnScreen()) {
-                        final float tcX = interactiveButton.getAbsoluteX();
-                        final float tcY = interactiveButton.getAbsoluteY();
-                        final float tcW = interactiveButton.getInteractiveArea().getWidth() * interactiveButton.getAbsoluteScaleX();
-                        final float tcH = interactiveButton.getInteractiveArea().getHeight() * interactiveButton.getAbsoluteScaleY();
+                    if (interactiveContainer.isOnScreen()) {
+                        final float tcX = interactiveContainer.getAbsoluteX();
+                        final float tcY = interactiveContainer.getAbsoluteY();
+                        final float tcW = interactiveContainer.getInteractiveArea().getWidth() * interactiveContainer.getAbsoluteScaleX();
+                        final float tcH = interactiveContainer.getInteractiveArea().getHeight() * interactiveContainer.getAbsoluteScaleY();
 
                         final boolean onArea = x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH;
 
-                        if (interactiveButton.isDragging()) {
-                            dispatch(interactiveButton,
+                        if (interactiveContainer.isDragging()) {
+                            dispatch(interactiveContainer,
                                     UP,
                                     (int) (x - tcX),
                                     (int) (y - tcY),
@@ -157,45 +195,43 @@ public class InteractiveProcessor {
                                     mouseButton
                             );
 
-                            interactiveButton.setDragging(false);
+                            interactiveContainer.setDragging(false);
                         }
                     }
                 }
             }
         }
-
     }
 
     public final void screenDrag(int pointer, final int x, final int y) {
-
         float _tcX = 0.0f, _tcY = 0.0f;
         int maxIndex = 0;
-        InteractiveButton upperButton = null;
+        InteractiveContainer upperIntaractiveContainer = null;
 
-        for (final InteractiveButton interactiveButton : interactiveButtons) {
-            final float tcX = interactiveButton.getAbsoluteX();
-            final float tcY = interactiveButton.getAbsoluteY();
-            final float tcW = interactiveButton.getInteractiveArea().getWidth() * interactiveButton.getAbsoluteScaleX();
-            final float tcH = interactiveButton.getInteractiveArea().getHeight() * interactiveButton.getAbsoluteScaleY();
+        for (final InteractiveContainer interactiveContainer : interactiveContainers) {
+            final float tcX = interactiveContainer.getAbsoluteX();
+            final float tcY = interactiveContainer.getAbsoluteY();
+            final float tcW = interactiveContainer.getInteractiveArea().getWidth() * interactiveContainer.getAbsoluteScaleX();
+            final float tcH = interactiveContainer.getInteractiveArea().getHeight() * interactiveContainer.getAbsoluteScaleY();
 
-            final boolean onScreen = interactiveButton.isOnScreen();
+            final boolean onScreen = interactiveContainer.isOnScreen();
             final boolean onArea = x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH;
 
             if (onScreen) {
 
 
                 if (onArea) {
-                    int index = interactiveButton.getAbsoluteZOrderIndex();
+                    int index = interactiveContainer.getAbsoluteZOrderIndex();
                     if (index >= maxIndex) {
                         maxIndex = index;
                         _tcX = tcX;
                         _tcY = tcY;
-                        upperButton = interactiveButton;
+                        upperIntaractiveContainer = interactiveContainer;
                     }
                 }
 
-                if (interactiveButton.isDragging()) {
-                    dispatch(interactiveButton,
+                if (interactiveContainer.isDragging()) {
+                    dispatch(interactiveContainer,
                             DRAG,
                             (int) (x - tcX),
                             (int) (y - tcY),
@@ -207,9 +243,9 @@ public class InteractiveProcessor {
                     );
                 }
 
-                if (interactiveButton.isHovering() && !onArea) {
-                    interactiveButton.setHovering(false);
-                    dispatch(interactiveButton,
+                if (interactiveContainer.isHovering() && !onArea) {
+                    interactiveContainer.setHovering(false);
+                    dispatch(interactiveContainer,
                             OUT,
                             (int) (x - tcX),
                             (int) (y - tcY),
@@ -224,10 +260,10 @@ public class InteractiveProcessor {
             }
 
         }
-        if (upperButton != null) {
-            if (!upperButton.isHovering()) {
-                if (hoveredInteractiveButton != null) {
-                    dispatch(hoveredInteractiveButton,
+        if (upperIntaractiveContainer != null) {
+            if (!upperIntaractiveContainer.isHovering()) {
+                if (hoveredInteractiveContainer != null) {
+                    dispatch(hoveredInteractiveContainer,
                             OUT,
                             (int) (x - _tcX),
                             (int) (y - _tcY),
@@ -237,13 +273,13 @@ public class InteractiveProcessor {
                             middleMouseButton,
                             0
                     );
-                    hoveredInteractiveButton.setHovering(false);
+                    hoveredInteractiveContainer.setHovering(false);
                 }
 
-                hoveredInteractiveButton = upperButton;
+                hoveredInteractiveContainer = upperIntaractiveContainer;
 
-                upperButton.setHovering(true);
-                dispatch(upperButton,
+                upperIntaractiveContainer.setHovering(true);
+                dispatch(upperIntaractiveContainer,
                         HOVER,
                         (int) (x - _tcX),
                         (int) (y - _tcY),
@@ -257,90 +293,91 @@ public class InteractiveProcessor {
         }
     }
 
-    public void setFocused(InteractiveButton interactiveButton) {
-        if (focusedInteractiveButton == interactiveButton) return;
+    public void setFocused(InteractiveContainer interactiveContainer) {
+        if (focusedInteractiveContainer == interactiveContainer) return;
 
-        List<InteractiveButton> tabbingGroup = interactiveButton.getTabbingGroup();
 
-        if (focusedInteractiveButton != null) {
-            focusedInteractiveButton.dispatchEvent(FocusEvent.builder()
-                    .type(FocusEvent.FOCUS_OUT)
+        if (focusedInteractiveContainer != null) {
+            focusedInteractiveContainer.dispatchEvent(InteractiveEvent.builder()
+                    .type(InteractiveEvent.FOCUS_OUT)
                     .build());
         }
 
-        int index = tabbingGroup.indexOf(interactiveButton);
+        int index = interactiveContainers.indexOf(interactiveContainer);
         if (index == -1)
-            throw new InteractiveButtonException("Unable to focus unregistered InteractiveButton " + interactiveButton);
+            throw new InteractiveContainerException("Unable to focus unregistered InteractiveContainer " + interactiveContainer);
 
-        focusedInteractiveButton = interactiveButton;
-        focusedInteractiveButtonIndex = index;
+        focusedInteractiveContainer = interactiveContainer;
+        focusedInteractiveContainerIndex = index;
 
-        focusedInteractiveButton.dispatchEvent(FocusEvent.builder()
-                .type(FocusEvent.FOCUS_IN)
+        focusedInteractiveContainer.dispatchEvent(InteractiveEvent.builder()
+                .type(InteractiveEvent.FOCUS_IN)
                 .build());
     }
 
     public void setFocused(int index) {
-        if (interactiveButtons.size() == 0) return;
+        if (interactiveContainers.size() == 0) return;
 
-        focusedInteractiveButtonIndex = index;
+        focusedInteractiveContainerIndex = index;
 
-        if (focusedInteractiveButtonIndex < 0)
-            focusedInteractiveButtonIndex = 0;
-        else if (focusedInteractiveButtonIndex >= interactiveButtons.size())
-            focusedInteractiveButtonIndex = interactiveButtons.size() - 1;
+        if (focusedInteractiveContainerIndex < 0)
+            focusedInteractiveContainerIndex = 0;
+        else if (focusedInteractiveContainerIndex >= interactiveContainers.size())
+            focusedInteractiveContainerIndex = interactiveContainers.size() - 1;
 
-        if (focusedInteractiveButton == interactiveButtons.get(focusedInteractiveButtonIndex)) return;
+        if (focusedInteractiveContainer == interactiveContainers.get(focusedInteractiveContainerIndex)) return;
 
-        if (focusedInteractiveButton != null) {
-            focusedInteractiveButton.dispatchEvent(FocusEvent.builder()
-                    .type(FocusEvent.FOCUS_OUT)
+        if (focusedInteractiveContainer != null) {
+            focusedInteractiveContainer.dispatchEvent(InteractiveEvent.builder()
+                    .type(InteractiveEvent.FOCUS_OUT)
                     .build());
         }
 
-        focusedInteractiveButton = interactiveButtons.get(focusedInteractiveButtonIndex);
+        focusedInteractiveContainer = interactiveContainers.get(focusedInteractiveContainerIndex);
 
-        focusedInteractiveButton.dispatchEvent(FocusEvent.builder()
-                .type(FocusEvent.FOCUS_IN)
+        focusedInteractiveContainer.dispatchEvent(InteractiveEvent.builder()
+                .type(InteractiveEvent.FOCUS_IN)
                 .build());
     }
 
-    public InteractiveButton getFocused() {
-        return focusedInteractiveButton;
+    public InteractiveContainer getFocused() {
+        return focusedInteractiveContainer;
     }
 
     public void focusNext() {
-        if (interactiveButtons.size() == 0 || getTabbingEnabledCount() <= 1) return;
-        focusedInteractiveButtonIndex++;
-        if (focusedInteractiveButtonIndex >= interactiveButtons.size()) focusedInteractiveButtonIndex = 0;
+        System.out.println("focusNext " + interactiveContainers.size() + " " + getTabbingEnabledCount());
 
-        if (focusedInteractiveButton != null) {
-            dispatch(focusedInteractiveButton, OUT, 0, 0, false, false, false, false, 0);
+        if (interactiveContainers.size() == 0 || getTabbingEnabledCount() <= 1) return;
+        focusedInteractiveContainerIndex++;
+        if (focusedInteractiveContainerIndex >= interactiveContainers.size()) focusedInteractiveContainerIndex = 0;
+
+        if (focusedInteractiveContainer != null) {
+            dispatch(focusedInteractiveContainer, OUT, 0, 0, false, false, false, false, 0);
         }
 
-        setFocused(focusedInteractiveButtonIndex);
+        setFocused(focusedInteractiveContainerIndex);
 
-        if(!getFocused().isTabbingEnabled()) focusNext();
+        if (!getFocused().isTabbingEnabled()) focusNext();
     }
 
     public void focusPrevious() {
-        if (interactiveButtons.size() == 0 || getTabbingEnabledCount() <= 1) return;
-        focusedInteractiveButtonIndex--;
-        if (focusedInteractiveButtonIndex < 0) focusedInteractiveButtonIndex = interactiveButtons.size() - 1;
+        if (interactiveContainers.size() == 0 || getTabbingEnabledCount() <= 1) return;
+        focusedInteractiveContainerIndex--;
+        if (focusedInteractiveContainerIndex < 0) focusedInteractiveContainerIndex = interactiveContainers.size() - 1;
 
-        if (focusedInteractiveButton != null) {
-            dispatch(focusedInteractiveButton, OUT, 0, 0, false, false, false, false, 0);
+        if (focusedInteractiveContainer != null) {
+            dispatch(focusedInteractiveContainer, OUT, 0, 0, false, false, false, false, 0);
         }
 
-        setFocused(focusedInteractiveButtonIndex);
+        setFocused(focusedInteractiveContainerIndex);
 
-        if(!getFocused().isTabbingEnabled()) focusPrevious();
+        if (!getFocused().isTabbingEnabled()) focusPrevious();
     }
 
     public int getTabbingEnabledCount() {
         int count = 0;
-        for(InteractiveButton interactiveButton : interactiveButtons) {
-            if(interactiveButton.isTabbingEnabled()) count++;
+        for (InteractiveContainer interactiveContainer : interactiveContainers) {
+            if (interactiveContainer.isTabbingEnabled()) count++;
         }
         return count;
     }
@@ -375,8 +412,8 @@ public class InteractiveProcessor {
                         });
                     }
                     case KeyCode.ENTER -> {
-                        if (focusedInteractiveButton != null) {
-                            dispatch(focusedInteractiveButton, DOWN, 0, 0, true, false, false, false, 0);
+                        if (focusedInteractiveContainer != null) {
+                            dispatch(focusedInteractiveContainer, DOWN, 0, 0, true, false, false, false, 0);
                         }
                     }
                     case KeyCode.ESCAPE -> {
@@ -394,8 +431,8 @@ public class InteractiveProcessor {
                         stage().removeEventListener(this, Event.EACH_FRAME);
                     }
                     case KeyCode.ENTER -> {
-                        if (focusedInteractiveButton != null) {
-                            dispatch(focusedInteractiveButton, UP, 0, 0, true, false, false, false, 0);
+                        if (focusedInteractiveContainer != null) {
+                            dispatch(focusedInteractiveContainer, UP, 0, 0, true, false, false, false, 0);
                         }
                     }
                 }
@@ -408,23 +445,23 @@ public class InteractiveProcessor {
     }
 
     public void resetFocus() {
-        if (focusedInteractiveButton != null) {
-            focusedInteractiveButton.dispatchEvent(FocusEvent.builder()
-                    .type(FocusEvent.FOCUS_OUT)
+        if (focusedInteractiveContainer != null) {
+            focusedInteractiveContainer.dispatchEvent(InteractiveEvent.builder()
+                    .type(InteractiveEvent.FOCUS_OUT)
                     .build());
 
-            dispatch(focusedInteractiveButton, OUT, 0, 0, false, false, false, false, 0);
+            dispatch(focusedInteractiveContainer, OUT, 0, 0, false, false, false, false, 0);
         }
 
-        focusedInteractiveButtonIndex = -1;
-        focusedInteractiveButton = null;
+        focusedInteractiveContainerIndex = -1;
+        focusedInteractiveContainer = null;
     }
 
     public boolean isTabbingEnabled() {
         return tabbingEnabled;
     }
 
-    private static void dispatch(InteractiveButton interactiveButton,
+    private static void dispatch(InteractiveContainer interactiveContainer,
                                  String type,
                                  int x,
                                  int y,
@@ -434,7 +471,7 @@ public class InteractiveProcessor {
                                  boolean middleMouseButton,
                                  int mouseButton) {
 
-        interactiveButton.dispatchEvent(InteractiveButtonEvent.builder()
+        interactiveContainer.dispatchEvent(InteractiveEvent.builder()
                 .type(type)
                 .x(x)
                 .y(y)
@@ -449,6 +486,6 @@ public class InteractiveProcessor {
 
     @Override
     public String toString() {
-        return "InteractiveProcessor{interactiveButtons.size=" + interactiveButtons.size() + '}';
+        return "InteractiveProcessor{interactiveContainers.size=" + interactiveContainers.size() + '}';
     }
 }

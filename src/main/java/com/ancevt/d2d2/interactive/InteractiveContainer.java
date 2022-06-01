@@ -19,9 +19,7 @@ package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 
-import java.util.List;
-
-public class InteractiveButton extends DisplayObjectContainer {
+public class InteractiveContainer extends DisplayObjectContainer {
 
     private static final float DEFAULT_WIDTH = 1;
     private static final float DEFAULT_HEIGHT = 1;
@@ -31,42 +29,24 @@ public class InteractiveButton extends DisplayObjectContainer {
     private boolean dragging;
     private boolean hovering;
     private boolean tabbingEnabled;
-    private List<InteractiveButton> tabbingGroup;
 
-    public InteractiveButton(float width, float height) {
+    public InteractiveContainer(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
         setName("_" + getClass().getSimpleName() + displayObjectId());
-        tabbingGroup = InteractiveProcessor.INSTANCE.getDefaultTabbingGroup();
     }
 
-    public InteractiveButton(float width, float height, boolean enabled) {
+    public InteractiveContainer(float width, float height, boolean enabled) {
         this(width, height);
         setEnabled(enabled);
     }
 
-    public InteractiveButton() {
+    public InteractiveContainer() {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    public InteractiveButton(boolean enabled) {
+    public InteractiveContainer(boolean enabled) {
         this();
         setEnabled(enabled);
-    }
-
-    public void setDefaultTabbingGroup() {
-        tabbingGroup = InteractiveProcessor.INSTANCE.getDefaultTabbingGroup();
-    }
-
-    public void setTabbingGroup(List<InteractiveButton> tabbingGroup) {
-        if (tabbingGroup == null) {
-            setDefaultTabbingGroup();
-        } else {
-            this.tabbingGroup = tabbingGroup;
-        }
-    }
-
-    public List<InteractiveButton> getTabbingGroup() {
-        return tabbingGroup;
     }
 
     public void setTabbingEnabled(boolean tabbingEnabled) {
@@ -133,9 +113,9 @@ public class InteractiveButton extends DisplayObjectContainer {
         this.enabled = enabled;
 
         if (enabled)
-            InteractiveProcessor.INSTANCE.registerInteractiveButton(this);
+            InteractiveProcessor.getInstance().registerInteractiveContainer(this);
         else
-            InteractiveProcessor.INSTANCE.unregisterInteractiveButton(this);
+            InteractiveProcessor.getInstance().unregisterInteractiveContainer(this);
     }
 
     public boolean isDragging() {
@@ -155,22 +135,22 @@ public class InteractiveButton extends DisplayObjectContainer {
     }
 
     public void focus() {
-        InteractiveProcessor.INSTANCE.setFocused(this);
+        InteractiveProcessor.getInstance().setFocused(this);
     }
 
     public boolean isFocused() {
-        return InteractiveProcessor.INSTANCE.getFocused() == this;
+        return InteractiveProcessor.getInstance().getFocused() == this;
     }
 
     public static void setGlobalTabbingEnabled(boolean tabbingEnabled) {
-        InteractiveProcessor.INSTANCE.setTabbingEnabled(tabbingEnabled);
+        InteractiveProcessor.getInstance().setTabbingEnabled(tabbingEnabled);
     }
 
     public static boolean isGlobalTabbingEnabled() {
-        return InteractiveProcessor.INSTANCE.isTabbingEnabled();
+        return InteractiveProcessor.getInstance().isTabbingEnabled();
     }
 
     public static void resetFocus() {
-        InteractiveProcessor.INSTANCE.resetFocus();
+        InteractiveProcessor.getInstance().resetFocus();
     }
 }

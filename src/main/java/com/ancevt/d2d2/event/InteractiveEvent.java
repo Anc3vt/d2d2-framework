@@ -25,13 +25,18 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class InteractiveButtonEvent extends Event {
+public class InteractiveEvent extends Event {
 
-    public static final String DOWN  = "interactiveButtonDown";
-    public static final String UP    = "interactiveButtonUp";
-    public static final String DRAG  = "interactiveButtonDrag";
-    public static final String HOVER = "interactiveButtonHover";
-    public static final String OUT   = "interactiveButtonOut";
+    public static final String DOWN  = "interactiveDown";
+    public static final String UP    = "interactiveUp";
+    public static final String DRAG  = "interactiveDrag";
+    public static final String HOVER = "interactiveHover";
+    public static final String OUT   = "interactiveOut";
+    public static final String FOCUS_IN = "interactiveFocusIn";
+    public static final String FOCUS_OUT = "interactiveFocusOut";
+    public static final String KEY_DOWN = "interactiveKeyDown";
+    public static final String KEY_UP = "interactiveKeyUp";
+    public static final String KEY_TYPE = "interactiveKeyType";
 
     private final int x;
     private final int y;
@@ -40,4 +45,10 @@ public class InteractiveButtonEvent extends Event {
     private final boolean rightMouseButton;
     private final boolean middleMouseButton;
     private final boolean onArea;
+    private final int keyCode;
+    private final char keyChar;
+    private final boolean alt;
+    private final boolean control;
+    private final boolean shift;
+    private final String keyType;
 }

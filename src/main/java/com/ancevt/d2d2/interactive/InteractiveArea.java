@@ -66,4 +66,14 @@ class InteractiveArea {
     public void setHeight(float height) {
         this.height = height;
     }
+
+    @Override
+    public String toString() {
+        return "InteractiveArea{" +
+                "x=" + x +
+                ", y=" + y +
+                ", width=" + width +
+                ", height=" + height +
+                '}';
+    }
 }

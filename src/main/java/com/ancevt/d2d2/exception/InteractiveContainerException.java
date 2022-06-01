@@ -15,17 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.event;
+package com.ancevt.d2d2.exception;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.SuperBuilder;
+public class InteractiveContainerException extends RuntimeException{
+    public InteractiveContainerException() {
+    }
 
-@Data
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-public class FocusEvent extends Event {
+    public InteractiveContainerException(String message) {
+        super(message);
+    }
 
-    public static final String FOCUS_IN = "interactiveButtonFocusIn";
-    public static final String FOCUS_OUT = "interactiveButtonFocusOut";
+    public InteractiveContainerException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public InteractiveContainerException(Throwable cause) {
+        super(cause);
+    }
+
+    public InteractiveContainerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }
