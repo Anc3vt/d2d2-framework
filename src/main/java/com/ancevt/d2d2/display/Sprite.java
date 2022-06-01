@@ -19,7 +19,6 @@ package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.texture.Texture;
-import com.ancevt.d2d2.display.texture.TextureManager;
 
 public class Sprite extends DisplayObject implements ISprite {
 
@@ -31,7 +30,6 @@ public class Sprite extends DisplayObject implements ISprite {
     private Texture texture;
     private double vertexBleedingFix = 0.05d;
     private double textureBleedingFix = 0.00005d;
-    private ShaderProgram shaderProgram;
 
     public Sprite() {
         setColor(DEFAULT_COLOR);
@@ -157,21 +155,6 @@ public class Sprite extends DisplayObject implements ISprite {
     @Override
     public double getTextureBleedingFix() {
         return textureBleedingFix;
-    }
-
-    @Override
-    public TextureManager textureManager() {
-        return D2D2.getTextureManager();
-    }
-
-    @Override
-    public void setShaderProgram(ShaderProgram shaderProgram) {
-        this.shaderProgram = shaderProgram;
-    }
-
-    @Override
-    public ShaderProgram getShaderProgram() {
-        return shaderProgram;
     }
 
     @Override

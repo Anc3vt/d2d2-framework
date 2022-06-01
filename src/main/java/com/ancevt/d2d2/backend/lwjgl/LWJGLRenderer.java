@@ -24,7 +24,6 @@ import com.ancevt.d2d2.display.IDisplayObjectContainer;
 import com.ancevt.d2d2.display.IFramedDisplayObject;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.ISprite;
-import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapCharInfo;
 import com.ancevt.d2d2.display.text.BitmapFont;
@@ -166,8 +165,7 @@ public class LWJGLRenderer implements IRenderer {
                 renderDisplayObject(container.getChild(i), level + 1, x + toX, y + toY, scX, scY, 0, a);
             }
 
-        } else if (displayObject instanceof Sprite) {
-            Sprite s = (Sprite) displayObject;
+        } else if (displayObject instanceof ISprite s) {
             renderSprite(s, a, scX, scY);
         } else if (displayObject instanceof BitmapText) {
             BitmapText btx = (BitmapText) displayObject;

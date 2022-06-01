@@ -17,8 +17,6 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.texture.TextureManager;
 import com.ancevt.d2d2.event.IEventDispatcher;
 
 public interface IDisplayObject extends IEventDispatcher {
@@ -108,8 +106,4 @@ public interface IDisplayObject extends IEventDispatcher {
     String toString();
 
     default void onEachFrame(){};
-
-    default TextureManager textureManager() {
-        return D2D2.getTextureManager();
-    }
 }
