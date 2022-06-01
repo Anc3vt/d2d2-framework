@@ -17,9 +17,10 @@
  */
 package com.ancevt.d2d2.interactive;
 
+import com.ancevt.d2d2.common.IDisposable;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 
-public class InteractiveContainer extends DisplayObjectContainer implements Interactive {
+public class InteractiveContainer extends DisplayObjectContainer implements Interactive, IDisposable {
 
     private static final float DEFAULT_WIDTH = 1;
     private static final float DEFAULT_HEIGHT = 1;
@@ -29,6 +30,7 @@ public class InteractiveContainer extends DisplayObjectContainer implements Inte
     private boolean dragging;
     private boolean hovering;
     private boolean tabbingEnabled;
+    private boolean disposed;
 
     public InteractiveContainer(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
@@ -124,6 +126,18 @@ public class InteractiveContainer extends DisplayObjectContainer implements Inte
     }
 
     @Override
+    public void dispose() {
+        this.disposed = true;
+        InteractiveManager.getInstance().unregisterInteractive(this);
+        removeFromParent();
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return disposed;
+    }
+
+    @Override
     public boolean isDragging() {
         return dragging;
     }
@@ -145,7 +159,7 @@ public class InteractiveContainer extends DisplayObjectContainer implements Inte
 
     @Override
     public void focus() {
-        InteractiveManager.getInstance().setFocused(this);
+        InteractiveManager.getInstance().setFocused(this, false);
     }
 
     @Override

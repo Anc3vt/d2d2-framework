@@ -160,7 +160,7 @@ public class InteractiveManager {
             }
 
             if (pressedInteractive != null) {
-                setFocused(pressedInteractive);
+                setFocused(pressedInteractive, true);
 
                 dispatch(pressedInteractive,
                         DOWN,
@@ -298,7 +298,7 @@ public class InteractiveManager {
         }
     }
 
-    public void setFocused(Interactive interactive) {
+    public void setFocused(Interactive interactive, boolean byMouseDown) {
         if (focusedInteractive == interactive) return;
 
 
@@ -317,6 +317,7 @@ public class InteractiveManager {
 
         focusedInteractive.dispatchEvent(InteractiveEvent.builder()
                 .type(InteractiveEvent.FOCUS_IN)
+                .byMouseDown(byMouseDown)
                 .build());
     }
 

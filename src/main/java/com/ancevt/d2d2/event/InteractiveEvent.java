@@ -51,4 +51,5 @@ public class InteractiveEvent extends Event {
     private final boolean control;
     private final boolean shift;
     private final String keyType;
+    private final boolean byMouseDown;
 }

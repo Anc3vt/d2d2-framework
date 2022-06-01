@@ -29,7 +29,7 @@ import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 import com.ancevt.d2d2.interactive.InteractiveManager;
 
-public class Tests_InteractiveButtonsFocus {
+public class Tests_InteractiveContainersFocus {
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));

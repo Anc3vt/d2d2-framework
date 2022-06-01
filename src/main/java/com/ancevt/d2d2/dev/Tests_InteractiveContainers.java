@@ -30,10 +30,10 @@ import com.ancevt.d2d2.interactive.InteractiveContainer;
 
 import java.util.Objects;
 
-public class Tests_InteractiveButtons {
+public class Tests_InteractiveContainers {
 
     public static void main(String[] args) {
-        D2D2.init(new LWJGLBackend(800, 600, Tests_InteractiveButtons.class.getName() + "(floating)"));
+        D2D2.init(new LWJGLBackend(800, 600, Tests_InteractiveContainers.class.getName() + "(floating)"));
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {

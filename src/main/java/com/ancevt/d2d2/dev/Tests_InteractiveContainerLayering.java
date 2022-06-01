@@ -29,23 +29,19 @@ import static com.ancevt.d2d2.D2D2.init;
 import static com.ancevt.d2d2.D2D2.loop;
 import static com.ancevt.d2d2.D2D2.stage;
 
-public class Tests_InteractiveButtonInInteractiveButton {
+public class Tests_InteractiveContainerLayering {
 
     public static void main(String[] args) {
         init(new LWJGLBackend(800, 600, "(floating)"));
 
-        stage().setBackgroundColor(Color.of(0x000011));
-
-        Button outer = new Button(200, 200);
-        stage().add(outer, 200, 200);
-
-        Button inner = new Button(100, 100);
-        stage().add(inner, 250, 250);
-
-        Button innerInner = new Button(50, 50);
-        inner.add(innerInner, 25, 25);
+        stage().setBackgroundColor(Color.of(0x001122));
 
 
+        for (int i = 0; i < 2500; i++) {
+            Button button = new Button();
+            button.setName("__" + i);
+            stage().add(button, (float) (Math.random() * 800), (float) (Math.random() * 600));
+        }
 
         stage().add(new FpsMeter());
 
@@ -56,11 +52,11 @@ public class Tests_InteractiveButtonInInteractiveButton {
 
         private final BorderedRect bg = new BorderedRect();
 
-        private Button(float width, float height) {
+        private Button() {
             setEnabled(true);
             bg.setFillColor(Color.GRAY);
             bg.setBorderColor(Color.BLACK);
-            setSize(width, height);
+            setSize(100, 100);
             add(bg);
 
             addEventListener(this, InteractiveEvent.DOWN, this::this_down);
@@ -81,7 +77,6 @@ public class Tests_InteractiveButtonInInteractiveButton {
 
         private void this_down(Event event) {
             bg.setFillColor(Color.YELLOW);
-            System.out.println(getName() + " DOWN");
         }
 
         private void this_out(Event event) {
