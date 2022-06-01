@@ -19,6 +19,8 @@ package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.common.IDisposable;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.exception.InteractiveException;
 
 public class InteractiveContainer extends DisplayObjectContainer implements Interactive, IDisposable {
 
@@ -130,6 +132,9 @@ public class InteractiveContainer extends DisplayObjectContainer implements Inte
         this.disposed = true;
         InteractiveManager.getInstance().unregisterInteractive(this);
         removeFromParent();
+        addEventListener(Event.ADD, event -> {
+            throw new InteractiveException("Unable to add disposed interactive display object %s".formatted(this.toString()));
+        });
     }
 
     @Override
