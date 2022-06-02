@@ -20,7 +20,7 @@ package com.ancevt.d2d2.dev;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.DebugGrid;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
@@ -44,7 +44,7 @@ public class Tests_Input {
         stage.addEventListener(InputEvent.MOUSE_MOVE, Tests_Input::mouseMove);
         stage.addEventListener(InputEvent.MOUSE_WHEEL, Tests_Input::mouseWheel);
 
-        DisplayObjectContainer container = new DisplayObjectContainer();
+        Container container = new Container();
         Sprite sprite = new Sprite("satellite");
 
         container.add(sprite, -sprite.getWidth() / 2, -sprite.getHeight() / 2);

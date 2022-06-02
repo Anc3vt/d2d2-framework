@@ -18,9 +18,9 @@
 package com.ancevt.d2d2.common;
 
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 
-public class BorderedRect extends DisplayObjectContainer {
+public class BorderedRect extends Container {
 	private static final Color DEFAULT_FILL_COLOR = Color.WHITE;
 	private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
 

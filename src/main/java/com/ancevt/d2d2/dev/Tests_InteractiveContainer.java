@@ -52,7 +52,7 @@ public class Tests_InteractiveContainer {
             addEventListener(this, InteractiveEvent.HOVER, this::this_hover);
             addEventListener(this, InteractiveEvent.OUT, this::this_out);
 
-            InteractiveContainer tb = new InteractiveContainer(50, 50, true);
+            InteractiveContainer tb = new InteractiveContainer(50, 50);
             tb.addEventListener(InteractiveEvent.DOWN, event -> {
                 System.out.println("SMALL BUTTON PRESSED");
 

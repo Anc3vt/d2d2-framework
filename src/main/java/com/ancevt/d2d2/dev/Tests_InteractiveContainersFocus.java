@@ -21,8 +21,8 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
-import com.ancevt.d2d2.display.IDisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -38,14 +38,14 @@ public class Tests_InteractiveContainersFocus {
 
         stage.setBackgroundColor(Color.BLACK);
 
-        IDisplayObjectContainer doc1 = new DisplayObjectContainer();
+        IContainer doc1 = new Container();
         for (int i = 0; i < 10; i++) {
             Button button = new Button(100, 50);
             button.setName("button_1_" + i);
             doc1.add(button, 0, i * 55);
         }
 
-        IDisplayObjectContainer doc2 = new DisplayObjectContainer();
+        IContainer doc2 = new Container();
         for (int i = 0; i < 10; i++) {
             Button button = new Button(100, 50);
             button.setName("button_2_" + i);

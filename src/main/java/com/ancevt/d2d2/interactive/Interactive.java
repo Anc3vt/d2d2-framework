@@ -17,9 +17,10 @@
  */
 package com.ancevt.d2d2.interactive;
 
+import com.ancevt.d2d2.common.IDisposable;
 import com.ancevt.d2d2.display.IDisplayObject;
 
-public interface Interactive extends IDisplayObject {
+public interface Interactive extends IDisplayObject, IDisposable {
 
     void setTabbingEnabled(boolean tabbingEnabled);
 

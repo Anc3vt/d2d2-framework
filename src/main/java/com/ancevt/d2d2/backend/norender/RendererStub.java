@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.backend.norender;
 
 import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.display.IDisplayObjectContainer;
+import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IFramedDisplayObject;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
@@ -56,8 +56,8 @@ public class RendererStub implements IRenderer {
         zOrderCounter++;
         displayObject.setAbsoluteZOrderIndex(zOrderCounter);
 
-        if (displayObject instanceof IDisplayObjectContainer) {
-            IDisplayObjectContainer container = (IDisplayObjectContainer) displayObject;
+        if (displayObject instanceof IContainer) {
+            IContainer container = (IContainer) displayObject;
             for (int i = 0; i < container.getChildCount(); i++) {
                 renderDisplayObject(container.getChild(i));
             }

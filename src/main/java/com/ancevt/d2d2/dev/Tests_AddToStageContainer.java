@@ -21,7 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
@@ -31,14 +31,14 @@ public class Tests_AddToStageContainer {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         stage.setBackgroundColor(Color.DARK_GRAY);
 
-        DisplayObjectContainer container = new DisplayObjectContainer();
+        Container container = new Container();
 
         Sprite sprite = new Sprite("satellite") {{
             addEventListener(Event.ADD_TO_STAGE, e -> System.out.println("ADD " + e));
             addEventListener(Event.REMOVE_FROM_STAGE, e -> System.out.println("REMOVE " + e));
         }};
 
-        DisplayObjectContainer almostRootContainer = new DisplayObjectContainer();
+        Container almostRootContainer = new Container();
 
         almostRootContainer.add(container);
         container.add(sprite);
