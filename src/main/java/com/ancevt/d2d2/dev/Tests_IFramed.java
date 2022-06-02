@@ -19,7 +19,7 @@ package com.ancevt.d2d2.dev;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.display.FramedDisplayObjectContainer;
+import com.ancevt.d2d2.display.FramedContainer;
 import com.ancevt.d2d2.display.FramedSprite;
 import com.ancevt.d2d2.display.IFramedDisplayObject;
 import com.ancevt.d2d2.display.ISprite;
@@ -48,7 +48,7 @@ public class Tests_IFramed {
                 new Sprite("frame11"),
         };
 
-        IFramedDisplayObject framedDisplayObject = new FramedDisplayObjectContainer(frames, true);
+        IFramedDisplayObject framedDisplayObject = new FramedContainer(frames, true);
         framedDisplayObject.setLoop(true);
         framedDisplayObject.play();
         stage.add(framedDisplayObject);

@@ -17,71 +17,77 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 
-public class Tests_InteractiveButton {
+import static com.ancevt.d2d2.D2D2.init;
+import static com.ancevt.d2d2.D2D2.loop;
+import static com.ancevt.d2d2.D2D2.stage;
+
+public class Tests_InteractiveContainerInInteractiveContainer {
 
     public static void main(String[] args) {
-        D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        Button button = new Button();
-        button.setName("___");
-        D2D2.stage().add(button, 0, 0);
-        D2D2.stage().add(new FpsMeter());
-        D2D2.loop();
+        init(new LWJGLBackend(800, 600, "(floating)"));
+
+        stage().setBackgroundColor(Color.of(0x000011));
+
+        Button outer = new Button(200, 200);
+        stage().add(outer, 200, 200);
+
+        Button inner = new Button(100, 100);
+        stage().add(inner, 250, 250);
+
+        Button innerInner = new Button(50, 50);
+        inner.add(innerInner, 25, 25);
+
+        stage().add(new FpsMeter());
+
+        loop();
     }
 
     private static class Button extends InteractiveContainer {
 
-        private final PlainRect bg = new PlainRect();
+        private final BorderedRect bg = new BorderedRect();
 
-        private Button() {
+        private Button(float width, float height) {
             setEnabled(true);
-            bg.setColor(Color.GRAY);
-            setSize(100, 100);
+            bg.setFillColor(Color.GRAY);
+            bg.setBorderColor(Color.BLACK);
+            setSize(width, height);
             add(bg);
 
             addEventListener(this, InteractiveEvent.DOWN, this::this_down);
             addEventListener(this, InteractiveEvent.UP, this::this_up);
             addEventListener(this, InteractiveEvent.HOVER, this::this_hover);
             addEventListener(this, InteractiveEvent.OUT, this::this_out);
+            addEventListener(this, InteractiveEvent.DRAG, this::this_drag);
+        }
 
-            InteractiveContainer tb = new InteractiveContainer(50, 50, true);
-            tb.addEventListener(InteractiveEvent.DOWN, event -> {
-                System.out.println("SMALL BUTTON PRESSED");
-
-                Button button = new Button();
-                button.addEventListener(InteractiveEvent.DOWN, event1 -> {
-                    var e = (InteractiveEvent) event1;
-                    button.bg.setColor(Color.YELLOW);
-
-                });
-                add(button, 40, 40);
-
-            });
-            add(tb);
+        private void this_drag(Event event) {
+            bg.setFillColor(Color.BLUE);
         }
 
         private void this_up(Event event) {
-            bg.setColor(Color.GRAY);
+            var e = (InteractiveEvent) event;
+            bg.setFillColor(e.isOnArea() ? Color.GREEN : Color.GRAY);
         }
 
         private void this_down(Event event) {
-            bg.setColor(Color.YELLOW);
+            bg.setFillColor(Color.YELLOW);
+            System.out.println(getName() + " DOWN");
         }
 
         private void this_out(Event event) {
-            bg.setColor(Color.GRAY);
+            bg.setFillColor(Color.GRAY);
         }
 
         private void this_hover(Event event) {
-            bg.setColor(Color.GREEN);
+            bg.setFillColor(Color.GREEN);
         }
 
         @Override

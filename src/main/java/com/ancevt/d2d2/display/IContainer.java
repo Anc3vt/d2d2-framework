@@ -19,7 +19,7 @@ package com.ancevt.d2d2.display;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface IDisplayObjectContainer extends IDisplayObject {
+public interface IContainer extends IDisplayObject {
 
 	void add(@NotNull IDisplayObject child);
 

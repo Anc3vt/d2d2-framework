@@ -20,7 +20,7 @@ package com.ancevt.d2d2.dev;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
@@ -38,7 +38,7 @@ public class Tests {
         Texture texture = textureAtlas.createTexture();
 
         for (int i = 0; i < 1; i++) {
-            DisplayObjectContainer container = new DisplayObjectContainer();
+            Container container = new Container();
 
             Sprite sprite = new Sprite(texture);
             sprite.setColor(Color.createRandomColor());

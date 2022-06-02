@@ -20,16 +20,16 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
-import com.ancevt.d2d2.display.IDisplayObjectContainer;
+import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DebugGrid extends DisplayObjectContainer implements IColored {
+public class DebugGrid extends Container implements IColored {
 
     public static final int SIZE = 16;
 
@@ -103,7 +103,7 @@ public class DebugGrid extends DisplayObjectContainer implements IColored {
         }
 
         private void eachFrame(Event event) {
-            IDisplayObjectContainer parent = getParent();
+            IContainer parent = getParent();
             switch (orientation) {
                 case HORIZONTAL:
                     setScaleY(1.0f / parent.getAbsoluteScaleY());

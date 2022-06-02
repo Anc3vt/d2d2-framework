@@ -23,8 +23,8 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
-import com.ancevt.d2d2.display.IDisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
@@ -45,7 +45,7 @@ import java.util.function.Supplier;
 
 import static com.ancevt.d2d2.input.KeyCode.isShift;
 
-public class DebugPanel extends DisplayObjectContainer {
+public class DebugPanel extends Container {
 
     private static final Map<String, DebugPanel> debugPanels = new HashMap<>();
     private static boolean enabled;
@@ -85,7 +85,7 @@ public class DebugPanel extends DisplayObjectContainer {
         text.setBounds(width, height);
         add(text, 1, 1);
 
-        interactiveButton = new InteractiveContainer(width, height, true);
+        interactiveButton = new InteractiveContainer(width, height);
         interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
         interactiveButton.addEventListener(InteractiveEvent.DRAG, this::interactiveButton_drag);
 
@@ -146,7 +146,7 @@ public class DebugPanel extends DisplayObjectContainer {
         oldX = (int) (e.getX() + getX());
         oldY = (int) (e.getY() + getY());
 
-        IDisplayObjectContainer parent = getParent();
+        IContainer parent = getParent();
         parent.remove(this);
         parent.add(this);
 
@@ -309,15 +309,13 @@ public class DebugPanel extends DisplayObjectContainer {
         public Button(Object text) {
             super(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK, Color.WHITE);
             setBorderWidth(0.2f);
-            interactiveButton = new InteractiveContainer((int) DEFAULT_WIDTH, (int) DEFAULT_HEIGHT, true);
+            interactiveButton = new InteractiveContainer(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             BitmapText bitmapText = new BitmapText(String.valueOf(text));
 
             add(interactiveButton);
             add(bitmapText, 2, -2);
 
             interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
-
-            addEventListener(this, Event.REMOVE_FROM_STAGE, this::this_removeFromStage);
         }
 
         private void interactiveButton_down(Event event) {
@@ -326,10 +324,6 @@ public class DebugPanel extends DisplayObjectContainer {
             }
         }
 
-        private void this_removeFromStage(Event event) {
-            removeEventListener(this, Event.REMOVE_FROM_STAGE);
-            interactiveButton.setEnabled(false);
-        }
 
     }
 

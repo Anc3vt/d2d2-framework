@@ -21,7 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventListener;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -30,10 +30,10 @@ import com.ancevt.d2d2.interactive.InteractiveContainer;
 
 import java.util.Objects;
 
-public class Tests_InteractiveButtons {
+public class Tests_InteractiveContainers {
 
     public static void main(String[] args) {
-        D2D2.init(new LWJGLBackend(800, 600, Tests_InteractiveButtons.class.getName() + "(floating)"));
+        D2D2.init(new LWJGLBackend(800, 600, Tests_InteractiveContainers.class.getName() + "(floating)"));
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -48,7 +48,7 @@ public class Tests_InteractiveButtons {
     }
 
 
-    private static class Button extends DisplayObjectContainer implements EventListener {
+    private static class Button extends Container implements EventListener {
         private final PlainRect plainRect;
 
         public Button(int w, int h) {

@@ -27,7 +27,7 @@ public interface IDisplayObject extends IEventDispatcher {
 
     void setName(String value);
 
-    IDisplayObjectContainer getParent();
+    IContainer getParent();
 
     boolean hasParent();
 

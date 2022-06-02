@@ -20,7 +20,7 @@ package com.ancevt.d2d2.backend.lwjgl;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.display.IDisplayObjectContainer;
+import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IFramedDisplayObject;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.ISprite;
@@ -159,8 +159,8 @@ public class LWJGLRenderer implements IRenderer {
         GL20.glTranslatef(x, y, 0);
         GL20.glRotatef(r, 0, 0, 1);
 
-        if (displayObject instanceof IDisplayObjectContainer) {
-            IDisplayObjectContainer container = (IDisplayObjectContainer) displayObject;
+        if (displayObject instanceof IContainer) {
+            IContainer container = (IContainer) displayObject;
             for (int i = 0; i < container.getChildCount(); i++) {
                 renderDisplayObject(container.getChild(i), level + 1, x + toX, y + toY, scX, scY, 0, a);
             }

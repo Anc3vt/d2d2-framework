@@ -160,7 +160,7 @@ public class InteractiveManager {
             }
 
             if (pressedInteractive != null) {
-                setFocused(pressedInteractive);
+                setFocused(pressedInteractive, true);
 
                 dispatch(pressedInteractive,
                         DOWN,
@@ -298,7 +298,7 @@ public class InteractiveManager {
         }
     }
 
-    public void setFocused(Interactive interactive) {
+    public void setFocused(Interactive interactive, boolean byMouseDown) {
         if (focusedInteractive == interactive) return;
 
 
@@ -317,6 +317,7 @@ public class InteractiveManager {
 
         focusedInteractive.dispatchEvent(InteractiveEvent.builder()
                 .type(InteractiveEvent.FOCUS_IN)
+                .byMouseDown(byMouseDown)
                 .build());
     }
 
@@ -350,9 +351,7 @@ public class InteractiveManager {
     }
 
     public void focusNext() {
-        System.out.println("focusNext " + interactiveList.size() + " " + getTabbingEnabledAndOnScreenAndVisibleCount());
-
-        if (interactiveList.size() == 0 || getTabbingEnabledAndOnScreenAndVisibleCount() <= 1) return;
+        if (interactiveList.size() == 0 || getTabbingEnabledAndOnScreenAndVisibleCount() == 0) return;
         focusedInteractiveIndex++;
         if (focusedInteractiveIndex >= interactiveList.size()) focusedInteractiveIndex = 0;
 
@@ -366,7 +365,7 @@ public class InteractiveManager {
     }
 
     public void focusPrevious() {
-        if (interactiveList.size() == 0 || getTabbingEnabledAndOnScreenAndVisibleCount() <= 1) return;
+        if (interactiveList.size() == 0 || getTabbingEnabledAndOnScreenAndVisibleCount() == 0) return;
         focusedInteractiveIndex--;
         if (focusedInteractiveIndex < 0) focusedInteractiveIndex = interactiveList.size() - 1;
 

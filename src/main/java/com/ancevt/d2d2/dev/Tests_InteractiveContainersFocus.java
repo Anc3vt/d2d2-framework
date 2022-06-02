@@ -17,46 +17,59 @@
  */
 package com.ancevt.d2d2.dev;
 
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.BorderedRect;
-import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.IContainer;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
+import com.ancevt.d2d2.interactive.InteractiveManager;
 
-import static com.ancevt.d2d2.D2D2.init;
-import static com.ancevt.d2d2.D2D2.loop;
-import static com.ancevt.d2d2.D2D2.stage;
-
-public class Tests_InteractiveButtonLayering {
+public class Tests_InteractiveContainersFocus {
 
     public static void main(String[] args) {
-        init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
 
-        stage().setBackgroundColor(Color.of(0x001122));
+        InteractiveManager.getInstance().setTabbingEnabled(true);
 
+        stage.setBackgroundColor(Color.BLACK);
 
-        for (int i = 0; i < 2500; i++) {
-            Button button = new Button();
-            button.setName("__" + i);
-            stage().add(button, (float) (Math.random() * 800), (float) (Math.random() * 600));
+        IContainer doc1 = new Container();
+        for (int i = 0; i < 10; i++) {
+            Button button = new Button(100, 50);
+            button.setName("button_1_" + i);
+            doc1.add(button, 0, i * 55);
         }
 
-        stage().add(new FpsMeter());
+        IContainer doc2 = new Container();
+        for (int i = 0; i < 10; i++) {
+            Button button = new Button(100, 50);
+            button.setName("button_2_" + i);
+            doc2.add(button, 0, i * 55);
 
-        loop();
+            if(i == 5) button.removeFromParent();
+        }
+
+        stage.add(doc1, 50, 50);
+        stage.add(doc2, 200, 50);
+
+        D2D2.loop();
     }
 
     private static class Button extends InteractiveContainer {
 
         private final BorderedRect bg = new BorderedRect();
 
-        private Button() {
+        private Button(float width, float height) {
             setEnabled(true);
+            setTabbingEnabled(true);
             bg.setFillColor(Color.GRAY);
             bg.setBorderColor(Color.BLACK);
-            setSize(100, 100);
+            setSize(width, height);
             add(bg);
 
             addEventListener(this, InteractiveEvent.DOWN, this::this_down);
@@ -64,6 +77,36 @@ public class Tests_InteractiveButtonLayering {
             addEventListener(this, InteractiveEvent.HOVER, this::this_hover);
             addEventListener(this, InteractiveEvent.OUT, this::this_out);
             addEventListener(this, InteractiveEvent.DRAG, this::this_drag);
+            addEventListener(this, InteractiveEvent.FOCUS_IN, this::this_focusIn);
+            addEventListener(this, InteractiveEvent.FOCUS_OUT, this::this_focusOut);
+            addEventListener(this, InteractiveEvent.KEY_DOWN, this::this_keyDown);
+            addEventListener(this, InteractiveEvent.KEY_UP, this::this_keyUp);
+            addEventListener(this, InteractiveEvent.KEY_TYPE, this::this_keyType);
+        }
+
+        private void this_keyDown(Event event) {
+            var e = (InteractiveEvent) event;
+            System.out.println(getName() + " KEY_DOWN " + e.getKeyCode());
+        }
+
+        private void this_keyUp(Event event) {
+            var e = (InteractiveEvent) event;
+            System.out.println(getName() + " KEY_UP " + e.getKeyCode());
+        }
+
+        private void this_keyType(Event event) {
+            var e = (InteractiveEvent) event;
+            System.out.println(getName() + " KEY_TYPE " + e.getKeyCode() + " " + e.getKeyType());
+        }
+
+        private void this_focusIn(Event event) {
+            bg.setBorderColor(Color.YELLOW);
+            System.out.println("FOCUS_IN " + getName());
+        }
+
+        private void this_focusOut(Event event) {
+            bg.setBorderColor(Color.BLACK);
+            System.out.println("FOCUS_OUT " + getName());
         }
 
         private void this_drag(Event event) {
