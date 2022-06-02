@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 
-public class Stage extends DisplayObjectContainer {
+public class Stage extends Container {
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
 
@@ -76,7 +76,7 @@ public class Stage extends DisplayObjectContainer {
     static void dispatchAddToStage(@NotNull IDisplayObject displayObject) {
         if (displayObject.isOnScreen()) {
             displayObject.dispatchEvent(EventPool.createEvent(Event.ADD_TO_STAGE));
-            if (displayObject instanceof IDisplayObjectContainer container) {
+            if (displayObject instanceof IContainer container) {
                 for (int i = 0; i < container.getChildCount(); i++) {
                     dispatchAddToStage(container.getChild(i));
                 }
@@ -88,7 +88,7 @@ public class Stage extends DisplayObjectContainer {
         if (displayObject.isOnScreen()) {
             displayObject.dispatchEvent(EventPool.createEvent(Event.REMOVE_FROM_STAGE));
 
-            if (displayObject instanceof IDisplayObjectContainer container) {
+            if (displayObject instanceof IContainer container) {
                 for (int i = 0; i < container.getChildCount(); i++) {
                     dispatchRemoveFromStage(container.getChild(i));
                 }

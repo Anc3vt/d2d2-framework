@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.event;
 
-import com.ancevt.d2d2.display.IDisplayObjectContainer;
+import com.ancevt.d2d2.display.IContainer;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -36,7 +36,7 @@ public class Event {
 
     String type;
     Object source;
-    private IDisplayObjectContainer parent;
+    private IContainer parent;
 
     public void setType(String type) {
         this.type = type;

@@ -17,69 +17,42 @@
  */
 package com.ancevt.d2d2.interactive;
 
-import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.exception.InteractiveException;
 
-public class InteractiveContainer extends Container implements Interactive {
-
-    private static final float DEFAULT_WIDTH = 1;
-    private static final float DEFAULT_HEIGHT = 1;
+public class InteractiveSprite extends Sprite implements Interactive {
 
     private final InteractiveArea interactiveArea;
+
+    private boolean tabbingEnabled;
     private boolean enabled;
     private boolean dragging;
     private boolean hovering;
-    private boolean tabbingEnabled;
     private boolean disposed;
 
-    public InteractiveContainer(float width, float height) {
-        interactiveArea = new InteractiveArea(0, 0, width, height);
+    public InteractiveSprite() {
+        interactiveArea = new InteractiveArea(0, 0, 0, 0);
+        setEnabled(true);
+        setDefaultName();
+    }
+
+    public InteractiveSprite(Texture texture) {
+        super(texture);
+        interactiveArea = new InteractiveArea(0, 0, texture.width(), texture.height());
+        setEnabled(true);
+        setDefaultName();
+    }
+
+    public InteractiveSprite(String textureKey) {
+        super(textureKey);
+        interactiveArea = new InteractiveArea(0, 0, getTexture().width(), getTexture().height());
+        setEnabled(true);
+    }
+
+    private void setDefaultName() {
         setName("_" + getClass().getSimpleName() + displayObjectId());
-        setEnabled(true);
-    }
-
-    public InteractiveContainer() {
-        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        setEnabled(true);
-    }
-
-    @Override
-    public void setTabbingEnabled(boolean tabbingEnabled) {
-        this.tabbingEnabled = tabbingEnabled;
-    }
-
-    @Override
-    public boolean isTabbingEnabled() {
-        return tabbingEnabled;
-    }
-
-    public void setSize(float width, float height) {
-        interactiveArea.setWidth(width);
-        interactiveArea.setHeight(height);
-    }
-
-    public void setWidth(float width) {
-        interactiveArea.setWidth(width);
-    }
-
-    public void setHeight(float height) {
-        interactiveArea.setHeight(height);
-    }
-
-    @Override
-    public InteractiveArea getInteractiveArea() {
-        return interactiveArea;
-    }
-
-    @Override
-    public float getWidth() {
-        return interactiveArea.getWidth();
-    }
-
-    @Override
-    public float getHeight() {
-        return interactiveArea.getHeight();
     }
 
     @Override
@@ -102,8 +75,36 @@ public class InteractiveContainer extends Container implements Interactive {
     }
 
     @Override
-    public boolean isEnabled() {
-        return enabled;
+    public void setTexture(Texture value) {
+        super.setTexture(value);
+        if (interactiveArea != null) {
+            interactiveArea.setWidth(getTexture().width());
+            interactiveArea.setHeight(getTexture().height());
+        }
+    }
+
+    @Override
+    public void setTexture(String textureKey) {
+        super.setTexture(textureKey);
+        if (interactiveArea != null) {
+            interactiveArea.setWidth(getTexture().width());
+            interactiveArea.setHeight(getTexture().height());
+        }
+    }
+
+    @Override
+    public void setTabbingEnabled(boolean tabbingEnabled) {
+        this.tabbingEnabled = tabbingEnabled;
+    }
+
+    @Override
+    public boolean isTabbingEnabled() {
+        return tabbingEnabled;
+    }
+
+    @Override
+    public InteractiveArea getInteractiveArea() {
+        return interactiveArea;
     }
 
     @Override
@@ -119,13 +120,18 @@ public class InteractiveContainer extends Container implements Interactive {
     }
 
     @Override
-    public boolean isDragging() {
-        return dragging;
+    public boolean isEnabled() {
+        return enabled;
     }
 
     @Override
     public void setDragging(boolean dragging) {
         this.dragging = dragging;
+    }
+
+    @Override
+    public boolean isDragging() {
+        return dragging;
     }
 
     @Override

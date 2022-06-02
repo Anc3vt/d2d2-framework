@@ -21,7 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventListener;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -48,7 +48,7 @@ public class Tests_InteractiveContainers {
     }
 
 
-    private static class Button extends DisplayObjectContainer implements EventListener {
+    private static class Button extends Container implements EventListener {
         private final PlainRect plainRect;
 
         public Button(int w, int h) {

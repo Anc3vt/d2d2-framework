@@ -25,14 +25,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class DisplayObjectContainer extends DisplayObject implements IDisplayObjectContainer {
+public class Container extends DisplayObject implements IContainer {
 
     static final int MAX_X = 1048576;
     static final int MAX_Y = 1048576;
 
     final List<IDisplayObject> children;
 
-    public DisplayObjectContainer() {
+    public Container() {
         children = new CopyOnWriteArrayList<>();
         setName("_" + getClass().getSimpleName() + displayObjectId());
     }
@@ -166,7 +166,7 @@ public class DisplayObjectContainer extends DisplayObject implements IDisplayObj
 
     @Override
     public String toString() {
-        return "DisplayObjectContainer{" +
+        return "Container{" +
                 getName() +
                 '}';
     }

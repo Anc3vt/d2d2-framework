@@ -27,7 +27,7 @@ class DisplayObjectAbsoluteComputer {
 	static float getAbsoluteX(@NotNull DisplayObject displayObject) {
 		float result = displayObject.getX();
 
-		IDisplayObjectContainer parent = displayObject.getParent();
+		IContainer parent = displayObject.getParent();
 
 		while (parent != null && !(parent instanceof Stage)) {
 			result *= parent.getScaleX();
@@ -41,7 +41,7 @@ class DisplayObjectAbsoluteComputer {
 	static float getAbsoluteY(final @NotNull DisplayObject displayObject) {
 		float result = displayObject.getY();
 
-		IDisplayObjectContainer parent = displayObject.getParent();
+		IContainer parent = displayObject.getParent();
 
 		while (parent != null && !(parent instanceof Stage)) {
 			result *= parent.getScaleY();
@@ -55,7 +55,7 @@ class DisplayObjectAbsoluteComputer {
 	static float getAbsoluteScaleX(final @NotNull DisplayObject displayObject) {
 		float result = displayObject.getScaleX();
 
-		IDisplayObjectContainer parent = displayObject.getParent();
+		IContainer parent = displayObject.getParent();
 
 		while (parent != null && !(parent instanceof Stage)) {
 			result *= parent.getScaleX();
@@ -68,7 +68,7 @@ class DisplayObjectAbsoluteComputer {
 	static float getAbsoluteScaleY(final @NotNull DisplayObject displayObject) {
 		float result = displayObject.getScaleY();
 
-		IDisplayObjectContainer parent = displayObject.getParent();
+		IContainer parent = displayObject.getParent();
 
 		while (parent != null && !(parent instanceof Stage)) {
 			result *= parent.getScaleY();
@@ -81,7 +81,7 @@ class DisplayObjectAbsoluteComputer {
 	static float getAbsoluteAlpha(final @NotNull DisplayObject displayObject) {
 		float result = displayObject.getAlpha();
 
-		IDisplayObjectContainer parent = displayObject.getParent();
+		IContainer parent = displayObject.getParent();
 
 		while (parent != null && !(parent instanceof Stage)) {
 			result *= parent.getAlpha();
@@ -94,7 +94,7 @@ class DisplayObjectAbsoluteComputer {
 	static float getAbsoluteRotation(final @NotNull DisplayObject displayObject) {
 		float result = displayObject.getRotation();
 
-		IDisplayObjectContainer parent = displayObject.getParent();
+		IContainer parent = displayObject.getParent();
 
 		while (parent != null && !(parent instanceof Stage)) {
 			result += parent.getRotation();

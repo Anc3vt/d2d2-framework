@@ -25,7 +25,7 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
 
     private final int displayObjectId;
     private String name;
-    private DisplayObjectContainer parent;
+    private Container parent;
 
     private float alpha;
 
@@ -73,12 +73,12 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
         return zOrderIndex;
     }
 
-    final void setParent(final DisplayObjectContainer container) {
+    final void setParent(final Container container) {
         this.parent = container;
     }
 
     @Override
-    public IDisplayObjectContainer getParent() {
+    public IContainer getParent() {
         return parent;
     }
 
@@ -141,7 +141,7 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
 
     @Override
     public boolean isOnScreen() {
-        IDisplayObjectContainer currentParent = getParent();
+        IContainer currentParent = getParent();
 
         while (currentParent != null) {
             if (currentParent instanceof Stage) return true;
