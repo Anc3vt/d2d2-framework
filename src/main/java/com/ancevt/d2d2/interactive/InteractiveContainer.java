@@ -36,12 +36,12 @@ public class InteractiveContainer extends Container implements Interactive {
     public InteractiveContainer(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
         setName("_" + getClass().getSimpleName() + displayObjectId());
-        setEnabled(true);
+        enabled = true;
+        InteractiveManager.getInstance().registerInteractive(this);
     }
 
     public InteractiveContainer() {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        setEnabled(true);
     }
 
     @Override
@@ -153,6 +153,7 @@ public class InteractiveContainer extends Container implements Interactive {
         this.disposed = true;
         InteractiveManager.getInstance().unregisterInteractive(this);
         removeFromParent();
+        removeAllEventListeners();
         addEventListener(Event.ADD, event -> {
             throw new InteractiveException("Unable to add disposed interactive display object %s".formatted(this.toString()));
         });

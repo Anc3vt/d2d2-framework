@@ -26,7 +26,7 @@ import com.ancevt.d2d2.display.texture.TextureManager;
 
 public class PlainRect extends Sprite {
 	
-	private static final String FILE_PATH = "1x1.png";
+	private static final String FILE_PATH = "d2d2-core-1x1.png";
 
 	private static Texture texture;
 

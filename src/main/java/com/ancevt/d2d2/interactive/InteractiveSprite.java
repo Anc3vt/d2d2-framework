@@ -34,21 +34,24 @@ public class InteractiveSprite extends Sprite implements Interactive {
 
     public InteractiveSprite() {
         interactiveArea = new InteractiveArea(0, 0, 0, 0);
-        setEnabled(true);
+        enabled = true;
+        InteractiveManager.getInstance().registerInteractive(this);
         setDefaultName();
     }
 
     public InteractiveSprite(Texture texture) {
         super(texture);
         interactiveArea = new InteractiveArea(0, 0, texture.width(), texture.height());
-        setEnabled(true);
+        enabled = true;
+        InteractiveManager.getInstance().registerInteractive(this);
         setDefaultName();
     }
 
     public InteractiveSprite(String textureKey) {
         super(textureKey);
         interactiveArea = new InteractiveArea(0, 0, getTexture().width(), getTexture().height());
-        setEnabled(true);
+        enabled = true;
+        InteractiveManager.getInstance().registerInteractive(this);
     }
 
     private void setDefaultName() {

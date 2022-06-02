@@ -89,6 +89,24 @@ public class InteractiveManager {
             }
         });
 
+        stage().addEventListener(InputEvent.MOUSE_WHEEL, event -> {
+            var e = (InputEvent) event;
+
+            Interactive interactive = hoveredInteractive != null ? hoveredInteractive : getFocused();
+            if (interactive != null) {
+                interactive.dispatchEvent(InteractiveEvent.builder()
+                        .type(InteractiveEvent.WHEEL)
+                        .keyChar(e.getKeyChar())
+                        .keyCode(e.getKeyCode())
+                        .keyType(e.getKeyType())
+                        .delta(e.getDelta())
+                        .alt(e.isAlt())
+                        .control(e.isControl())
+                        .shift(e.isShift())
+                        .build());
+            }
+        });
+
         stage().addEventListener(InputEvent.KEY_TYPE, event -> {
             var e = (InputEvent) event;
             Interactive focused = getFocused();
