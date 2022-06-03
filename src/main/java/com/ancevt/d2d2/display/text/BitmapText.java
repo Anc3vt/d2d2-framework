@@ -23,222 +23,367 @@ import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.Integer.parseInt;
+
 public class BitmapText extends DisplayObject implements IColored {
-	
-	protected static final String DEFAULT_TEXT = "";
 
-	protected static final float DEFAULT_BOUND_WIDTH = 512f;
-	protected static final float DEFAULT_BOUND_HEIGHT = 512f;
+    protected static final String DEFAULT_TEXT = "";
 
-	protected static final Color DEFAULT_COLOR = Color.WHITE;
-	
-	private String text;
-	private Color color;
-	
-	private BitmapFont bitmapFont;
-	
-	private float lineSpacing;
-	private float spacing;
-	
-	private float boundWidth;
-	private float boundHeight;
+    protected static final float DEFAULT_BOUND_WIDTH = 512f;
+    protected static final float DEFAULT_BOUND_HEIGHT = 512f;
 
-	private double textureBleedingFix = 0.0;
-	private double vertexBleedingFix = 0.0;
-	
-	public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight, String text) {
-		setBitmapFont(bitmapFont);
-		setColor(DEFAULT_COLOR);
-		setBoundWidth(boundWidth);
-		setBoundHeight(boundHeight);
-		setText(text);
-		setName("_" + getClass().getSimpleName() + displayObjectId());
-	}
+    protected static final Color DEFAULT_COLOR = Color.WHITE;
 
-	public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight) {
-		this(bitmapFont, boundWidth, boundHeight, DEFAULT_TEXT);
-	}
+    private String text;
+    private Color color;
 
-	public BitmapText(String text) {
-		this(BitmapFont.getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, text);
-	}
+    private BitmapFont bitmapFont;
 
-	public BitmapText(final BitmapFont bitmapFont) {
-		this(bitmapFont, DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
-	}
-	
-	public BitmapText(float boundWidth, float boundHeight) {
-		this(BitmapFont.getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
-	}
-	
-	public BitmapText() {
-		this(BitmapFont.getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
-	}
+    private float lineSpacing;
+    private float spacing;
 
-	public void setTextureBleedingFix(double textureBleedingFix) {
-		this.textureBleedingFix = textureBleedingFix;
-	}
+    private float boundWidth;
+    private float boundHeight;
 
-	public double getTextureBleedingFix() {
-		return textureBleedingFix;
-	}
+    private double textureBleedingFix = 0.0;
+    private double vertexBleedingFix = 0.0;
+    private boolean multicolorEnabled;
+    private ColorTextData colorTextData;
 
-	public void setVertexBleedingFix(double vertexBleedingFix) {
-		this.vertexBleedingFix = vertexBleedingFix;
-	}
+    public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight, String text) {
+        setBitmapFont(bitmapFont);
+        setColor(DEFAULT_COLOR);
+        setBoundWidth(boundWidth);
+        setBoundHeight(boundHeight);
+        setText(text);
+        setName("_" + getClass().getSimpleName() + displayObjectId());
+    }
 
-	public double getVertexBleedingFix() {
-		return vertexBleedingFix;
-	}
+    public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight) {
+        this(bitmapFont, boundWidth, boundHeight, DEFAULT_TEXT);
+    }
 
-	public int getTextWidth() {
-		if(getText() == null) return 0;
-		
-		final char[] chars = getText().toCharArray();
-		int result = 0;
-		
-		final BitmapFont font = getBitmapFont();
-		
-		int max = 0;
+    public BitmapText(String text) {
+        this(BitmapFont.getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, text);
+    }
 
-		for (final char c : chars) {
-			if (c == '\n' || (getBoundWidth() > 0 && result > getBoundWidth())) result = 0;
+    public BitmapText(final BitmapFont bitmapFont) {
+        this(bitmapFont, DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
+    }
 
-			BitmapCharInfo info = font.getCharInfo(c);
-			if (info == null) continue;
+    public BitmapText(float boundWidth, float boundHeight) {
+        this(BitmapFont.getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
+    }
 
-			result += info.width() + getSpacing();
+    public BitmapText() {
+        this(BitmapFont.getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
+    }
 
-			if (result > max) max = result;
-		}
-		
-		return (int)(max - getSpacing());
-	}
-	
-	public int getTextHeight() {
-		if(getText() == null) return 0;
-		
-		final char[] chars = getText().toCharArray();
-		int result = 0;
-		
-		final BitmapFont font = getBitmapFont();
+    public void setTextureBleedingFix(double textureBleedingFix) {
+        this.textureBleedingFix = textureBleedingFix;
+    }
 
-		for (final char c : chars) {
-			if (c == '\n' || (getBoundWidth() > 0 && result > getBoundWidth())) {
-				result += font.getCharHeight() + getLineSpacing();
-			}
-		}
-		
-		return result + font.getCharHeight();
-	}
+    public double getTextureBleedingFix() {
+        return textureBleedingFix;
+    }
 
-	public Sprite toSprite() {
-		Sprite result = new Sprite(D2D2.getTextureManager().bitmapTextToTextureAtlas(this).createTexture());
-		result.setXY(getX(), getY());
-		result.setScale(getScaleX(), getScaleY());
-		result.setRotation(getRotation());
-		result.setColor(getColor());
-		return result;
-	}
-	
-	@Override
-	public void setColor(Color color) {
-		this.color = color;
-	}
+    public void setVertexBleedingFix(double vertexBleedingFix) {
+        this.vertexBleedingFix = vertexBleedingFix;
+    }
 
-	@Override
-	public void setColor(int rgb) {
-		setColor(new Color(rgb));
-	}
+    public double getVertexBleedingFix() {
+        return vertexBleedingFix;
+    }
 
-	@Override
-	public Color getColor() {
-		return color;
-	}
+    public int getTextWidth() {
+        if (getText() == null) return 0;
 
-	public void setText(String text) {
-		this.text = text;
-	}
+        final char[] chars = getText().toCharArray();
+        int result = 0;
 
-	public String getText() {
-		return text;
-	}
+        final BitmapFont font = getBitmapFont();
 
-	public boolean isEmpty() {
-		return text == null || text.length() == 0;
-	}
+        int max = 0;
 
-	public BitmapFont getBitmapFont() {
-		return bitmapFont;
-	}
+        for (final char c : chars) {
+            if (c == '\n' || (getBoundWidth() > 0 && result > getBoundWidth())) result = 0;
 
-	public void setBitmapFont(BitmapFont bitmapFont) {
-		this.bitmapFont = bitmapFont;
-	}
+            BitmapCharInfo info = font.getCharInfo(c);
+            if (info == null) continue;
 
-	public void setLineSpacing(float value) {
-		this.lineSpacing = value;
-	}
+            result += info.width() + getSpacing();
 
-	public float getLineSpacing() {
-		return lineSpacing;
-	}
+            if (result > max) max = result;
+        }
 
-	public void setSpacing(float value) {
-		this.spacing = value;
-	}
+        return (int) (max - getSpacing());
+    }
 
-	public float getSpacing() {
-		return spacing;
-	}
+    public int getTextHeight() {
+        if (getText() == null) return 0;
 
-	public float getBoundWidth() {
-		return boundWidth;
-	}
+        final char[] chars = getText().toCharArray();
+        int result = 0;
 
-	public float getBoundHeight() {
-		return boundHeight;
-	}
+        final BitmapFont font = getBitmapFont();
 
-	public void setBoundWidth(float value) {
-		boundWidth = value;
-	}
+        for (final char c : chars) {
+            if (c == '\n' || (getBoundWidth() > 0 && result > getBoundWidth())) {
+                result += font.getCharHeight() + getLineSpacing();
+            }
+        }
 
-	public void setBoundHeight(float value) {
-		boundHeight = value;
-	}
-	
-	public float getWidth() {
-		return getBoundWidth();
-	}
-	
-	public float getHeight() {
-		return getBoundHeight();	
-	}
-	
-	public void setBounds(float boundWidth, float boundHeight) {
-		setBoundWidth(boundWidth);
-		setBoundHeight(boundHeight);
-	}
+        return result + font.getCharHeight();
+    }
 
-	@Override
-	public void onEachFrame() {
-		// For overriding
-	}
+    public Sprite toSprite() {
+        Sprite result = new Sprite(D2D2.getTextureManager().bitmapTextToTextureAtlas(this).createTexture());
+        result.setXY(getX(), getY());
+        result.setScale(getScaleX(), getScaleY());
+        result.setRotation(getRotation());
+        result.setColor(getColor());
+        return result;
+    }
 
-	@Override
-	public String toString() {
-		return "BitmapText{" +
-				"text='" + text + '\'' +
-				", color=" + color +
-				", bitmapFont=" + bitmapFont +
-				", lineSpacing=" + lineSpacing +
-				", spacing=" + spacing +
-				", boundWidth=" + boundWidth +
-				", boundHeight=" + boundHeight +
-				'}';
-	}
+    @Override
+    public void setColor(Color color) {
+        this.color = color;
+        if (multicolorEnabled) {
+            colorTextData = new ColorTextData(getText(), color);
+        }
+    }
+
+    @Override
+    public void setColor(int rgb) {
+        setColor(new Color(rgb));
+    }
+
+    @Override
+    public Color getColor() {
+        return color;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+        if (multicolorEnabled) {
+            colorTextData = new ColorTextData(getText(), getColor());
+        }
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public boolean isEmpty() {
+        return text == null || text.length() == 0;
+    }
+
+    public BitmapFont getBitmapFont() {
+        return bitmapFont;
+    }
+
+    public void setBitmapFont(BitmapFont bitmapFont) {
+        this.bitmapFont = bitmapFont;
+    }
+
+    public void setLineSpacing(float value) {
+        this.lineSpacing = value;
+    }
+
+    public float getLineSpacing() {
+        return lineSpacing;
+    }
+
+    public void setSpacing(float value) {
+        this.spacing = value;
+    }
+
+    public float getSpacing() {
+        return spacing;
+    }
+
+    public float getBoundWidth() {
+        return boundWidth;
+    }
+
+    public float getBoundHeight() {
+        return boundHeight;
+    }
+
+    public void setBoundWidth(float value) {
+        boundWidth = value;
+    }
+
+    public void setBoundHeight(float value) {
+        boundHeight = value;
+    }
+
+    public float getWidth() {
+        return getBoundWidth();
+    }
+
+    public float getHeight() {
+        return getBoundHeight();
+    }
+
+    public void setBounds(float boundWidth, float boundHeight) {
+        setBoundWidth(boundWidth);
+        setBoundHeight(boundHeight);
+    }
+
+    public void setMulticolorEnabled(boolean multicolorEnabled) {
+        if (multicolorEnabled == isMulticolorEnabled()) return;
+        this.multicolorEnabled = multicolorEnabled;
+        if (multicolorEnabled) {
+            colorTextData = new ColorTextData(getText(), getColor());
+        } else {
+            colorTextData = null;
+        }
+    }
+
+    public boolean isMulticolorEnabled() {
+        return multicolorEnabled;
+    }
+
+    public ColorTextData getColorTextData() {
+        return colorTextData;
+    }
+
+    @Override
+    public void onEachFrame() {
+        // For overriding
+    }
+
+    @Override
+    public String toString() {
+        return "BitmapText{" +
+                "text='" + text + '\'' +
+                ", color=" + color +
+                ", bitmapFont=" + bitmapFont +
+                ", lineSpacing=" + lineSpacing +
+                ", spacing=" + spacing +
+                ", boundWidth=" + boundWidth +
+                ", boundHeight=" + boundHeight +
+                '}';
+    }
+
+    public static class ColorTextData {
+
+        private Letter[] letters;
+        private final Color defaultColor;
+
+        private ColorTextData(String text, Color defaultColor) {
+            this.defaultColor = defaultColor;
+            createData(text);
+        }
+
+        private void createData(String text) {
+            List<Letter> letterList = new ArrayList<>();
+            Color color = defaultColor;
+
+            if (text.isEmpty()) text = " ";
+
+            boolean firstIndexSharp = text.charAt(0) == '#';
+            int firstIndexOpen = text.indexOf('<');
+            int lastIndexClose = text.lastIndexOf('>');
+
+            if (firstIndexSharp && firstIndexOpen < lastIndexClose) {
+
+                for (int i = 1; i < text.length(); i++) {
+                    char c = text.charAt(i);
+
+                    try {
+
+                        if (c == '<') {
+                            String colorString = text.substring(i + 1, i + 8);
+                            colorString = colorString.substring(0, colorString.indexOf('>'));
+
+                            color = Color.of(parseInt(colorString, 16));
+
+                            i += colorString.length() + 1;
+                        } else {
+                            letterList.add(new Letter(c, color));
+                        }
+
+                    } catch (StringIndexOutOfBoundsException exception) {
+                        exception.printStackTrace();
+                    }
+
+                }
+
+            } else {
+                for (int i = 0; i < text.length(); i++) {
+                    char c = text.charAt(i);
+                    letterList.add(new Letter(c, defaultColor));
+                }
+            }
+
+            letters = letterList.toArray(new Letter[0]);
+        }
+
+        public Letter getColoredLetter(int index) {
+            return letters[index];
+        }
+
+        public int length() {
+            return letters.length;
+        }
+
+        public static class Letter {
+            private final char character;
+            private final Color color;
+
+            public Letter(char character, Color color) {
+
+                this.character = character;
+                this.color = color;
+            }
+
+            public char getCharacter() {
+                return character;
+            }
+
+            public Color getColor() {
+                return color;
+            }
+        }
+
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

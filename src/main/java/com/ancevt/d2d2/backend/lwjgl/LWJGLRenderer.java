@@ -138,7 +138,7 @@ public class LWJGLRenderer implements IRenderer {
 
         if (!displayObject.isVisible()) return;
 
-        zOrderCounter ++;
+        zOrderCounter++;
         displayObject.setAbsoluteZOrderIndex(zOrderCounter);
         displayObject.onEachFrame();
         displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EACH_FRAME, displayObject));
@@ -305,40 +305,92 @@ public class LWJGLRenderer implements IRenderer {
         double textureBleedingFix = bitmapText.getTextureBleedingFix();
         double vertexBleedingFix = bitmapText.getVertexBleedingFix();
 
+
         GL20.glBegin(GL20.GL_QUADS);
 
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
+        if (bitmapText.isMulticolorEnabled()) {
 
-            BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
+            BitmapText.ColorTextData colorTextData = bitmapText.getColorTextData();
 
-            if (charInfo == null) {
-                continue;
-            }
+            for (int i = 0; i < colorTextData.length(); i++) {
+                BitmapText.ColorTextData.Letter letter = colorTextData.getColoredLetter(i);
 
-            float charWidth = charInfo.width();
-            float charHeight = charInfo.height();
+                char c = letter.getCharacter();
 
-            if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth)) {
-                drawX = 0;
-                drawY += (charHeight + lineSpacing) * scaleY;
+                BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
 
-                if (boundHeight != 0 && drawY > boundHeight) {
-                    break;
+                if (charInfo == null) {
+                    continue;
                 }
+
+                Color letterColor = letter.getColor();
+
+                GL20.glColor4f(
+                        (float) letterColor.getR() / 255f,
+                        (float) letterColor.getG() / 255f,
+                        (float) letterColor.getB() / 255f,
+                        alpha
+                );
+
+                float charWidth = charInfo.width();
+                float charHeight = charInfo.height();
+
+                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth)) {
+                    drawX = 0;
+                    drawY += (charHeight + lineSpacing) * scaleY;
+
+                    if (boundHeight != 0 && drawY > boundHeight) {
+                        break;
+                    }
+                }
+
+                drawChar(drawX,
+                        (drawY + scaleY * charHeight),
+                        textureWidth,
+                        textureHeight,
+                        charInfo,
+                        scaleX,
+                        scaleY,
+                        textureBleedingFix,
+                        vertexBleedingFix);
+
+                drawX += (charWidth + (c != '\n' ? spacing : 0)) * scaleX;
             }
 
-            drawChar(drawX,
-                    (drawY + scaleY * charHeight),
-                    textureWidth,
-                    textureHeight,
-                    charInfo,
-                    scaleX,
-                    scaleY,
-                    textureBleedingFix,
-                    vertexBleedingFix);
+        } else {
+            for (int i = 0; i < text.length(); i++) {
+                char c = text.charAt(i);
 
-            drawX += (charWidth + (c != '\n' ? spacing : 0)) * scaleX;
+                BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
+
+                if (charInfo == null) {
+                    continue;
+                }
+
+                float charWidth = charInfo.width();
+                float charHeight = charInfo.height();
+
+                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth)) {
+                    drawX = 0;
+                    drawY += (charHeight + lineSpacing) * scaleY;
+
+                    if (boundHeight != 0 && drawY > boundHeight) {
+                        break;
+                    }
+                }
+
+                drawChar(drawX,
+                        (drawY + scaleY * charHeight),
+                        textureWidth,
+                        textureHeight,
+                        charInfo,
+                        scaleX,
+                        scaleY,
+                        textureBleedingFix,
+                        vertexBleedingFix);
+
+                drawX += (charWidth + (c != '\n' ? spacing : 0)) * scaleX;
+            }
         }
 
         GL20.glEnd();
