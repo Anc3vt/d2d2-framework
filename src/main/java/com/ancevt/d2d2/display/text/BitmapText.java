@@ -18,14 +18,18 @@
 package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ancevt.d2d2.D2D2.init;
+import static com.ancevt.d2d2.D2D2.loop;
 import static java.lang.Integer.parseInt;
 
 public class BitmapText extends DisplayObject implements IColored {
@@ -52,6 +56,7 @@ public class BitmapText extends DisplayObject implements IColored {
     private double vertexBleedingFix = 0.0;
     private boolean multicolorEnabled;
     private ColorTextData colorTextData;
+    private boolean autoSizeBounds;
 
     public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight, String text) {
         setBitmapFont(bitmapFont);
@@ -98,10 +103,21 @@ public class BitmapText extends DisplayObject implements IColored {
         return vertexBleedingFix;
     }
 
-    public int getTextWidth() {
-        if (getText() == null) return 0;
+    public void setAutoSizeBounds(boolean autoSizeBounds) {
+        this.autoSizeBounds = autoSizeBounds;
+        if (autoSizeBounds) {
+            setBounds(getTextWidth(), getTextHeight());
+        }
+    }
 
-        final char[] chars = getText().toCharArray();
+    public boolean isAutoSizeBounds() {
+        return autoSizeBounds;
+    }
+
+    public int getTextWidth() {
+        if (isEmpty()) return 0;
+
+        final char[] chars = getPlainText().toCharArray();
         int result = 0;
 
         final BitmapFont font = getBitmapFont();
@@ -125,7 +141,7 @@ public class BitmapText extends DisplayObject implements IColored {
     public int getTextHeight() {
         if (getText() == null) return 0;
 
-        final char[] chars = getText().toCharArray();
+        final char[] chars = getPlainText().toCharArray();
         int result = 0;
 
         final BitmapFont font = getBitmapFont();
@@ -171,6 +187,15 @@ public class BitmapText extends DisplayObject implements IColored {
         if (multicolorEnabled) {
             colorTextData = new ColorTextData(getText(), getColor());
         }
+        if (autoSizeBounds) {
+            setBounds(getTextWidth(), getTextHeight());
+        }
+    }
+
+    public String getPlainText() {
+        if (!multicolorEnabled) return text;
+
+        return getColorTextData().getPlainText();
     }
 
     public String getText() {
@@ -244,6 +269,14 @@ public class BitmapText extends DisplayObject implements IColored {
         }
     }
 
+    public float getCharWidth() {
+        return getBitmapFont().getCharInfo('0').width();
+    }
+
+    private float getCharHeight() {
+        return getBitmapFont().getCharInfo('0').height();
+    }
+
     public boolean isMulticolorEnabled() {
         return multicolorEnabled;
     }
@@ -273,6 +306,7 @@ public class BitmapText extends DisplayObject implements IColored {
     public static class ColorTextData {
 
         private Letter[] letters;
+        private String plainText;
         private final Color defaultColor;
 
         private ColorTextData(String text, Color defaultColor) {
@@ -290,6 +324,8 @@ public class BitmapText extends DisplayObject implements IColored {
             int firstIndexOpen = text.indexOf('<');
             int lastIndexClose = text.lastIndexOf('>');
 
+            StringBuilder stringBuilder = new StringBuilder();
+
             if (firstIndexSharp && firstIndexOpen < lastIndexClose) {
 
                 for (int i = 1; i < text.length(); i++) {
@@ -306,6 +342,7 @@ public class BitmapText extends DisplayObject implements IColored {
                             i += colorString.length() + 1;
                         } else {
                             letterList.add(new Letter(c, color));
+                            stringBuilder.append(c);
                         }
 
                     } catch (StringIndexOutOfBoundsException exception) {
@@ -318,10 +355,16 @@ public class BitmapText extends DisplayObject implements IColored {
                 for (int i = 0; i < text.length(); i++) {
                     char c = text.charAt(i);
                     letterList.add(new Letter(c, defaultColor));
+                    stringBuilder.append(c);
                 }
             }
 
             letters = letterList.toArray(new Letter[0]);
+            plainText = stringBuilder.toString();
+        }
+
+        public String getPlainText() {
+            return plainText;
         }
 
         public Letter getColoredLetter(int index) {
@@ -351,6 +394,27 @@ public class BitmapText extends DisplayObject implements IColored {
             }
         }
 
+    }
+
+    public static void main(String[] args) {
+        Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
+
+
+        String text = """
+                #<0000FF>Hello <FFFF00>D2D2 <0000FF>world
+                <FFFFFF>Second line
+                                
+                ABCDEFGHIJKLMNOPQRSTUWYXYZ
+                abcdefghijklmnopqrstuvwxyz""";
+
+        BitmapText bitmapText = new BitmapText(BitmapFont.loadBitmapFont("PressStart2P.bmf"));
+        bitmapText.setMulticolorEnabled(true);
+        bitmapText.setText(text);
+        bitmapText.setScale(4, 4);
+        stage.add(bitmapText, 100, 100);
+
+
+        loop();
     }
 
 
