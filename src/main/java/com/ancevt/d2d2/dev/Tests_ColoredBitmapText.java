@@ -30,6 +30,8 @@ public class Tests_ColoredBitmapText {
 
         bitmapText.setMulticolorEnabled(true);
 
+
+        bitmapText.setScale(3,3);
         stage.add(bitmapText, 100, 100);
 
         D2D2.loop();
