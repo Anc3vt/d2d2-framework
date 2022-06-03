@@ -49,20 +49,20 @@ public class BitmapText extends DisplayObject implements IColored {
     private float lineSpacing;
     private float spacing;
 
-    private float boundWidth;
-    private float boundHeight;
+    private float width;
+    private float height;
 
     private double textureBleedingFix = 0.0;
     private double vertexBleedingFix = 0.0;
     private boolean multicolorEnabled;
     private ColorTextData colorTextData;
-    private boolean autoSizeBounds;
+    private boolean autosize;
 
     public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight, String text) {
         setBitmapFont(bitmapFont);
         setColor(DEFAULT_COLOR);
-        setBoundWidth(boundWidth);
-        setBoundHeight(boundHeight);
+        setWidth(boundWidth);
+        setHeight(boundHeight);
         setText(text);
         setName("_" + getClass().getSimpleName() + displayObjectId());
     }
@@ -103,15 +103,15 @@ public class BitmapText extends DisplayObject implements IColored {
         return vertexBleedingFix;
     }
 
-    public void setAutoSizeBounds(boolean autoSizeBounds) {
-        this.autoSizeBounds = autoSizeBounds;
-        if (autoSizeBounds) {
-            setBounds(getTextWidth(), getTextHeight());
+    public void setAutosize(boolean autosize) {
+        this.autosize = autosize;
+        if (autosize) {
+            setSize(getTextWidth(), getTextHeight());
         }
     }
 
-    public boolean isAutoSizeBounds() {
-        return autoSizeBounds;
+    public boolean isAutosize() {
+        return autosize;
     }
 
     public int getTextWidth() {
@@ -125,7 +125,7 @@ public class BitmapText extends DisplayObject implements IColored {
         int max = 0;
 
         for (final char c : chars) {
-            if (c == '\n' || (getBoundWidth() > 0 && result > getBoundWidth())) result = 0;
+            if (c == '\n' || (getWidth() > 0 && result > getWidth())) result = 0;
 
             BitmapCharInfo info = font.getCharInfo(c);
             if (info == null) continue;
@@ -147,7 +147,7 @@ public class BitmapText extends DisplayObject implements IColored {
         final BitmapFont font = getBitmapFont();
 
         for (final char c : chars) {
-            if (c == '\n' || (getBoundWidth() > 0 && result > getBoundWidth())) {
+            if (c == '\n' || (getWidth() > 0 && result > getWidth())) {
                 result += font.getCharHeight() + getLineSpacing();
             }
         }
@@ -187,8 +187,8 @@ public class BitmapText extends DisplayObject implements IColored {
         if (multicolorEnabled) {
             colorTextData = new ColorTextData(getText(), getColor());
         }
-        if (autoSizeBounds) {
-            setBounds(getTextWidth(), getTextHeight());
+        if (autosize) {
+            setSize(getTextWidth(), getTextHeight());
         }
     }
 
@@ -230,33 +230,27 @@ public class BitmapText extends DisplayObject implements IColored {
         return spacing;
     }
 
-    public float getBoundWidth() {
-        return boundWidth;
-    }
-
-    public float getBoundHeight() {
-        return boundHeight;
-    }
-
-    public void setBoundWidth(float value) {
-        boundWidth = value;
-    }
-
-    public void setBoundHeight(float value) {
-        boundHeight = value;
-    }
-
+    @Override
     public float getWidth() {
-        return getBoundWidth();
+        return width;
     }
 
+    @Override
     public float getHeight() {
-        return getBoundHeight();
+        return height;
     }
 
-    public void setBounds(float boundWidth, float boundHeight) {
-        setBoundWidth(boundWidth);
-        setBoundHeight(boundHeight);
+    public void setWidth(float value) {
+        width = value;
+    }
+
+    public void setHeight(float value) {
+        height = value;
+    }
+
+    public void setSize(float width, float height) {
+        setWidth(width);
+        setHeight(height);
     }
 
     public void setMulticolorEnabled(boolean multicolorEnabled) {
@@ -298,8 +292,8 @@ public class BitmapText extends DisplayObject implements IColored {
                 ", bitmapFont=" + bitmapFont +
                 ", lineSpacing=" + lineSpacing +
                 ", spacing=" + spacing +
-                ", boundWidth=" + boundWidth +
-                ", boundHeight=" + boundHeight +
+                ", boundWidth=" + width +
+                ", boundHeight=" + height +
                 '}';
     }
 

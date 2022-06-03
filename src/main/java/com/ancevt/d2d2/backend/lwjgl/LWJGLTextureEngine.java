@@ -283,13 +283,13 @@ public class LWJGLTextureEngine implements ITextureEngine {
 
         BitmapFont font = bitmapText.getBitmapFont();
 
-        float boundWidth = bitmapText.getBoundWidth() * bitmapText.getAbsoluteScaleX();
-        float boundHeight = bitmapText.getBoundHeight() * bitmapText.getAbsoluteScaleY();
+        float boundWidth = bitmapText.getWidth() * bitmapText.getAbsoluteScaleX();
+        float boundHeight = bitmapText.getHeight() * bitmapText.getAbsoluteScaleY();
 
         TextureAtlas fontTextureAtlas = font.getTextureAtlas();
 
-        int width = (int) bitmapText.getBoundWidth();
-        int height = (int) bitmapText.getBoundHeight();
+        int width = (int) bitmapText.getWidth();
+        int height = (int) bitmapText.getHeight();
 
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();

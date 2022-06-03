@@ -82,7 +82,7 @@ public class DebugPanel extends Container {
 
         text = new BitmapText();
         text.setColor(Color.WHITE);
-        text.setBounds(width, height);
+        text.setSize(width, height);
         add(text, 1, 1);
 
         interactiveButton = new InteractiveContainer(width, height);
@@ -165,7 +165,7 @@ public class DebugPanel extends Container {
                 bg.setHeight(5f);
             }
 
-            text.setBounds(bg.getWidth(), bg.getHeight());
+            text.setSize(bg.getWidth(), bg.getHeight());
             interactiveButton.setSize(bg.getWidth(), bg.getHeight());
             return;
         }
@@ -185,7 +185,7 @@ public class DebugPanel extends Container {
         }
 
         if (bg.getWidth() < 10) bg.setWidth(10);
-        if (text.getBoundWidth() < 10) text.setBoundWidth(10);
+        if (text.getWidth() < 10) text.setWidth(10);
     }
 
     private static LocalStorage getLocalStorage() {
@@ -221,7 +221,7 @@ public class DebugPanel extends Container {
             setXY(x, y);
 
             bg.setSize(w, h);
-            text.setBounds(w, h);
+            text.setSize(w, h);
             interactiveButton.setSize(w, h);
             text.setText(data);
         }

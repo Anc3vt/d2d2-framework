@@ -92,8 +92,8 @@ public class NoRenderTextureEngine implements ITextureEngine {
 
     @Override
     public TextureAtlas bitmapTextToTextureAtlas(BitmapText bitmapText) {
-        int width = (int) bitmapText.getBoundWidth();
-        int height = (int) bitmapText.getBoundHeight();
+        int width = (int) bitmapText.getWidth();
+        int height = (int) bitmapText.getHeight();
         textureAtlasIdCounter++;
         TextureAtlas textureAtlas = new TextureAtlas(textureAtlasIdCounter, width, height);
         D2D2.getTextureManager().addTexture("_textureAtlas_text_" + textureAtlas.getId(), textureAtlas.createTexture());
