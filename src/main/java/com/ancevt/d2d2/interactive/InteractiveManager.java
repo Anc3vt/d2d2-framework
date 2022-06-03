@@ -31,8 +31,12 @@ import static com.ancevt.d2d2.D2D2.stage;
 import static com.ancevt.d2d2.event.InteractiveEvent.DOWN;
 import static com.ancevt.d2d2.event.InteractiveEvent.DRAG;
 import static com.ancevt.d2d2.event.InteractiveEvent.HOVER;
+import static com.ancevt.d2d2.event.InteractiveEvent.KEY_DOWN;
+import static com.ancevt.d2d2.event.InteractiveEvent.KEY_TYPE;
+import static com.ancevt.d2d2.event.InteractiveEvent.KEY_UP;
 import static com.ancevt.d2d2.event.InteractiveEvent.OUT;
 import static com.ancevt.d2d2.event.InteractiveEvent.UP;
+import static com.ancevt.d2d2.event.InteractiveEvent.WHEEL;
 
 public class InteractiveManager {
 
@@ -63,8 +67,8 @@ public class InteractiveManager {
             var e = (InputEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
-                focused.dispatchEvent(InteractiveEvent.builder()
-                        .type(InteractiveEvent.KEY_DOWN)
+                dispatch(focused, InteractiveEvent.builder()
+                        .type(KEY_DOWN)
                         .keyChar(e.getKeyChar())
                         .keyCode(e.getKeyCode())
                         .alt(e.isAlt())
@@ -78,8 +82,8 @@ public class InteractiveManager {
             var e = (InputEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
-                focused.dispatchEvent(InteractiveEvent.builder()
-                        .type(InteractiveEvent.KEY_UP)
+                dispatch(focused, InteractiveEvent.builder()
+                        .type(KEY_UP)
                         .keyChar(e.getKeyChar())
                         .keyCode(e.getKeyCode())
                         .alt(e.isAlt())
@@ -91,18 +95,14 @@ public class InteractiveManager {
 
         stage().addEventListener(InputEvent.MOUSE_WHEEL, event -> {
             var e = (InputEvent) event;
+            Interactive interactive = hoveredInteractive != null && hoveredInteractive.isOnScreen() && hoveredInteractive.isHovering()
+                    ? hoveredInteractive : getFocused();
 
-            Interactive interactive = hoveredInteractive != null ? hoveredInteractive : getFocused();
+
             if (interactive != null) {
-                interactive.dispatchEvent(InteractiveEvent.builder()
-                        .type(InteractiveEvent.WHEEL)
-                        .keyChar(e.getKeyChar())
-                        .keyCode(e.getKeyCode())
-                        .keyType(e.getKeyType())
+                dispatch(interactive, InteractiveEvent.builder()
+                        .type(WHEEL)
                         .delta(e.getDelta())
-                        .alt(e.isAlt())
-                        .control(e.isControl())
-                        .shift(e.isShift())
                         .build());
             }
         });
@@ -111,10 +111,10 @@ public class InteractiveManager {
             var e = (InputEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
-                focused.dispatchEvent(InteractiveEvent.builder()
-                        .type(InteractiveEvent.KEY_TYPE)
-                        .keyChar(e.getKeyChar())
+                dispatch(focused, InteractiveEvent.builder()
+                        .type(KEY_TYPE)
                         .keyCode(e.getKeyCode())
+                        .keyChar(e.getKeyChar())
                         .keyType(e.getKeyType())
                         .alt(e.isAlt())
                         .control(e.isControl())
@@ -179,17 +179,16 @@ public class InteractiveManager {
 
             if (pressedInteractive != null) {
                 setFocused(pressedInteractive, true);
-
-                dispatch(pressedInteractive,
-                        DOWN,
-                        (int) (x - _tcX),
-                        (int) (y - _tcY),
-                        true,
-                        leftMouseButton,
-                        rightMouseButton,
-                        middleMouseButton,
-                        mouseButton
-                );
+                dispatch(pressedInteractive, InteractiveEvent.builder()
+                        .type(DOWN)
+                        .x((int) (x - _tcX))
+                        .y((int) (y - _tcY))
+                        .onArea(true)
+                        .leftMouseButton(leftMouseButton)
+                        .rightMouseButton(rightMouseButton)
+                        .middleMouseButton(middleMouseButton)
+                        .mouseButton(mouseButton)
+                        .build());
 
                 pressedInteractive.setDragging(true);
             }
@@ -207,16 +206,15 @@ public class InteractiveManager {
                         final boolean onArea = x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH;
 
                         if (interactive.isDragging()) {
-                            dispatch(interactive,
-                                    UP,
-                                    (int) (x - tcX),
-                                    (int) (y - tcY),
-                                    onArea,
-                                    leftMouseButton,
-                                    rightMouseButton,
-                                    middleMouseButton,
-                                    mouseButton
-                            );
+                            dispatch(interactive, InteractiveEvent.builder()
+                                    .type(UP)
+                                    .x((int) (x - tcX))
+                                    .y((int) (y - tcY))
+                                    .onArea(onArea)
+                                    .leftMouseButton(leftMouseButton)
+                                    .rightMouseButton(rightMouseButton)
+                                    .middleMouseButton(middleMouseButton)
+                                    .build());
 
                             interactive.setDragging(false);
                         }
@@ -254,30 +252,28 @@ public class InteractiveManager {
                 }
 
                 if (interactive.isDragging()) {
-                    dispatch(interactive,
-                            DRAG,
-                            (int) (x - tcX),
-                            (int) (y - tcY),
-                            onArea,
-                            leftMouseButton,
-                            rightMouseButton,
-                            middleMouseButton,
-                            0
-                    );
+                    dispatch(interactive, InteractiveEvent.builder()
+                            .type(DRAG)
+                            .x((int) (x - tcX))
+                            .y((int) (y - tcY))
+                            .onArea(onArea)
+                            .leftMouseButton(leftMouseButton)
+                            .rightMouseButton(rightMouseButton)
+                            .middleMouseButton(middleMouseButton)
+                            .build());
                 }
 
                 if (interactive.isHovering() && !onArea) {
                     interactive.setHovering(false);
-                    dispatch(interactive,
-                            OUT,
-                            (int) (x - tcX),
-                            (int) (y - tcY),
-                            false,
-                            leftMouseButton,
-                            rightMouseButton,
-                            middleMouseButton,
-                            0
-                    );
+                    dispatch(interactive, InteractiveEvent.builder()
+                            .type(OUT)
+                            .x((int) (x - tcX))
+                            .y((int) (y - tcY))
+                            .onArea(false)
+                            .leftMouseButton(leftMouseButton)
+                            .rightMouseButton(rightMouseButton)
+                            .middleMouseButton(middleMouseButton)
+                            .build());
                 }
 
             }
@@ -286,32 +282,30 @@ public class InteractiveManager {
         if (upperIntaractive != null) {
             if (!upperIntaractive.isHovering()) {
                 if (hoveredInteractive != null) {
-                    dispatch(hoveredInteractive,
-                            OUT,
-                            (int) (x - _tcX),
-                            (int) (y - _tcY),
-                            false,
-                            leftMouseButton,
-                            rightMouseButton,
-                            middleMouseButton,
-                            0
-                    );
+                    dispatch(hoveredInteractive, InteractiveEvent.builder()
+                            .type(OUT)
+                            .x((int) (x - _tcX))
+                            .y((int) (y - _tcY))
+                            .onArea(false)
+                            .leftMouseButton(leftMouseButton)
+                            .rightMouseButton(rightMouseButton)
+                            .middleMouseButton(middleMouseButton)
+                            .build());
                     hoveredInteractive.setHovering(false);
                 }
 
                 hoveredInteractive = upperIntaractive;
 
                 upperIntaractive.setHovering(true);
-                dispatch(upperIntaractive,
-                        HOVER,
-                        (int) (x - _tcX),
-                        (int) (y - _tcY),
-                        true,
-                        leftMouseButton,
-                        rightMouseButton,
-                        middleMouseButton,
-                        0
-                );
+                dispatch(upperIntaractive, InteractiveEvent.builder()
+                        .type(HOVER)
+                        .x((int) (x - _tcX))
+                        .y((int) (y - _tcY))
+                        .onArea(true)
+                        .leftMouseButton(leftMouseButton)
+                        .rightMouseButton(rightMouseButton)
+                        .middleMouseButton(middleMouseButton)
+                        .build());
             }
         }
     }
@@ -319,9 +313,8 @@ public class InteractiveManager {
     public void setFocused(Interactive interactive, boolean byMouseDown) {
         if (focusedInteractive == interactive) return;
 
-
         if (focusedInteractive != null) {
-            focusedInteractive.dispatchEvent(InteractiveEvent.builder()
+            dispatch(focusedInteractive, InteractiveEvent.builder()
                     .type(InteractiveEvent.FOCUS_OUT)
                     .build());
         }
@@ -333,7 +326,7 @@ public class InteractiveManager {
         focusedInteractive = interactive;
         focusedInteractiveIndex = index;
 
-        focusedInteractive.dispatchEvent(InteractiveEvent.builder()
+        dispatch(focusedInteractive, InteractiveEvent.builder()
                 .type(InteractiveEvent.FOCUS_IN)
                 .byMouseDown(byMouseDown)
                 .build());
@@ -352,14 +345,14 @@ public class InteractiveManager {
         if (focusedInteractive == interactiveList.get(focusedInteractiveIndex)) return;
 
         if (focusedInteractive != null) {
-            focusedInteractive.dispatchEvent(InteractiveEvent.builder()
+            dispatch(focusedInteractive, InteractiveEvent.builder()
                     .type(InteractiveEvent.FOCUS_OUT)
                     .build());
         }
 
         focusedInteractive = interactiveList.get(focusedInteractiveIndex);
 
-        focusedInteractive.dispatchEvent(InteractiveEvent.builder()
+        dispatch(focusedInteractive, InteractiveEvent.builder()
                 .type(InteractiveEvent.FOCUS_IN)
                 .build());
     }
@@ -374,7 +367,9 @@ public class InteractiveManager {
         if (focusedInteractiveIndex >= interactiveList.size()) focusedInteractiveIndex = 0;
 
         if (focusedInteractive != null) {
-            dispatch(focusedInteractive, OUT, 0, 0, false, false, false, false, 0);
+            dispatch(focusedInteractive, InteractiveEvent.builder()
+                    .type(OUT)
+                    .build());
         }
 
         setFocused(focusedInteractiveIndex);
@@ -388,7 +383,9 @@ public class InteractiveManager {
         if (focusedInteractiveIndex < 0) focusedInteractiveIndex = interactiveList.size() - 1;
 
         if (focusedInteractive != null) {
-            dispatch(focusedInteractive, OUT, 0, 0, false, false, false, false, 0);
+            dispatch(focusedInteractive, InteractiveEvent.builder()
+                    .type(OUT)
+                    .build());
         }
 
         setFocused(focusedInteractiveIndex);
@@ -437,7 +434,10 @@ public class InteractiveManager {
                     }
                     case KeyCode.ENTER -> {
                         if (focusedInteractive != null) {
-                            dispatch(focusedInteractive, DOWN, 0, 0, true, false, false, false, 0);
+                            dispatch(focusedInteractive, InteractiveEvent.builder()
+                                    .type(DOWN)
+                                    .onArea(true)
+                                    .build());
                         }
                     }
                     case KeyCode.ESCAPE -> {
@@ -456,7 +456,10 @@ public class InteractiveManager {
                     }
                     case KeyCode.ENTER -> {
                         if (focusedInteractive != null) {
-                            dispatch(focusedInteractive, UP, 0, 0, true, false, false, false, 0);
+                            dispatch(focusedInteractive, InteractiveEvent.builder()
+                                    .type(UP)
+                                    .onArea(true)
+                                    .build());
                         }
                     }
                 }
@@ -474,38 +477,24 @@ public class InteractiveManager {
 
     public void resetFocus() {
         if (focusedInteractive != null) {
-            focusedInteractive.dispatchEvent(InteractiveEvent.builder()
+            dispatch(focusedInteractive, InteractiveEvent.builder()
                     .type(InteractiveEvent.FOCUS_OUT)
                     .build());
 
-            dispatch(focusedInteractive, OUT, 0, 0, false, false, false, false, 0);
+            dispatch(focusedInteractive, InteractiveEvent.builder()
+                    .type(OUT)
+                    .build());
         }
 
         focusedInteractiveIndex = -1;
         focusedInteractive = null;
     }
 
-    private static void dispatch(Interactive interactive,
-                                 String type,
-                                 int x,
-                                 int y,
-                                 boolean onArea,
-                                 boolean leftMouseButton,
-                                 boolean rightMouseButton,
-                                 boolean middleMouseButton,
-                                 int mouseButton) {
-
-        interactive.dispatchEvent(InteractiveEvent.builder()
-                .type(type)
-                .x(x)
-                .y(y)
-                .onArea(onArea)
-                .leftMouseButton(leftMouseButton)
-                .middleMouseButton(middleMouseButton)
-                .rightMouseButton(rightMouseButton)
-                .mouseButton(mouseButton)
-                .build());
-
+    private static void dispatch(Interactive interactive, InteractiveEvent event) {
+        interactive.dispatchEvent(event);
+        if (interactive.isPushEventUp() && interactive.getParent() instanceof Interactive parent) {
+            dispatch(parent, event);
+        }
     }
 
     @Override

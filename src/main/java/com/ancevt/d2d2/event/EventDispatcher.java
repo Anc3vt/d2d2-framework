@@ -47,12 +47,6 @@ public class EventDispatcher implements IEventDispatcher {
         map.put(type, listeners);
     }
 
-    @Override
-    public void addEventListener(String type, EventListener listener, boolean reset) {
-        if (reset) removeEventListener(type, listener);
-        addEventListener(type, listener);
-    }
-
     private void addEventListenerByKey(Object key, String type, EventListener listener) {
         addEventListener(type, listener);
         if(keysTypeListenerMap.containsKey(key)) {
@@ -61,22 +55,9 @@ public class EventDispatcher implements IEventDispatcher {
         keysTypeListenerMap.put(key, Pair.of(type, listener));
     }
 
-    /**
-     * You may remove listeners by given 'key'
-     */
-    private void addEventListenerByKey(Object key, String type, EventListener listener, boolean reset) {
-        addEventListener(type, listener, reset);
-        keysTypeListenerMap.put(key, Pair.of(type, listener));
-    }
-
     @Override
     public void addEventListener(@NotNull Object owner, String type, EventListener listener) {
         addEventListenerByKey(owner.hashCode() + type, type, listener);
-    }
-
-    @Override
-    public void addEventListener(@NotNull Object owner, String type, EventListener listener, boolean reset) {
-        addEventListenerByKey(owner.hashCode() + type, type, listener, reset);
     }
 
     private @NotNull List<EventListener> createList() {

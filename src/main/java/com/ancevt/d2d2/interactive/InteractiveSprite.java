@@ -31,10 +31,12 @@ public class InteractiveSprite extends Sprite implements Interactive {
     private boolean dragging;
     private boolean hovering;
     private boolean disposed;
+    private boolean pushEventUp;
 
     public InteractiveSprite() {
         interactiveArea = new InteractiveArea(0, 0, 0, 0);
         enabled = true;
+        pushEventUp = true;
         InteractiveManager.getInstance().registerInteractive(this);
         setDefaultName();
     }
@@ -43,6 +45,7 @@ public class InteractiveSprite extends Sprite implements Interactive {
         super(texture);
         interactiveArea = new InteractiveArea(0, 0, texture.width(), texture.height());
         enabled = true;
+        pushEventUp = true;
         InteractiveManager.getInstance().registerInteractive(this);
         setDefaultName();
     }
@@ -51,7 +54,18 @@ public class InteractiveSprite extends Sprite implements Interactive {
         super(textureKey);
         interactiveArea = new InteractiveArea(0, 0, getTexture().width(), getTexture().height());
         enabled = true;
+        pushEventUp = true;
         InteractiveManager.getInstance().registerInteractive(this);
+    }
+
+    @Override
+    public void setPushEventUp(boolean pushEventUp) {
+        this.pushEventUp = pushEventUp;
+    }
+
+    @Override
+    public boolean isPushEventUp() {
+        return pushEventUp;
     }
 
     private void setDefaultName() {

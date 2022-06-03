@@ -37,13 +37,13 @@ public class Tests_InteractiveContainerInInteractiveContainer {
         stage().setBackgroundColor(Color.of(0x000011));
 
         Button outer = new Button(200, 200);
-        stage().add(outer, 200, 200);
+        stage().add(outer, 10, 10);
 
         Button inner = new Button(100, 100);
-        stage().add(inner, 250, 250);
+        outer.add(inner, 10, 10);
 
         Button innerInner = new Button(50, 50);
-        inner.add(innerInner, 25, 25);
+        inner.add(innerInner, 10, 10);
 
         stage().add(new FpsMeter());
 
