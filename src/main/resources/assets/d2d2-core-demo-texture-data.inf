@@ -17,3 +17,16 @@
     frame10   208 64  48  16
     frame11   208 80  48  16
 
+    d2d2-title 0 160 512 128
+    d2d2-demo-starlet 32 144 8 8
+
+    d2d2-demo-combined-9-sprites-top-left     80 0 8 8
+    d2d2-demo-combined-9-sprites-top-right    88 0 8 8
+    d2d2-demo-combined-9-sprites-bottom-left  80 8 8 8
+    d2d2-demo-combined-9-sprites-bottom-right 88 8 8 8
+    d2d2-demo-combined-9-sprites-top          88 0 1 8
+    d2d2-demo-combined-9-sprites-bottom       88 8 1 8
+    d2d2-demo-combined-9-sprites-left         80 8 8 1
+    d2d2-demo-combined-9-sprites-right        88 8 8 1
+    d2d2-demo-combined-9-sprites-center       88 8 1 1
+
