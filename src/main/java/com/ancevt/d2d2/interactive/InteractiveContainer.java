@@ -26,7 +26,7 @@ public class InteractiveContainer extends Container implements Interactive {
     private static final float DEFAULT_WIDTH = 1;
     private static final float DEFAULT_HEIGHT = 1;
 
-    private final InteractiveArea interactiveArea;
+    protected final InteractiveArea interactiveArea;
     private boolean enabled;
     private boolean dragging;
     private boolean hovering;

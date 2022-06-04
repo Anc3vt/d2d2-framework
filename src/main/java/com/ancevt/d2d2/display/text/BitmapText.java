@@ -114,7 +114,7 @@ public class BitmapText extends DisplayObject implements IColored {
         return autosize;
     }
 
-    public int getTextWidth() {
+    public float getTextWidth() {
         if (isEmpty()) return 0;
 
         final char[] chars = getPlainText().toCharArray();
@@ -135,10 +135,10 @@ public class BitmapText extends DisplayObject implements IColored {
             if (result > max) max = result;
         }
 
-        return (int) (max - getSpacing());
+        return (int) (max - getSpacing()) + font.getCharInfo('0').width();
     }
 
-    public int getTextHeight() {
+    public float getTextHeight() {
         if (getText() == null) return 0;
 
         final char[] chars = getPlainText().toCharArray();

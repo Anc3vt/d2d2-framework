@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.interactive;
 
-class InteractiveArea {
+public class InteractiveArea {
 
     private float x;
     private float y;
