@@ -21,12 +21,32 @@
     d2d2-demo-starlet 32 144 8 8
 
     d2d2-demo-combined-9-sprites-top-left     80 0 8 8
-    d2d2-demo-combined-9-sprites-top-right    88 0 8 8
-    d2d2-demo-combined-9-sprites-bottom-left  80 8 8 8
-    d2d2-demo-combined-9-sprites-bottom-right 88 8 8 8
     d2d2-demo-combined-9-sprites-top          88 0 1 8
-    d2d2-demo-combined-9-sprites-bottom       88 8 1 8
+    d2d2-demo-combined-9-sprites-top-right    88 0 8 8
     d2d2-demo-combined-9-sprites-left         80 8 8 1
-    d2d2-demo-combined-9-sprites-right        88 8 8 1
     d2d2-demo-combined-9-sprites-center       88 8 1 1
+    d2d2-demo-combined-9-sprites-right        88 8 8 1
+    d2d2-demo-combined-9-sprites-bottom-left  80 8 8 8
+    d2d2-demo-combined-9-sprites-bottom       88 8 1 8
+    d2d2-demo-combined-9-sprites-bottom-right 88 8 8 8
+
+    d2d2-demo-combined-9-2-sprites 56 0 24 24
+    d2d2-demo-combined-9-2-sprites-top-left     56 0 8 8
+    d2d2-demo-combined-9-2-sprites-top          64 0 8 8
+    d2d2-demo-combined-9-2-sprites-top-right    72 0 8 8
+    d2d2-demo-combined-9-2-sprites-left         56 8 8 8
+    d2d2-demo-combined-9-2-sprites-center       64 8 8 8
+    d2d2-demo-combined-9-2-sprites-right        72 8 8 8
+    d2d2-demo-combined-9-2-sprites-bottom-left  56 16 8 8
+    d2d2-demo-combined-9-2-sprites-bottom       64 16 8 8
+    d2d2-demo-combined-9-2-sprites-bottom-right 72 16 8 8
+
+
+
+
+
+
+
+
+
 

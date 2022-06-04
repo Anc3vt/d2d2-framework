@@ -25,6 +25,7 @@ import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.KeyCode;
 
 public class Combined9Sprites extends InteractiveContainer {
 
@@ -80,6 +81,11 @@ public class Combined9Sprites extends InteractiveContainer {
 
     }
 
+    public Combined9Sprites(Texture all9PartsTexture, int partWidth, int partHeight) {
+        this();
+        setTextures(all9PartsTexture, partWidth, partHeight);
+    }
+
     public void setRepeatsEnabled(boolean repeatsEnabled) {
         this.repeatsEnabled = repeatsEnabled;
         rebuild();
@@ -87,6 +93,22 @@ public class Combined9Sprites extends InteractiveContainer {
 
     public boolean isRepeatsEnabled() {
         return repeatsEnabled;
+    }
+
+    public void setTextures(Texture all9partsTexture, int partWidth, int partHeight) {
+        setTextures(
+                all9partsTexture.getSubtexture(0, 0, partWidth, partHeight),
+                all9partsTexture.getSubtexture(partWidth, 0, partWidth, partHeight),
+                all9partsTexture.getSubtexture(partWidth * 2, 0, partWidth, partHeight),
+
+                all9partsTexture.getSubtexture(0, partHeight, partWidth, partHeight),
+                all9partsTexture.getSubtexture(partWidth, partHeight, partWidth, partHeight),
+                all9partsTexture.getSubtexture(partWidth * 2, partHeight, partWidth, partHeight),
+
+                all9partsTexture.getSubtexture(0, partHeight * 2, partWidth, partHeight),
+                all9partsTexture.getSubtexture(partWidth, partHeight * 2, partWidth, partHeight),
+                all9partsTexture.getSubtexture(partWidth * 2, partHeight * 2, partWidth, partHeight)
+        );
     }
 
     public void setTextures(Texture topLeftTexture,
@@ -225,30 +247,30 @@ public class Combined9Sprites extends InteractiveContainer {
 
         var tm = D2D2.getTextureManager();
 
-        Combined9Sprites combined9Sprites = new Combined9Sprites(
-                tm.getTexture("d2d2-demo-combined-9-sprites-top-left"),
-                tm.getTexture("d2d2-demo-combined-9-sprites-top"),
-                tm.getTexture("d2d2-demo-combined-9-sprites-top-right"),
-                tm.getTexture("d2d2-demo-combined-9-sprites-left"),
-                tm.getTexture("d2d2-demo-combined-9-sprites-center"),
-                tm.getTexture("d2d2-demo-combined-9-sprites-right"),
-                tm.getTexture("d2d2-demo-combined-9-sprites-bottom-left"),
-                tm.getTexture("d2d2-demo-combined-9-sprites-bottom"),
-                tm.getTexture("d2d2-demo-combined-9-sprites-bottom-right")
-        );
+        Combined9Sprites combined9Sprites = new Combined9Sprites(tm.getTexture("d2d2-demo-combined-9-2-sprites"), 8, 8);
 
-        combined9Sprites.setRepeatsEnabled(false);
+        combined9Sprites.setRepeatsEnabled(true);
         combined9Sprites.setSize(100, 100);
 
-        combined9Sprites.setScale(3,3);
+        combined9Sprites.setScale(3, 3);
 
         stage.addEventListener(InputEvent.MOUSE_MOVE, event -> {
             var e = (InputEvent) event;
 
-            combined9Sprites.setSize(
-                    (e.getX() - combined9Sprites.getX()) / combined9Sprites.getAbsoluteScaleX(),
-                    (e.getY() - combined9Sprites.getY()) / combined9Sprites.getAbsoluteScaleY()
-            );
+            float w = Math.round((e.getX() - combined9Sprites.getX()) / combined9Sprites.getAbsoluteScaleX());
+            float h = Math.round((e.getY() - combined9Sprites.getY()) / combined9Sprites.getAbsoluteScaleY());
+
+            while (w % 8 != 0) w--;
+            while (h % 8 != 0) h--;
+
+            combined9Sprites.setSize(w, h);
+        });
+
+        stage.addEventListener(InputEvent.KEY_DOWN, event -> {
+            var e = (InputEvent) event;
+            if (e.getKeyCode() == KeyCode.SPACE) {
+                combined9Sprites.setRepeatsEnabled(!combined9Sprites.isRepeatsEnabled());
+            }
         });
 
         stage.add(combined9Sprites, 100, 300);
