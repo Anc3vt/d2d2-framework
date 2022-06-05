@@ -21,13 +21,15 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
 
-public class Combined9Sprites extends InteractiveContainer {
+public class Combined9Sprites extends InteractiveContainer implements IColored {
 
     private final Sprite topLeft;
     private final Sprite top;
@@ -84,6 +86,37 @@ public class Combined9Sprites extends InteractiveContainer {
     public Combined9Sprites(Texture all9PartsTexture, int partWidth, int partHeight) {
         this();
         setTextures(all9PartsTexture, partWidth, partHeight);
+    }
+
+    @Override
+    public void setColor(Color color) {
+        topLeft.setColor(color);
+        top.setColor(color);
+        topRight.setColor(color);
+        left.setColor(color);
+        center.setColor(color);
+        right.setColor(color);
+        bottomLeft.setColor(color);
+        bottom.setColor(color);
+        bottomRight.setColor(color);
+    }
+
+    @Override
+    public void setColor(int rgb) {
+        topLeft.setColor(Color.of(rgb));
+        top.setColor(Color.of(rgb));
+        topRight.setColor(Color.of(rgb));
+        left.setColor(Color.of(rgb));
+        center.setColor(Color.of(rgb));
+        right.setColor(Color.of(rgb));
+        bottomLeft.setColor(Color.of(rgb));
+        bottom.setColor(Color.of(rgb));
+        bottomRight.setColor(Color.of(rgb));
+    }
+
+    @Override
+    public Color getColor() {
+        return topLeft.getColor();
     }
 
     public void setRepeatsEnabled(boolean repeatsEnabled) {
