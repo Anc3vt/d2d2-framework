@@ -30,7 +30,7 @@ public class FpsMeter extends BitmapText {
 
 	public FpsMeter(BitmapFont font) {
 		super(font);
-		setName("fpsMeter");
+		setName(getClass().getSimpleName() + displayObjectId());
 		addEventListener(Event.EACH_FRAME, this::eachFrame);
 	}
 
@@ -66,8 +66,8 @@ public class FpsMeter extends BitmapText {
 
 	@Override
 	public String toString() {
-		return "FPSMeter{" +
-				"time1=" + time +
+		return "FpsMeter{" +
+				"time=" + time +
 				", frameCounter=" + frameCounter +
 				", actualFramesPerSeconds=" + actualFramesPerSeconds +
 				'}';

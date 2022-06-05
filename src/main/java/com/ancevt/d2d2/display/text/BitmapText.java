@@ -19,6 +19,7 @@ package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.IColored;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import static com.ancevt.d2d2.D2D2.init;
 import static com.ancevt.d2d2.D2D2.loop;
+import static com.ancevt.d2d2.debug.StarletSpace.haveFun;
 import static java.lang.Integer.parseInt;
 
 public class BitmapText extends DisplayObject implements IColored {
@@ -392,7 +394,7 @@ public class BitmapText extends DisplayObject implements IColored {
 
     public static void main(String[] args) {
         Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
-
+        haveFun();
 
         String text = """
                 #<0000FF>Hello <FFFF00>D2D2 <0000FF>world
@@ -404,9 +406,18 @@ public class BitmapText extends DisplayObject implements IColored {
         BitmapText bitmapText = new BitmapText(BitmapFont.loadBitmapFont("PressStart2P.bmf"));
         bitmapText.setMulticolorEnabled(true);
         bitmapText.setText(text);
-        bitmapText.setScale(4, 4);
-        stage.add(bitmapText, 100, 100);
+        bitmapText.setScale(2, 2);
+        stage.add(bitmapText, 100, 250);
 
+        BitmapText bitmapText1 = new BitmapText(BitmapFont.loadBitmapFont("PressStart2P.bmf"));
+        bitmapText1.setText("AUTOSIZE BITMAP TEXT");
+        bitmapText1.setAutosize(true);
+        bitmapText1.setScale(2, 2);
+        stage.add(bitmapText1, 100, 400);
+
+        FpsMeter fpsMeter = new FpsMeter();
+        fpsMeter.setBitmapFont(BitmapFont.loadBitmapFont("PressStart2P.bmf"));
+        stage.add(fpsMeter);
 
         loop();
     }
