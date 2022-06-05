@@ -492,13 +492,13 @@ public class InteractiveManager {
 
     private static void dispatch(Interactive interactive, InteractiveEvent event) {
         interactive.dispatchEvent(event);
-        if (interactive.isPushEventUp() && interactive.getParent() instanceof Interactive parent) {
+        if (interactive.isPushEventsUp() && interactive.getParent() instanceof Interactive parent) {
             dispatch(parent, event);
         }
     }
 
     @Override
     public String toString() {
-        return "InteractiveProcessor{interactiveList.size=" + interactiveList.size() + '}';
+        return "InteractiveManager{interactiveList.size=" + interactiveList.size() + '}';
     }
 }

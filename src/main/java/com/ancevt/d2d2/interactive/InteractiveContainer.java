@@ -32,13 +32,13 @@ public class InteractiveContainer extends Container implements Interactive {
     private boolean hovering;
     private boolean tabbingEnabled;
     private boolean disposed;
-    private boolean pushEventUp;
+    private boolean pushEventsUp;
 
     public InteractiveContainer(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
         setName("_" + getClass().getSimpleName() + displayObjectId());
         enabled = true;
-        pushEventUp = true;
+        pushEventsUp = true;
         InteractiveManager.getInstance().registerInteractive(this);
     }
 
@@ -47,13 +47,13 @@ public class InteractiveContainer extends Container implements Interactive {
     }
 
     @Override
-    public void setPushEventUp(boolean pushEventUp) {
-        this.pushEventUp = pushEventUp;
+    public void setPushEventsUp(boolean pushEventUp) {
+        this.pushEventsUp = pushEventUp;
     }
 
     @Override
-    public boolean isPushEventUp() {
-        return pushEventUp;
+    public boolean isPushEventsUp() {
+        return pushEventsUp;
     }
 
     @Override

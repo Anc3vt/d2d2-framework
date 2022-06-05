@@ -22,9 +22,9 @@ import com.ancevt.d2d2.display.IDisplayObject;
 
 public interface Interactive extends IDisplayObject, IDisposable {
 
-    void setPushEventUp(boolean pushEventUp);
+    void setPushEventsUp(boolean pushEventUp);
 
-    boolean isPushEventUp();
+    boolean isPushEventsUp();
 
     void setTabbingEnabled(boolean tabbingEnabled);
 

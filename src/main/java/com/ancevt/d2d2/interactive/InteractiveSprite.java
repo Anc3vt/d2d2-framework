@@ -59,12 +59,12 @@ public class InteractiveSprite extends Sprite implements Interactive {
     }
 
     @Override
-    public void setPushEventUp(boolean pushEventUp) {
+    public void setPushEventsUp(boolean pushEventUp) {
         this.pushEventUp = pushEventUp;
     }
 
     @Override
-    public boolean isPushEventUp() {
+    public boolean isPushEventsUp() {
         return pushEventUp;
     }
 

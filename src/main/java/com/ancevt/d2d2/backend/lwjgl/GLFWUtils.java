@@ -44,7 +44,7 @@ public class GLFWUtils {
     private static final Map<Long, String> monitorNameMap = new HashMap<>();
 
     public static @NotNull Map<Long, String> getMonitors() {
-        Map<Long, String> monitors = new HashMap();
+        Map<Long, String> monitors = new HashMap<>();
         PointerBuffer glfwMonitors = glfwGetMonitors();
         for (int i = 0; i < glfwMonitors.limit(); i++) {
             long monitor = glfwMonitors.get(i);
