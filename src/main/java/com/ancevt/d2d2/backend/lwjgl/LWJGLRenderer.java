@@ -18,9 +18,10 @@
 package com.ancevt.d2d2.backend.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.IContainer;
+import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.IFramedDisplayObject;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.ISprite;
@@ -33,6 +34,7 @@ import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.input.Mouse;
+import com.ancevt.localstorage.QuickLocalStorageFactory;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL20;
@@ -61,8 +63,8 @@ public class LWJGLRenderer implements IRenderer {
         GL20.glEnable(GL_BLEND);
         GL20.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_MIRRORED_REPEAT);
-        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_MIRRORED_REPEAT);
+        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
+        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
 
         GL20.glMatrixMode(GL20.GL_MODELVIEW);
     }
@@ -277,8 +279,6 @@ public class LWJGLRenderer implements IRenderer {
 
         D2D2.getTextureManager().getTextureEngine().enable(textureAtlas);
 
-        textureParamsLinear();
-
         Color color = bitmapText.getColor();
 
         GL20.glColor4f(
@@ -397,8 +397,6 @@ public class LWJGLRenderer implements IRenderer {
 
         GL20.glDisable(GL_BLEND);
         D2D2.getTextureManager().getTextureEngine().disable(textureAtlas);
-
-        textureParamsNearest();
     }
 
     private static float nextHalf(float v) {
@@ -441,22 +439,6 @@ public class LWJGLRenderer implements IRenderer {
 
         GL20.glTexCoord2d(cx, -cy + ch);
         GL20.glVertex2d(x - vertexBleedingFix, charHeight * -scY + y - vertexBleedingFix);
-    }
-
-    private void textureParamsLinear() {
-        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_CLAMP_TO_EDGE);
-        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_CLAMP_TO_EDGE);
-        if (smoothMode) {
-            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_LINEAR);
-            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR);
-        }
-    }
-
-    private void textureParamsNearest() {
-        if (smoothMode) {
-            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_NEAREST);
-            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_NEAREST);
-        }
     }
 
     public void setLWJGLTextureEngine(LWJGLTextureEngine textureEngine) {

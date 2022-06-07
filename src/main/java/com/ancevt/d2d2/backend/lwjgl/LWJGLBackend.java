@@ -36,6 +36,7 @@ import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL20;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -158,7 +159,19 @@ public class LWJGLBackend implements D2D2Backend {
     @Override
     public void setSmoothMode(boolean value) {
         ((LWJGLRenderer) renderer).smoothMode = value;
+
+        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
+        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
+
+        if (value) {
+            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_LINEAR);
+            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR);
+        } else {
+            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_NEAREST);
+            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_NEAREST);
+        }
     }
+
 
     @Override
     public boolean isSmoothMode() {
@@ -366,6 +379,8 @@ public class LWJGLBackend implements D2D2Backend {
         renderer.reshape(width, height);
 
         glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
+
+        setSmoothMode(false);
 
         previousVideoMode = VideoMode.builder()
                 .width(videoModeWidth)

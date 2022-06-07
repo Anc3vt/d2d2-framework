@@ -18,7 +18,6 @@
 package com.ancevt.d2d2.interactive;
 
 import com.ancevt.commons.Holder;
-import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.event.InteractiveEvent;
 
@@ -32,9 +31,11 @@ public class DragUtil {
             var e = (InteractiveEvent) event;
             oldXHolder.setValue(e.getX() + displayObject.getX());
             oldYHolder.setValue(e.getY() + displayObject.getY());
+            /*
             IContainer parent = displayObject.getParent();
             parent.remove(displayObject);
             parent.add(displayObject);
+             */
         });
 
         interactive.addEventListener(DragUtil.class + displayObject.getName(), InteractiveEvent.DRAG, event -> {
