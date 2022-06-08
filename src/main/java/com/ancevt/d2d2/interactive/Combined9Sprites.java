@@ -43,6 +43,7 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
 
     private boolean repeatsEnabled;
 
+
     public Combined9Sprites() {
         topLeft = new Sprite();
         top = new Sprite();
@@ -65,6 +66,11 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
         add(bottomRight);
 
         setEnabled(false);
+    }
+
+    public Combined9Sprites(String[] textureKeys) {
+        this();
+        setTextures(textureKeys);
     }
 
     public Combined9Sprites(Texture topLeftTexture,
@@ -164,6 +170,18 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
         bottom.setTexture(bottomTexture);
         bottomRight.setTexture(bottomRightTexture);
         rebuild();
+    }
+
+    public void setTextures(String[] textureKeys) {
+        topLeft.setTexture(D2D2.getTextureManager().getTexture(textureKeys[0]));
+        top.setTexture(D2D2.getTextureManager().getTexture(textureKeys[1]));
+        topRight.setTexture(D2D2.getTextureManager().getTexture(textureKeys[2]));
+        left.setTexture(D2D2.getTextureManager().getTexture(textureKeys[3]));
+        center.setTexture(D2D2.getTextureManager().getTexture(textureKeys[4]));
+        right.setTexture(D2D2.getTextureManager().getTexture(textureKeys[5]));
+        bottomLeft.setTexture(D2D2.getTextureManager().getTexture(textureKeys[6]));
+        bottom.setTexture(D2D2.getTextureManager().getTexture(textureKeys[7]));
+        bottomRight.setTexture(D2D2.getTextureManager().getTexture(textureKeys[8]));
     }
 
     @Override
