@@ -18,7 +18,6 @@
 package com.ancevt.d2d2.backend.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
@@ -34,7 +33,6 @@ import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.localstorage.QuickLocalStorageFactory;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL20;
@@ -296,7 +294,7 @@ public class LWJGLRenderer implements IRenderer {
         float lineSpacing = bitmapText.getLineSpacing();
         float spacing = bitmapText.getSpacing();
 
-        float boundWidth = bitmapText.getWidth() * bitmapText.getAbsoluteScaleX();
+        float boundWidth = bitmapText.getWidth() * bitmapText.getAbsoluteScaleX() + 2;
         float boundHeight = bitmapText.getHeight() * bitmapText.getAbsoluteScaleY();
 
         float drawX = 0;
@@ -304,7 +302,6 @@ public class LWJGLRenderer implements IRenderer {
 
         double textureBleedingFix = bitmapText.getTextureBleedingFix();
         double vertexBleedingFix = bitmapText.getVertexBleedingFix();
-
 
         GL20.glBegin(GL20.GL_QUADS);
 
