@@ -20,7 +20,6 @@ package com.ancevt.d2d2.interactive;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.exception.InteractiveException;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 
@@ -320,16 +319,18 @@ public class InteractiveManager {
         }
 
         int index = interactiveList.indexOf(interactive);
-        if (index == -1)
-            throw new InteractiveException("Unable to focus unregistered Interactive " + interactive);
+        if (index == -1) {
+            focusedInteractiveIndex = -1;
+            focusedInteractive = null;
+        } else {
+            focusedInteractive = interactive;
+            focusedInteractiveIndex = index;
 
-        focusedInteractive = interactive;
-        focusedInteractiveIndex = index;
-
-        dispatch(focusedInteractive, InteractiveEvent.builder()
-                .type(InteractiveEvent.FOCUS_IN)
-                .byMouseDown(byMouseDown)
-                .build());
+            dispatch(focusedInteractive, InteractiveEvent.builder()
+                    .type(InteractiveEvent.FOCUS_IN)
+                    .byMouseDown(byMouseDown)
+                    .build());
+        }
     }
 
     public void setFocused(int index) {

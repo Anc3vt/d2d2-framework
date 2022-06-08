@@ -33,6 +33,7 @@ public class Event {
     public static final String COMPLETE = "complete";
     public static final String RESIZE = "resize";
     public static final String CHANGE = "change";
+    public static final String ACTION = "action";
 
     String type;
     Object source;
