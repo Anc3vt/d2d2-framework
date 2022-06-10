@@ -89,7 +89,7 @@ public class LWJGLBackend implements D2D2Backend {
 
     private static final String DEMO_TEXTURE_DATA_INF_FILE = "d2d2-core-demo-texture-data.inf";
 
-    private static final String DEFAULT_BITMAP_FONT = "Terminus.bmf";
+    private static final String DEFAULT_BITMAP_FONT = "terminus/Terminus-12";
 
     private IRenderer renderer;
     long windowId;

@@ -19,12 +19,23 @@ package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
+
+import static com.ancevt.d2d2.D2D2.init;
+import static com.ancevt.d2d2.D2D2.loop;
+import static java.lang.Integer.parseInt;
 
 public class BitmapFont {
 
@@ -35,6 +46,8 @@ public class BitmapFont {
 
     private final BitmapCharInfo[] charInfos;
     private final TextureAtlas textureAtlas;
+
+    private float paddingTop;
 
 
     private BitmapFont(TextureAtlas textureAtlas, BitmapCharInfo[] charInfos) {
@@ -56,6 +69,14 @@ public class BitmapFont {
 
     public TextureAtlas getTextureAtlas() {
         return textureAtlas;
+    }
+
+    public void setPaddingTop(float paddingTop) {
+        this.paddingTop = paddingTop;
+    }
+
+    public float getPaddingTop() {
+        return paddingTop;
     }
 
     @Override
@@ -81,64 +102,69 @@ public class BitmapFont {
         BitmapFont.setDefaultBitmapFont(BitmapFont.loadBitmapFont(assetPath));
     }
 
-    public static BitmapFont loadBitmapFont(String bmfAssetPath) {
-        BitmapFont fromCache = cache.get(bmfAssetPath);
+    public static BitmapFont loadBitmapFont(InputStream dataInputStream, InputStream pngInputStream) {
+        BitmapCharInfo[] charInfos = new BitmapCharInfo[MAX_CHARS];
 
-        if(fromCache != null) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(dataInputStream))) {
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                StringTokenizer stringTokenizer = new StringTokenizer(line);
+                char c = line.charAt(0) == ' ' ? ' ' : stringTokenizer.nextToken().charAt(0);
+                charInfos[c] = new BitmapCharInfo(
+                        c,
+                        parseInt(stringTokenizer.nextToken()),
+                        parseInt(stringTokenizer.nextToken()),
+                        parseInt(stringTokenizer.nextToken()),
+                        parseInt(stringTokenizer.nextToken())
+                );
+            }
+
+            charInfos['\n'] = new BitmapCharInfo(
+                    '\n',
+                    charInfos[' '].x(),
+                    charInfos[' '].y(),
+                    0,
+                    charInfos[' '].height()
+            );
+
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        return new BitmapFont(D2D2.getTextureManager().loadTextureAtlas(pngInputStream), charInfos);
+    }
+
+    public static BitmapFont loadBitmapFont(String assetWithoutExtension) {
+        BitmapFont fromCache = cache.get(assetWithoutExtension);
+
+        if (fromCache != null) {
             return fromCache;
         }
 
-        try (DataInputStream dataInputStream = new DataInputStream(Assets.getAssetAsStream(BITMAP_FONTS_DIR + bmfAssetPath))) {
+        BitmapFont bitmapFont = loadBitmapFont(
+                Assets.getAssetAsStream(BITMAP_FONTS_DIR + assetWithoutExtension + ".bmf"),
+                Assets.getAssetAsStream(BITMAP_FONTS_DIR + assetWithoutExtension + ".png")
+        );
 
-            BitmapCharInfo[] charInfos = new BitmapCharInfo[MAX_CHARS];
+        cache.put(assetWithoutExtension, bitmapFont);
 
-            int metaSize = dataInputStream.readUnsignedShort();
+        return bitmapFont;
+    }
 
-            while (metaSize > 0) {
-                char character = dataInputStream.readChar();
-                int x = dataInputStream.readUnsignedShort();
-                int y = dataInputStream.readUnsignedShort();
-                int width = dataInputStream.readUnsignedShort();
-                int height = dataInputStream.readUnsignedShort();
+    public static void main(String[] args) {
+        Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
+        StarletSpace.haveFun();
 
-                BitmapCharInfo bitmapCharInfo = new BitmapCharInfo(character, x, y, width, height);
+        FpsMeter fpsMeter = new FpsMeter();
 
-                charInfos[character] = bitmapCharInfo;
+        stage.add(fpsMeter);
 
-                metaSize -= Character.BYTES;
-                metaSize -= Short.BYTES;
-                metaSize -= Short.BYTES;
-                metaSize -= Short.BYTES;
-                metaSize -= Short.BYTES;
+        BitmapText bitmapText = new BitmapText(BitmapFont.loadBitmapFont("terminus/Terminus-16-Bold"));
+        bitmapText.setMulticolorEnabled(true);
+        bitmapText.setText("#000Hello\n<FFFF00>world");
+        stage.add(bitmapText, 100, 250);
 
-                //Trace.trace("c,x,y,w,h", character, x, y, width, height);
-            }
-
-            // Passing rest of the data to loadTextureAtlas. PNG input stream expected
-            BitmapFont result = new BitmapFont(D2D2.getTextureManager().loadTextureAtlas(dataInputStream), charInfos);
-
-            cache.put(bmfAssetPath, result);
-
-            return result;
-        } catch (IOException ex) {
-            throw new IllegalArgumentException(ex);
-        }
+        loop();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

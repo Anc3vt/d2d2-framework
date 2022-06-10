@@ -298,7 +298,7 @@ public class LWJGLRenderer implements IRenderer {
         float boundHeight = bitmapText.getHeight() * bitmapText.getAbsoluteScaleY();
 
         float drawX = 0;
-        float drawY = 0;
+        float drawY = bitmapFont.getPaddingTop();
 
         double textureBleedingFix = bitmapText.getTextureBleedingFix();
         double vertexBleedingFix = bitmapText.getVertexBleedingFix();

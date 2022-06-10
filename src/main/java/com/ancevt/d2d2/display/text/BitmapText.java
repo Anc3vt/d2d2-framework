@@ -396,6 +396,8 @@ public class BitmapText extends DisplayObject implements IColored {
         Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
         haveFun();
 
+        stage.setBackgroundColor(Color.GRAY);
+
         String text = """
                 #<0000FF>Hello <FFFF00>D2D2 <0000FF>world
                 <FFFFFF>Second line
@@ -403,20 +405,20 @@ public class BitmapText extends DisplayObject implements IColored {
                 ABCDEFGHIJKLMNOPQRSTUWYXYZ
                 abcdefghijklmnopqrstuvwxyz""";
 
-        BitmapText bitmapText = new BitmapText(BitmapFont.loadBitmapFont("PressStart2P.bmf"));
+        BitmapText bitmapText = new BitmapText(BitmapFont.loadBitmapFont("terminus/Terminus-16-Bold"));
         bitmapText.setMulticolorEnabled(true);
         bitmapText.setText(text);
-        bitmapText.setScale(2, 2);
+        bitmapText.setScale(1, 1);
         stage.add(bitmapText, 100, 250);
 
-        BitmapText bitmapText1 = new BitmapText(BitmapFont.loadBitmapFont("PressStart2P.bmf"));
+        BitmapText bitmapText1 = new BitmapText(BitmapFont.loadBitmapFont("terminus/Terminus-16-Bold"));
         bitmapText1.setText("AUTOSIZE BITMAP TEXT");
         bitmapText1.setAutosize(true);
-        bitmapText1.setScale(2, 2);
-        stage.add(bitmapText1, 100, 400);
+        bitmapText1.setScale(5, 5);
+        stage.add(bitmapText1, 100, 450);
 
         FpsMeter fpsMeter = new FpsMeter();
-        fpsMeter.setBitmapFont(BitmapFont.loadBitmapFont("PressStart2P.bmf"));
+        fpsMeter.setBitmapFont(BitmapFont.loadBitmapFont("terminus/Terminus-16-Bold"));
         stage.add(fpsMeter);
 
         loop();
@@ -424,49 +426,4 @@ public class BitmapText extends DisplayObject implements IColored {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

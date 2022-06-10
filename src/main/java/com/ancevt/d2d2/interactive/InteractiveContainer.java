@@ -164,8 +164,8 @@ public class InteractiveContainer extends Container implements Interactive {
     public void dispose() {
         this.disposed = true;
         InteractiveManager.getInstance().unregisterInteractive(this);
-        removeFromParent();
         removeAllEventListeners();
+        removeFromParent();
         addEventListener(Event.ADD, event -> {
             throw new InteractiveException("Unable to add disposed interactive display object %s".formatted(this.toString()));
         });
