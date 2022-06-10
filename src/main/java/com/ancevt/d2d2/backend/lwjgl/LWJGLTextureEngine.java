@@ -297,47 +297,112 @@ public class LWJGLTextureEngine implements ITextureEngine {
         int drawX = 0;
         int drawY = 0;
 
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            BitmapCharInfo charInfo = font.getCharInfo(c);
+        if (bitmapText.isMulticolorEnabled()) {
+            BitmapText.ColorTextData colorTextData = bitmapText.getColorTextData();
 
-            if (charInfo == null) continue;
+            for (int i = 0; i < colorTextData.length(); i++) {
+                BitmapText.ColorTextData.Letter letter = colorTextData.getColoredLetter(i);
+                char c = letter.getCharacter();
+                BitmapCharInfo charInfo = font.getCharInfo(c);
 
-            int pX = charInfo.x();
-            int pY = charInfo.y();
-            int pW = charInfo.width();
-            int pH = charInfo.height();
+                if (charInfo == null) continue;
 
-            if (font.getCharInfo(c) == null) {
-                continue;
-            }
+                int pX = charInfo.x();
+                int pY = charInfo.y();
+                int pW = charInfo.width();
+                int pH = charInfo.height();
 
-            float charWidth = charInfo.width();
-            float charHeight = charInfo.height();
+                if (font.getCharInfo(c) == null) {
+                    continue;
+                }
 
-            if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth)) {
-                drawX = 0;
-                drawY += (charHeight + lineSpacing);
+                com.ancevt.d2d2.display.Color letterColor = letter.getColor();
 
-                if (boundHeight != 0 && drawY > boundHeight) {
-                    break;
+
+                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - pW)) {
+                    drawX = 0;
+                    drawY += (pH + lineSpacing);
+
+                    if (boundHeight != 0 && drawY > boundHeight) {
+                        break;
+                    }
+                }
+
+                if (c != '\n') {
+                    BufferedImage charImage = textureRegionToImage(
+                            fontTextureAtlas, pX, pY, pW, pH
+                    );
+
+                    applyColorFilter(charImage,
+                            letterColor.getR(),
+                            letterColor.getG(),
+                            letterColor.getB()
+                    );
+
+                    g.drawImage(charImage, drawX, drawY, null);
+
+                    drawX += pW + spacing;
                 }
             }
+        } else {
+            for (int i = 0; i < text.length(); i++) {
+                char c = text.charAt(i);
 
-            if (c != '\n') {
-                final BufferedImage charImage = textureRegionToImage(
-                        fontTextureAtlas, pX, pY, pW, pH
-                );
+                BitmapCharInfo charInfo = font.getCharInfo(c);
 
-                g.drawImage(charImage, drawX, drawY, null);
+                if (charInfo == null) {
+                    continue;
+                }
 
-                drawX += charWidth + spacing;
+                int pX = charInfo.x();
+                int pY = charInfo.y();
+                int pW = charInfo.width();
+                int pH = charInfo.height();
+
+                float charWidth = charInfo.width();
+                float charHeight = charInfo.height();
+
+                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth)) {
+                    drawX = 0;
+                    drawY += (charHeight + lineSpacing);
+
+                    if (boundHeight != 0 && drawY > boundHeight) {
+                        break;
+                    }
+                }
+
+                if (c != '\n') {
+                    BufferedImage charImage = textureRegionToImage(
+                            fontTextureAtlas, pX, pY, pW, pH
+                    );
+
+                    g.drawImage(charImage, drawX, drawY, null);
+                }
+
+                drawX += (charWidth + (c != '\n' ? spacing : 0));
             }
         }
 
         final TextureAtlas textureAtlas = createTextureAtlasFromBufferedImage(image);
         D2D2.getTextureManager().addTexture("_textureAtlas_text_" + textureAtlas.getId(), textureAtlas.createTexture());
         return textureAtlas;
+    }
+
+    private static void applyColorFilter(BufferedImage image, int redPercent, int greenPercent, int bluePercent) {
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int pixel = image.getRGB(x, y);
+
+                int alpha = (pixel >> 24) & 0xff;
+                int red = (pixel >> 16) & 0xff;
+                int green = (pixel >> 8) & 0xff;
+                int blue = pixel & 0xff;
+
+                pixel = (alpha << 24) | (redPercent * red / 255 << 16) | (greenPercent * green / 255 << 8) | (bluePercent * blue / 255);
+
+                image.setRGB(x, y, pixel);
+            }
+        }
     }
 
     private BufferedImage textureRegionToImage(@NotNull TextureAtlas textureAtlas, int x, int y, int width, int height) {
