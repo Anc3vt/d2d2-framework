@@ -283,7 +283,7 @@ public class LWJGLTextureEngine implements ITextureEngine {
 
         BitmapFont font = bitmapText.getBitmapFont();
 
-        float boundWidth = bitmapText.getWidth() * bitmapText.getAbsoluteScaleX();
+        float boundWidth = bitmapText.getWidth() * bitmapText.getAbsoluteScaleX() + font.getCharInfo('0').width() * 2;
         float boundHeight = bitmapText.getHeight() * bitmapText.getAbsoluteScaleY();
 
         TextureAtlas fontTextureAtlas = font.getTextureAtlas();
@@ -318,7 +318,6 @@ public class LWJGLTextureEngine implements ITextureEngine {
 
                 com.ancevt.d2d2.display.Color letterColor = letter.getColor();
 
-
                 if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - pW)) {
                     drawX = 0;
                     drawY += (pH + lineSpacing);
@@ -332,6 +331,8 @@ public class LWJGLTextureEngine implements ITextureEngine {
                     BufferedImage charImage = textureRegionToImage(
                             fontTextureAtlas, pX, pY, pW, pH
                     );
+
+                    charImage = copyImage(charImage);
 
                     applyColorFilter(charImage,
                             letterColor.getR(),
@@ -386,6 +387,14 @@ public class LWJGLTextureEngine implements ITextureEngine {
         final TextureAtlas textureAtlas = createTextureAtlasFromBufferedImage(image);
         D2D2.getTextureManager().addTexture("_textureAtlas_text_" + textureAtlas.getId(), textureAtlas.createTexture());
         return textureAtlas;
+    }
+
+    public static BufferedImage copyImage(BufferedImage source){
+        BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+        Graphics g = b.getGraphics();
+        g.drawImage(source, 0, 0, null);
+        g.dispose();
+        return b;
     }
 
     private static void applyColorFilter(BufferedImage image, int redPercent, int greenPercent, int bluePercent) {

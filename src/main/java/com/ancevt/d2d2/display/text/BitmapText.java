@@ -25,6 +25,7 @@ import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,9 @@ public class BitmapText extends DisplayObject implements IColored {
     private ColorTextData colorTextData;
     private boolean autosize;
 
+    private boolean cacheAsSprite;
+    private Sprite sprite;
+
     public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight, String text) {
         setBitmapFont(bitmapFont);
         setColor(DEFAULT_COLOR);
@@ -89,6 +93,38 @@ public class BitmapText extends DisplayObject implements IColored {
         this(BitmapFont.getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
     }
 
+    public void setCacheAsSprite(boolean cacheAsSprite) {
+        if (cacheAsSprite == this.cacheAsSprite) return;
+        this.cacheAsSprite = cacheAsSprite;
+
+        updateCachedSprite();
+    }
+
+    public boolean isCacheAsSprite() {
+        return cacheAsSprite;
+    }
+
+    public Sprite cachedSprite() {
+        return sprite;
+    }
+
+    public void disposeOnRemoveFromStage() {
+        addEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE, event -> {
+            removeEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE);
+            if (sprite != null && sprite.getTexture() != null) {
+                D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
+            }
+        });
+    }
+
+    private void updateCachedSprite() {
+        if (sprite != null && sprite.getTexture() != null) {
+            D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
+        }
+
+        if(isCacheAsSprite()) sprite = toSprite();
+    }
+
     public void setTextureBleedingFix(double textureBleedingFix) {
         this.textureBleedingFix = textureBleedingFix;
     }
@@ -110,6 +146,7 @@ public class BitmapText extends DisplayObject implements IColored {
         if (autosize) {
             setSize(getTextWidth(), getTextHeight());
         }
+        updateCachedSprite();
     }
 
     public boolean isAutosize() {
@@ -172,6 +209,7 @@ public class BitmapText extends DisplayObject implements IColored {
         if (multicolorEnabled) {
             colorTextData = new ColorTextData(getText(), color);
         }
+        updateCachedSprite();
     }
 
     @Override
@@ -192,6 +230,8 @@ public class BitmapText extends DisplayObject implements IColored {
         if (autosize) {
             setSize(getTextWidth(), getTextHeight());
         }
+
+        updateCachedSprite();
     }
 
     public String getPlainText() {
@@ -214,10 +254,12 @@ public class BitmapText extends DisplayObject implements IColored {
 
     public void setBitmapFont(BitmapFont bitmapFont) {
         this.bitmapFont = bitmapFont;
+        updateCachedSprite();
     }
 
     public void setLineSpacing(float value) {
         this.lineSpacing = value;
+        updateCachedSprite();
     }
 
     public float getLineSpacing() {
@@ -226,6 +268,7 @@ public class BitmapText extends DisplayObject implements IColored {
 
     public void setSpacing(float value) {
         this.spacing = value;
+        updateCachedSprite();
     }
 
     public float getSpacing() {
@@ -244,15 +287,18 @@ public class BitmapText extends DisplayObject implements IColored {
 
     public void setWidth(float value) {
         width = value;
+        updateCachedSprite();
     }
 
     public void setHeight(float value) {
         height = value;
+        updateCachedSprite();
     }
 
     public void setSize(float width, float height) {
-        setWidth(width);
-        setHeight(height);
+        this.width = width;
+        this.height = height;
+        updateCachedSprite();
     }
 
     public void setMulticolorEnabled(boolean multicolorEnabled) {
@@ -263,6 +309,7 @@ public class BitmapText extends DisplayObject implements IColored {
         } else {
             colorTextData = null;
         }
+        updateCachedSprite();
     }
 
     public float getCharWidth() {
@@ -387,6 +434,14 @@ public class BitmapText extends DisplayObject implements IColored {
 
             public Color getColor() {
                 return color;
+            }
+
+            @Override
+            public String toString() {
+                return "Letter{" +
+                        "character=" + character +
+                        ", color=" + color +
+                        '}';
             }
         }
 

@@ -166,10 +166,14 @@ public class LWJGLRenderer implements IRenderer {
             }
 
         } else if (displayObject instanceof ISprite s) {
-            renderSprite(s, a, scX, scY);
+            renderSprite(s, a, scX, scY, 0);
         } else if (displayObject instanceof BitmapText) {
             BitmapText btx = (BitmapText) displayObject;
-            renderBitmapText(btx, a, scX, scY);
+            if (btx.isCacheAsSprite()) {
+                renderSprite(btx.cachedSprite(), a, scX, scY, btx.getBitmapFont().getPaddingTop() * scY);
+            } else {
+                renderBitmapText(btx, a, scX, scY);
+            }
         }
 
         if (displayObject instanceof IFramedDisplayObject) {
@@ -180,7 +184,7 @@ public class LWJGLRenderer implements IRenderer {
         GL20.glPopMatrix();
     }
 
-    private void renderSprite(@NotNull ISprite sprite, float alpha, float scaleX, float scaleY) {
+    private void renderSprite(@NotNull ISprite sprite, float alpha, float scaleX, float scaleY, float paddingTop) {
         Texture texture = sprite.getTexture();
 
         if (texture == null) return;
@@ -234,7 +238,7 @@ public class LWJGLRenderer implements IRenderer {
         for (int rY = 0; rY < repeatY; rY++) {
             for (int rX = 0; rX < repeatX; rX++) {
                 float px = round(rX * tW * scaleX);
-                float py = round(rY * tH * scaleY);
+                float py = round(rY * tH * scaleY) + paddingTop;
 
                 GL20.glBegin(GL20.GL_QUADS);
 
@@ -294,11 +298,11 @@ public class LWJGLRenderer implements IRenderer {
         float lineSpacing = bitmapText.getLineSpacing();
         float spacing = bitmapText.getSpacing();
 
-        float boundWidth = bitmapText.getWidth() * bitmapText.getAbsoluteScaleX() + 2;
-        float boundHeight = bitmapText.getHeight() * bitmapText.getAbsoluteScaleY();
+        float boundWidth = bitmapText.getWidth() * scaleX + bitmapFont.getCharInfo('0').width() * 2;
+        float boundHeight = bitmapText.getHeight() * scaleY;
 
         float drawX = 0;
-        float drawY = bitmapFont.getPaddingTop();
+        float drawY = bitmapFont.getPaddingTop() * scaleY;
 
         double textureBleedingFix = bitmapText.getTextureBleedingFix();
         double vertexBleedingFix = bitmapText.getVertexBleedingFix();
