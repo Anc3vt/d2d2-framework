@@ -19,10 +19,12 @@ package com.ancevt.d2d2.dev;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 
 public class Tests_BitmapText_toSprite {
@@ -31,17 +33,22 @@ public class Tests_BitmapText_toSprite {
 
         stage.setBackgroundColor(Color.DARK_GRAY);
 
+        BitmapFont.getDefaultBitmapFont().setPaddingTop(-5);
+
         BitmapText bitmapText = new BitmapText();
-        bitmapText.setMulticolorEnabled(false);
+        bitmapText.setMulticolorEnabled(true);
         bitmapText.setSpacing(2f);
         bitmapText.setLineSpacing(5f);
         bitmapText.setText("#Copyright (C)\n<FFFF00>2022 <FFFFFF>the original author or authors.");
-
         bitmapText.setScale(2,2);
+        PlainRect plainRect = new PlainRect(20, 20, Color.BLUE);
+        stage.add(plainRect, 10, 20);
         stage.add(bitmapText, 10, 20);
 
         Sprite sprite = bitmapText.toSprite();
         sprite.setScale(2,2);
+        PlainRect plainRect2 = new PlainRect(20, 20, Color.BLUE);
+        stage.add(plainRect2, 10, 200);
         stage.add(sprite, 10, 200);
 
         stage.add(new FpsMeter());
