@@ -236,27 +236,49 @@ public class LWJGLRenderer implements IRenderer {
         double textureBleedingFix = sprite.getTextureBleedingFix();
 
         for (int rY = 0; rY < repeatY; rY++) {
-            for (int rX = 0; rX < repeatX; rX++) {
+            for (float rX = 0; rX < repeatX; rX++) {
                 float px = round(rX * tW * scaleX);
                 float py = round(rY * tH * scaleY) + paddingTop;
+
+                double textureTop = y + textureBleedingFix;
+                double textureBottom = (h + y) - textureBleedingFix;
+                double textureLeft = x + textureBleedingFix;
+                double textureRight = (w + x) - textureBleedingFix;
+
+                double vertexTop = py - vertexBleedingFix;
+                double vertexBottom = py + tH * scaleY + vertexBleedingFix;
+                double vertexLeft = px - vertexBleedingFix;
+                double vertexRight = px + tW * scaleX + vertexBleedingFix;// * sprite.getRepeatXF();
+
+                if (repeatX - rX < 1.0) {
+                    double val = repeatX - rX;
+                    vertexRight = px + tW * val * scaleX + vertexBleedingFix;
+                    textureRight *= val;
+                }
+
+                if (repeatY - rY < 1.0) {
+                    double val = repeatY - rY;
+                    vertexBottom = py + tH * val * scaleY + vertexBleedingFix;
+                    textureBottom = (h * val + y) - textureBleedingFix;
+                }
 
                 GL20.glBegin(GL20.GL_QUADS);
 
                 // L
-                GL20.glTexCoord2d(x + textureBleedingFix, (h + y) - textureBleedingFix);
-                GL20.glVertex2d(px - vertexBleedingFix, py + tH * scaleY + vertexBleedingFix);
+                GL20.glTexCoord2d(textureLeft, textureBottom);
+                GL20.glVertex2d(vertexLeft, vertexBottom);
 
                 // _|
-                GL20.glTexCoord2d((w + x) - textureBleedingFix, (h + y) - textureBleedingFix);
-                GL20.glVertex2d(px + tW * scaleX + vertexBleedingFix, py + tH * scaleY + vertexBleedingFix);
+                GL20.glTexCoord2d(textureRight, textureBottom);
+                GL20.glVertex2d(vertexRight, vertexBottom);
 
                 // ^|
-                GL20.glTexCoord2d((w + x) - textureBleedingFix, y + textureBleedingFix);
-                GL20.glVertex2d(px + tW * scaleX + vertexBleedingFix, py - vertexBleedingFix);
+                GL20.glTexCoord2d(textureRight, textureTop);
+                GL20.glVertex2d(vertexRight, vertexTop);
 
                 // Г
-                GL20.glTexCoord2d(x + textureBleedingFix, y + textureBleedingFix);
-                GL20.glVertex2d(px - vertexBleedingFix, py - vertexBleedingFix);
+                GL20.glTexCoord2d(textureLeft, textureTop);
+                GL20.glVertex2d(vertexLeft, vertexTop);
 
                 GL20.glEnd();
             }

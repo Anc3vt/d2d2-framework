@@ -18,13 +18,14 @@
 package com.ancevt.d2d2.display;
 
 public interface IRepeatable {
-	void setRepeat(int repeatX, int repeatY);
+	void setRepeat(float repeatX, float repeatY);
 
-	void setRepeatX(int value);
+	void setRepeatX(float value);
 
-	void setRepeatY(int value);
+	void setRepeatY(float value);
 
-	int getRepeatX();
+	float getRepeatX();
 
-	int getRepeatY();
+	float getRepeatY();
+
 }

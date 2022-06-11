@@ -29,8 +29,8 @@ public class Sprite extends DisplayObject implements ISprite {
 
     public static final Color DEFAULT_COLOR = Color.WHITE;
 
-    private int repeatX;
-    private int repeatY;
+    private float repeatX;
+    private float repeatY;
     private Color color;
     private Texture texture;
     private double vertexBleedingFix = 0.05d;
@@ -68,30 +68,29 @@ public class Sprite extends DisplayObject implements ISprite {
         return color;
     }
 
-
     @Override
-    public void setRepeat(int repeatX, int repeatY) {
+    public void setRepeat(float repeatX, float repeatY) {
         setRepeatX(repeatX);
         setRepeatY(repeatY);
     }
 
     @Override
-    public void setRepeatX(int value) {
+    public void setRepeatX(float value) {
         this.repeatX = value;
     }
 
     @Override
-    public void setRepeatY(int value) {
+    public void setRepeatY(float value) {
         this.repeatY = value;
     }
 
     @Override
-    public int getRepeatX() {
+    public float getRepeatX() {
         return repeatX;
     }
 
     @Override
-    public int getRepeatY() {
+    public float getRepeatY() {
         return repeatY;
     }
 
