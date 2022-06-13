@@ -41,6 +41,7 @@ public class Container extends DisplayObject implements IContainer {
     public void add(@NotNull IDisplayObject child) {
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
+
         children.remove(child);
         children.add(child);
 

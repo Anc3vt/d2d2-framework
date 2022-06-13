@@ -26,8 +26,6 @@ public interface ISprite extends IDisplayObject, IColored, IRepeatable {
 
     void setTexture(String textureKey);
 
-    ISprite cloneSprite();
-
     void setTextureBleedingFix(double v);
 
     double getTextureBleedingFix();
@@ -35,4 +33,6 @@ public interface ISprite extends IDisplayObject, IColored, IRepeatable {
     void setVertexBleedingFix(double v);
 
     double getVertexBleedingFix();
+
+    ISprite cloneSprite();
 }

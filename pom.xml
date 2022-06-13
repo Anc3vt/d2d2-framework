@@ -81,7 +81,6 @@
         <!-- LWJGL -->
         <joml.version>1.10.4</joml.version>
         <lwjgl.version>3.3.0</lwjgl.version>
-        <!--<lwjgl.version>3.3.0</lwjgl.version>-->
         <lwjgl_util.version>2.9.3</lwjgl_util.version>
         <swt.maven.version>3.105.3</swt.maven.version> <!-- contains Eclipse SWT 4.6.2.9 software -->
 
