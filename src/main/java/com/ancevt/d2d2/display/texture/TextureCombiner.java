@@ -54,8 +54,8 @@ public class TextureCombiner {
 			final float scaleY,
 			final float alpha,
 			final float rotation,
-			final int repeatX,
-			final int repeatY) {
+			final float repeatX,
+			final float repeatY) {
 		
 		final TextureCell cell = new TextureCell();
 		cell.setX(x);

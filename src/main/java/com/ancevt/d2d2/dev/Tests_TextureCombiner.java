@@ -63,12 +63,12 @@ public class Tests_TextureCombiner {
             c.append(textureSat, x, y, Color.WHITE, scale, scale, scale, i * 10, 2, 2);
         }
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1; i++) {
             int x = (int) (Math.random() * c.getWidth());
             int y = (int) (Math.random() * c.getHeight());
-            float scale = (float) (Math.random());
+            float scale = 3;
 
-            c.append(textureTest, x, y, Color.WHITE, scale, scale, scale, i * 10, 2, 2);
+            c.append(textureTest, 100, 100, Color.WHITE, scale, scale, 1, 0, 2.5f, 2.5f);
         }
 
         TextureAtlas atlas = c.createTextureAtlas();

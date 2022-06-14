@@ -27,8 +27,8 @@ public class TextureCell {
 	private int id;
 	private int x;
 	private int y;
-	private int repeatX = 1;
-	private int repeatY = 1;
+	private float repeatX = 1.0f;
+	private float repeatY = 1.0f;
 
 	private float scaleX = 1.0f;
 	private float scaleY = 1.0f;
@@ -77,19 +77,19 @@ public class TextureCell {
 		this.y = y;
 	}
 
-	public int getRepeatX() {
+	public float getRepeatX() {
 		return repeatX;
 	}
 
-	public void setRepeatX(int repeatX) {
+	public void setRepeatX(float repeatX) {
 		this.repeatX = repeatX;
 	}
 
-	public int getRepeatY() {
+	public float getRepeatY() {
 		return repeatY;
 	}
 
-	public void setRepeatY(int repeatY) {
+	public void setRepeatY(float repeatY) {
 		this.repeatY = repeatY;
 	}
 

@@ -224,35 +224,66 @@ public class LWJGLTextureEngine implements ITextureEngine {
     private void drawCell(@NotNull Graphics2D g, final @NotNull TextureCell cell) {
         int x = cell.getX();
         int y = cell.getY();
-        int repeatX = cell.getRepeatX();
-        int repeatY = cell.getRepeatY();
+        float repeatX = cell.getRepeatX();
+        float repeatY = cell.getRepeatY();
         float scaleX = cell.getScaleX();
         float scaleY = cell.getScaleY();
 
+        BufferedImage fullImageRegion = textureRegionToImage(cell.getTexture());
 
-        BufferedImage imageRegion = textureRegionToImage(cell.getTexture());
+        BufferedImage imageRegion = fullImageRegion;
 
-        int width = cell.getTexture().width() * repeatX;
-        int height = cell.getTexture().height() * repeatY;
+        float texWidth = cell.getTexture().width();
+        float texHeight = cell.getTexture().height();
 
-        int originWidth = imageRegion.getWidth(null);
-        int originHeight = imageRegion.getHeight(null);
+        int originWidth = fullImageRegion.getWidth(null);
+        int originHeight = fullImageRegion.getHeight(null);
 
-        int w = (int) (originWidth * scaleX);
-        int h = (int) (originHeight * scaleY);
+        for (int rY = 0; rY < repeatY; rY += 1.0f) {
+            for (int rX = 0; rX < repeatX; rX += 1.0f) {
+                int w = (int) (originWidth * scaleX);
+                int h = (int) (originHeight * scaleY);
 
-        for (int vert = 0; vert < height; vert += originHeight) {
-            for (int hor = 0; hor < width; hor += originWidth) {
+                imageRegion = fullImageRegion;
+
+                if (repeatX - rX < 1.0f || repeatY - rY < 1.0f) {
+                    float valX = 1.0f;
+                    float valY = 1.0f;
+
+                    if (repeatX - rX < 1.0f) {
+                        valX = repeatX - rX;
+                        w *= valX;
+                    }
+
+                    if (repeatY - rY < 1.0f) {
+                        valY = repeatY - rY;
+                        h *= valY;
+                    }
+
+
+                    imageRegion = textureRegionToImage(
+                            cell.getTexture().getSubtexture(
+                                    0,
+                                    0,
+                                    (int) (texWidth * valX),
+                                    (int) (texHeight * valY)
+                            )
+                    );
+
+
+                }
 
                 g.drawImage(imageRegion,
-                        (int) (x + hor * scaleX),
-                        (int) (y + vert * scaleY),
+                        (int) (x + texWidth * rX * scaleX),
+                        (int) (y + texHeight * rY * scaleY),
                         w,
                         h,
                         null
                 );
+
             }
         }
+
     }
 
     @Override
@@ -260,7 +291,7 @@ public class LWJGLTextureEngine implements ITextureEngine {
         mapping.images().remove(textureAtlas.getId());
         // TODO: repair creating new textures after unloading
         if (textureAtlas.isDisposed()) {
-            throw new IllegalStateException("Texture atlas is already disposed " + textureAtlas);
+            throw new IllegalStateException("Texture atlas is already unloaded " + textureAtlas);
         }
 
         unloadQueue.add(textureAtlas);
@@ -389,7 +420,7 @@ public class LWJGLTextureEngine implements ITextureEngine {
         return textureAtlas;
     }
 
-    public static BufferedImage copyImage(BufferedImage source){
+    public static BufferedImage copyImage(BufferedImage source) {
         BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
         Graphics g = b.getGraphics();
         g.drawImage(source, 0, 0, null);
