@@ -359,19 +359,22 @@ public class LWJGLTextureEngine implements ITextureEngine {
                 }
 
                 if (c != '\n') {
-                    BufferedImage charImage = textureRegionToImage(
-                            fontTextureAtlas, pX, pY, pW, pH
-                    );
+                    if(pY > 0) {
 
-                    charImage = copyImage(charImage);
+                        BufferedImage charImage = textureRegionToImage(
+                                fontTextureAtlas, pX, pY, pW, pH
+                        );
 
-                    applyColorFilter(charImage,
-                            letterColor.getR(),
-                            letterColor.getG(),
-                            letterColor.getB()
-                    );
+                        charImage = copyImage(charImage);
 
-                    g.drawImage(charImage, drawX, drawY, null);
+                        applyColorFilter(charImage,
+                                letterColor.getR(),
+                                letterColor.getG(),
+                                letterColor.getB()
+                        );
+
+                        g.drawImage(charImage, drawX, drawY, null);
+                    }
 
                     drawX += pW + spacing;
                 }
@@ -404,11 +407,14 @@ public class LWJGLTextureEngine implements ITextureEngine {
                 }
 
                 if (c != '\n') {
-                    BufferedImage charImage = textureRegionToImage(
-                            fontTextureAtlas, pX, pY, pW, pH
-                    );
+                    if(pY > 0) {
 
-                    g.drawImage(charImage, drawX, drawY, null);
+                        BufferedImage charImage = textureRegionToImage(
+                                fontTextureAtlas, pX, pY, pW, pH
+                        );
+
+                        g.drawImage(charImage, drawX, drawY, null);
+                    }
                 }
 
                 drawX += (charWidth + (c != '\n' ? spacing : 0));

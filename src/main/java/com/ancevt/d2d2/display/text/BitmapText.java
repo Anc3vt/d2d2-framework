@@ -93,6 +93,28 @@ public class BitmapText extends DisplayObject implements IColored {
         this(BitmapFont.getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
     }
 
+    public BitmapText cloneBitmapText() {
+        BitmapText bitmapText = new BitmapText();
+        bitmapText.setXY(getX(), getY());
+        bitmapText.setText(getText());
+        bitmapText.setSize(getWidth(), getHeight());
+        bitmapText.setAlpha(getAlpha());
+        bitmapText.setMulticolorEnabled(isMulticolorEnabled());
+        bitmapText.setBitmapFont(getBitmapFont());
+        bitmapText.setVertexBleedingFix(getVertexBleedingFix());
+        bitmapText.setTextureBleedingFix(getTextureBleedingFix());
+        bitmapText.setColor(getColor());
+        bitmapText.setName(bitmapText.getName() + "_copy_" + getName());
+        bitmapText.setSpacing(getSpacing());
+        bitmapText.setLineSpacing(getLineSpacing());
+        bitmapText.setRotation(getRotation());
+        bitmapText.setVisible(isVisible());
+        bitmapText.setAutosize(isAutosize());
+        bitmapText.setCacheAsSprite(isCacheAsSprite());
+        bitmapText.setScale(getScaleX(), getScaleY());
+        return bitmapText;
+    }
+
     public void setCacheAsSprite(boolean cacheAsSprite) {
         if (cacheAsSprite == this.cacheAsSprite) return;
         this.cacheAsSprite = cacheAsSprite;
