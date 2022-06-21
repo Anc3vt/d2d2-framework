@@ -138,6 +138,12 @@
             <version>${local-storage.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.ancevt.util</groupId>
+            <artifactId>commands</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
         <!-- Sound -->
         <dependency>
             <groupId>com.googlecode.soundlibs</groupId>

@@ -174,7 +174,7 @@ public class BitmapText extends DisplayObject implements IColored {
             if (result > max) max = result;
         }
 
-        return (int) (max - getSpacing());
+        return (int) (max - getSpacing() + getBitmapFont().getZeroCharWidth());
     }
 
     public float getTextHeight() {
@@ -187,11 +187,11 @@ public class BitmapText extends DisplayObject implements IColored {
 
         for (final char c : chars) {
             if (c == '\n' || (getWidth() > 0 && result > getWidth())) {
-                result += font.getCharHeight() + getLineSpacing();
+                result += font.getZeroCharHeight() + getLineSpacing();
             }
         }
 
-        return result + font.getCharHeight();
+        return result + font.getZeroCharHeight();
     }
 
     public Sprite toSprite() {

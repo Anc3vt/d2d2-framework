@@ -46,13 +46,47 @@ public class BitmapFont {
 
     private final BitmapCharInfo[] charInfos;
     private final TextureAtlas textureAtlas;
+    private final String name;
+
+    private final boolean monospaced;
 
     private float paddingTop;
 
 
-    private BitmapFont(TextureAtlas textureAtlas, BitmapCharInfo[] charInfos) {
+    private BitmapFont(String name, TextureAtlas textureAtlas, BitmapCharInfo[] charInfos) {
+        this.name = name;
         this.textureAtlas = textureAtlas;
         this.charInfos = charInfos;
+
+        BitmapCharInfo[] charInfosToCheck = {
+                charInfos['|'],
+                charInfos['.'],
+                charInfos['I'],
+                charInfos['_'],
+                charInfos['Ж'],
+                charInfos['Щ'],
+                charInfos['\''],
+                charInfos['W'],
+        };
+
+        int width = charInfos['0'].width();
+
+        boolean foundDifferent = false;
+
+        for (BitmapCharInfo bitmapCharInfo : charInfosToCheck) {
+            if(bitmapCharInfo != null) {
+                if(bitmapCharInfo.width() != width) {
+                    foundDifferent = true;
+                    break;
+                }
+            }
+        }
+
+        monospaced = !foundDifferent;
+    }
+
+    public boolean isMonospaced() {
+        return monospaced;
     }
 
     public final boolean isCharSupported(char c) {
@@ -63,7 +97,11 @@ public class BitmapFont {
         return charInfos[c];
     }
 
-    public final int getCharHeight() {
+    public final int getZeroCharWidth() {
+        return charInfos['0'].width();
+    }
+
+    public final int getZeroCharHeight() {
         return charInfos['0'].height();
     }
 
@@ -102,7 +140,7 @@ public class BitmapFont {
         BitmapFont.setDefaultBitmapFont(BitmapFont.loadBitmapFont(assetPath));
     }
 
-    public static BitmapFont loadBitmapFont(InputStream dataInputStream, InputStream pngInputStream) {
+    public static BitmapFont loadBitmapFont(InputStream dataInputStream, InputStream pngInputStream, String name) {
         BitmapCharInfo[] charInfos = new BitmapCharInfo[MAX_CHARS];
 
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(dataInputStream))) {
@@ -132,7 +170,7 @@ public class BitmapFont {
             throw new IllegalArgumentException(e);
         }
 
-        return new BitmapFont(D2D2.getTextureManager().loadTextureAtlas(pngInputStream), charInfos);
+        return new BitmapFont(name, D2D2.getTextureManager().loadTextureAtlas(pngInputStream), charInfos);
     }
 
     public static BitmapFont loadBitmapFont(String assetWithoutExtension) {
@@ -144,7 +182,8 @@ public class BitmapFont {
 
         BitmapFont bitmapFont = loadBitmapFont(
                 Assets.getAssetAsStream(BITMAP_FONTS_DIR + assetWithoutExtension + ".bmf"),
-                Assets.getAssetAsStream(BITMAP_FONTS_DIR + assetWithoutExtension + ".png")
+                Assets.getAssetAsStream(BITMAP_FONTS_DIR + assetWithoutExtension + ".png"),
+                assetWithoutExtension
         );
 
         cache.put(assetWithoutExtension, bitmapFont);

@@ -81,6 +81,7 @@ public class DebugPanel extends Container {
         add(bg);
 
         text = new BitmapText();
+        //text.setBitmapFont(BitmapFont.loadBitmapFont("open-sans/OpenSans-14-Regular"));
         text.setColor(Color.WHITE);
         text.setSize(width, height);
         add(text, 1, 1);

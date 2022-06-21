@@ -35,6 +35,7 @@ public class DragUtil {
             IContainer parent = displayObject.getParent();
             parent.remove(displayObject);
             parent.add(displayObject);
+            interactive.focus();
         });
 
         interactive.addEventListener(DragUtil.class + displayObject.getName(), InteractiveEvent.DRAG, event -> {
