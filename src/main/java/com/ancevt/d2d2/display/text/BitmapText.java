@@ -78,7 +78,7 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public BitmapText(String text) {
-        this(BitmapFont.getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, text);
+        this(BitmapFontManager.getInstance().getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, text);
     }
 
     public BitmapText(final BitmapFont bitmapFont) {
@@ -86,11 +86,11 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public BitmapText(float boundWidth, float boundHeight) {
-        this(BitmapFont.getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
+        this(BitmapFontManager.getInstance().getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
     }
 
     public BitmapText() {
-        this(BitmapFont.getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
+        this(BitmapFontManager.getInstance().getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
     }
 
     public BitmapText cloneBitmapText() {
@@ -482,20 +482,20 @@ public class BitmapText extends DisplayObject implements IColored {
                 ABCDEFGHIJKLMNOPQRSTUWYXYZ
                 abcdefghijklmnopqrstuvwxyz""";
 
-        BitmapText bitmapText = new BitmapText(BitmapFont.loadBitmapFont("terminus/Terminus-16-Bold"));
+        BitmapText bitmapText = new BitmapText(BitmapFontManager.getInstance().load("terminus/Terminus-16-Bold"));
         bitmapText.setMulticolorEnabled(true);
         bitmapText.setText(text);
         bitmapText.setScale(1, 1);
         stage.add(bitmapText, 100, 250);
 
-        BitmapText bitmapText1 = new BitmapText(BitmapFont.loadBitmapFont("terminus/Terminus-16-Bold"));
+        BitmapText bitmapText1 = new BitmapText(BitmapFontManager.getInstance().load("terminus/Terminus-16-Bold"));
         bitmapText1.setText("AUTOSIZE BITMAP TEXT");
         bitmapText1.setAutosize(true);
         bitmapText1.setScale(5, 5);
         stage.add(bitmapText1, 100, 450);
 
         FpsMeter fpsMeter = new FpsMeter();
-        fpsMeter.setBitmapFont(BitmapFont.loadBitmapFont("terminus/Terminus-16-Bold"));
+        fpsMeter.setBitmapFont(BitmapFontManager.getInstance().load("terminus/Terminus-16-Bold"));
         stage.add(fpsMeter);
 
         loop();

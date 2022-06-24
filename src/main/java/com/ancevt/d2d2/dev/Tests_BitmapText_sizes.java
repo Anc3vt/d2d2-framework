@@ -25,6 +25,7 @@ import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
+import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -72,7 +73,7 @@ public class Tests_BitmapText_sizes {
     }
 
     private static final BitmapText createBitmapText(String fontName) {
-        BitmapFont bitmapFont = BitmapFont.loadBitmapFont(fontName);
+        BitmapFont bitmapFont = BitmapFontManager.getInstance().load(fontName);
 
         BitmapText bitmapText = new BitmapText(bitmapFont);
         bitmapText.setMulticolorEnabled(true);

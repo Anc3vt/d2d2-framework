@@ -25,6 +25,7 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
+import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.text.BitmapText;
 
 public class Tests_BitmapText_cacheAsSprite {
@@ -42,7 +43,7 @@ public class Tests_BitmapText_cacheAsSprite {
                 """;
 
         //BitmapFont bitmapFont = BitmapFont.loadBitmapFont("fira-code/FiraCode-16-Regular");
-        BitmapFont bitmapFont = BitmapFont.loadBitmapFont("terminus/Terminus-16-Bold");
+        BitmapFont bitmapFont = BitmapFontManager.getInstance().load("terminus/Terminus-16-Bold");
 
         Color outlineColor = Color.BLACK;
 

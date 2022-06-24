@@ -35,7 +35,7 @@ public class FpsMeter extends BitmapText {
 	}
 
 	public FpsMeter() {
-		this(BitmapFont.getDefaultBitmapFont());
+		super();
 	}
 	
 	public final int getFramesPerSecond() {

@@ -22,7 +22,6 @@ import com.ancevt.d2d2.backend.D2D2Backend;
 import com.ancevt.d2d2.backend.VideoMode;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.InteractiveManager;
@@ -88,8 +87,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class LWJGLBackend implements D2D2Backend {
 
     private static final String DEMO_TEXTURE_DATA_INF_FILE = "d2d2-core-demo-texture-data.inf";
-
-    private static final String DEFAULT_BITMAP_FONT = "terminus/Terminus-12";
 
     private IRenderer renderer;
     long windowId;
@@ -369,8 +366,6 @@ public class LWJGLBackend implements D2D2Backend {
         GL.createCapabilities();
 
         glfwSwapInterval(1);
-
-        BitmapFont.setDefaultBitmapFont(BitmapFont.loadBitmapFont(DEFAULT_BITMAP_FONT));
 
         // TODO: remove loading demo texture data info from here
         D2D2.getTextureManager().loadTextureDataInfo(DEMO_TEXTURE_DATA_INF_FILE);

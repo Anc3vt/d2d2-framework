@@ -22,6 +22,7 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
+import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.text.BitmapText;
 
 public class Tests_BitmapFonts {
@@ -29,11 +30,9 @@ public class Tests_BitmapFonts {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, Tests_BitmapFonts.class.getName()));
 
-        BitmapFont font2 = BitmapFont.loadBitmapFont("PressStart2P.bmf");
+        BitmapFont font2 = BitmapFontManager.getInstance().load("PressStart2P");
         BitmapText bitmapText2 = new BitmapText(font2);
-        bitmapText2.setText("PRESSSTART.bmf`` алалала");
-
-        BitmapFont.setDefaultBitmapFont(font2);
+        bitmapText2.setText("PRESSSTART алалала");
 
         stage.add(bitmapText2, 0, 100);
         stage.add(new FpsMeter());

@@ -22,7 +22,7 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapFont;
+import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.text.BitmapText;
 
 public class Tests_BitmapFonts_sans {
@@ -48,7 +48,7 @@ public class Tests_BitmapFonts_sans {
 
     private static BitmapText createBitmapFont(String name) {
         BitmapText bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(BitmapFont.loadBitmapFont(name));
+        bitmapText.setBitmapFont(BitmapFontManager.getInstance().load(name));
 
         bitmapText.setText("""
                 #An inspired calligrapher can create pages of 

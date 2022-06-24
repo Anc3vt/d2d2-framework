@@ -24,7 +24,7 @@ import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapFont;
+import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.text.BitmapText;
 
 public class Tests_BitmapText_toSprite {
@@ -33,7 +33,7 @@ public class Tests_BitmapText_toSprite {
 
         stage.setBackgroundColor(Color.DARK_GRAY);
 
-        BitmapFont.getDefaultBitmapFont().setPaddingTop(-5);
+        BitmapFontManager.getInstance().getDefaultBitmapFont().setPaddingTop(-5);
 
         BitmapText bitmapText = new BitmapText();
         bitmapText.setMulticolorEnabled(true);

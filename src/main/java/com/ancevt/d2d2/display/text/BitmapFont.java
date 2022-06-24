@@ -17,25 +17,7 @@
  */
 package com.ancevt.d2d2.display.text;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.asset.Assets;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.debug.FpsMeter;
-import com.ancevt.d2d2.debug.StarletSpace;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
-
-import static com.ancevt.d2d2.D2D2.init;
-import static com.ancevt.d2d2.D2D2.loop;
-import static java.lang.Integer.parseInt;
 
 public class BitmapFont {
 
@@ -53,7 +35,7 @@ public class BitmapFont {
     private float paddingTop;
 
 
-    private BitmapFont(String name, TextureAtlas textureAtlas, BitmapCharInfo[] charInfos) {
+    BitmapFont(String name, TextureAtlas textureAtlas, BitmapCharInfo[] charInfos) {
         this.name = name;
         this.textureAtlas = textureAtlas;
         this.charInfos = charInfos;
@@ -124,86 +106,4 @@ public class BitmapFont {
                 '}';
     }
 
-    // ------------------- Loading stuff: ---------------------------------------------
-
-    private static final Map<String, BitmapFont> cache = new HashMap<>();
-
-    public static void setDefaultBitmapFont(final BitmapFont bitmapFont) {
-        defaultBitmapFont = bitmapFont;
-    }
-
-    public static BitmapFont getDefaultBitmapFont() {
-        return defaultBitmapFont;
-    }
-
-    public static void loadDefaultBitmapFont(String assetPath) {
-        BitmapFont.setDefaultBitmapFont(BitmapFont.loadBitmapFont(assetPath));
-    }
-
-    public static BitmapFont loadBitmapFont(InputStream dataInputStream, InputStream pngInputStream, String name) {
-        BitmapCharInfo[] charInfos = new BitmapCharInfo[MAX_CHARS];
-
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(dataInputStream))) {
-
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                StringTokenizer stringTokenizer = new StringTokenizer(line);
-                char c = line.charAt(0) == ' ' ? ' ' : stringTokenizer.nextToken().charAt(0);
-                charInfos[c] = new BitmapCharInfo(
-                        c,
-                        parseInt(stringTokenizer.nextToken()),
-                        parseInt(stringTokenizer.nextToken()),
-                        parseInt(stringTokenizer.nextToken()),
-                        parseInt(stringTokenizer.nextToken())
-                );
-            }
-
-            charInfos['\n'] = new BitmapCharInfo(
-                    '\n',
-                    charInfos[' '].x(),
-                    charInfos[' '].y(),
-                    0,
-                    charInfos[' '].height()
-            );
-
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        }
-
-        return new BitmapFont(name, D2D2.getTextureManager().loadTextureAtlas(pngInputStream), charInfos);
-    }
-
-    public static BitmapFont loadBitmapFont(String assetWithoutExtension) {
-        BitmapFont fromCache = cache.get(assetWithoutExtension);
-
-        if (fromCache != null) {
-            return fromCache;
-        }
-
-        BitmapFont bitmapFont = loadBitmapFont(
-                Assets.getAssetAsStream(BITMAP_FONTS_DIR + assetWithoutExtension + ".bmf"),
-                Assets.getAssetAsStream(BITMAP_FONTS_DIR + assetWithoutExtension + ".png"),
-                assetWithoutExtension
-        );
-
-        cache.put(assetWithoutExtension, bitmapFont);
-
-        return bitmapFont;
-    }
-
-    public static void main(String[] args) {
-        Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
-        StarletSpace.haveFun();
-
-        FpsMeter fpsMeter = new FpsMeter();
-
-        stage.add(fpsMeter);
-
-        BitmapText bitmapText = new BitmapText(BitmapFont.loadBitmapFont("terminus/Terminus-16-Bold"));
-        bitmapText.setMulticolorEnabled(true);
-        bitmapText.setText("#000Hello\n<FFFF00>world");
-        stage.add(bitmapText, 100, 250);
-
-        loop();
-    }
 }

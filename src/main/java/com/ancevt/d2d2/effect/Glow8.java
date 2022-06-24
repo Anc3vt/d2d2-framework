@@ -25,7 +25,7 @@ import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.ISprite;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapFont;
+import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.text.StandardBitmapFonts;
 
@@ -76,7 +76,7 @@ public class Glow8 extends Container {
         StarletSpace.haveFun();
         stage.setBackgroundColor(Color.WHITE);
 
-        BitmapText bitmapText = new BitmapText(BitmapFont.loadBitmapFont(StandardBitmapFonts.OPEN_SANS_28));
+        BitmapText bitmapText = new BitmapText(BitmapFontManager.getInstance().load(StandardBitmapFonts.OPEN_SANS_28));
         bitmapText.setAutosize(true);
 
         bitmapText.setText("#<FFFF00>This <FFFFFF>is a text i have no imagination");
