@@ -48,7 +48,7 @@ public class Tests_BitmapFonts_sans {
 
     private static BitmapText createBitmapFont(String name) {
         BitmapText bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(BitmapFontManager.getInstance().load(name));
+        bitmapText.setBitmapFont(BitmapFontManager.getInstance().loadBitmapFont(name));
 
         bitmapText.setText("""
                 #An inspired calligrapher can create pages of 

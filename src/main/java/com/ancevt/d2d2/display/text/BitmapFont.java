@@ -17,9 +17,11 @@
  */
 package com.ancevt.d2d2.display.text;
 
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.common.IDisposable;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 
-public class BitmapFont {
+public class BitmapFont implements IDisposable {
 
     private static final int MAX_CHARS = 65536;
 
@@ -33,6 +35,7 @@ public class BitmapFont {
     private final boolean monospaced;
 
     private float paddingTop;
+    private boolean disposed;
 
 
     BitmapFont(String name, TextureAtlas textureAtlas, BitmapCharInfo[] charInfos) {
@@ -106,4 +109,14 @@ public class BitmapFont {
                 '}';
     }
 
+    @Override
+    public void dispose() {
+        disposed = true;
+        D2D2.getTextureManager().unloadTextureAtlas(getTextureAtlas());
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return disposed;
+    }
 }

@@ -43,7 +43,7 @@ public class Tests_BitmapText_cacheAsSprite {
                 """;
 
         //BitmapFont bitmapFont = BitmapFont.loadBitmapFont("fira-code/FiraCode-16-Regular");
-        BitmapFont bitmapFont = BitmapFontManager.getInstance().load("terminus/Terminus-16-Bold");
+        BitmapFont bitmapFont = BitmapFontManager.getInstance().loadBitmapFont("terminus/Terminus-16-Bold");
 
         Color outlineColor = Color.BLACK;
 

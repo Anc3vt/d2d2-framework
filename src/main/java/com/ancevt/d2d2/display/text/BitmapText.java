@@ -482,20 +482,20 @@ public class BitmapText extends DisplayObject implements IColored {
                 ABCDEFGHIJKLMNOPQRSTUWYXYZ
                 abcdefghijklmnopqrstuvwxyz""";
 
-        BitmapText bitmapText = new BitmapText(BitmapFontManager.getInstance().load("terminus/Terminus-16-Bold"));
+        BitmapText bitmapText = new BitmapText(BitmapFontManager.getInstance().loadBitmapFont("terminus/Terminus-16-Bold"));
         bitmapText.setMulticolorEnabled(true);
         bitmapText.setText(text);
         bitmapText.setScale(1, 1);
         stage.add(bitmapText, 100, 250);
 
-        BitmapText bitmapText1 = new BitmapText(BitmapFontManager.getInstance().load("terminus/Terminus-16-Bold"));
+        BitmapText bitmapText1 = new BitmapText(BitmapFontManager.getInstance().loadBitmapFont("terminus/Terminus-16-Bold"));
         bitmapText1.setText("AUTOSIZE BITMAP TEXT");
         bitmapText1.setAutosize(true);
         bitmapText1.setScale(5, 5);
         stage.add(bitmapText1, 100, 450);
 
         FpsMeter fpsMeter = new FpsMeter();
-        fpsMeter.setBitmapFont(BitmapFontManager.getInstance().load("terminus/Terminus-16-Bold"));
+        fpsMeter.setBitmapFont(BitmapFontManager.getInstance().loadBitmapFont("terminus/Terminus-16-Bold"));
         stage.add(fpsMeter);
 
         loop();

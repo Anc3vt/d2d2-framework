@@ -73,7 +73,7 @@ public class Tests_BitmapText_sizes {
     }
 
     private static final BitmapText createBitmapText(String fontName) {
-        BitmapFont bitmapFont = BitmapFontManager.getInstance().load(fontName);
+        BitmapFont bitmapFont = BitmapFontManager.getInstance().loadBitmapFont(fontName);
 
         BitmapText bitmapText = new BitmapText(bitmapFont);
         bitmapText.setMulticolorEnabled(true);

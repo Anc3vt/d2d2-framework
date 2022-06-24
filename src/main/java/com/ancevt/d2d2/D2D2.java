@@ -20,6 +20,7 @@ package com.ancevt.d2d2;
 import com.ancevt.d2d2.backend.D2D2Backend;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.texture.TextureManager;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.input.Mouse;
@@ -88,6 +89,10 @@ public class D2D2 {
 
     public static TextureManager getTextureManager() {
         return textureManager;
+    }
+
+    public static BitmapFontManager getBitmapFontManager() {
+        return BitmapFontManager.getInstance();
     }
 
     public static void exit() {

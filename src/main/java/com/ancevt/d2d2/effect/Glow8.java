@@ -76,7 +76,7 @@ public class Glow8 extends Container {
         StarletSpace.haveFun();
         stage.setBackgroundColor(Color.WHITE);
 
-        BitmapText bitmapText = new BitmapText(BitmapFontManager.getInstance().load(StandardBitmapFonts.OPEN_SANS_28));
+        BitmapText bitmapText = new BitmapText(BitmapFontManager.getInstance().loadBitmapFont(StandardBitmapFonts.OPEN_SANS_28));
         bitmapText.setAutosize(true);
 
         bitmapText.setText("#<FFFF00>This <FFFFFF>is a text i have no imagination");

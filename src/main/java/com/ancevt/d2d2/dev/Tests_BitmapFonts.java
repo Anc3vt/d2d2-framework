@@ -30,7 +30,7 @@ public class Tests_BitmapFonts {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, Tests_BitmapFonts.class.getName()));
 
-        BitmapFont font2 = BitmapFontManager.getInstance().load("PressStart2P");
+        BitmapFont font2 = BitmapFontManager.getInstance().loadBitmapFont("PressStart2P");
         BitmapText bitmapText2 = new BitmapText(font2);
         bitmapText2.setText("PRESSSTART алалала");
 
