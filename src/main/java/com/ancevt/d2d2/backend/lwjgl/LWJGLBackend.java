@@ -22,6 +22,8 @@ import com.ancevt.d2d2.backend.D2D2Backend;
 import com.ancevt.d2d2.backend.VideoMode;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.text.BitmapFont;
+import com.ancevt.d2d2.display.text.BitmapFontGenerator;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.InteractiveManager;
@@ -37,11 +39,27 @@ import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL20;
 
+import javax.imageio.ImageIO;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ancevt.d2d2.backend.lwjgl.OSDetector.isUnix;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
@@ -483,4 +501,178 @@ public class LWJGLBackend implements D2D2Backend {
         return windowY;
     }
 
+    @SneakyThrows
+    @Override
+    public BitmapFont generateBitmapFont(BitmapFontGenerator bitmapFontGenerator) {
+
+        final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+        InputStream inputStream = bitmapFontGenerator.getTtfInputStream() != null ?
+                bitmapFontGenerator.getTtfInputStream() : new FileInputStream(bitmapFontGenerator.getTtfPath().toFile());
+
+        Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+        String fontName = font.getName();
+        ge.registerFont(font);
+
+        boolean bold = bitmapFontGenerator.isBold();
+        boolean italic = bitmapFontGenerator.isItalic();
+        int fontSize = bitmapFontGenerator.getFontSize();
+        int fontStyle = Font.PLAIN | (bold ? Font.BOLD : Font.PLAIN) | (italic ? Font.ITALIC : Font.PLAIN);
+
+        font = new Font(fontName, fontStyle, fontSize);
+
+
+        BufferedImage bufferedImage = new BufferedImage(bitmapFontGenerator.getAtlasWidth(), bitmapFontGenerator.getAtlasHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = bufferedImage.createGraphics();
+
+        if (bitmapFontGenerator.isFractionalMetricsOn()) {
+            g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        }
+
+        if (bitmapFontGenerator.isTextAntialiasOn()) {
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        }
+
+        if (bitmapFontGenerator.isTextAntialiasGasp()) {
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+        }
+
+        if (bitmapFontGenerator.isTextAntialiasLcdHrgb()) {
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        }
+
+        if (bitmapFontGenerator.isTextAntialiasLcdHbgr()) {
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
+        }
+
+        if (bitmapFontGenerator.isTextAntialiasLcdVrgb()) {
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VRGB);
+        }
+
+        if (bitmapFontGenerator.isTextAntialiasLcdVbgr()) {
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VBGR);
+        }
+
+        g2.setColor(Color.WHITE);
+
+        List<CharInfo> charInfos = new ArrayList<>();
+
+        String string = bitmapFontGenerator.getCharSourceString();
+
+        int x = 0, y = font.getSize();
+
+        for (int i = 0; i < string.length(); i++) {
+
+            char c = string.charAt(i);
+
+            FontMetrics fontMetrics = g2.getFontMetrics(font);
+            int width = fontMetrics.charWidth(c);
+            int height = fontMetrics.getHeight();
+            int toY = fontMetrics.getDescent();
+
+            g2.setFont(font);
+            g2.drawString(String.valueOf(c), x, y);
+
+            CharInfo charInfo = new CharInfo();
+            charInfo.character = c;
+            charInfo.x = x;
+            charInfo.y = y - height + toY;
+            charInfo.width = width;
+            charInfo.height = height;
+
+            charInfos.add(charInfo);
+
+            x += width + bitmapFontGenerator.getSpacingX();
+
+            if (x >= bufferedImage.getWidth() - font.getSize()) {
+                y += height + bitmapFontGenerator.getSpacingY();
+                x = 0;
+            }
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        charInfos.forEach(charInfo -> {
+            stringBuilder.append(charInfo.character);
+            stringBuilder.append(' ');
+            stringBuilder.append(charInfo.x);
+            stringBuilder.append(' ');
+            stringBuilder.append(charInfo.y);
+            stringBuilder.append(' ');
+            stringBuilder.append(charInfo.width);
+            stringBuilder.append(' ');
+            stringBuilder.append(charInfo.height);
+            stringBuilder.append('\n');
+        });
+
+        byte[] charsDataBytes = stringBuilder.toString().getBytes(StandardCharsets.UTF_8);
+
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "png", pngOutputStream);
+
+        ImageIO.write(bufferedImage, "png", new File("/home/ancevt/tmp/font.png"));
+
+        byte[] pngDataBytes = pngOutputStream.toByteArray();
+
+        return D2D2.getBitmapFontManager().loadBitmapFont(
+                new ByteArrayInputStream(charsDataBytes),
+                new ByteArrayInputStream(pngDataBytes),
+                bitmapFontGenerator.getName()
+        );
+    }
+
+    private static class CharInfo {
+        public char character;
+        public int x;
+        public int y;
+        public int width;
+        public int height;
+
+        @Override
+        public String toString() {
+            return "CharInfo{" +
+                    "character=" + character +
+                    ", x=" + x +
+                    ", y=" + y +
+                    ", width=" + width +
+                    ", height=" + height +
+                    '}';
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

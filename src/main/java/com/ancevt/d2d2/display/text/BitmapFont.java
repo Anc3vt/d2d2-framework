@@ -105,6 +105,7 @@ public class BitmapFont implements IDisposable {
     @Override
     public String toString() {
         return "BitmapFont{" +
+                "name = " + name +
                 ", textureAtlas=" + textureAtlas +
                 '}';
     }
