@@ -72,6 +72,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOD_CONTROL;
 import static org.lwjgl.glfw.GLFW.GLFW_MOD_SHIFT;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
 import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
@@ -342,8 +343,9 @@ public class LWJGLBackend implements D2D2Backend {
         });
 
         glfwSetKeyCallback(windowId, (window, key, scancode, action, mods) -> {
-            if (action == GLFW_PRESS) {
-                stage.dispatchEvent(InputEvent.builder()
+
+            switch (action) {
+                case GLFW_PRESS -> stage.dispatchEvent(InputEvent.builder()
                         .type(InputEvent.KEY_DOWN)
                         .x(Mouse.getX())
                         .y(Mouse.getY())
@@ -354,8 +356,20 @@ public class LWJGLBackend implements D2D2Backend {
                         .control((mods & GLFW_MOD_CONTROL) != 0)
                         .alt((mods & GLFW_MOD_ALT) != 0)
                         .build());
-            } else if (action == GLFW_RELEASE) {
-                stage.dispatchEvent(InputEvent.builder()
+
+                case GLFW_REPEAT -> stage.dispatchEvent(InputEvent.builder()
+                        .type(InputEvent.KEY_REPEAT)
+                        .x(Mouse.getX())
+                        .y(Mouse.getY())
+                        .keyCode(key)
+                        .keyChar((char) key)
+                        .drag(isDown)
+                        .shift((mods & GLFW_MOD_SHIFT) != 0)
+                        .control((mods & GLFW_MOD_CONTROL) != 0)
+                        .alt((mods & GLFW_MOD_ALT) != 0)
+                        .build());
+
+                case GLFW_RELEASE -> stage.dispatchEvent(InputEvent.builder()
                         .type(InputEvent.KEY_UP)
                         .x(Mouse.getX())
                         .y(Mouse.getY())

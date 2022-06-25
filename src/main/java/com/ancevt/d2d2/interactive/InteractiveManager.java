@@ -31,6 +31,7 @@ import static com.ancevt.d2d2.event.InteractiveEvent.DOWN;
 import static com.ancevt.d2d2.event.InteractiveEvent.DRAG;
 import static com.ancevt.d2d2.event.InteractiveEvent.HOVER;
 import static com.ancevt.d2d2.event.InteractiveEvent.KEY_DOWN;
+import static com.ancevt.d2d2.event.InteractiveEvent.KEY_REPEAT;
 import static com.ancevt.d2d2.event.InteractiveEvent.KEY_TYPE;
 import static com.ancevt.d2d2.event.InteractiveEvent.KEY_UP;
 import static com.ancevt.d2d2.event.InteractiveEvent.OUT;
@@ -68,6 +69,21 @@ public class InteractiveManager {
             if (focused != null) {
                 dispatch(focused, InteractiveEvent.builder()
                         .type(KEY_DOWN)
+                        .keyChar(e.getKeyChar())
+                        .keyCode(e.getKeyCode())
+                        .alt(e.isAlt())
+                        .control(e.isControl())
+                        .shift(e.isShift())
+                        .build());
+            }
+        });
+
+        stage().addEventListener(InputEvent.KEY_REPEAT, event -> {
+            var e = (InputEvent) event;
+            Interactive focused = getFocused();
+            if (focused != null) {
+                dispatch(focused, InteractiveEvent.builder()
+                        .type(KEY_REPEAT)
                         .keyChar(e.getKeyChar())
                         .keyCode(e.getKeyCode())
                         .alt(e.isAlt())

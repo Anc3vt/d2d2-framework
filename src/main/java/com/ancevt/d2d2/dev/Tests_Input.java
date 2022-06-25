@@ -41,6 +41,7 @@ public class Tests_Input {
         stage.addEventListener(InputEvent.KEY_DOWN, Tests_Input::keyDown);
         stage.addEventListener(InputEvent.KEY_UP, Tests_Input::keyUp);
         stage.addEventListener(InputEvent.MOUSE_DOWN, Tests_Input::mouseDown);
+        stage.addEventListener(InputEvent.KEY_REPEAT, Tests_Input::keyRepeat);
         stage.addEventListener(InputEvent.MOUSE_MOVE, Tests_Input::mouseMove);
         stage.addEventListener(InputEvent.MOUSE_WHEEL, Tests_Input::mouseWheel);
 
@@ -56,6 +57,12 @@ public class Tests_Input {
         stage.add(debugGrid);
 
         D2D2.loop();
+    }
+
+    private static void keyRepeat(Event event) {
+        var e = (InputEvent) event;
+        System.out.println("repeat: " + e.getKeyChar());
+
     }
 
     private static void mouseDown(Event event) {

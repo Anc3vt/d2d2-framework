@@ -51,6 +51,8 @@ public class Tests_InteractiveContainer {
             addEventListener(this, InteractiveEvent.UP, this::this_up);
             addEventListener(this, InteractiveEvent.HOVER, this::this_hover);
             addEventListener(this, InteractiveEvent.OUT, this::this_out);
+            addEventListener(this, InteractiveEvent.KEY_DOWN, this::this_keyDown);
+            addEventListener(this, InteractiveEvent.KEY_REPEAT, this::this_keyRepeat);
 
             InteractiveContainer tb = new InteractiveContainer(50, 50);
             tb.addEventListener(InteractiveEvent.DOWN, event -> {
@@ -66,6 +68,16 @@ public class Tests_InteractiveContainer {
 
             });
             add(tb);
+        }
+
+        private void this_keyDown(Event event) {
+            var e = (InteractiveEvent) event;
+            System.out.println("key down: " + e.getKeyChar());
+        }
+
+        private void this_keyRepeat(Event event) {
+            var e = (InteractiveEvent) event;
+            System.out.println("key repeat: " + e.getKeyChar());
         }
 
         private void this_up(Event event) {

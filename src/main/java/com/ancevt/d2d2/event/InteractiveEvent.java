@@ -36,6 +36,7 @@ public class InteractiveEvent extends Event {
     public static final String FOCUS_IN = "interactiveFocusIn";
     public static final String FOCUS_OUT = "interactiveFocusOut";
     public static final String KEY_DOWN = "interactiveKeyDown";
+    public static final String KEY_REPEAT = "interactiveKeyRepeat";
     public static final String KEY_UP = "interactiveKeyUp";
     public static final String KEY_TYPE = "interactiveKeyType";
 

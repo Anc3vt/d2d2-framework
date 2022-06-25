@@ -34,6 +34,7 @@ public class InputEvent extends Event {
     public static final String KEY_DOWN = "keyDown";
     public static final String KEY_UP = "keyUp";
     public static final String KEY_TYPE = "keyType";
+    public static final String KEY_REPEAT = "keyRepeat";
 
     private final int x;
     private final int y;
