@@ -175,6 +175,10 @@ public class BitmapText extends DisplayObject implements IColored {
         return autosize;
     }
 
+    public float computeTextWidth(String text) {
+        return bitmapFont.computeTextWidth(text, getSpacing());
+    }
+
     public float getTextWidth() {
         if (isEmpty()) return 0;
 

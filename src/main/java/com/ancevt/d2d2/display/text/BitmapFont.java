@@ -37,7 +37,6 @@ public class BitmapFont implements IDisposable {
     private float paddingTop;
     private boolean disposed;
 
-
     BitmapFont(String name, TextureAtlas textureAtlas, BitmapCharInfo[] charInfos) {
         this.name = name;
         this.textureAtlas = textureAtlas;
@@ -59,8 +58,8 @@ public class BitmapFont implements IDisposable {
         boolean foundDifferent = false;
 
         for (BitmapCharInfo bitmapCharInfo : charInfosToCheck) {
-            if(bitmapCharInfo != null) {
-                if(bitmapCharInfo.width() != width) {
+            if (bitmapCharInfo != null) {
+                if (bitmapCharInfo.width() != width) {
                     foundDifferent = true;
                     break;
                 }
@@ -68,6 +67,22 @@ public class BitmapFont implements IDisposable {
         }
 
         monospaced = !foundDifferent;
+    }
+
+    public float computeTextWidth(String text, float spacing) {
+        float sum = 0.0f;
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+
+            BitmapCharInfo bitmapCharInfo = charInfos[c];
+            if (bitmapCharInfo != null) {
+                sum += bitmapCharInfo.width() + spacing;
+            }
+
+        }
+
+        return sum;
     }
 
     public boolean isMonospaced() {
