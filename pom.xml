@@ -70,7 +70,7 @@
         <args.version>2.1.0</args.version>
         <local-storage.version>1.1.2</local-storage.version>
         <ancevt-commons.version>1.0.0.4</ancevt-commons.version>
-        <texttable.version>0.0.1</texttable.version>
+        <texttable.version>0.0.2</texttable.version>
 
         <!-- Log -->
         <logback.version>1.2.11</logback.version>
