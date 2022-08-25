@@ -320,7 +320,7 @@ public class LWJGLRenderer implements IRenderer {
         float lineSpacing = bitmapText.getLineSpacing();
         float spacing = bitmapText.getSpacing();
 
-        float boundWidth = bitmapText.getWidth() * scaleX + bitmapFont.getCharInfo('0').width() * 2;
+        float boundWidth = bitmapText.getWidth() * scaleX + bitmapFont.getCharInfo('0').width() * 3;
         float boundHeight = bitmapText.getHeight() * scaleY;
 
         float drawX = 0;
