@@ -98,14 +98,7 @@ public class LWJGLRenderer implements IRenderer {
 
         IDisplayObject cursor = D2D2.getCursor();
         if (cursor != null) {
-            renderDisplayObject(cursor,
-                    0,
-                    cursor.getX(),
-                    cursor.getY(),
-                    cursor.getScaleX(),
-                    cursor.getScaleY(),
-                    cursor.getRotation(),
-                    cursor.getAlpha());
+            renderDisplayObject(cursor, 0, 0, 0, 1, 1, 0, 1);
         }
 
         textureEngine.unloadTextureAtlases();
