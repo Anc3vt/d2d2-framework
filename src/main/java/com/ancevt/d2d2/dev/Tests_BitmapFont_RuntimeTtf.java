@@ -19,7 +19,9 @@ package com.ancevt.d2d2.dev;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapFontGenerator;
@@ -34,16 +36,28 @@ public class Tests_BitmapFont_RuntimeTtf {
         BitmapFont bitmapFont = new BitmapFontGenerator()
                 .ttfPath("/home/ancevt/.fonts/Roboto/RobotoMono-Italic.ttf")
                 .fontSize(28)
+                .spacingY(10)
+                .offsetY(3)
                 .generate();
 
+
         BitmapText bitmapText = new BitmapText(bitmapFont);
-        bitmapText.setAutosize(true);
+        //bitmapText.setAutosize(true);
+        bitmapText.setSize(200, 200);
+
         bitmapText.setText("""
                 Copyright (C) 2022 the original author or authors.
                 See the notice.md file distributed with this work for additional
                 information regarding copyright ownership.""");
 
+
+        PlainRect plainRect = new PlainRect(Color.BLACK);
+        plainRect.setSize(bitmapText.getWidth(), bitmapText.getHeight());
+
+        stage.add(plainRect, 100, 250);
         stage.add(bitmapText, 100, 250);
+
+
 
         D2D2.loop();
     }
