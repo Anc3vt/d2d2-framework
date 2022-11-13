@@ -590,9 +590,9 @@ public class LWJGLBackend implements D2D2Backend {
             CharInfo charInfo = new CharInfo();
             charInfo.character = c;
             charInfo.x = x;
-            charInfo.y = y - height + toY;
+            charInfo.y = y - height + toY + bitmapFontGenerator.getOffsetY();
             charInfo.width = width;
-            charInfo.height = height;
+            charInfo.height = height + bitmapFontGenerator.getOffsetY();
 
             charInfos.add(charInfo);
 

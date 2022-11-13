@@ -48,6 +48,7 @@ public class BitmapFontGenerator {
     private int spacingY = DEFAULT_SPACING_Y;
     private boolean bold;
     private boolean italic;
+    private int offsetY;
     private String name;
 
     private String charSourceString = " !\"#№$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў";
@@ -127,6 +128,10 @@ public class BitmapFontGenerator {
         return charSourceString;
     }
 
+    public int getOffsetY() {
+        return offsetY;
+    }
+
     public BitmapFontGenerator charSourceString(String charSourceString) {
         this.charSourceString = charSourceString;
         return this;
@@ -139,6 +144,11 @@ public class BitmapFontGenerator {
 
     public BitmapFontGenerator bold(boolean bold) {
         this.bold = bold;
+        return this;
+    }
+
+    public BitmapFontGenerator offsetY(int offsetY) {
+        this.offsetY = offsetY;
         return this;
     }
 
