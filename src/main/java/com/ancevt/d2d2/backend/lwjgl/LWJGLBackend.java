@@ -132,6 +132,7 @@ public class LWJGLBackend implements D2D2Backend {
     private long monitor;
     private VideoMode previousVideoMode;
     private boolean stopped;
+    private boolean borderless;
 
     public LWJGLBackend(int width, int height, String title) {
         this.width = width;
@@ -387,8 +388,8 @@ public class LWJGLBackend implements D2D2Backend {
 
         glfwSetWindowPos(
                 windowId,
-                (videoMode.width() - width) / 2,
-                (videoMode.height() - height) / 2
+                windowX = (videoMode.width() - width) / 2,
+                windowY = (videoMode.height() - height) / 2
         );
 
         videoModeWidth = videoMode.width();
@@ -416,6 +417,18 @@ public class LWJGLBackend implements D2D2Backend {
                 .build();
 
         return windowId;
+    }
+
+    @Override
+    public void setBorderless(boolean borderless) {
+        this.borderless = borderless;
+        glfwWindowHint(GLFW_DECORATED, borderless ? GLFW_FALSE : GLFW_TRUE);
+        System.out.println(borderless);
+    }
+
+    @Override
+    public boolean isBorderless() {
+        return borderless;
     }
 
     @Override

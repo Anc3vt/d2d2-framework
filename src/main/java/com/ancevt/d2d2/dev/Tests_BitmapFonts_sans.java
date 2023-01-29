@@ -34,7 +34,6 @@ public class Tests_BitmapFonts_sans {
         stage.add(createBitmapFont("open-sans/OpenSans-24-Regular"), 100, 250);
         stage.add(createBitmapFont("fira-code/FiraCode-24-Regular"), 100, 400);
 
-
         DebugPanel.setEnabled(true);
         DebugPanel.show("test", """
                 #An inspired calligrapher can create pages of 

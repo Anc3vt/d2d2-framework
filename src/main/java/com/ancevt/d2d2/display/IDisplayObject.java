@@ -85,6 +85,10 @@ public interface IDisplayObject extends IEventDispatcher {
 
     float getHeight();
 
+    float getScaledWidth();
+
+    float getScaledHeight();
+
     float getAbsoluteX();
 
     float getAbsoluteY();

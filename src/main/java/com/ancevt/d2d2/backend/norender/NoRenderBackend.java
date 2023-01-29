@@ -169,4 +169,14 @@ public class NoRenderBackend implements D2D2Backend {
     public BitmapFont generateBitmapFont(BitmapFontGenerator bitmapFontGenerator) {
         return D2D2.getBitmapFontManager().getDefaultBitmapFont();
     }
+
+    @Override
+    public void setBorderless(boolean borderless) {
+
+    }
+
+    @Override
+    public boolean isBorderless() {
+        return false;
+    }
 }

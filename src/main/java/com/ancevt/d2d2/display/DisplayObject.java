@@ -219,6 +219,16 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
     }
 
     @Override
+    public float getScaledWidth() {
+        return getWidth() * getScaleX();
+    }
+
+    @Override
+    public float getScaledHeight() {
+        return getHeight() * getScaleY();
+    }
+
+    @Override
     public float getAbsoluteX() {
         return DisplayObjectAbsoluteComputer.getAbsoluteX(this);
     }

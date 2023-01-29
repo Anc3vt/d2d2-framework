@@ -74,4 +74,7 @@ public interface D2D2Backend {
 
     BitmapFont generateBitmapFont(BitmapFontGenerator bitmapFontGenerator);
 
+    void setBorderless(boolean borderless);
+
+    boolean isBorderless();
 }
