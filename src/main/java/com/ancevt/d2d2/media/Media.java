@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2023 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -57,7 +57,7 @@ public interface Media {
 
     static void main(String[] args) {
         while (true) {
-            Media media = Media.lookupSound("/home/ancevt/workspace/ancevt/d2d2/d2d2-world-arena-server/data/mapkits/builtin-mapkit/character-damage.ogg");
+            Media media = Media.lookupSound("/home/ancevt/java/workspace/d2d2-core/src/main/resources/assets/sound/jump.mp3");
             media.play();
             new Lock().lock(250, TimeUnit.MILLISECONDS);
         }

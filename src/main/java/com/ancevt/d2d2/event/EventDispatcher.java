@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2023 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -49,15 +49,16 @@ public class EventDispatcher implements IEventDispatcher {
 
     private void addEventListenerByKey(Object key, String type, EventListener listener) {
         addEventListener(type, listener);
-        if(keysTypeListenerMap.containsKey(key)) {
-            throw new IllegalStateException("key '%s' is already exists".formatted(key));
+        if (keysTypeListenerMap.containsKey(key)) {
+            removeEventListener(key, type);
+            //throw new IllegalStateException("key '%s' is already exists".formatted(key));
         }
         keysTypeListenerMap.put(key, Pair.of(type, listener));
     }
 
     @Override
-    public void addEventListener(@NotNull Object owner, String type, EventListener listener) {
-        addEventListenerByKey(owner.hashCode() + type, type, listener);
+    public void addEventListener(@NotNull Object key, String type, EventListener listener) {
+        addEventListenerByKey(key.hashCode() + type, type, listener);
     }
 
     private @NotNull List<EventListener> createList() {
@@ -80,8 +81,8 @@ public class EventDispatcher implements IEventDispatcher {
     }
 
     @Override
-    public void removeEventListener(@NotNull Object owner, String type) {
-        removeEventListenerByKey(owner.hashCode() + type);
+    public void removeEventListener(@NotNull Object key, String type) {
+        removeEventListenerByKey(key.hashCode() + type);
     }
 
     @Override

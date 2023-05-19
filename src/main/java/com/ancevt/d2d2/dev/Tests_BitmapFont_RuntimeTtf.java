@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2023 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -34,8 +34,8 @@ public class Tests_BitmapFont_RuntimeTtf {
         StarletSpace.haveFun();
 
         BitmapFont bitmapFont = new BitmapFontGenerator()
-                .ttfPath("/home/ancevt/.fonts/Roboto/RobotoMono-Italic.ttf")
-                .fontSize(28)
+                .ttfPath("/home/ancevt/.fonts/Quicksand-Medium.ttf")
+                .fontSize(14)
                 .spacingY(10)
                 .offsetY(3)
                 .generate();

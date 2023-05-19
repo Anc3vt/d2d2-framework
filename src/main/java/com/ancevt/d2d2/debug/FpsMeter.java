@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2023 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -32,10 +32,12 @@ public class FpsMeter extends BitmapText {
 		super(font);
 		setName(getClass().getSimpleName() + displayObjectId());
 		addEventListener(Event.EACH_FRAME, this::eachFrame);
+
 	}
 
 	public FpsMeter() {
 		super();
+		addEventListener(Event.EACH_FRAME, this::eachFrame);
 	}
 	
 	public final int getFramesPerSecond() {
@@ -43,7 +45,6 @@ public class FpsMeter extends BitmapText {
 	}
 
 	public void eachFrame(Event event) {
-
 		frameCounter++;
 		final long time2 = System.currentTimeMillis();
 
