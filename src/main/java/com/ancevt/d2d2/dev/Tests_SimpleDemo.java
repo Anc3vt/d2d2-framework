@@ -19,6 +19,7 @@ package com.ancevt.d2d2.dev;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
@@ -49,6 +50,9 @@ public class Tests_SimpleDemo {
             sprite.moveX(1); // двигаем спрайт на 1 пиксель право по X
             sprite.rotate(1); // вращаем спрайт на 1 градус
         });
+
+
+        stage.add(new FpsMeter());
 
         // это запуск мейн-лупа, считай запуск движка, все остальное на событиях (например ввод с клавиатуры)
         D2D2.loop();

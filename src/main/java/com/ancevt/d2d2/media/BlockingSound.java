@@ -43,7 +43,9 @@ public class BlockingSound implements Media {
     @SneakyThrows
     public BlockingSound(String path) {
         byteArrayOutputStream = new ByteArrayOutputStream();
-        byteArrayOutputStream.write(new FileInputStream(slashSafe(path)).readAllBytes());
+        try(FileInputStream is = new FileInputStream(slashSafe(path))) {
+            byteArrayOutputStream.write(is.readAllBytes());
+        }
     }
 
     @Override
@@ -108,6 +110,11 @@ public class BlockingSound implements Media {
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    @Override
+    public void asyncPlay() {
+        Async.run(this::play);
     }
 
     @Contract(" -> new")

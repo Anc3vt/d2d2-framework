@@ -30,6 +30,7 @@ public interface Media {
     Map<String, Media> medias = new HashMap<>();
 
     void play();
+    void asyncPlay();
     void stop();
 
     void setVolume(float vaolume);

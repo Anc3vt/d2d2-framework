@@ -191,10 +191,14 @@ public class DebugPanel extends Container {
 
     private static LocalStorage getLocalStorage() {
         if (localStorage == null) {
-            localStorage = new LocalStorageBuilder("debug-panel.ls", FileLocalStorage.class)
-                    .storageId("d2d2-debug-panel-" + ApplicationMainClassNameExtractor.get())
-                    .saveOnWrite(true)
-                    .build();
+            try {
+                localStorage = LocalStorageBuilder.builder(FileLocalStorage.class, "debug-panel.ls")
+                        .storageId("d2d2-debug-panel-" + ApplicationMainClassNameExtractor.get())
+                        .saveOnWrite(true)
+                        .build();
+            } catch (ApplicationMainClassNameExtractor.MainClassNameExtractorException e) {
+                throw new RuntimeException(e);
+            }
         }
         return localStorage;
     }
@@ -291,7 +295,11 @@ public class DebugPanel extends Container {
             });
         }
 
-        System.out.println(ApplicationMainClassNameExtractor.get());
+        try {
+            System.out.println(ApplicationMainClassNameExtractor.get());
+        } catch (ApplicationMainClassNameExtractor.MainClassNameExtractorException e) {
+            throw new RuntimeException(e);
+        }
 
 
         D2D2.loop();

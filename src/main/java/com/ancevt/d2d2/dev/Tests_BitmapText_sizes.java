@@ -21,6 +21,7 @@ import com.ancevt.commons.concurrent.Async;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
@@ -68,6 +69,8 @@ public class Tests_BitmapText_sizes {
             System.out.println(InteractiveManager.getInstance().getFocused());
             return 1;
         });
+
+        stage.add(new FpsMeter());
 
         D2D2.loop();
     }

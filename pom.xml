@@ -68,9 +68,8 @@
 
         <!-- Ancevt -->
         <args.version>2.1.0</args.version>
-        <local-storage.version>1.1.2</local-storage.version>
-        <ancevt-commons.version>1.0.0.4</ancevt-commons.version>
-        <texttable.version>0.0.2</texttable.version>
+        <local-storage.version>1.1.5</local-storage.version>
+        <ancevt-commons.version>1.0.0.7-SNAPSHOT</ancevt-commons.version>
 
         <!-- Log -->
         <logback.version>1.2.11</logback.version>
@@ -141,7 +140,7 @@
         <dependency>
             <groupId>com.ancevt.util</groupId>
             <artifactId>commands</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
 
         <!-- Sound -->
@@ -294,12 +293,6 @@
             <groupId>org.lwjgl.lwjgl</groupId>
             <artifactId>lwjgl_util</artifactId>
             <version>${lwjgl_util.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ancevt.util</groupId>
-            <artifactId>texttable</artifactId>
-            <version>${texttable.version}</version>
         </dependency>
 
         <dependency>
