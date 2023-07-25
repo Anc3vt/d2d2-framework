@@ -48,11 +48,11 @@ public class EventDispatcher implements IEventDispatcher {
     }
 
     private void addEventListenerByKey(Object key, String type, EventListener listener) {
-        addEventListener(type, listener);
         if (keysTypeListenerMap.containsKey(key)) {
-            removeEventListener(key, type);
+            removeEventListenerByKey(key);
             //throw new IllegalStateException("key '%s' is already exists".formatted(key));
         }
+        addEventListener(type, listener);
         keysTypeListenerMap.put(key, Pair.of(type, listener));
     }
 
