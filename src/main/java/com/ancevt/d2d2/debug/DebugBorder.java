@@ -18,12 +18,12 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Resizable;
-import com.ancevt.d2d2.event.Event;
 
 public class DebugBorder extends Container implements Resizable, IColored {
 	

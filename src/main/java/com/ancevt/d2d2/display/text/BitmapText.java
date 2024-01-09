@@ -18,21 +18,19 @@
 package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ancevt.d2d2.D2D2.init;
-import static com.ancevt.d2d2.D2D2.loop;
-import static com.ancevt.d2d2.debug.StarletSpace.haveFun;
 import static java.lang.Integer.parseInt;
 
 public class BitmapText extends DisplayObject implements IColored {
@@ -474,8 +472,8 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public static void main(String[] args) {
-        Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
-        haveFun();
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        StarletSpace.haveFun();
 
         stage.setBackgroundColor(Color.GRAY);
 
@@ -502,7 +500,7 @@ public class BitmapText extends DisplayObject implements IColored {
         fpsMeter.setBitmapFont(BitmapFontManager.getInstance().loadBitmapFont("terminus/Terminus-16-Bold"));
         stage.add(fpsMeter);
 
-        loop();
+        D2D2.loop();
     }
 
 

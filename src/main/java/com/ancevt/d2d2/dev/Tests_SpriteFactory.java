@@ -17,6 +17,9 @@
  */
 package com.ancevt.d2d2.dev;
 
+import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.EventListener;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.FramedSprite;
@@ -24,8 +27,6 @@ import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.EventListener;
 
 import java.util.Arrays;
 
@@ -80,6 +81,10 @@ public class Tests_SpriteFactory {
             });
         }
 
+        FpsMeter fpsMeter = new FpsMeter();
+        fpsMeter.setScale(3.0f, 3.0f);
+
+        stage.add(fpsMeter);
 
         D2D2.loop();
     }

@@ -18,18 +18,19 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.input.KeyCode;
+import com.ancevt.d2d2.input.MouseButton;
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 import com.ancevt.localstorage.FileLocalStorage;
 import com.ancevt.localstorage.LocalStorage;
@@ -42,8 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
-
-import static com.ancevt.d2d2.input.KeyCode.isShift;
 
 public class DebugPanel extends Container {
 
@@ -127,14 +126,14 @@ public class DebugPanel extends Container {
 
     private void root_keyDown(Event event) {
         var e = (InputEvent) event;
-        if (isShift(e.getKeyCode())) {
+        if (KeyCode.isShift(e.getKeyCode())) {
             shiftDown = true;
         }
     }
 
     private void root_keyUp(Event event) {
         var e = (InputEvent) event;
-        if (isShift(e.getKeyCode())) {
+        if (KeyCode.isShift(e.getKeyCode())) {
             shiftDown = false;
         }
     }

@@ -24,7 +24,6 @@ import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
-import com.ancevt.d2d2.input.Mouse;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -17,15 +17,15 @@
  */
 package com.ancevt.d2d2.dev;
 
+import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.event.TextureUrlLoaderEvent;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.display.texture.TextureUrlLoader;
-import com.ancevt.d2d2.event.TextureUrlLoaderEvent;
 
 public class Tests_TextureAtlasWebLoader {
 

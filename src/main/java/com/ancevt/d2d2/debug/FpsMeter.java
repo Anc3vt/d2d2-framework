@@ -17,10 +17,10 @@
  */
 package com.ancevt.d2d2.debug;
 
+import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
-import com.ancevt.d2d2.event.Event;
 
 public class FpsMeter extends BitmapText {
 

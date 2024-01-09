@@ -17,6 +17,7 @@
  */
 package com.ancevt.d2d2.interactive;
 
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -25,18 +26,6 @@ import com.ancevt.d2d2.input.MouseButton;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import static com.ancevt.d2d2.D2D2.stage;
-import static com.ancevt.d2d2.event.InteractiveEvent.DOWN;
-import static com.ancevt.d2d2.event.InteractiveEvent.DRAG;
-import static com.ancevt.d2d2.event.InteractiveEvent.HOVER;
-import static com.ancevt.d2d2.event.InteractiveEvent.KEY_DOWN;
-import static com.ancevt.d2d2.event.InteractiveEvent.KEY_REPEAT;
-import static com.ancevt.d2d2.event.InteractiveEvent.KEY_TYPE;
-import static com.ancevt.d2d2.event.InteractiveEvent.KEY_UP;
-import static com.ancevt.d2d2.event.InteractiveEvent.OUT;
-import static com.ancevt.d2d2.event.InteractiveEvent.UP;
-import static com.ancevt.d2d2.event.InteractiveEvent.WHEEL;
 
 public class InteractiveManager {
 
@@ -63,12 +52,12 @@ public class InteractiveManager {
         interactiveList = new CopyOnWriteArrayList<>();
         focusedInteractiveIndex = -1;
 
-        stage().addEventListener(InputEvent.KEY_DOWN, event -> {
+        D2D2.stage().addEventListener(InputEvent.KEY_DOWN, event -> {
             var e = (InputEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
                 dispatch(focused, InteractiveEvent.builder()
-                        .type(KEY_DOWN)
+                        .type(InteractiveEvent.KEY_DOWN)
                         .keyChar(e.getKeyChar())
                         .keyCode(e.getKeyCode())
                         .alt(e.isAlt())
@@ -78,12 +67,12 @@ public class InteractiveManager {
             }
         });
 
-        stage().addEventListener(InputEvent.KEY_REPEAT, event -> {
+        D2D2.stage().addEventListener(InputEvent.KEY_REPEAT, event -> {
             var e = (InputEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
                 dispatch(focused, InteractiveEvent.builder()
-                        .type(KEY_REPEAT)
+                        .type(InteractiveEvent.KEY_REPEAT)
                         .keyChar(e.getKeyChar())
                         .keyCode(e.getKeyCode())
                         .alt(e.isAlt())
@@ -93,12 +82,12 @@ public class InteractiveManager {
             }
         });
 
-        stage().addEventListener(InputEvent.KEY_UP, event -> {
+        D2D2.stage().addEventListener(InputEvent.KEY_UP, event -> {
             var e = (InputEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
                 dispatch(focused, InteractiveEvent.builder()
-                        .type(KEY_UP)
+                        .type(InteractiveEvent.KEY_UP)
                         .keyChar(e.getKeyChar())
                         .keyCode(e.getKeyCode())
                         .alt(e.isAlt())
@@ -108,7 +97,7 @@ public class InteractiveManager {
             }
         });
 
-        stage().addEventListener(InputEvent.MOUSE_WHEEL, event -> {
+        D2D2.stage().addEventListener(InputEvent.MOUSE_WHEEL, event -> {
             var e = (InputEvent) event;
             Interactive interactive = hoveredInteractive != null && hoveredInteractive.isOnScreen() && hoveredInteractive.isHovering()
                     ? hoveredInteractive : getFocused();
@@ -116,18 +105,18 @@ public class InteractiveManager {
 
             if (interactive != null) {
                 dispatch(interactive, InteractiveEvent.builder()
-                        .type(WHEEL)
+                        .type(InteractiveEvent.WHEEL)
                         .delta(e.getDelta())
                         .build());
             }
         });
 
-        stage().addEventListener(InputEvent.KEY_TYPE, event -> {
+        D2D2.stage().addEventListener(InputEvent.KEY_TYPE, event -> {
             var e = (InputEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
                 dispatch(focused, InteractiveEvent.builder()
-                        .type(KEY_TYPE)
+                        .type(InteractiveEvent.KEY_TYPE)
                         .keyCode(e.getKeyCode())
                         .keyChar(e.getKeyChar())
                         .keyType(e.getKeyType())
@@ -195,7 +184,7 @@ public class InteractiveManager {
             if (pressedInteractive != null) {
                 setFocused(pressedInteractive, true);
                 dispatch(pressedInteractive, InteractiveEvent.builder()
-                        .type(DOWN)
+                        .type(InteractiveEvent.DOWN)
                         .x((int) (x - _tcX))
                         .y((int) (y - _tcY))
                         .onArea(true)
@@ -222,7 +211,7 @@ public class InteractiveManager {
 
                         if (interactive.isDragging()) {
                             dispatch(interactive, InteractiveEvent.builder()
-                                    .type(UP)
+                                    .type(InteractiveEvent.UP)
                                     .x((int) (x - tcX))
                                     .y((int) (y - tcY))
                                     .onArea(onArea)
@@ -268,7 +257,7 @@ public class InteractiveManager {
 
                 if (interactive.isDragging()) {
                     dispatch(interactive, InteractiveEvent.builder()
-                            .type(DRAG)
+                            .type(InteractiveEvent.DRAG)
                             .x((int) (x - tcX))
                             .y((int) (y - tcY))
                             .onArea(onArea)
@@ -281,7 +270,7 @@ public class InteractiveManager {
                 if (interactive.isHovering() && !onArea) {
                     interactive.setHovering(false);
                     dispatch(interactive, InteractiveEvent.builder()
-                            .type(OUT)
+                            .type(InteractiveEvent.OUT)
                             .x((int) (x - tcX))
                             .y((int) (y - tcY))
                             .onArea(false)
@@ -298,7 +287,7 @@ public class InteractiveManager {
             if (!upperIntaractive.isHovering()) {
                 if (hoveredInteractive != null) {
                     dispatch(hoveredInteractive, InteractiveEvent.builder()
-                            .type(OUT)
+                            .type(InteractiveEvent.OUT)
                             .x((int) (x - _tcX))
                             .y((int) (y - _tcY))
                             .onArea(false)
@@ -313,7 +302,7 @@ public class InteractiveManager {
 
                 upperIntaractive.setHovering(true);
                 dispatch(upperIntaractive, InteractiveEvent.builder()
-                        .type(HOVER)
+                        .type(InteractiveEvent.HOVER)
                         .x((int) (x - _tcX))
                         .y((int) (y - _tcY))
                         .onArea(true)
@@ -385,7 +374,7 @@ public class InteractiveManager {
 
         if (focusedInteractive != null) {
             dispatch(focusedInteractive, InteractiveEvent.builder()
-                    .type(OUT)
+                    .type(InteractiveEvent.OUT)
                     .build());
         }
 
@@ -401,7 +390,7 @@ public class InteractiveManager {
 
         if (focusedInteractive != null) {
             dispatch(focusedInteractive, InteractiveEvent.builder()
-                    .type(OUT)
+                    .type(InteractiveEvent.OUT)
                     .build());
         }
 
@@ -426,7 +415,7 @@ public class InteractiveManager {
         this.tabbingEnabled = tabbingEnabled;
 
         if (tabbingEnabled) {
-            stage().addEventListener(this, InputEvent.KEY_DOWN, event -> {
+            D2D2.stage().addEventListener(this, InputEvent.KEY_DOWN, event -> {
                 var e = (InputEvent) event;
                 switch (e.getKeyCode()) {
                     case KeyCode.TAB -> {
@@ -437,7 +426,7 @@ public class InteractiveManager {
                             focusNext();
                             keyHoldTabDirection = 1;
                         }
-                        stage().addEventListener(this, InputEvent.EACH_FRAME, event1 -> {
+                        D2D2.stage().addEventListener(this, InputEvent.EACH_FRAME, event1 -> {
                             keyHoldTime--;
                             if (keyHoldTime < 0) {
                                 keyHoldTime = 3;
@@ -452,7 +441,7 @@ public class InteractiveManager {
                     case KeyCode.ENTER -> {
                         if (focusedInteractive != null) {
                             dispatch(focusedInteractive, InteractiveEvent.builder()
-                                    .type(DOWN)
+                                    .type(InteractiveEvent.DOWN)
                                     .onArea(true)
                                     .build());
                         }
@@ -462,19 +451,19 @@ public class InteractiveManager {
                     }
                 }
             });
-            stage().addEventListener(this, InputEvent.KEY_UP, event -> {
+            D2D2.stage().addEventListener(this, InputEvent.KEY_UP, event -> {
                 var e = (InputEvent) event;
 
                 switch (e.getKeyCode()) {
                     case KeyCode.TAB -> {
                         keyHoldTime = KEY_HOLD_TIME;
                         keyHoldTabDirection = 0;
-                        stage().removeEventListener(this, Event.EACH_FRAME);
+                        D2D2.stage().removeEventListener(this, Event.EACH_FRAME);
                     }
                     case KeyCode.ENTER -> {
                         if (focusedInteractive != null) {
                             dispatch(focusedInteractive, InteractiveEvent.builder()
-                                    .type(UP)
+                                    .type(InteractiveEvent.UP)
                                     .onArea(true)
                                     .build());
                         }
@@ -482,9 +471,9 @@ public class InteractiveManager {
                 }
             });
         } else {
-            stage().removeEventListener(this, InputEvent.KEY_DOWN);
-            stage().removeEventListener(this, InputEvent.KEY_UP);
-            stage().removeEventListener(this, Event.EACH_FRAME);
+            D2D2.stage().removeEventListener(this, InputEvent.KEY_DOWN);
+            D2D2.stage().removeEventListener(this, InputEvent.KEY_UP);
+            D2D2.stage().removeEventListener(this, Event.EACH_FRAME);
         }
     }
 
@@ -499,7 +488,7 @@ public class InteractiveManager {
                     .build());
 
             dispatch(focusedInteractive, InteractiveEvent.builder()
-                    .type(OUT)
+                    .type(InteractiveEvent.OUT)
                     .build());
         }
 

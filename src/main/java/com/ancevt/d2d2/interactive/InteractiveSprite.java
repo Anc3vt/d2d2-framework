@@ -17,9 +17,9 @@
  */
 package com.ancevt.d2d2.interactive;
 
+import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.texture.Texture;
-import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.exception.InteractiveException;
 
 public class InteractiveSprite extends Sprite implements Interactive {

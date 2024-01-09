@@ -17,12 +17,12 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.debug.FpsMeter;
-import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 
 import static com.ancevt.d2d2.D2D2.init;

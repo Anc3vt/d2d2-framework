@@ -17,8 +17,9 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
@@ -26,7 +27,6 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
-import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 
 public class Tests {

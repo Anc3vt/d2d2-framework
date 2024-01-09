@@ -17,15 +17,15 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.DebugGrid;
 import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.event.Event;
 
 public class Tests_Sprite_float_repeat {
     public static void main(String[] args) {

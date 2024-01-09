@@ -60,13 +60,14 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import static com.ancevt.d2d2.backend.lwjgl.OSDetector.isUnix;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_HIDDEN;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
 import static org.lwjgl.glfw.GLFW.GLFW_DECORATED;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
+import static org.lwjgl.glfw.GLFW.GLFW_FLOATING;
 import static org.lwjgl.glfw.GLFW.GLFW_MOD_ALT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOD_CONTROL;
 import static org.lwjgl.glfw.GLFW.GLFW_MOD_SHIFT;
@@ -133,12 +134,36 @@ public class LWJGLBackend implements D2D2Backend {
     private VideoMode previousVideoMode;
     private boolean stopped;
     private boolean borderless;
+    private int frameRate = 60;
+    private boolean alwaysOnTop;
 
     public LWJGLBackend(int width, int height, String title) {
         this.width = width;
         this.height = height;
         this.title = title;
         D2D2.getTextureManager().setTextureEngine(new LWJGLTextureEngine());
+    }
+
+    @Override
+    public void setAlwaysOnTop(boolean b) {
+        this.alwaysOnTop = b;
+
+        glfwWindowHint(GLFW_FLOATING, alwaysOnTop ? GLFW_TRUE : GLFW_FALSE);
+    }
+
+    @Override
+    public boolean isAlwaysOnTop() {
+        return alwaysOnTop;
+    }
+
+    @Override
+    public void setFrameRate(int frameRate) {
+        this.frameRate = frameRate;
+    }
+
+    @Override
+    public int getFrameRate() {
+        return frameRate;
     }
 
     @Override
@@ -261,6 +286,10 @@ public class LWJGLBackend implements D2D2Backend {
 
         glfwDefaultWindowHints();
 
+        if(Objects.equals(System.getProperty("glfwhint.alwaysontop"), "true")) {
+            glfwWindowHint(GLFW_FLOATING, 1);
+        }
+
         long windowId = glfwCreateWindow(width, height, title, NULL, NULL);
 
         if (windowId == NULL)
@@ -269,7 +298,7 @@ public class LWJGLBackend implements D2D2Backend {
         monitor = glfwGetPrimaryMonitor();
 
         glfwSetWindowCloseCallback(windowId, window -> {
-            if (isUnix()) {
+            if (OSDetector.isUnix()) {
                 GLFWUtils.linuxCare(monitor, previousVideoMode);
             }
         });
@@ -286,12 +315,12 @@ public class LWJGLBackend implements D2D2Backend {
             @Override
             public void invoke(long win, double dx, double dy) {
                 stage.dispatchEvent(InputEvent.builder()
-                        .type(InputEvent.MOUSE_WHEEL)
-                        .x(Mouse.getX())
-                        .y(Mouse.getY())
-                        .delta((int) dy)
-                        .drag(isDown)
-                        .build());
+                    .type(InputEvent.MOUSE_WHEEL)
+                    .x(Mouse.getX())
+                    .y(Mouse.getY())
+                    .delta((int) dy)
+                    .drag(isDown)
+                    .build());
             }
         });
 
@@ -301,12 +330,12 @@ public class LWJGLBackend implements D2D2Backend {
                 isDown = action == 1;
 
                 stage.dispatchEvent(InputEvent.builder()
-                        .type(action == 1 ? InputEvent.MOUSE_DOWN : InputEvent.MOUSE_UP)
-                        .x(Mouse.getX())
-                        .y(Mouse.getY())
-                        .drag(isDown)
-                        .mouseButton(mouseButton)
-                        .build());
+                    .type(action == 1 ? InputEvent.MOUSE_DOWN : InputEvent.MOUSE_UP)
+                    .x(Mouse.getX())
+                    .y(Mouse.getY())
+                    .drag(isDown)
+                    .mouseButton(mouseButton)
+                    .build());
 
                 InteractiveManager.getInstance().screenTouch(mouseX, mouseY, 0, mouseButton, isDown);
             }
@@ -322,11 +351,11 @@ public class LWJGLBackend implements D2D2Backend {
                 Mouse.setXY(mouseX, mouseY);
 
                 stage.dispatchEvent(InputEvent.builder()
-                        .type(InputEvent.MOUSE_MOVE)
-                        .x(Mouse.getX())
-                        .y(Mouse.getY())
-                        .drag(isDown)
-                        .build());
+                    .type(InputEvent.MOUSE_MOVE)
+                    .x(Mouse.getX())
+                    .y(Mouse.getY())
+                    .drag(isDown)
+                    .build());
 
                 InteractiveManager.getInstance().screenDrag(0, mouseX, mouseY);
             }
@@ -334,62 +363,62 @@ public class LWJGLBackend implements D2D2Backend {
 
         glfwSetCharCallback(windowId, (window, codepoint) -> {
             stage.dispatchEvent(InputEvent.builder()
-                    .type(InputEvent.KEY_TYPE)
-                    .x(Mouse.getX())
-                    .y(Mouse.getY())
-                    .drag(isDown)
-                    .codepoint(codepoint)
-                    .keyType(String.valueOf(Character.toChars(codepoint)))
-                    .build());
+                .type(InputEvent.KEY_TYPE)
+                .x(Mouse.getX())
+                .y(Mouse.getY())
+                .drag(isDown)
+                .codepoint(codepoint)
+                .keyType(String.valueOf(Character.toChars(codepoint)))
+                .build());
         });
 
         glfwSetKeyCallback(windowId, (window, key, scancode, action, mods) -> {
 
             switch (action) {
                 case GLFW_PRESS -> stage.dispatchEvent(InputEvent.builder()
-                        .type(InputEvent.KEY_DOWN)
-                        .x(Mouse.getX())
-                        .y(Mouse.getY())
-                        .keyChar((char) key)
-                        .keyCode(key)
-                        .drag(isDown)
-                        .shift((mods & GLFW_MOD_SHIFT) != 0)
-                        .control((mods & GLFW_MOD_CONTROL) != 0)
-                        .alt((mods & GLFW_MOD_ALT) != 0)
-                        .build());
+                    .type(InputEvent.KEY_DOWN)
+                    .x(Mouse.getX())
+                    .y(Mouse.getY())
+                    .keyChar((char) key)
+                    .keyCode(key)
+                    .drag(isDown)
+                    .shift((mods & GLFW_MOD_SHIFT) != 0)
+                    .control((mods & GLFW_MOD_CONTROL) != 0)
+                    .alt((mods & GLFW_MOD_ALT) != 0)
+                    .build());
 
                 case GLFW_REPEAT -> stage.dispatchEvent(InputEvent.builder()
-                        .type(InputEvent.KEY_REPEAT)
-                        .x(Mouse.getX())
-                        .y(Mouse.getY())
-                        .keyCode(key)
-                        .keyChar((char) key)
-                        .drag(isDown)
-                        .shift((mods & GLFW_MOD_SHIFT) != 0)
-                        .control((mods & GLFW_MOD_CONTROL) != 0)
-                        .alt((mods & GLFW_MOD_ALT) != 0)
-                        .build());
+                    .type(InputEvent.KEY_REPEAT)
+                    .x(Mouse.getX())
+                    .y(Mouse.getY())
+                    .keyCode(key)
+                    .keyChar((char) key)
+                    .drag(isDown)
+                    .shift((mods & GLFW_MOD_SHIFT) != 0)
+                    .control((mods & GLFW_MOD_CONTROL) != 0)
+                    .alt((mods & GLFW_MOD_ALT) != 0)
+                    .build());
 
                 case GLFW_RELEASE -> stage.dispatchEvent(InputEvent.builder()
-                        .type(InputEvent.KEY_UP)
-                        .x(Mouse.getX())
-                        .y(Mouse.getY())
-                        .keyCode(key)
-                        .keyChar((char) key)
-                        .drag(isDown)
-                        .shift((mods & GLFW_MOD_SHIFT) != 0)
-                        .control((mods & GLFW_MOD_CONTROL) != 0)
-                        .alt((mods & GLFW_MOD_ALT) != 0)
-                        .build());
+                    .type(InputEvent.KEY_UP)
+                    .x(Mouse.getX())
+                    .y(Mouse.getY())
+                    .keyCode(key)
+                    .keyChar((char) key)
+                    .drag(isDown)
+                    .shift((mods & GLFW_MOD_SHIFT) != 0)
+                    .control((mods & GLFW_MOD_CONTROL) != 0)
+                    .alt((mods & GLFW_MOD_ALT) != 0)
+                    .build());
             }
         });
 
         GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
         glfwSetWindowPos(
-                windowId,
-                windowX = (videoMode.width() - width) / 2,
-                windowY = (videoMode.height() - height) / 2
+            windowId,
+            windowX = (videoMode.width() - width) / 2,
+            windowY = (videoMode.height() - height) / 2
         );
 
         videoModeWidth = videoMode.width();
@@ -411,10 +440,10 @@ public class LWJGLBackend implements D2D2Backend {
         setSmoothMode(false);
 
         previousVideoMode = VideoMode.builder()
-                .width(videoModeWidth)
-                .height(videoModeHeight)
-                .refreshRate(videoMode.refreshRate())
-                .build();
+            .width(videoModeWidth)
+            .height(videoModeHeight)
+            .refreshRate(videoMode.refreshRate())
+            .build();
 
         return windowId;
     }
@@ -434,19 +463,19 @@ public class LWJGLBackend implements D2D2Backend {
     @Override
     public void putToClipboard(String string) {
         Toolkit.getDefaultToolkit()
-                .getSystemClipboard()
-                .setContents(
-                        new StringSelection(string),
-                        null
-                );
+            .getSystemClipboard()
+            .setContents(
+                new StringSelection(string),
+                null
+            );
     }
 
     @Override
     public String getStringFromClipboard() {
         try {
             return Toolkit.getDefaultToolkit()
-                    .getSystemClipboard()
-                    .getData(DataFlavor.stringFlavor).toString();
+                .getSystemClipboard()
+                .getData(DataFlavor.stringFlavor).toString();
         } catch (UnsupportedFlavorException e) {
             //e.printStackTrace(); // ignore exception
             return "";
@@ -495,6 +524,7 @@ public class LWJGLBackend implements D2D2Backend {
 
             try {
                 renderer.renderFrame();
+                Thread.sleep(1000 / (frameRate + 10));
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
@@ -535,7 +565,7 @@ public class LWJGLBackend implements D2D2Backend {
         final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
         InputStream inputStream = bitmapFontGenerator.getTtfInputStream() != null ?
-                bitmapFontGenerator.getTtfInputStream() : new FileInputStream(bitmapFontGenerator.getTtfPath().toFile());
+            bitmapFontGenerator.getTtfInputStream() : new FileInputStream(bitmapFontGenerator.getTtfPath().toFile());
 
         Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
         String fontName = font.getName();
@@ -641,9 +671,9 @@ public class LWJGLBackend implements D2D2Backend {
         byte[] pngDataBytes = pngOutputStream.toByteArray();
 
         return D2D2.getBitmapFontManager().loadBitmapFont(
-                new ByteArrayInputStream(charsDataBytes),
-                new ByteArrayInputStream(pngDataBytes),
-                bitmapFontGenerator.getName()
+            new ByteArrayInputStream(charsDataBytes),
+            new ByteArrayInputStream(pngDataBytes),
+            bitmapFontGenerator.getName()
         );
     }
 
@@ -657,12 +687,12 @@ public class LWJGLBackend implements D2D2Backend {
         @Override
         public String toString() {
             return "CharInfo{" +
-                    "character=" + character +
-                    ", x=" + x +
-                    ", y=" + y +
-                    ", width=" + width +
-                    ", height=" + height +
-                    '}';
+                "character=" + character +
+                ", x=" + x +
+                ", y=" + y +
+                ", width=" + width +
+                ", height=" + height +
+                '}';
         }
     }
 }

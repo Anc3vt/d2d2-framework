@@ -17,8 +17,8 @@
  */
 package com.ancevt.d2d2.interactive;
 
-import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.exception.InteractiveException;
 
 public class InteractiveContainer extends Container implements Interactive {

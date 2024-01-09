@@ -17,13 +17,13 @@
  */
 package com.ancevt.d2d2.backend.norender;
 
-import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.IContainer;
-import com.ancevt.d2d2.display.IFramedDisplayObject;
+import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
+import com.ancevt.d2d2.display.IFramedDisplayObject;
 
 public class RendererStub implements IRenderer {
 

@@ -17,15 +17,15 @@
  */
 package com.ancevt.d2d2.dev;
 
+import com.ancevt.d2d2.common.BorderedRect;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 import com.ancevt.d2d2.interactive.InteractiveManager;
 

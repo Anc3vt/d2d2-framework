@@ -18,9 +18,9 @@
 package com.ancevt.d2d2.interactive;
 
 import com.ancevt.commons.Holder;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.event.InteractiveEvent;
 
 public class DragUtil {
 

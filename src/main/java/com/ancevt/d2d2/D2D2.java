@@ -18,12 +18,12 @@
 package com.ancevt.d2d2;
 
 import com.ancevt.d2d2.backend.D2D2Backend;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.texture.TextureManager;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.input.Mouse;
 import org.jetbrains.annotations.NotNull;
 
 public class D2D2 {

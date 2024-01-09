@@ -17,12 +17,12 @@
  */
 package com.ancevt.d2d2.debug;
 
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
 
 import static com.ancevt.d2d2.D2D2.stage;
 

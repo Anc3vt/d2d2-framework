@@ -35,10 +35,31 @@ public class NoRenderBackend implements D2D2Backend {
     private String title;
     private IRenderer renderer;
     private boolean alive;
+    private int frameRate = 60;
 
     public NoRenderBackend(int width, int height) {
         D2D2.getTextureManager().setTextureEngine(new LWJGLTextureEngine());
         setWindowSize(width, height);
+    }
+
+    @Override
+    public void setAlwaysOnTop(boolean b) {
+
+    }
+
+    @Override
+    public boolean isAlwaysOnTop() {
+        return false;
+    }
+
+    @Override
+    public void setFrameRate(int frameRate) {
+        this.frameRate = frameRate;
+    }
+
+    @Override
+    public int getFrameRate() {
+        return frameRate;
     }
 
     @Override

@@ -18,9 +18,9 @@
 package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.D2D2;
-import org.jetbrains.annotations.NotNull;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
+import org.jetbrains.annotations.NotNull;
 
 public class Stage extends Container {
 

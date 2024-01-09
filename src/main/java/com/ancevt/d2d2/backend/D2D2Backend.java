@@ -24,6 +24,14 @@ import com.ancevt.d2d2.display.text.BitmapFontGenerator;
 
 public interface D2D2Backend {
 
+    void setAlwaysOnTop(boolean b);
+
+    boolean isAlwaysOnTop();
+
+    void setFrameRate(int value);
+
+    int getFrameRate();
+
     long getWindowId();
 
     void create();

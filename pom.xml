@@ -69,7 +69,7 @@
         <!-- Ancevt -->
         <args.version>2.1.0</args.version>
         <local-storage.version>1.1.5</local-storage.version>
-        <ancevt-commons.version>1.0.0.7-SNAPSHOT</ancevt-commons.version>
+        <ancevt-commons.version>1.0.0.8-SNAPSHOT</ancevt-commons.version>
 
         <!-- Log -->
         <logback.version>1.2.11</logback.version>

@@ -18,12 +18,9 @@
 package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.texture.Texture;
-
-import static com.ancevt.d2d2.D2D2.init;
-import static com.ancevt.d2d2.D2D2.loop;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 
 public class Sprite extends DisplayObject implements ISprite {
 
@@ -172,11 +169,11 @@ public class Sprite extends DisplayObject implements ISprite {
     }
 
     public static void main(String[] args) {
-        Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
 
 
-        loop();
+        D2D2.loop();
     }
 }

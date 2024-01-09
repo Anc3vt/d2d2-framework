@@ -260,7 +260,7 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
 
     @Override
     public final void removeFromParent() {
-        if (getParent() != null) {
+        if (hasParent()) {
             getParent().remove(this);
         }
     }
