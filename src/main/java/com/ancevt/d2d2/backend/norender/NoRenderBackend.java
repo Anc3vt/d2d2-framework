@@ -23,7 +23,7 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLTextureEngine;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapFontGenerator;
+import com.ancevt.d2d2.display.text.BitmapFontBuilder;
 
 import static java.lang.Thread.sleep;
 
@@ -187,7 +187,7 @@ public class NoRenderBackend implements D2D2Backend {
     }
 
     @Override
-    public BitmapFont generateBitmapFont(BitmapFontGenerator bitmapFontGenerator) {
+    public BitmapFont generateBitmapFont(BitmapFontBuilder bitmapFontBuilder) {
         return D2D2.getBitmapFontManager().getDefaultBitmapFont();
     }
 

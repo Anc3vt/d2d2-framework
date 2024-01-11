@@ -72,10 +72,10 @@
         <ancevt-commons.version>1.0.0.8-SNAPSHOT</ancevt-commons.version>
 
         <!-- Log -->
-        <logback.version>1.2.11</logback.version>
+        <logback.version>1.4.12</logback.version>
 
         <!-- JetBrains -->
-        <annotations.version>23.0.0</annotations.version>
+        <annotations.version>24.0.1</annotations.version>
 
         <!-- LWJGL -->
         <joml.version>1.10.4</joml.version>
@@ -92,7 +92,7 @@
         <vorbisspi.version>1.0.3.3</vorbisspi.version>
 
         <!-- Test -->
-        <junit-jupiter-api.version>5.8.2</junit-jupiter-api.version>
+        <junit-jupiter-api.version>5.9.2</junit-jupiter-api.version>
         <hamcrest-junit.version>2.0.0.0</hamcrest-junit.version>
 
         <!-- Plugins -->
@@ -104,20 +104,6 @@
     </properties>
 
     <dependencies>
-
-        <!-- NOTE: run ./before-all.sh to install these jars to your .m2 directory  -->
-        <dependency>
-            <groupId>local-jar</groupId>
-            <artifactId>blooming-jar</artifactId>
-            <version>1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>local-jar</groupId>
-            <artifactId>vorbisspi</artifactId>
-            <version>1.0.3.3</version>
-        </dependency>
-        <!-- /NOTE -->
 
         <dependency>
             <groupId>com.ancevt.commons</groupId>
@@ -385,12 +371,14 @@
                             <archive>
                                 <manifest>
                                     <addClasspath/>
-                                    <mainClass>com.ancevt.d2d2.dev.Tests_Input</mainClass>
+                                    <mainClass>com.ancevt.d2d2.debug.ByteDisplay</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
+                            <finalName>d2d2test</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                         <executions>
                             <execution>

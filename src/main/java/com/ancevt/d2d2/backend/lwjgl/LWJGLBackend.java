@@ -23,8 +23,9 @@ import com.ancevt.d2d2.backend.VideoMode;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapFontGenerator;
+import com.ancevt.d2d2.display.text.BitmapFontBuilder;
 import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.InteractiveManager;
 import lombok.SneakyThrows;
@@ -136,6 +137,7 @@ public class LWJGLBackend implements D2D2Backend {
     private boolean borderless;
     private int frameRate = 60;
     private boolean alwaysOnTop;
+    private boolean control, shift;
 
     public LWJGLBackend(int width, int height, String title) {
         this.width = width;
@@ -286,7 +288,7 @@ public class LWJGLBackend implements D2D2Backend {
 
         glfwDefaultWindowHints();
 
-        if(Objects.equals(System.getProperty("glfwhint.alwaysontop"), "true")) {
+        if (Objects.equals(System.getProperty("glfwhint.alwaysontop"), "true")) {
             glfwWindowHint(GLFW_FLOATING, 1);
         }
 
@@ -319,6 +321,8 @@ public class LWJGLBackend implements D2D2Backend {
                     .x(Mouse.getX())
                     .y(Mouse.getY())
                     .delta((int) dy)
+                    .control(control)
+                    .shift(shift)
                     .drag(isDown)
                     .build());
             }
@@ -375,17 +379,22 @@ public class LWJGLBackend implements D2D2Backend {
         glfwSetKeyCallback(windowId, (window, key, scancode, action, mods) -> {
 
             switch (action) {
-                case GLFW_PRESS -> stage.dispatchEvent(InputEvent.builder()
-                    .type(InputEvent.KEY_DOWN)
-                    .x(Mouse.getX())
-                    .y(Mouse.getY())
-                    .keyChar((char) key)
-                    .keyCode(key)
-                    .drag(isDown)
-                    .shift((mods & GLFW_MOD_SHIFT) != 0)
-                    .control((mods & GLFW_MOD_CONTROL) != 0)
-                    .alt((mods & GLFW_MOD_ALT) != 0)
-                    .build());
+                case GLFW_PRESS -> {
+                    if (key == KeyCode.LEFT_SHIFT || key == KeyCode.RIGHT_SHIFT) shift = true;
+                    if (key == KeyCode.LEFT_CONTROL || key == KeyCode.RIGHT_CONTROL) control = true;
+
+                    stage.dispatchEvent(InputEvent.builder()
+                        .type(InputEvent.KEY_DOWN)
+                        .x(Mouse.getX())
+                        .y(Mouse.getY())
+                        .keyChar((char) key)
+                        .keyCode(key)
+                        .drag(isDown)
+                        .shift((mods & GLFW_MOD_SHIFT) != 0)
+                        .control((mods & GLFW_MOD_CONTROL) != 0)
+                        .alt((mods & GLFW_MOD_ALT) != 0)
+                        .build());
+                }
 
                 case GLFW_REPEAT -> stage.dispatchEvent(InputEvent.builder()
                     .type(InputEvent.KEY_REPEAT)
@@ -399,17 +408,22 @@ public class LWJGLBackend implements D2D2Backend {
                     .alt((mods & GLFW_MOD_ALT) != 0)
                     .build());
 
-                case GLFW_RELEASE -> stage.dispatchEvent(InputEvent.builder()
-                    .type(InputEvent.KEY_UP)
-                    .x(Mouse.getX())
-                    .y(Mouse.getY())
-                    .keyCode(key)
-                    .keyChar((char) key)
-                    .drag(isDown)
-                    .shift((mods & GLFW_MOD_SHIFT) != 0)
-                    .control((mods & GLFW_MOD_CONTROL) != 0)
-                    .alt((mods & GLFW_MOD_ALT) != 0)
-                    .build());
+                case GLFW_RELEASE -> {
+                    if (key == KeyCode.LEFT_SHIFT || key == KeyCode.RIGHT_SHIFT) shift = false;
+                    if (key == KeyCode.LEFT_CONTROL || key == KeyCode.RIGHT_CONTROL) control = false;
+
+                    stage.dispatchEvent(InputEvent.builder()
+                        .type(InputEvent.KEY_UP)
+                        .x(Mouse.getX())
+                        .y(Mouse.getY())
+                        .keyCode(key)
+                        .keyChar((char) key)
+                        .drag(isDown)
+                        .shift((mods & GLFW_MOD_SHIFT) != 0)
+                        .control((mods & GLFW_MOD_CONTROL) != 0)
+                        .alt((mods & GLFW_MOD_ALT) != 0)
+                        .build());
+                }
             }
         });
 
@@ -560,53 +574,53 @@ public class LWJGLBackend implements D2D2Backend {
 
     @SneakyThrows
     @Override
-    public BitmapFont generateBitmapFont(BitmapFontGenerator bitmapFontGenerator) {
+    public BitmapFont generateBitmapFont(BitmapFontBuilder bitmapFontBuilder) {
 
         final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-        InputStream inputStream = bitmapFontGenerator.getTtfInputStream() != null ?
-            bitmapFontGenerator.getTtfInputStream() : new FileInputStream(bitmapFontGenerator.getTtfPath().toFile());
+        InputStream inputStream = bitmapFontBuilder.getTtfInputStream() != null ?
+            bitmapFontBuilder.getTtfInputStream() : new FileInputStream(bitmapFontBuilder.getTtfPath().toFile());
 
         Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
         String fontName = font.getName();
         ge.registerFont(font);
 
-        boolean bold = bitmapFontGenerator.isBold();
-        boolean italic = bitmapFontGenerator.isItalic();
-        int fontSize = bitmapFontGenerator.getFontSize();
+        boolean bold = bitmapFontBuilder.isBold();
+        boolean italic = bitmapFontBuilder.isItalic();
+        int fontSize = bitmapFontBuilder.getFontSize();
         int fontStyle = Font.PLAIN | (bold ? Font.BOLD : Font.PLAIN) | (italic ? Font.ITALIC : Font.PLAIN);
 
         font = new Font(fontName, fontStyle, fontSize);
 
 
-        BufferedImage bufferedImage = new BufferedImage(bitmapFontGenerator.getAtlasWidth(), bitmapFontGenerator.getAtlasHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = new BufferedImage(bitmapFontBuilder.getAtlasWidth(), bitmapFontBuilder.getAtlasHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
 
-        if (bitmapFontGenerator.isFractionalMetricsOn()) {
+        if (bitmapFontBuilder.isFractionalMetricsOn()) {
             g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         }
 
-        if (bitmapFontGenerator.isTextAntialiasOn()) {
+        if (bitmapFontBuilder.isTextAntialiasOn()) {
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         }
 
-        if (bitmapFontGenerator.isTextAntialiasGasp()) {
+        if (bitmapFontBuilder.isTextAntialiasGasp()) {
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         }
 
-        if (bitmapFontGenerator.isTextAntialiasLcdHrgb()) {
+        if (bitmapFontBuilder.isTextAntialiasLcdHrgb()) {
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
         }
 
-        if (bitmapFontGenerator.isTextAntialiasLcdHbgr()) {
+        if (bitmapFontBuilder.isTextAntialiasLcdHbgr()) {
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
         }
 
-        if (bitmapFontGenerator.isTextAntialiasLcdVrgb()) {
+        if (bitmapFontBuilder.isTextAntialiasLcdVrgb()) {
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VRGB);
         }
 
-        if (bitmapFontGenerator.isTextAntialiasLcdVbgr()) {
+        if (bitmapFontBuilder.isTextAntialiasLcdVbgr()) {
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VBGR);
         }
 
@@ -614,7 +628,7 @@ public class LWJGLBackend implements D2D2Backend {
 
         List<CharInfo> charInfos = new ArrayList<>();
 
-        String string = bitmapFontGenerator.getCharSourceString();
+        String string = bitmapFontBuilder.getCharSourceString();
 
         int x = 0, y = font.getSize();
 
@@ -633,16 +647,16 @@ public class LWJGLBackend implements D2D2Backend {
             CharInfo charInfo = new CharInfo();
             charInfo.character = c;
             charInfo.x = x;
-            charInfo.y = y - height + toY + bitmapFontGenerator.getOffsetY();
+            charInfo.y = y - height + toY + bitmapFontBuilder.getOffsetY();
             charInfo.width = width;
-            charInfo.height = height + bitmapFontGenerator.getOffsetY();
+            charInfo.height = height + bitmapFontBuilder.getOffsetY();
 
             charInfos.add(charInfo);
 
-            x += width + bitmapFontGenerator.getSpacingX();
+            x += width + bitmapFontBuilder.getSpacingX();
 
             if (x >= bufferedImage.getWidth() - font.getSize()) {
-                y += height + bitmapFontGenerator.getSpacingY();
+                y += height + bitmapFontBuilder.getSpacingY();
                 x = 0;
             }
         }
@@ -673,7 +687,7 @@ public class LWJGLBackend implements D2D2Backend {
         return D2D2.getBitmapFontManager().loadBitmapFont(
             new ByteArrayInputStream(charsDataBytes),
             new ByteArrayInputStream(pngDataBytes),
-            bitmapFontGenerator.getName()
+            bitmapFontBuilder.getName()
         );
     }
 

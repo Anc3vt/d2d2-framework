@@ -351,11 +351,11 @@ public class LWJGLRenderer implements IRenderer {
                 float charWidth = charInfo.width();
                 float charHeight = charInfo.height();
 
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 3)) {
+                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5)) {
                     drawX = 0;
                     drawY += (charHeight + lineSpacing) * scaleY;
 
-                    if (boundHeight != 0 && drawY > boundHeight) {
+                    if (boundHeight != 0 && drawY > boundHeight - charHeight) {
                         break;
                     }
                 }
@@ -386,11 +386,11 @@ public class LWJGLRenderer implements IRenderer {
                 float charWidth = charInfo.width();
                 float charHeight = charInfo.height();
 
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 3)) {
+                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5)) {
                     drawX = 0;
                     drawY += (charHeight + lineSpacing) * scaleY;
 
-                    if (boundHeight != 0 && drawY > boundHeight) {
+                    if (boundHeight != 0 && drawY > boundHeight - charHeight) {
                         break;
                     }
                 }
