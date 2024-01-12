@@ -17,61 +17,65 @@
  */
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.event.Event;
 
 public class FpsMeter extends BitmapText {
 
-	private long time = System.currentTimeMillis();
-	private int frameCounter;
-	private int actualFramesPerSeconds;
+    private long time = System.currentTimeMillis();
+    private int frameCounter;
+    private int fps;
 
-	public FpsMeter(BitmapFont font) {
-		super(font);
-		setName(getClass().getSimpleName() + displayObjectId());
-		addEventListener(Event.EACH_FRAME, this::eachFrame);
+    public FpsMeter(BitmapFont font) {
+        super(font);
+        setName(getClass().getSimpleName() + displayObjectId());
+        addEventListener(Event.EACH_FRAME, this::eachFrame);
 
-	}
+    }
 
-	public FpsMeter() {
-		super();
-		addEventListener(Event.EACH_FRAME, this::eachFrame);
-	}
-	
-	public final int getFramesPerSecond() {
-		return actualFramesPerSeconds;
-	}
+    public int getFps() {
+        return fps;
+    }
 
-	public void eachFrame(Event event) {
-		frameCounter++;
-		final long time2 = System.currentTimeMillis();
+    public FpsMeter() {
+        super();
+        addEventListener(Event.EACH_FRAME, this::eachFrame);
+    }
 
-		if (time2 - time >= 1000) {
-			time = System.currentTimeMillis();
+    public final int getFramesPerSecond() {
+        return fps;
+    }
 
-			setText("FPS: " + frameCounter);
-			actualFramesPerSeconds = frameCounter;
+    public void eachFrame(Event event) {
+        frameCounter++;
+        final long time2 = System.currentTimeMillis();
 
-			if (frameCounter > 40)
-				setColor(Color.GREEN);
-			else if (frameCounter >= 30 && frameCounter < 40)
-				setColor(Color.YELLOW);
-			else if (frameCounter < 30)
-				setColor(Color.RED);
+        if (time2 - time >= 1000) {
+            time = System.currentTimeMillis();
 
-			frameCounter = 0;
-		}
-	}
+            setText("FPS: " + frameCounter);
+            fps = frameCounter;
 
-	@Override
-	public String toString() {
-		return "FpsMeter{" +
-				"time=" + time +
-				", frameCounter=" + frameCounter +
-				", actualFramesPerSeconds=" + actualFramesPerSeconds +
-				'}';
-	}
+            if (frameCounter > 40)
+                setColor(Color.GREEN);
+            else if (frameCounter >= 30 && frameCounter < 40)
+                setColor(Color.YELLOW);
+            else if (frameCounter < 30)
+                setColor(Color.RED);
+
+            frameCounter = 0;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "FpsMeter{" +
+            "time=" + time +
+            ", frameCounter=" + frameCounter +
+            ", fps=" + fps +
+            '}';
+    }
 }
 

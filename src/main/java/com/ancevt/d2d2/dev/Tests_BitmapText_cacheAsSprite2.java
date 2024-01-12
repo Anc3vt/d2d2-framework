@@ -39,7 +39,6 @@ public class Tests_BitmapText_cacheAsSprite2 {
 
     public static final Color DEFAULT_BG_COLOR = Color.of(0x002200);
     private static final Color DEFAULT_BORDER_COLOR = Color.YELLOW;
-    private static BorderedRect bg1, bg2;
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(1500, 750, "(floating)"));
@@ -70,10 +69,10 @@ public class Tests_BitmapText_cacheAsSprite2 {
         String text2 = "#<FFFF00> HELLO<FFFF00> wordl!\n\n line <CCCCCC>line2\n<FFFFFF>HHHHEEEEELLLLooooo 123www";
 
 
-        bg1 = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
+        BorderedRect bg1 = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
         stage.add(bg1, 100, 100);
 
-        bg2 = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
+        BorderedRect bg2 = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
         stage.add(bg2, 700, 100);
 
         InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/NotoSansMono-SemiCondensedBold.ttf");
