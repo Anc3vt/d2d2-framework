@@ -42,7 +42,7 @@ public class Tests_BitmapText_cacheAsSprite2 {
     private static BorderedRect bg1, bg2;
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(1500, 600, "(floating)"));
+        Stage stage = D2D2.init(new LWJGLBackend(1500, 750, "(floating)"));
 
         String text = """
             #<CCCCCC>position: 0 of 3902; HEXADECIMAL <00FF00>UNSIGNED <CCCCCC>

@@ -64,6 +64,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
 
+        <mainClass>com.ancevt.d2d2.dev.Tests_BitmapText_cacheAsSprite2</mainClass>
+
         <platform>linux</platform>
 
         <!-- Ancevt -->
@@ -392,7 +394,7 @@
                             <archive>
                                 <manifest>
                                     <addClasspath/>
-                                    <mainClass>com.ancevt.d2d2.debug.ByteDisplay</mainClass>
+                                    <mainClass>${mainClass}</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
