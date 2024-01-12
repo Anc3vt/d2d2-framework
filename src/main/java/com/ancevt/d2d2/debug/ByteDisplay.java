@@ -14,6 +14,7 @@ import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapFontBuilder;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
@@ -60,7 +61,7 @@ public class ByteDisplay extends InteractiveContainer {
             .ttfInputStream(inputStream)
             .fontSize(12)
             .spacingY(3)
-            .offsetY(0)
+            .offsetY(1)
             .fractionalMetricsOn(false)
             .build();
 
@@ -76,6 +77,10 @@ public class ByteDisplay extends InteractiveContainer {
         addEventListener(this, InteractiveEvent.KEY_REPEAT, this::keyDown);
         addEventListener(this, InteractiveEvent.WHEEL, this::wheel);
 
+    }
+
+    public BitmapText getBitmapText() {
+        return bitmapText;
     }
 
     private void wheel(Event event) {
@@ -434,11 +439,22 @@ public class ByteDisplay extends InteractiveContainer {
         bytes[4] = -120;
         //byte[] bytes = new byte[512]; new Random().nextBytes(bytes);
 
-
-        ByteDisplay.show(bytes);
-        ByteDisplay.show(bytes);
+        ByteDisplay byteDisplay = ByteDisplay.show(bytes);
 
         stage.add(new FpsMeter());
+
+        stage.addEventListener(InputEvent.KEY_DOWN, event -> {
+            var e = (InputEvent) event;
+            switch (e.getKeyCode()) {
+                case KeyCode.P -> {
+                    byteDisplay.getBitmapText().setCacheAsSprite(
+                        !byteDisplay.getBitmapText().isCacheAsSprite()
+                    );
+
+                    System.out.println(byteDisplay.getBitmapText().isCacheAsSprite());
+                }
+            }
+        });
 
         D2D2.loop();
     }

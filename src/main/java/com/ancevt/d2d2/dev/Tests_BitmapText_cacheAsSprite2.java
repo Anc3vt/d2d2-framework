@@ -33,16 +33,16 @@ import java.io.InputStream;
 
 public class Tests_BitmapText_cacheAsSprite2 {
 
-    private static final float DEFAULT_WIDTH = 580.0f;
-    private static final float DEFAULT_HEIGHT = 400.0f;
+    private static final float DEFAULT_WIDTH = 590.0f;
+    private static final float DEFAULT_HEIGHT = 600.0f;
     private static final float PADDING = 5.0f;
 
-    public static final Color DEFAULT_BG_COLOR = Color.DARK_GREEN;
+    public static final Color DEFAULT_BG_COLOR = Color.of(0x002200);
     private static final Color DEFAULT_BORDER_COLOR = Color.YELLOW;
-    private static BorderedRect bgRect;
+    private static BorderedRect bg1, bg2;
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LWJGLBackend(1500, 600, "(floating)"));
 
         String text = """
             #<CCCCCC>position: 0 of 3902; HEXADECIMAL <00FF00>UNSIGNED <CCCCCC>
@@ -64,31 +64,39 @@ public class Tests_BitmapText_cacheAsSprite2 {
             <FFFFFF> 20 <999999> D0 <999999> AF <999999> D0 <FFFFFF> AF <999999> D0 <999999> AF <999999> D0 <FFFFFF> AF <999999> 30 <999999> 2E <999999> 31 <FFFFFF> 33 <999999> 36 <999999> 36 <999999> 37 <FFFFFF> 37 <999999> 30 <999999> 32\s
             <FFFFFF> 38 <999999> 31 <999999> 38 <999999> 37 <FFFFFF> 33 <999999> 33 <999999> 34 <999999> 37 <FFFFFF> 34 <999999> 68 <999999> 65 <999999> 6C <FFFFFF> 6C <999999> 6F <999999> 20 <999999> 77 <FFFFFF> 6F <999999> 72 <999999> 6C\s
             <FFFFFF> 64 <999999> 20 <999999> D0 <999999> AF <FFFFFF> D0 <999999> AF <999999> D0 <999999> AF <FFFFFF> D0 <999999> AF <999999> 30 <999999> 2E <FFFFFF> 31 <999999> 33 <999999> 36 <999999> 36 <FFFFFF> 37 <999999> 37 <999999> 30\s
-                        
             <FFFFFF>---------------------------------------------------------------------------------
              ����3667702818733474hello world ЯЯЯЯ0.13667702818733474hello world ЯЯЯЯ0.13667702818733474hello world ЯЯЯЯ0.13667702818733474hello world ЯЯЯЯ0.13667702818733474hello world ЯЯЯЯ0.13667702818733474hello world ЯЯЯЯ0.13667702818733474hello world ЯЯЯЯ0.13667702818733474hello world ЯЯЯЯ0.1366770""";
 
-        bgRect = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
-        stage.add(bgRect, 100, 100);
+        String text2 = "#<FFFF00> HELLO<FFFF00> wordl!\n\n line <CCCCCC>line2\n<FFFFFF>HHHHEEEEELLLLooooo 123www";
+
+
+        bg1 = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
+        stage.add(bg1, 100, 100);
+
+        bg2 = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
+        stage.add(bg2, 700, 100);
 
         InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/NotoSansMono-SemiCondensedBold.ttf");
         BitmapFont bitmapFont = new BitmapFontBuilder()
             .ttfInputStream(inputStream)
             .fontSize(12)
             .spacingY(3)
-            .offsetY(0)
+            .offsetY(2)
             .fractionalMetricsOn(false)
             .build();
 
-        BitmapText bitmapText = new BitmapText(bitmapFont);
+        BitmapText bitmapText = new BitmapText();
+        bitmapText.setBitmapFont(bitmapFont);
         bitmapText.setText(text);
         bitmapText.setMulticolorEnabled(true);
         bitmapText.setSize(DEFAULT_WIDTH - PADDING * 2, DEFAULT_HEIGHT - PADDING * 2);
-        Sprite sprite = bitmapText.toSprite();
-
-        stage.add(sprite, bgRect.getX() + PADDING, bgRect.getY() + PADDING);
 
         stage.add(bitmapText, PADDING, PADDING);
+        stage.add(bitmapText, bg1.getX() + PADDING, bg1.getY() + PADDING);
+
+        Sprite sprite = bitmapText.toSprite();
+        stage.add(sprite, bg2.getX() + PADDING, bg2.getY() + PADDING);
+
 
         stage.add(new FpsMeter());
         D2D2.loop();

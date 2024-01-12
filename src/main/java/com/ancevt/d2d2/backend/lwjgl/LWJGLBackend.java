@@ -466,7 +466,6 @@ public class LWJGLBackend implements D2D2Backend {
     public void setBorderless(boolean borderless) {
         this.borderless = borderless;
         glfwWindowHint(GLFW_DECORATED, borderless ? GLFW_FALSE : GLFW_TRUE);
-        System.out.println(borderless);
     }
 
     @Override
@@ -592,7 +591,6 @@ public class LWJGLBackend implements D2D2Backend {
 
         font = new Font(fontName, fontStyle, fontSize);
 
-
         BufferedImage bufferedImage = new BufferedImage(bitmapFontBuilder.getAtlasWidth(), bitmapFontBuilder.getAtlasHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
 
@@ -648,6 +646,7 @@ public class LWJGLBackend implements D2D2Backend {
             charInfo.character = c;
             charInfo.x = x;
             charInfo.y = y - height + toY + bitmapFontBuilder.getOffsetY();
+
             charInfo.width = width;
             charInfo.height = height + bitmapFontBuilder.getOffsetY();
 
