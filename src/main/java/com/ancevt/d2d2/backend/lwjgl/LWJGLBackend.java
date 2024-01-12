@@ -680,8 +680,6 @@ public class LWJGLBackend implements D2D2Backend {
         ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "png", pngOutputStream);
 
-        ImageIO.write(bufferedImage, "png", new File("/home/ancevt/tmp/font.png"));
-
         byte[] pngDataBytes = pngOutputStream.toByteArray();
 
         return D2D2.getBitmapFontManager().loadBitmapFont(

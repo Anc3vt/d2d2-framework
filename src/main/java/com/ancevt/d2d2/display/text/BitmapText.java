@@ -62,11 +62,11 @@ public class BitmapText extends DisplayObject implements IColored {
     private boolean cacheAsSprite;
     private Sprite sprite;
 
-    public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight, String text) {
+    public BitmapText(final BitmapFont bitmapFont, float width, float height, String text) {
         setBitmapFont(bitmapFont);
         setColor(DEFAULT_COLOR);
-        setWidth(boundWidth);
-        setHeight(boundHeight);
+        setWidth(width);
+        setHeight(height);
         setText(text);
         setName("_" + getClass().getSimpleName() + displayObjectId());
     }
