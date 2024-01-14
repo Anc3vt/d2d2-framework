@@ -198,7 +198,7 @@ public class BitmapText extends DisplayObject implements IColored {
             if (result > max) max = result;
         }
 
-        return (int) (max - getSpacing() + getBitmapFont().getZeroCharWidth());
+        return (int) (max - getSpacing() + getBitmapFont().getZeroCharWidth() * 2);
     }
 
     public float getTextHeight() {

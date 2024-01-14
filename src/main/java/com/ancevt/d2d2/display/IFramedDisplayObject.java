@@ -38,7 +38,7 @@ public interface IFramedDisplayObject extends IDisplayObject {
 
     void setFrame(int frameIndex);
 
-    int getFrame();
+    int getCurrentFrameIndex();
 
     int getFrameCount();
 

@@ -18,19 +18,19 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.IContainer;
+import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.IContainer;
-import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 import com.ancevt.localstorage.FileLocalStorage;
 import com.ancevt.localstorage.LocalStorage;
@@ -98,6 +98,13 @@ public class DebugPanel extends Container {
         setScale(scale, scale);
     }
 
+
+
+    @Override
+    public String toString() {
+        return "DebugPanel_" + getName();
+    }
+
     public void setText(Object text) {
         System.setProperty(systemPropertyName, String.valueOf(text));
     }
@@ -153,11 +160,36 @@ public class DebugPanel extends Container {
         dispatchEvent(event);
     }
 
+    public void setWidth(float v) {
+        bg.setWidth(v);
+        text.setWidth(bg.getWidth());
+        interactiveButton.setWidth(bg.getWidth());
+    }
+
+    public void setHeight(float v) {
+        bg.setHeight(v);
+        text.setHeight(bg.getHeight());
+        interactiveButton.setHeight(bg.getHeight());
+    }
+
+    public float getWidth() {
+        return bg.getWidth();
+    }
+
+    public float getHeight() {
+        return bg.getHeight();
+    }
+
+    public void setSize(float w, float h) {
+        setWidth(w);
+        setHeight(h);
+    }
+
     private void interactiveButton_drag(Event event) {
         var e = (InteractiveEvent) event;
 
         if (mouseButton == MouseButton.RIGHT) {
-            bg.setSize(e.getX() + 1, e.getY() + 1);
+            bg.setSize(e.getX() + 1f, e.getY() + 1f);
             if (bg.getWidth() < 5f) {
                 bg.setWidth(5f);
             }
@@ -179,6 +211,11 @@ public class DebugPanel extends Container {
         oldY = ty;
     }
 
+    @Override
+    public void setX(float value) {
+        super.setX(value);
+    }
+
     private void this_eachFrame(Event event) {
         if (System.getProperty(systemPropertyName) != null) {
             text.setText("[" + systemPropertyName + "]\n" + System.getProperty(systemPropertyName));
@@ -192,9 +229,9 @@ public class DebugPanel extends Container {
         if (localStorage == null) {
             try {
                 localStorage = LocalStorageBuilder.builder(FileLocalStorage.class, "debug-panel.ls")
-                        .storageId("d2d2-debug-panel-" + ApplicationMainClassNameExtractor.get())
-                        .saveOnWrite(true)
-                        .build();
+                    .storageId("d2d2-debug-panel-" + ApplicationMainClassNameExtractor.get())
+                    .saveOnWrite(true)
+                    .build();
             } catch (ApplicationMainClassNameExtractor.MainClassNameExtractorException e) {
                 throw new RuntimeException(e);
             }
@@ -204,10 +241,10 @@ public class DebugPanel extends Container {
 
     private void save() {
         getLocalStorage().put(systemPropertyName, (int) getX() + ";" +
-                (int) getY() + ";" +
-                (int) bg.getWidth() + ";" +
-                (int) bg.getHeight() + ";" +
-                text.getText().replace("\n", "\\n")
+            (int) getY() + ";" +
+            (int) bg.getWidth() + ";" +
+            (int) bg.getHeight() + ";" +
+            text.getText().replace("\n", "\\n")
         );
     }
 
@@ -245,6 +282,10 @@ public class DebugPanel extends Container {
 
     public static void saveAll() {
         debugPanels.values().forEach(DebugPanel::save);
+    }
+
+    public static Optional<DebugPanel> get(String propertyName) {
+        return Optional.ofNullable(debugPanels.get(propertyName));
     }
 
     public static Optional<DebugPanel> show(String propertyName) {
@@ -288,8 +329,8 @@ public class DebugPanel extends Container {
                     debugPanel.setText(debugPanel.getX());
 
                     debugPanel
-                            .addButton("Move<", () -> debugPanel.moveX(-1))
-                            .addButton("Move>", () -> debugPanel.moveX(1));
+                        .addButton("Move<", () -> debugPanel.moveX(-1))
+                        .addButton("Move>", () -> debugPanel.moveX(1));
                 });
             });
         }

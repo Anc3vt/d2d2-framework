@@ -18,6 +18,7 @@
 package com.ancevt.d2d2.event;
 
 import com.ancevt.commons.Pair;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Slf4j
 public class EventDispatcher implements IEventDispatcher {
 
     private final Map<String, List<EventListener>> map;
@@ -45,6 +47,8 @@ public class EventDispatcher implements IEventDispatcher {
         List<EventListener> listeners = map.getOrDefault(type, createList());
         listeners.add(listener);
         map.put(type, listeners);
+
+        log.trace("{} addEventListener: type={}, listener={}", this, type, listener);
     }
 
     private void addEventListenerByKey(Object key, String type, EventListener listener) {
@@ -59,6 +63,7 @@ public class EventDispatcher implements IEventDispatcher {
     @Override
     public void addEventListener(@NotNull Object key, String type, EventListener listener) {
         addEventListenerByKey(key.hashCode() + type, type, listener);
+        log.trace("{} addEventListener key: {}, type: {}, listener: {}", this, key, type, listener);
     }
 
     private @NotNull List<EventListener> createList() {
@@ -71,6 +76,7 @@ public class EventDispatcher implements IEventDispatcher {
         if (listeners != null) {
             listeners.remove(listener);
         }
+        log.trace("{} removeEventListener: type={}, listener={}", this, type, listener);
     }
 
     private void removeEventListenerByKey(Object key) {
@@ -82,6 +88,7 @@ public class EventDispatcher implements IEventDispatcher {
 
     @Override
     public void removeEventListener(@NotNull Object key, String type) {
+        log.trace("{} removeEventListener: type={}", this, type);
         removeEventListenerByKey(key.hashCode() + type);
     }
 
@@ -97,10 +104,12 @@ public class EventDispatcher implements IEventDispatcher {
     @Override
     public void removeAllEventListeners(String type) {
         map.remove(type);
+        log.trace("removeAllEventListeners type: {}", type);
     }
 
     @Override
     public void removeAllEventListeners() {
         map.clear();
+        log.trace("removeAllEventListeners");
     }
 }

@@ -24,13 +24,21 @@ import org.jetbrains.annotations.NotNull;
 
 public class FramedSprite extends Sprite implements IFramedDisplayObject {
 
+    @lombok.Getter
     private Texture[] frameTextures;
 
+    @lombok.Getter
     private boolean playing;
+    @lombok.Getter
+    @lombok.Setter
     private boolean loop;
+    @lombok.Getter
+    @lombok.Setter
     private int slowing;
     private int slowingCounter;
     private int currentFrameIndex;
+    @lombok.Getter
+    @lombok.Setter
     private boolean backward;
 
     public FramedSprite() {
@@ -57,16 +65,6 @@ public class FramedSprite extends Sprite implements IFramedDisplayObject {
     }
 
     @Override
-    public void setBackward(boolean backward) {
-        this.backward = backward;
-    }
-
-    @Override
-    public boolean isBackward() {
-        return backward;
-    }
-
-    @Override
     public void processFrame() {
         if (!playing) return;
 
@@ -75,26 +73,6 @@ public class FramedSprite extends Sprite implements IFramedDisplayObject {
             slowingCounter = 0;
             if(backward) prevFrame(); else nextFrame();
         }
-    }
-
-    @Override
-    public void setLoop(boolean loop) {
-        this.loop = loop;
-    }
-
-    @Override
-    public boolean isLoop() {
-        return loop;
-    }
-
-    @Override
-    public void setSlowing(int slowing) {
-        this.slowing = slowing;
-    }
-
-    @Override
-    public int getSlowing() {
-        return slowing;
     }
 
     @Override
@@ -137,7 +115,7 @@ public class FramedSprite extends Sprite implements IFramedDisplayObject {
     }
 
     @Override
-    public int getFrame() {
+    public int getCurrentFrameIndex() {
         return currentFrameIndex;
     }
 
@@ -157,21 +135,11 @@ public class FramedSprite extends Sprite implements IFramedDisplayObject {
     }
 
     @Override
-    public boolean isPlaying() {
-        return playing;
-    }
-
-    @Override
     public void setFrameTextures(Texture[] textures) {
         this.frameTextures = textures;
         if (textures.length > 0) {
             setFrame(0);
         }
-    }
-
-    @Override
-    public Texture[] getFrameTextures() {
-        return this.frameTextures;
     }
 
     @Override

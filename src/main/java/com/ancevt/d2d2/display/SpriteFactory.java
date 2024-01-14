@@ -28,20 +28,22 @@ public class SpriteFactory {
 
     private final static Map<String, Texture> textureCacheFiles = new HashMap<>();
 
-    public static Sprite createSprite(String asset, int textureX, int textureY, int textureWidth, int textureHeight) {
-        return new Sprite(textureCacheFiles.computeIfAbsent(
-            "%s_%d".formatted(
-                asset,
-                Objects.hash(
+    public static ISprite getSprite(String asset, int textureX, int textureY, int textureWidth, int textureHeight) {
+        return new Sprite(
+            textureCacheFiles.computeIfAbsent(
+                "%s_%d".formatted(
                     asset,
-                    textureX,
-                    textureY,
-                    textureWidth,
-                    textureHeight
-                )),
-            key -> D2D2.getTextureManager()
-                .loadTextureAtlas(asset)
-                .createTexture(textureX, textureY, textureWidth, textureHeight))
+                    Objects.hash(
+                        asset,
+                        textureX,
+                        textureY,
+                        textureWidth,
+                        textureHeight
+                    )),
+                key -> D2D2.getTextureManager()
+                    .loadTextureAtlas(asset)
+                    .createTexture(textureX, textureY, textureWidth, textureHeight)
+            )
         );
     }
 

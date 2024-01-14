@@ -212,7 +212,7 @@ public class FramedContainer extends Container implements IFramedDisplayObject {
     }
 
     @Override
-    public int getFrame() {
+    public int getCurrentFrameIndex() {
         return currentFrameIndex;
     }
 

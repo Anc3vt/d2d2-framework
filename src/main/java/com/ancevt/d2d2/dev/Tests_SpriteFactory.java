@@ -17,16 +17,16 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.debug.FpsMeter;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.EventListener;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.FramedSprite;
-import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.ISprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.EventListener;
 
 import java.util.Arrays;
 
@@ -36,7 +36,7 @@ public class Tests_SpriteFactory {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
 
         for (int i = 0; i < 10; i++) {
-            Sprite sprite = SpriteFactory.createSprite("d2d2-core-demo-tileset.png", 144, 96, 64, 48);
+            ISprite sprite = SpriteFactory.getSprite("d2d2-core-demo-tileset.png", 144, 96, 64, 48);
             stage.add(sprite, i * sprite.getWidth(), 100);
         }
 
