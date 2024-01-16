@@ -428,7 +428,7 @@ public class InteractiveManager {
                             focusNext();
                             keyHoldTabDirection = 1;
                         }
-                        D2D2.stage().addEventListener(this, InputEvent.EACH_FRAME, event1 -> {
+                        D2D2.stage().addEventListener(this, InputEvent.EXIT_FRAME, event1 -> {
                             keyHoldTime--;
                             if (keyHoldTime < 0) {
                                 keyHoldTime = 3;
@@ -460,7 +460,7 @@ public class InteractiveManager {
                     case KeyCode.TAB -> {
                         keyHoldTime = KEY_HOLD_TIME;
                         keyHoldTabDirection = 0;
-                        D2D2.stage().removeEventListener(this, Event.EACH_FRAME);
+                        D2D2.stage().removeEventListener(this, Event.EXIT_FRAME);
                     }
                     case KeyCode.ENTER -> {
                         if (focusedInteractive != null) {
@@ -475,7 +475,7 @@ public class InteractiveManager {
         } else {
             D2D2.stage().removeEventListener(this, InputEvent.KEY_DOWN);
             D2D2.stage().removeEventListener(this, InputEvent.KEY_UP);
-            D2D2.stage().removeEventListener(this, Event.EACH_FRAME);
+            D2D2.stage().removeEventListener(this, Event.EXIT_FRAME);
         }
     }
 

@@ -46,7 +46,7 @@ public class Tests_SimpleDemo {
 
         // ригистрируем событие "каждый кадр"
         // лямбда event -> {} будет выполняться каждый кадр отрисовки
-        sprite.addEventListener(Event.EACH_FRAME, event -> {
+        sprite.addEventListener(Event.EXIT_FRAME, event -> {
             sprite.moveX(1); // двигаем спрайт на 1 пиксель право по X
             sprite.rotate(1); // вращаем спрайт на 1 градус
         });

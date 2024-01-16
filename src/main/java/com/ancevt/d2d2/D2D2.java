@@ -44,11 +44,11 @@ public class D2D2 {
 
         if (cursor != null) {
             Mouse.setVisible(false);
-            cursor.removeEventListener(Mouse.class, Event.EACH_FRAME);
-            cursor.addEventListener(Mouse.class, Event.EACH_FRAME, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
+            cursor.removeEventListener(Mouse.class, Event.EXIT_FRAME);
+            cursor.addEventListener(Mouse.class, Event.EXIT_FRAME, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
         } else {
             Mouse.setVisible(true);
-            D2D2.cursor.removeEventListener(Mouse.class, Event.EACH_FRAME);
+            D2D2.cursor.removeEventListener(Mouse.class, Event.EXIT_FRAME);
         }
         D2D2.cursor = cursor;
     }

@@ -44,7 +44,7 @@ public class Tests_PictureTest {
 
         sprite.setRepeat(repeat, repeat);
 
-        sprite.addEventListener(Event.EACH_FRAME, event -> {
+        sprite.addEventListener(Event.EXIT_FRAME, event -> {
             float x = Mouse.getX();
             float y = Mouse.getY();
             float cx = D2D2.stage().getWidth() / 2;

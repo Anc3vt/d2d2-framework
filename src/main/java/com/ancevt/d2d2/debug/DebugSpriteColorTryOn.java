@@ -9,6 +9,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class DebugSpriteColorTryOn {
 
+    private DebugSpriteColorTryOn() {}
+
     public static void forSprite(ISprite sprite) {
         AtomicReference<DebugPanel> r = new AtomicReference<>();
         AtomicReference<DebugPanel> g = new AtomicReference<>();
@@ -18,7 +20,7 @@ public class DebugSpriteColorTryOn {
             r.set(p);
             p.setY(10);
             p.setSize(100, 50);
-            p.addEventListener(Event.EACH_FRAME, event -> {
+            p.addEventListener(Event.EXIT_FRAME, event -> {
                 p.setText(p.getX() + " " + sprite.getColor().toHexString());
             });
         });
@@ -27,7 +29,7 @@ public class DebugSpriteColorTryOn {
             g.set(p);
             p.setY(100);
             p.setSize(100, 50);
-            p.addEventListener(Event.EACH_FRAME, event -> {
+            p.addEventListener(Event.EXIT_FRAME, event -> {
                 p.setText(p.getX() + " " + sprite.getColor().toHexString());
             });
         });
@@ -36,7 +38,7 @@ public class DebugSpriteColorTryOn {
             b.set(p);
             p.setY(190);
             p.setSize(100, 50);
-            p.addEventListener(Event.EACH_FRAME, event -> {
+            p.addEventListener(Event.EXIT_FRAME, event -> {
                 p.setText(p.getX() + " " + sprite.getColor().toHexString());
             });
         });

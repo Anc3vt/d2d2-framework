@@ -31,21 +31,25 @@ import java.util.List;
 
 public class DebugGrid extends Container implements IColored {
 
-    public static final int SIZE = 16;
-
-    private static final float ALPHA = 0.075f;
-    public static final int DEFAULT_COLOR = 0xFFFFFF;
+    private static final float ALPHA = 0.25f;
+    public static final int DEFAULT_COLOR = 0x444444;
 
     private final List<Line> lines;
 
-    public DebugGrid() {
+    private final int size;
+    public DebugGrid(int size) {
+        this.size = size;
         lines = new ArrayList<>();
         setColor(DEFAULT_COLOR);
 
-        for (int i = 0; i < D2D2.stage().getWidth(); i += SIZE) {
+        for (int i = 0; i < D2D2.stage().getWidth(); i += size) {
             BitmapText bitmapText = new BitmapText(String.valueOf(i));
             add(bitmapText, i, i);
         }
+    }
+
+    public DebugGrid() {
+        this(16);
     }
 
     private void recreate(Color color) {
@@ -54,7 +58,7 @@ public class DebugGrid extends Container implements IColored {
         final int w = (int) D2D2.stage().getWidth();
         final int h = (int) D2D2.stage().getHeight();
 
-        for (float x = 0; x < w; x += SIZE) {
+        for (float x = 0; x < w; x += size) {
             Line line = new Line(Line.VERTICAL);
             line.setColor(color);
             line.setX(x);
@@ -63,7 +67,7 @@ public class DebugGrid extends Container implements IColored {
             lines.add(line);
         }
 
-        for (float y = 0; y < h; y += SIZE) {
+        for (float y = 0; y < h; y += size) {
             Line line = new Line(Line.HORIZONTAL);
             line.setColor(color);
             line.setY(y);
@@ -99,7 +103,7 @@ public class DebugGrid extends Container implements IColored {
             super(1.0f, 1.0f);
             setOrientation(orientation);
 
-            addEventListener(Event.EACH_FRAME, this::eachFrame);
+            addEventListener(Event.EXIT_FRAME, this::eachFrame);
         }
 
         private void eachFrame(Event event) {

@@ -57,7 +57,7 @@ public class Sprite extends DisplayObject implements ISprite {
 
     @Override
     public void setColor(int rgb) {
-        this.color = new Color(rgb);
+        setColor(new Color(rgb));
     }
 
     @Override

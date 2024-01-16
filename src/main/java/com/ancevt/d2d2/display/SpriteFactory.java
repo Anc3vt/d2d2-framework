@@ -28,7 +28,7 @@ public class SpriteFactory {
 
     private final static Map<String, Texture> textureCacheFiles = new HashMap<>();
 
-    public static ISprite getSprite(String asset, int textureX, int textureY, int textureWidth, int textureHeight) {
+    public static ISprite createSprite(String asset, int textureX, int textureY, int textureWidth, int textureHeight) {
         return new Sprite(
             textureCacheFiles.computeIfAbsent(
                 "%s_%d".formatted(

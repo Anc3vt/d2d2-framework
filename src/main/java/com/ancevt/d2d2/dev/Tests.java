@@ -42,7 +42,7 @@ public class Tests {
 
             Sprite sprite = new Sprite(texture);
             sprite.setColor(Color.createRandomColor());
-            container.addEventListener(Event.EACH_FRAME, e -> {
+            container.addEventListener(Event.EXIT_FRAME, e -> {
                 container.move(0.01f, 0.01f);
                 container.rotate(1);
                 //container.toScale(1.005f, 1.005f);
@@ -57,7 +57,7 @@ public class Tests {
         bitmapText.setName("_test_");
         bitmapText.setColor(Color.WHITE);
         bitmapText.setText("Hello BitmapText\nSecond line");
-        bitmapText.addEventListener(Event.EACH_FRAME, e -> {
+        bitmapText.addEventListener(Event.EXIT_FRAME, e -> {
             //bitmapText.toScale(1.001f, 1.001f);
             //bitmapText.rotate(1f);
             bitmapText.moveX(0.01f);

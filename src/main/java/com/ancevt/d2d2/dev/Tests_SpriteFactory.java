@@ -36,7 +36,7 @@ public class Tests_SpriteFactory {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
 
         for (int i = 0; i < 10; i++) {
-            ISprite sprite = SpriteFactory.getSprite("d2d2-core-demo-tileset.png", 144, 96, 64, 48);
+            ISprite sprite = SpriteFactory.createSprite("d2d2-core-demo-tileset.png", 144, 96, 64, 48);
             stage.add(sprite, i * sprite.getWidth(), 100);
         }
 
@@ -67,7 +67,7 @@ public class Tests_SpriteFactory {
             stage.add(framedSprite,0,200);
 
 
-            framedSprite.addEventListener(framedSprite, Event.EACH_FRAME, new EventListener() {
+            framedSprite.addEventListener(framedSprite, Event.EXIT_FRAME, new EventListener() {
 
                 int t = 0;
 

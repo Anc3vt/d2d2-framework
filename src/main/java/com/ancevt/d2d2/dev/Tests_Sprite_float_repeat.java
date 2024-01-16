@@ -44,7 +44,7 @@ public class Tests_Sprite_float_repeat {
         DebugPanel.setEnabled(true);
         DebugPanel.show("repeatxf", "").ifPresent(debugPanel -> {
 
-            debugPanel.addEventListener(Event.EACH_FRAME, event -> {
+            debugPanel.addEventListener(Event.EXIT_FRAME, event -> {
                 debugPanel.setText("repeatX: " + sprite.getRepeatX() + "\n" +
                         "repeatY: " + sprite.getRepeatY());
             });

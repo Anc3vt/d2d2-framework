@@ -89,7 +89,7 @@ public class Tests_TextureCombiner {
             Sprite sprite = new Sprite(D2D2.getTextureManager().loadTextureAtlas("d2d2-logo.png").createTexture());
             stage.add(sprite);
         } else if (inputEvent.getKeyChar() == 'S') {
-            stage.addEventListener(Event.EACH_FRAME, e -> {
+            stage.addEventListener(Event.EXIT_FRAME, e -> {
                 for (int i = 0; i < 1; i++) {
                     D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
                     sprite.removeFromParent();

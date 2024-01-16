@@ -70,7 +70,7 @@ public class DebugPanel extends Container {
         final int height = 300;
 
         this.systemPropertyName = systemPropertyName;
-        addEventListener(Event.EACH_FRAME, this::this_eachFrame);
+        addEventListener(Event.EXIT_FRAME, this::this_eachFrame);
 
         buttonList = new ArrayList<>();
         buttonMap = new HashMap<>();
@@ -325,7 +325,7 @@ public class DebugPanel extends Container {
         for (int i = 0; i < 1; i++) {
             DebugPanel.show("debug-panel-" + i).ifPresent(debugPanel -> {
                 debugPanel.setText(debugPanel.getX());
-                debugPanel.addEventListener(Event.EACH_FRAME, event -> {
+                debugPanel.addEventListener(Event.EXIT_FRAME, event -> {
                     debugPanel.setText(debugPanel.getX());
 
                     debugPanel

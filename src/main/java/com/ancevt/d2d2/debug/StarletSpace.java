@@ -102,7 +102,7 @@ public class StarletSpace extends Container {
 
                 if(x % 5 == 0) {
                     Sprite plume = sprite.cloneSprite();
-                    plume.addEventListener(Event.EACH_FRAME, event -> {
+                    plume.addEventListener(Event.EXIT_FRAME, event -> {
                         plume.setAlpha(plume.getAlpha() - 0.01f);
                         plume.moveY(0.05f);
                         plume.rotate(1f);

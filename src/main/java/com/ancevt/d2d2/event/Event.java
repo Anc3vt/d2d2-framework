@@ -25,7 +25,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Event {
 
-    public static final String EACH_FRAME = "eachFrame";
+    public static final String EXIT_FRAME = "exitFrame";
+    public static final String ENTER_FRAME = "enterFrame";
     public static final String ADD = "add";
     public static final String REMOVE = "remove";
     public static final String ADD_TO_STAGE = "addToStage";

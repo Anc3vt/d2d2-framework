@@ -64,7 +64,7 @@ public class DebugBorder extends Container implements Resizable, IColored {
 		
 		setSize(width, height);
 
-		addEventListener(Event.EACH_FRAME, this::eachFrame);
+		addEventListener(Event.EXIT_FRAME, this::eachFrame);
 	}
 
 	private void rebuild() {
