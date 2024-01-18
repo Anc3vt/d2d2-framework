@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2023 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -28,6 +28,9 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.InteractiveManager;
+import com.ancevt.d2d2.time.Timer;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.lwjgl.glfw.GLFW;
@@ -54,7 +57,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -136,8 +138,17 @@ public class LWJGLBackend implements D2D2Backend {
     private boolean stopped;
     private boolean borderless;
     private int frameRate = 60;
+    private int fps = frameRate;
     private boolean alwaysOnTop;
-    private boolean control, shift;
+    private boolean control;
+    private boolean shift;
+    private int tick;
+    private int frameCounter;
+    private long time;
+
+    @Getter
+    @Setter
+    private int timerCheckFrameFrequency = 10;
 
     public LWJGLBackend(int width, int height, String title) {
         this.width = width;
@@ -531,18 +542,40 @@ public class LWJGLBackend implements D2D2Backend {
         return fullscreen;
     }
 
+    @Override
+    public int getFps() {
+        return fps;
+    }
+
     private void startRenderLoop() {
         while (!glfwWindowShouldClose(windowId)) {
             glfwPollEvents();
 
             try {
-                renderer.renderFrame();
-                Thread.sleep(1000 / (frameRate + 10));
-            } catch (Exception e) {
+                if(fps - frameRate < 10) renderer.renderFrame();
+                if (fps > frameRate) {
+                    Thread.sleep(1000 / (frameRate + 10));
+                } else {
+                    Thread.sleep((long) (1000 / (frameRate * 1.5f)));
+                }
+            } catch (InterruptedException e) {
                 log.error(e.getMessage(), e);
             }
 
+            frameCounter++;
+            final long time2 = System.currentTimeMillis();
+
+            if (time2 - time >= 1000) {
+                time = System.currentTimeMillis();
+                fps = frameCounter;
+                frameCounter = 0;
+            }
+
             glfwSwapBuffers(windowId);
+
+            tick++;
+
+            if(tick % timerCheckFrameFrequency == 0) Timer.processTimers();
         }
 
         String prop = System.getProperty("d2d2.glfw.no-terminate");

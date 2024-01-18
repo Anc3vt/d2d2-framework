@@ -17,28 +17,49 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.KeyCode;
+import com.ancevt.d2d2.time.Timer;
 
-public class Tests_empty {
+import static com.ancevt.d2d2.time.Timer.setInterval;
+import static com.ancevt.d2d2.time.Timer.setTimeout;
 
+public class Tests_Timers {
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        StarletSpace.haveFun();
 
 
-        stage.add(new FpsMeter(), 100, 100);
+        PlainRect plainRect = new PlainRect(50, 50, Color.RED);
 
 
-        BitmapText bitmapText = new BitmapText();
-        bitmapText.setText("TEst");
-        bitmapText.setColor(Color.WHITE);
+        Timer timer1 = setInterval(timer -> {
+            plainRect.setColor(Color.createVisibleRandomColor());
+        }, 1000);
 
-        stage.add(bitmapText, 150, 150);
+
+        stage.addEventListener(InputEvent.KEY_DOWN, event -> {
+            var e = (InputEvent) event;
+            if(e.getKeyCode() == KeyCode.SPACE) {
+                timer1.stop();
+                System.out.println("STOP");
+            }
+        });
+
+
+        stage.add(plainRect, 100, 100);
+
+        stage.add(new FpsMeter());
+
+        System.out.println(new FpsMeter());
 
         D2D2.loop();
     }

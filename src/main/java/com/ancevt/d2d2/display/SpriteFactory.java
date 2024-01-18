@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2023 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -28,7 +28,7 @@ public class SpriteFactory {
 
     private final static Map<String, Texture> textureCacheFiles = new HashMap<>();
 
-    public static ISprite createSprite(String asset, int textureX, int textureY, int textureWidth, int textureHeight) {
+    public static Sprite createSprite(String asset, int textureX, int textureY, int textureWidth, int textureHeight) {
         return new Sprite(
             textureCacheFiles.computeIfAbsent(
                 "%s_%d".formatted(

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2023 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -31,6 +31,8 @@ public interface D2D2Backend {
     void setFrameRate(int value);
 
     int getFrameRate();
+
+    int getFps();
 
     long getWindowId();
 
