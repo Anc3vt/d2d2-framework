@@ -56,6 +56,10 @@ public class Timer {
         timersToRemove.add(this);
     }
 
+    public boolean isStarted() {
+        return timers.contains(this);
+    }
+
     public static Timer setInterval(Consumer<Timer> func, long delay) {
         Timer timer = new Timer(func, delay);
         timer.setLoop(true);

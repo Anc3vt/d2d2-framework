@@ -74,7 +74,7 @@ public interface D2D2Backend {
 
     default void setSmoothMode(boolean value) {}
 
-    default boolean isSmoothMode() { return false; }
+    default boolean isSmoothMode() {return false;}
 
     void setWindowXY(int x, int y);
 
@@ -87,4 +87,8 @@ public interface D2D2Backend {
     void setBorderless(boolean borderless);
 
     boolean isBorderless();
+
+    void setTimerCheckFrameFrequency(int v);
+
+    int getTimerCheckFrameFrequency();
 }

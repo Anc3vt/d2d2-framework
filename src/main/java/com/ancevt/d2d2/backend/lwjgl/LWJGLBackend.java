@@ -114,17 +114,13 @@ public class LWJGLBackend implements D2D2Backend {
     private IRenderer renderer;
     long windowId;
     private boolean mouseVisible;
-
     private int width;
     private int height;
     private String title;
-
     private boolean visible;
-
     private int mouseX;
     private int mouseY;
     private boolean isDown;
-
     private Stage stage;
     private boolean fullscreen;
     private int windowX;
@@ -148,7 +144,7 @@ public class LWJGLBackend implements D2D2Backend {
 
     @Getter
     @Setter
-    private int timerCheckFrameFrequency = 10;
+    private int timerCheckFrameFrequency = 1;
 
     public LWJGLBackend(int width, int height, String title) {
         this.width = width;
@@ -552,8 +548,8 @@ public class LWJGLBackend implements D2D2Backend {
             glfwPollEvents();
 
             try {
-                if(fps - frameRate < 10) renderer.renderFrame();
-                if (fps > frameRate) {
+                renderer.renderFrame();
+                if (fps > frameRate + 10) {
                     Thread.sleep(1000 / (frameRate + 10));
                 } else {
                     Thread.sleep((long) (1000 / (frameRate * 1.5f)));
@@ -575,7 +571,7 @@ public class LWJGLBackend implements D2D2Backend {
 
             tick++;
 
-            if(tick % timerCheckFrameFrequency == 0) Timer.processTimers();
+            if (tick % timerCheckFrameFrequency == 0) Timer.processTimers();
         }
 
         String prop = System.getProperty("d2d2.glfw.no-terminate");

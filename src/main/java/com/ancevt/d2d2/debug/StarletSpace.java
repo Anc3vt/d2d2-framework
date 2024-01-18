@@ -17,12 +17,12 @@
  */
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InputEvent;
 
 import static com.ancevt.d2d2.D2D2.stage;
 
@@ -43,7 +43,7 @@ public class StarletSpace extends Container {
         return starlet;
     }
 
-    public static void haveFun() {
+    public static StarletSpace haveFun() {
         Stage stage = stage();
         stage.setBackgroundColor(Color.of(0x000510));
         Sprite d2d2Title = new Sprite("d2d2-title");
@@ -59,6 +59,7 @@ public class StarletSpace extends Container {
             float center = stage.getWidth() / 2;
             starletSpace.velocityX = center - e.getX();
         });
+        return starletSpace;
     }
 
     private static class Starlet extends Container {
