@@ -33,7 +33,7 @@ public interface IContainer extends IDisplayObject {
 	
 	int indexOf(@NotNull IDisplayObject child);
 
-	int getChildCount();
+	int getNumberOfChildren();
 
 	@NotNull IDisplayObject getChild(int index);
 

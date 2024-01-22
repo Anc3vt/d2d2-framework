@@ -44,13 +44,17 @@ public class StarletSpace extends Container {
     }
 
     public static StarletSpace haveFun() {
+        return haveFun(true);
+    }
+
+    public static StarletSpace haveFun(boolean logo) {
         Stage stage = stage();
         stage.setBackgroundColor(Color.of(0x000510));
         Sprite d2d2Title = new Sprite("d2d2-title");
         d2d2Title.setColor(Color.LIGHT_GRAY);
         StarletSpace starletSpace = new StarletSpace(100);
+        if (logo) starletSpace.add(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
         stage.add(starletSpace);
-        stage.add(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
         stage.addEventListener(Event.RESIZE, event -> {
             d2d2Title.setXY((stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
         });
@@ -101,7 +105,7 @@ public class StarletSpace extends Container {
             while (x != newX) {
                 x += step;
 
-                if(x % 5 == 0) {
+                if (x % 5 == 0) {
                     Sprite plume = sprite.cloneSprite();
                     plume.addEventListener(Event.EXIT_FRAME, event -> {
                         plume.setAlpha(plume.getAlpha() - 0.01f);

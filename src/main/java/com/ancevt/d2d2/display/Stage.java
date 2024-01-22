@@ -77,7 +77,7 @@ public class Stage extends Container {
         if (displayObject.isOnScreen()) {
             displayObject.dispatchEvent(EventPool.createEvent(Event.ADD_TO_STAGE));
             if (displayObject instanceof IContainer container) {
-                for (int i = 0; i < container.getChildCount(); i++) {
+                for (int i = 0; i < container.getNumberOfChildren(); i++) {
                     dispatchAddToStage(container.getChild(i));
                 }
             }
@@ -89,7 +89,7 @@ public class Stage extends Container {
             displayObject.dispatchEvent(EventPool.createEvent(Event.REMOVE_FROM_STAGE));
 
             if (displayObject instanceof IContainer container) {
-                for (int i = 0; i < container.getChildCount(); i++) {
+                for (int i = 0; i < container.getNumberOfChildren(); i++) {
                     dispatchRemoveFromStage(container.getChild(i));
                 }
             }

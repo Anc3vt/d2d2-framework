@@ -33,7 +33,6 @@ import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.time.Timer;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -154,7 +153,7 @@ public class LWJGLRenderer implements IRenderer {
         GL11.glRotatef(r, 0, 0, 1);
 
         if (displayObject instanceof IContainer container) {
-            for (int i = 0; i < container.getChildCount(); i++) {
+            for (int i = 0; i < container.getNumberOfChildren(); i++) {
                 renderDisplayObject(container.getChild(i), level + 1, x + toX, y + toY, scX, scY, 0, a);
             }
 

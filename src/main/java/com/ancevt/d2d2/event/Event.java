@@ -40,6 +40,10 @@ public class Event {
     Object source;
     private IContainer parent;
 
+    public <T> T casted() {
+        return (T)this;
+    }
+
     public void setType(String type) {
         this.type = type;
     }

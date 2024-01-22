@@ -60,8 +60,6 @@ public class TextureManager {
             return textureAtlasCache.get(assetPath);
         }
 
-        System.out.println("load " + assetPath);
-
         final TextureAtlas result = textureEngine.createTextureAtlas(assetPath);
         textureAtlases.add(result);
         textureAtlasCache.put(assetPath, result);

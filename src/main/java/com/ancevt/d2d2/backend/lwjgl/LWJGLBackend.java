@@ -552,7 +552,7 @@ public class LWJGLBackend implements D2D2Backend {
                 if (fps > frameRate + 10) {
                     Thread.sleep(1000 / (frameRate + 10));
                 } else {
-                    Thread.sleep((long) (1000 / (frameRate * 1.5f)));
+                    Thread.sleep((long) (1000 / (frameRate * 1.25f)));
                 }
             } catch (InterruptedException e) {
                 log.error(e.getMessage(), e);

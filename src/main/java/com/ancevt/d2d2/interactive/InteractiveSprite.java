@@ -137,6 +137,18 @@ public class InteractiveSprite extends Sprite implements Interactive {
     }
 
     @Override
+    public void setScaleX(float value) {
+        super.setScaleX(value);
+        interactiveArea.setWidth(value / getTexture().width());
+    }
+
+    @Override
+    public void setScaleY(float value) {
+        super.setScaleY(value);
+        interactiveArea.setHeight(value / getTexture().height());
+    }
+
+    @Override
     public boolean isEnabled() {
         return enabled;
     }
@@ -170,6 +182,8 @@ public class InteractiveSprite extends Sprite implements Interactive {
     public boolean isFocused() {
         return InteractiveManager.getInstance().getFocused() == this;
     }
+
+
 
     @Override
     public void dispose() {

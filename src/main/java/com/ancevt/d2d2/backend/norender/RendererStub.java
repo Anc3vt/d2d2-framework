@@ -58,7 +58,7 @@ public class RendererStub implements IRenderer {
 
         if (displayObject instanceof IContainer) {
             IContainer container = (IContainer) displayObject;
-            for (int i = 0; i < container.getChildCount(); i++) {
+            for (int i = 0; i < container.getNumberOfChildren(); i++) {
                 renderDisplayObject(container.getChild(i));
             }
         }

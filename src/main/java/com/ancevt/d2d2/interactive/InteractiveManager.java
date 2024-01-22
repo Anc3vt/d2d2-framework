@@ -317,6 +317,7 @@ public class InteractiveManager {
     }
 
     public void setFocused(Interactive interactive, boolean byMouseDown) {
+
         if (focusedInteractive == interactive) return;
 
         if (focusedInteractive != null) {
@@ -333,10 +334,12 @@ public class InteractiveManager {
             focusedInteractive = interactive;
             focusedInteractiveIndex = index;
 
-            dispatch(focusedInteractive, InteractiveEvent.builder()
-                .type(InteractiveEvent.FOCUS_IN)
-                .byMouseDown(byMouseDown)
-                .build());
+            dispatch(focusedInteractive,
+                InteractiveEvent.builder()
+                    .type(InteractiveEvent.FOCUS_IN)
+                    .byMouseDown(byMouseDown)
+                    .build()
+            );
         }
     }
 

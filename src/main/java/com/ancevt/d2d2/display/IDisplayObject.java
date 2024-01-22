@@ -19,7 +19,29 @@ package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.event.IEventDispatcher;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public interface IDisplayObject extends IEventDispatcher {
+
+    Map<IDisplayObject, Map<String, Object>> extraMap = new HashMap<>();
+
+    default void setExtra(Map<String, Object> extra) {
+        extraMap.put(this, extra);
+    }
+
+    default Map<String, Object> getExtra() {
+        return extraMap.computeIfAbsent(this, o -> new HashMap<>());
+    }
+
+    default <T> IDisplayObject putExtra(String key, T object) {
+        getExtra().put(key, object);
+        return this;
+    }
+
+    default <T> T getExtra(String key) {
+        return (T) getExtra().get(key);
+    }
 
     int displayObjectId();
 
@@ -109,5 +131,7 @@ public interface IDisplayObject extends IEventDispatcher {
 
     String toString();
 
-    default void onEachFrame(){};
+    default void onEachFrame() {}
+
+    ;
 }

@@ -61,6 +61,7 @@
     </repositories>
 
     <properties>
+        <gson.version>2.9.1</gson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
 
@@ -68,7 +69,6 @@
 
         <!-- Ancevt -->
         <args.version>2.1.0</args.version>
-        <local-storage.version>1.1.5</local-storage.version>
         <ancevt-commons.version>1.0.0.8-SNAPSHOT</ancevt-commons.version>
 
         <!-- Log -->
@@ -117,12 +117,6 @@
             <groupId>com.ancevt.util</groupId>
             <artifactId>args</artifactId>
             <version>${args.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ancevt.util</groupId>
-            <artifactId>local-storage</artifactId>
-            <version>${local-storage.version}</version>
         </dependency>
 
         <dependency>
@@ -273,6 +267,14 @@
             <groupId>org.lwjgl.lwjgl</groupId>
             <artifactId>lwjgl_util</artifactId>
             <version>${lwjgl_util.version}</version>
+        </dependency>
+
+        <!-- ////////////////// -->
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
         </dependency>
 
         <dependency>
