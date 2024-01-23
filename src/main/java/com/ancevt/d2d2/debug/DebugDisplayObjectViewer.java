@@ -94,8 +94,8 @@ public class DebugDisplayObjectViewer {
         for (int i = 0; i < container.getNumberOfChildren(); i++) {
             IDisplayObject o = container.getChild(i);
 
-            if ((typesIncluded.isEmpty() || Variable.in(o.getClass(), typesIncluded)) &&
-                (typesExcluded.isEmpty() || !Variable.in(o.getClass(), typesExcluded))) {
+            if ((typesIncluded.isEmpty() || typesIncluded.contains(o.getClass())) &&
+                (typesExcluded.isEmpty() || !typesExcluded.contains(o.getClass()))) {
                 Color color = Color.createVisibleRandomColor();
 
                 BorderedRect borderedRect = new BorderedRect(
