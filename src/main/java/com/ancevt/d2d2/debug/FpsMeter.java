@@ -52,7 +52,7 @@ public class FpsMeter extends BitmapText {
 
             int fps = getFps();
 
-            if (fps >= 40) setColor(Color.GREEN);
+            if (fps >= 40) setColor(Color.LIGHT_GREEN);
             else if (fps >= 30) setColor(Color.YELLOW);
             else setColor(Color.RED);
         }

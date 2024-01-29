@@ -22,11 +22,12 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 public class Timer {
 
-    private static final List<Timer> timers = new ArrayList<>();
+    private static final List<Timer> timers = new CopyOnWriteArrayList<>();
     private static final List<Timer> timersToRemove = new ArrayList<>();
 
     @Getter

@@ -318,4 +318,8 @@ public class Color {
     public static Color of(int rgb) {
         return new Color(rgb, true);
     }
+
+    public static Color of(String hex) {
+        return new Color(hex, true);
+    }
 }

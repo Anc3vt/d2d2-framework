@@ -54,7 +54,6 @@ public class Tests_Timers {
             }
         });
 
-
         stage.add(plainRect, 100, 100);
 
         stage.add(new FpsMeter());

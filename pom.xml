@@ -68,7 +68,7 @@
         <mainClass>com.ancevt.d2d2.dev.Tests_BitmapText_cacheAsSprite2</mainClass>
 
         <!-- Ancevt -->
-        <args.version>2.1.0</args.version>
+        <args.version>2.1.2</args.version>
         <ancevt-commons.version>1.0.0.8-SNAPSHOT</ancevt-commons.version>
 
         <!-- Log -->
