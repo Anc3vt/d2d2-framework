@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.debug.DebugGrid;
+import com.ancevt.d2d2.debug.Grid;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -53,8 +53,8 @@ public class Tests_Input {
 
         cursor = container;
 
-        DebugGrid debugGrid = new DebugGrid();
-        stage.add(debugGrid);
+        Grid grid = new Grid();
+        stage.add(grid);
 
         D2D2.loop();
     }

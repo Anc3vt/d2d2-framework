@@ -86,17 +86,17 @@ public class Tests_InteractiveContainersFocus {
 
         private void this_keyDown(Event event) {
             var e = (InteractiveEvent) event;
-            System.out.println(getName() + " KEY_DOWN " + e.getKeyCode());
+            System.out.println(getName() + " KEY_DOWN " + e.getCode());
         }
 
         private void this_keyUp(Event event) {
             var e = (InteractiveEvent) event;
-            System.out.println(getName() + " KEY_UP " + e.getKeyCode());
+            System.out.println(getName() + " KEY_UP " + e.getCode());
         }
 
         private void this_keyType(Event event) {
             var e = (InteractiveEvent) event;
-            System.out.println(getName() + " KEY_TYPE " + e.getKeyCode() + " " + e.getKeyType());
+            System.out.println(getName() + " KEY_TYPE " + e.getCode() + " " + e.getKeyType());
         }
 
         private void this_focusIn(Event event) {

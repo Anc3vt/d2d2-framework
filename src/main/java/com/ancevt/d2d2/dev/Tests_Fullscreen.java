@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.debug.DebugGrid;
+import com.ancevt.d2d2.debug.Grid;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -49,9 +49,9 @@ public class Tests_Fullscreen {
         cursor = container;
         cursor.setAlpha(0.25f);
 
-        DebugGrid debugGrid = new DebugGrid();
+        Grid grid = new Grid();
         //debugGrid.setScale(2f,2f);
-        stage.add(debugGrid);
+        stage.add(grid);
 
         D2D2.loop();
     }

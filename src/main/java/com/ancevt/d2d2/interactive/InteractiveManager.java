@@ -58,8 +58,8 @@ public class InteractiveManager {
             if (focused != null) {
                 dispatch(focused, InteractiveEvent.builder()
                     .type(InteractiveEvent.KEY_DOWN)
-                    .keyChar(e.getKeyChar())
-                    .keyCode(e.getKeyCode())
+                    .character(e.getKeyChar())
+                    .code(e.getKeyCode())
                     .alt(e.isAlt())
                     .control(e.isControl())
                     .shift(e.isShift())
@@ -73,8 +73,8 @@ public class InteractiveManager {
             if (focused != null) {
                 dispatch(focused, InteractiveEvent.builder()
                     .type(InteractiveEvent.KEY_REPEAT)
-                    .keyChar(e.getKeyChar())
-                    .keyCode(e.getKeyCode())
+                    .character(e.getKeyChar())
+                    .code(e.getKeyCode())
                     .alt(e.isAlt())
                     .control(e.isControl())
                     .shift(e.isShift())
@@ -88,8 +88,8 @@ public class InteractiveManager {
             if (focused != null) {
                 dispatch(focused, InteractiveEvent.builder()
                     .type(InteractiveEvent.KEY_UP)
-                    .keyChar(e.getKeyChar())
-                    .keyCode(e.getKeyCode())
+                    .character(e.getKeyChar())
+                    .code(e.getKeyCode())
                     .alt(e.isAlt())
                     .control(e.isControl())
                     .shift(e.isShift())
@@ -119,8 +119,8 @@ public class InteractiveManager {
             if (focused != null) {
                 dispatch(focused, InteractiveEvent.builder()
                     .type(InteractiveEvent.KEY_TYPE)
-                    .keyCode(e.getKeyCode())
-                    .keyChar(e.getKeyChar())
+                    .code(e.getKeyCode())
+                    .character(e.getKeyChar())
                     .keyType(e.getKeyType())
                     .alt(e.isAlt())
                     .control(e.isControl())

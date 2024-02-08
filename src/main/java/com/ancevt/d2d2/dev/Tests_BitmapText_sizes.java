@@ -110,7 +110,7 @@ public class Tests_BitmapText_sizes {
 
                 final float S = 10;
 
-                switch (e.getKeyCode()) {
+                switch (e.getCode()) {
                     case KeyCode.W -> setSize(getWidth(), getHeight() - S);
                     case KeyCode.S -> setSize(getWidth(), getHeight() + S);
                     case KeyCode.A -> setSize(getWidth() - S, getHeight());

@@ -72,12 +72,12 @@ public class Tests_InteractiveContainer {
 
         private void this_keyDown(Event event) {
             var e = (InteractiveEvent) event;
-            System.out.println("key down: " + e.getKeyChar());
+            System.out.println("key down: " + e.getCharacter());
         }
 
         private void this_keyRepeat(Event event) {
             var e = (InteractiveEvent) event;
-            System.out.println("key repeat: " + e.getKeyChar());
+            System.out.println("key repeat: " + e.getCharacter());
         }
 
         private void this_up(Event event) {

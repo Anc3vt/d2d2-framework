@@ -47,4 +47,10 @@ public interface Interactive extends IDisplayObject, IDisposable {
     void focus();
 
     boolean isFocused();
+
+    default void unfocus() {
+        if (isFocused()) {
+            InteractiveManager.getInstance().resetFocus();
+        }
+    }
 }

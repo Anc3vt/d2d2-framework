@@ -138,6 +138,7 @@ public class LWJGLBackend implements D2D2Backend {
     private boolean alwaysOnTop;
     private boolean control;
     private boolean shift;
+    private boolean alt;
     private int tick;
     private int frameCounter;
     private long time;
@@ -377,6 +378,9 @@ public class LWJGLBackend implements D2D2Backend {
                 .type(InputEvent.KEY_TYPE)
                 .x(Mouse.getX())
                 .y(Mouse.getY())
+                .alt(alt)
+                .control(control)
+                .shift(shift)
                 .drag(isDown)
                 .codepoint(codepoint)
                 .keyType(String.valueOf(Character.toChars(codepoint)))
@@ -389,6 +393,7 @@ public class LWJGLBackend implements D2D2Backend {
                 case GLFW_PRESS -> {
                     if (key == KeyCode.LEFT_SHIFT || key == KeyCode.RIGHT_SHIFT) shift = true;
                     if (key == KeyCode.LEFT_CONTROL || key == KeyCode.RIGHT_CONTROL) control = true;
+                    if (key == KeyCode.LEFT_ALT || key == KeyCode.RIGHT_ALT) alt = true;
 
                     stage.dispatchEvent(InputEvent.builder()
                         .type(InputEvent.KEY_DOWN)
@@ -418,6 +423,7 @@ public class LWJGLBackend implements D2D2Backend {
                 case GLFW_RELEASE -> {
                     if (key == KeyCode.LEFT_SHIFT || key == KeyCode.RIGHT_SHIFT) shift = false;
                     if (key == KeyCode.LEFT_CONTROL || key == KeyCode.RIGHT_CONTROL) control = false;
+                    if (key == KeyCode.LEFT_ALT || key == KeyCode.RIGHT_ALT) alt = false;
 
                     stage.dispatchEvent(InputEvent.builder()
                         .type(InputEvent.KEY_UP)

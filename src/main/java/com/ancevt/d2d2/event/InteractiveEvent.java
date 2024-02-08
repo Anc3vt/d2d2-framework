@@ -47,8 +47,8 @@ public class InteractiveEvent extends Event {
     private final boolean rightMouseButton;
     private final boolean middleMouseButton;
     private final boolean onArea;
-    private final int keyCode;
-    private final char keyChar;
+    private final int code;
+    private final char character;
     private final boolean alt;
     private final boolean control;
     private final boolean shift;

@@ -17,90 +17,108 @@
  */
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.d2d2.common.PlainRect;
-import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.IContainer;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.event.Event;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DebugGrid extends Container implements IColored {
+public class Grid extends Container implements IColored {
 
-    private static final float ALPHA = 0.25f;
-    public static final int DEFAULT_COLOR = 0x444444;
+    public static final int DEFAULT_COLOR = 0xFFFFFF;
 
     private final List<Line> lines;
 
-    private final int size;
-    public DebugGrid(int size) {
-        this.size = size;
+    @Getter
+    private float width;
+
+    @Getter
+    private float height;
+
+    @Getter
+    private float cellSize;
+
+    @Getter
+    private Color color;
+
+    public Grid(float width, float height, float cellSize) {
+        this.width = width;
+        this.height = height;
+        this.cellSize = cellSize;
         lines = new ArrayList<>();
         setColor(DEFAULT_COLOR);
-
-        for (int i = 0; i < D2D2.stage().getWidth(); i += size) {
-            BitmapText bitmapText = new BitmapText(String.valueOf(i));
-            add(bitmapText, i, i);
-        }
     }
 
-    public DebugGrid() {
-        this(16);
+
+    public Grid() {
+        this(D2D2.stage().getWidth(), D2D2.stage().getHeight(), 16);
     }
 
-    private void recreate(Color color) {
-        removeAllChildren();
+    public void setCellSize(float cellSize) {
+        this.cellSize = cellSize;
+        update();
+    }
 
-        final int w = (int) D2D2.stage().getWidth();
-        final int h = (int) D2D2.stage().getHeight();
+    public void setSize(float width, float height) {
+        this.width = width;
+        this.height = height;
+        update();
+    }
 
-        for (float x = 0; x < w; x += size) {
-            Line line = new Line(Line.VERTICAL);
-            line.setColor(color);
-            line.setX(x);
-            line.setAlpha(ALPHA);
-            add(line);
-            lines.add(line);
-        }
+    public void setWidth(float width) {
+        this.width = width;
+        update();
+    }
 
-        for (float y = 0; y < h; y += size) {
-            Line line = new Line(Line.HORIZONTAL);
-            line.setColor(color);
-            line.setY(y);
-            line.setAlpha(ALPHA);
-            add(line);
-            lines.add(line);
-        }
+    public void setHeight(float height) {
+        this.height = height;
+        update();
     }
 
     @Override
     public void setColor(Color color) {
-        recreate(color);
+        this.color = color;
+        update();
     }
 
-    @Override
-    public Color getColor() {
-        return lines.get(0).getColor();
+    private void update() {
+        removeAllChildren();
+
+        for (float x = 0; x < width; x += cellSize) {
+            Line line = new Line(Line.VERTICAL, this);
+            line.setColor(color);
+            line.setX(x);
+            add(line);
+            lines.add(line);
+        }
+
+        for (float y = 0; y < height; y += cellSize) {
+            Line line = new Line(Line.HORIZONTAL, this);
+            line.setColor(color);
+            line.setY(y);
+            add(line);
+            lines.add(line);
+        }
     }
 
-    @Override
-    public void setColor(int rgb) {
-        setColor(new Color(rgb));
-    }
-
+    @Getter
     private static class Line extends PlainRect {
 
         public static final byte HORIZONTAL = 0x00;
         public static final byte VERTICAL = 0x01;
+        private final Grid grid;
 
         private int orientation;
 
-        public Line(byte orientation) {
+        public Line(byte orientation, Grid grid) {
             super(1.0f, 1.0f);
+            this.grid = grid;
             setOrientation(orientation);
 
             addEventListener(Event.EXIT_FRAME, this::eachFrame);
@@ -118,22 +136,15 @@ public class DebugGrid extends Container implements IColored {
             }
         }
 
-        public int getOrientation() {
-            return orientation;
-        }
-
         private void setOrientation(int orientation) {
             this.orientation = orientation;
 
-            final int w = (int) D2D2.stage().getWidth();
-            final int h = (int) D2D2.stage().getHeight();
-
             switch (orientation) {
                 case HORIZONTAL:
-                    setScale(w, 1.0f);
+                    setScale(grid.getWidth(), 1.0f);
                     break;
                 case VERTICAL:
-                    setScale(1.0f, h);
+                    setScale(1.0f, grid.getHeight());
                     break;
             }
         }

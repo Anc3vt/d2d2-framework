@@ -17,8 +17,8 @@
  */
 package com.ancevt.d2d2.interactive;
 
-import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.exception.InteractiveException;
 
 public class InteractiveContainer extends Container implements Interactive {
@@ -66,17 +66,27 @@ public class InteractiveContainer extends Container implements Interactive {
         return tabbingEnabled;
     }
 
+    private void dispatchResizeEvent() {
+        dispatchEvent(Event.builder()
+            .type(Event.RESIZE)
+            .source(this)
+            .build()
+        );
+    }
+
     public void setSize(float width, float height) {
-        interactiveArea.setWidth(width);
-        interactiveArea.setHeight(height);
+        setWidth(width);
+        setHeight(height);
     }
 
     public void setWidth(float width) {
         interactiveArea.setWidth(width);
+        dispatchResizeEvent();
     }
 
     public void setHeight(float height) {
         interactiveArea.setHeight(height);
+        dispatchResizeEvent();
     }
 
     @Override

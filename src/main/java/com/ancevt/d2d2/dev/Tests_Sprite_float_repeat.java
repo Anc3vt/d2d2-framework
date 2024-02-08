@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.debug.DebugGrid;
+import com.ancevt.d2d2.debug.Grid;
 import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
@@ -32,10 +32,10 @@ public class Tests_Sprite_float_repeat {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
-        DebugGrid debugGrid = new DebugGrid();
-        stage.add(debugGrid);
-        debugGrid.setScale(1f, 1f);
-        debugGrid.setAlpha(0.25f);
+        Grid grid = new Grid();
+        stage.add(grid);
+        grid.setScale(1f, 1f);
+        grid.setAlpha(0.25f);
 
         Sprite sprite = new Sprite("test16x16");
 

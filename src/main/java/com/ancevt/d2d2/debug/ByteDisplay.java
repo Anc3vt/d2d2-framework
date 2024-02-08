@@ -36,6 +36,7 @@ import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,6 +55,7 @@ public class ByteDisplay extends InteractiveContainer {
     private static final int PAGE_SIZE = 64;
 
     private final BorderedRect bgRect;
+    @Getter
     private final BitmapText bitmapText;
 
     private int oldX;
@@ -93,11 +95,6 @@ public class ByteDisplay extends InteractiveContainer {
         addEventListener(this, InteractiveEvent.KEY_DOWN, this::keyDown);
         addEventListener(this, InteractiveEvent.KEY_REPEAT, this::keyDown);
         addEventListener(this, InteractiveEvent.WHEEL, this::wheel);
-
-    }
-
-    public BitmapText getBitmapText() {
-        return bitmapText;
     }
 
     private void wheel(Event event) {
@@ -109,7 +106,7 @@ public class ByteDisplay extends InteractiveContainer {
     private void keyDown(Event event) {
         var e = (InteractiveEvent) event;
 
-        int keyCode = e.getKeyCode();
+        int keyCode = e.getCode();
 
         switch (keyCode) {
             case KeyCode.A, KeyCode.LEFT -> {
