@@ -67,7 +67,8 @@ public class DebugLabel extends BitmapText {
 
     public void dispose() {
         target.removeEventListener(this, Event.ENTER_FRAME);
-        D2D2.stage().removeFromParent();
+        target.removeEventListener(this, Event.REMOVE_FROM_STAGE);
+        this.removeFromParent();
         labels.remove(this);
     }
 
@@ -84,7 +85,14 @@ public class DebugLabel extends BitmapText {
     }
 
     public static DebugLabel createLabel(IDisplayObject target, BiConsumer<IDisplayObject, StringBuilder> func, int updateRate) {
-        return new DebugLabel(target, func, updateRate);
+        if (labels.containsKey(target)) {
+            labels.get(target).dispose();
+        }
+        DebugLabel result = new DebugLabel(target, func, updateRate);
+        target.addEventListener(result, Event.REMOVE_FROM_STAGE, event -> {
+            result.dispose();
+        });
+        return result;
     }
 
     public static DebugLabel createLabel(IDisplayObject target, BiConsumer<IDisplayObject, StringBuilder> func) {
