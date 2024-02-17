@@ -27,6 +27,7 @@ import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
+import lombok.Getter;
 
 public class DraggingContainer extends InteractiveContainer {
 
@@ -41,11 +42,12 @@ public class DraggingContainer extends InteractiveContainer {
     private int oldX;
     private int oldY;
 
-    private final PlainRect bg;
+    @Getter
+    private final PlainRect background;
 
     public DraggingContainer() {
-        bg = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
-        add(bg);
+        background = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
+        add(background);
 
         addEventListener(this, InteractiveEvent.DOWN, this::mouseDown);
         addEventListener(this, InteractiveEvent.DRAG, this::mouseDrag);
@@ -68,25 +70,25 @@ public class DraggingContainer extends InteractiveContainer {
     }
 
     public void setBackgroundColor(Color color) {
-        bg.setColor(color);
+        background.setColor(color);
     }
 
     public Color getBackgroundColor() {
-        return bg.getColor();
+        return background.getColor();
     }
 
     public void setBackgroundVisible(boolean b) {
-        if (b == getBackgroundVisible()) return;
+        if (b == isBackgroundVisible()) return;
 
         if (b) {
-            add(bg);
+            add(background);
         } else {
-            remove(bg);
+            remove(background);
         }
     }
 
-    public boolean getBackgroundVisible() {
-        return contains(bg);
+    public boolean isBackgroundVisible() {
+        return contains(background);
     }
 
     private void mouseDrag(Event event) {
@@ -95,10 +97,10 @@ public class DraggingContainer extends InteractiveContainer {
         if (mouseButton == MouseButton.RIGHT) {
             setSize(e.getX() / getScaleX() + 1, e.getY() / getScaleY() + 1);
 
-            if(getWidth() < MIN_WIDTH) {
+            if (getWidth() < MIN_WIDTH) {
                 setWidth(MIN_WIDTH);
             }
-            if(getHeight() < MIN_HEIGHT) {
+            if (getHeight() < MIN_HEIGHT) {
                 setHeight(MIN_HEIGHT);
             }
             return;
@@ -116,13 +118,13 @@ public class DraggingContainer extends InteractiveContainer {
     @Override
     public void setWidth(float width) {
         super.setWidth(width);
-        bg.setWidth(width);
+        background.setWidth(width);
     }
 
     @Override
     public void setHeight(float height) {
         super.setHeight(height);
-        bg.setHeight(height);
+        background.setHeight(height);
     }
 
     public static void main(String[] args) {

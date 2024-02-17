@@ -111,12 +111,12 @@ public class Sprite extends DisplayObject implements ISprite {
 
     @Override
     public float getWidth() {
-        return texture.width();
+        return texture == null ? 0f : texture.width();
     }
 
     @Override
     public float getHeight() {
-        return texture.height();
+        return texture == null ? 0f : texture.height();
     }
 
     @Override
