@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -97,7 +97,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public int getChildCount() {
+    public int getNumberOfChildren() {
         return children.size();
     }
 
@@ -154,9 +154,8 @@ public class Container extends DisplayObject implements IContainer {
         float max = 0;
 
         for (final IDisplayObject child : children) {
-
-            final float y = child.getY();
-            final float yh = y + child.getHeight();
+             float y = child.getY();
+             float yh = y + child.getHeight();
 
             min = Math.min(y, min);
             max = Math.max(yh, max);

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,9 +17,9 @@
  */
 package com.ancevt.d2d2.interactive;
 
+import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.texture.Texture;
-import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.exception.InteractiveException;
 
 public class InteractiveSprite extends Sprite implements Interactive {
@@ -137,6 +137,18 @@ public class InteractiveSprite extends Sprite implements Interactive {
     }
 
     @Override
+    public void setScaleX(float value) {
+        super.setScaleX(value);
+        interactiveArea.setWidth(value / getTexture().width());
+    }
+
+    @Override
+    public void setScaleY(float value) {
+        super.setScaleY(value);
+        interactiveArea.setHeight(value / getTexture().height());
+    }
+
+    @Override
     public boolean isEnabled() {
         return enabled;
     }
@@ -170,6 +182,8 @@ public class InteractiveSprite extends Sprite implements Interactive {
     public boolean isFocused() {
         return InteractiveManager.getInstance().getFocused() == this;
     }
+
+
 
     @Override
     public void dispose() {

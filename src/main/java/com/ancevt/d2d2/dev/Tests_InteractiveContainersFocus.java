@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,15 +17,15 @@
  */
 package com.ancevt.d2d2.dev;
 
+import com.ancevt.d2d2.common.BorderedRect;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 import com.ancevt.d2d2.interactive.InteractiveManager;
 
@@ -86,17 +86,17 @@ public class Tests_InteractiveContainersFocus {
 
         private void this_keyDown(Event event) {
             var e = (InteractiveEvent) event;
-            System.out.println(getName() + " KEY_DOWN " + e.getKeyCode());
+            System.out.println(getName() + " KEY_DOWN " + e.getCode());
         }
 
         private void this_keyUp(Event event) {
             var e = (InteractiveEvent) event;
-            System.out.println(getName() + " KEY_UP " + e.getKeyCode());
+            System.out.println(getName() + " KEY_UP " + e.getCode());
         }
 
         private void this_keyType(Event event) {
             var e = (InteractiveEvent) event;
-            System.out.println(getName() + " KEY_TYPE " + e.getKeyCode() + " " + e.getKeyType());
+            System.out.println(getName() + " KEY_TYPE " + e.getCode() + " " + e.getKeyType());
         }
 
         private void this_focusIn(Event event) {

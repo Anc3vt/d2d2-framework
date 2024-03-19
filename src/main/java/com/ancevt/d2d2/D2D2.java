@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -18,12 +18,12 @@
 package com.ancevt.d2d2;
 
 import com.ancevt.d2d2.backend.D2D2Backend;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.texture.TextureManager;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.input.Mouse;
 import org.jetbrains.annotations.NotNull;
 
 public class D2D2 {
@@ -44,11 +44,11 @@ public class D2D2 {
 
         if (cursor != null) {
             Mouse.setVisible(false);
-            cursor.removeEventListener(Mouse.class, Event.EACH_FRAME);
-            cursor.addEventListener(Mouse.class, Event.EACH_FRAME, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
+            cursor.removeEventListener(Mouse.class, Event.EXIT_FRAME);
+            cursor.addEventListener(Mouse.class, Event.EXIT_FRAME, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
         } else {
             Mouse.setVisible(true);
-            D2D2.cursor.removeEventListener(Mouse.class, Event.EACH_FRAME);
+            D2D2.cursor.removeEventListener(Mouse.class, Event.EXIT_FRAME);
         }
         D2D2.cursor = cursor;
     }

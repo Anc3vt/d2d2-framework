@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -51,5 +51,17 @@ public class BitmapCharInfo {
 
     public int height() {
         return height;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("BitmapCharInfo{");
+        sb.append("character=").append(character);
+        sb.append(", x=").append(x);
+        sb.append(", y=").append(y);
+        sb.append(", width=").append(width);
+        sb.append(", height=").append(height);
+        sb.append('}');
+        return sb.toString();
     }
 }

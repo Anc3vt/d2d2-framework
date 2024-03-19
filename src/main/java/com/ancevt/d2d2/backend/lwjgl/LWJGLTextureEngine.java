@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -19,6 +19,7 @@ package com.ancevt.d2d2.backend.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
+import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.text.BitmapCharInfo;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
@@ -33,16 +34,32 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL30;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_UNPACK_ALIGNMENT;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDeleteTextures;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glPixelStorei;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 public class LWJGLTextureEngine implements ITextureEngine {
@@ -111,11 +128,11 @@ public class LWJGLTextureEngine implements ITextureEngine {
             if (cell.isPixel()) {
 
                 final java.awt.Color awtColor
-                        = new java.awt.Color(
-                        cell.getColor().getR(),
-                        cell.getColor().getG(),
-                        cell.getColor().getB(),
-                        cell.getAlpha()
+                    = new java.awt.Color(
+                    cell.getColor().getR(),
+                    cell.getColor().getG(),
+                    cell.getColor().getB(),
+                    cell.getAlpha()
                 );
 
                 g.setColor(awtColor);
@@ -262,23 +279,23 @@ public class LWJGLTextureEngine implements ITextureEngine {
 
 
                     imageRegion = textureRegionToImage(
-                            cell.getTexture().getSubtexture(
-                                    0,
-                                    0,
-                                    (int) (texWidth * valX),
-                                    (int) (texHeight * valY)
-                            )
+                        cell.getTexture().getSubtexture(
+                            0,
+                            0,
+                            (int) (texWidth * valX),
+                            (int) (texHeight * valY)
+                        )
                     );
 
 
                 }
 
                 g.drawImage(imageRegion,
-                        (int) (x + texWidth * rX * scaleX),
-                        (int) (y + texHeight * rY * scaleY),
-                        w,
-                        h,
-                        null
+                    (int) (x + texWidth * rX * scaleX),
+                    (int) (y + texHeight * rY * scaleY),
+                    w,
+                    h,
+                    null
                 );
 
             }
@@ -291,7 +308,8 @@ public class LWJGLTextureEngine implements ITextureEngine {
         mapping.images().remove(textureAtlas.getId());
         // TODO: repair creating new textures after unloading
         if (textureAtlas.isDisposed()) {
-            throw new IllegalStateException("Texture atlas is already unloaded " + textureAtlas);
+            return;
+            //throw new IllegalStateException("Texture atlas is already unloaded " + textureAtlas);
         }
 
         unloadQueue.add(textureAtlas);
@@ -308,122 +326,165 @@ public class LWJGLTextureEngine implements ITextureEngine {
 
     @Override
     public TextureAtlas bitmapTextToTextureAtlas(@NotNull BitmapText bitmapText) {
-        String text = bitmapText.getText();
-        float spacing = bitmapText.getSpacing();
-        float lineSpacing = bitmapText.getLineSpacing();
-
-        BitmapFont font = bitmapText.getBitmapFont();
-
-        float boundWidth = bitmapText.getWidth() * bitmapText.getAbsoluteScaleX() + font.getCharInfo('0').width() * 2;
-        float boundHeight = bitmapText.getHeight() * bitmapText.getAbsoluteScaleY();
-
-        TextureAtlas fontTextureAtlas = font.getTextureAtlas();
-
         int width = (int) bitmapText.getWidth();
         int height = (int) bitmapText.getHeight();
-
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
 
-        int drawX = 0;
-        int drawY = 0;
-
-        if (bitmapText.isMulticolorEnabled()) {
-            BitmapText.ColorTextData colorTextData = bitmapText.getColorTextData();
-
-            for (int i = 0; i < colorTextData.length(); i++) {
-                BitmapText.ColorTextData.Letter letter = colorTextData.getColoredLetter(i);
-                char c = letter.getCharacter();
-                BitmapCharInfo charInfo = font.getCharInfo(c);
-
-                if (charInfo == null) continue;
-
-                int pX = charInfo.x();
-                int pY = charInfo.y();
-                int pW = charInfo.width();
-                int pH = charInfo.height();
-
-                if (font.getCharInfo(c) == null) {
-                    continue;
-                }
-
-                com.ancevt.d2d2.display.Color letterColor = letter.getColor();
-
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - pW)) {
-                    drawX = 0;
-                    drawY += (pH + lineSpacing);
-
-                    if (boundHeight != 0 && drawY > boundHeight) {
-                        break;
-                    }
-                }
+        BitmapTextDrawHelper.draw(bitmapText, bitmapText.getAlpha(), bitmapText.getScaleX(), bitmapText.getScaleY(),
+            (atlas, c, letter, drawX, drawY, textureAtlasWidth, textureAtlasHeight, charInfo, scX, scY, textureBleedingFix, vertexBleedingFix) -> {
 
                 if (c != '\n') {
-                    if(pY > 0) {
+                    int charX = charInfo.x();
+                    int charY = charInfo.y();
+
+                    if (charY >= 0) {
 
                         BufferedImage charImage = textureRegionToImage(
-                                fontTextureAtlas, pX, pY, pW, pH
+                            atlas, charX, charY, charInfo.width(), charInfo.height()
                         );
 
                         charImage = copyImage(charImage);
 
-                        applyColorFilter(charImage,
-                                letterColor.getR(),
-                                letterColor.getG(),
-                                letterColor.getB()
+                        Color letterColor = letter.getColor();
+
+                        applyColorFilter(
+                            charImage,
+                            letterColor.getR(),
+                            letterColor.getG(),
+                            letterColor.getB()
                         );
 
-                        g.drawImage(charImage, drawX, drawY, null);
-                    }
-
-                    drawX += pW + spacing;
-                }
-            }
-        } else {
-            for (int i = 0; i < text.length(); i++) {
-                char c = text.charAt(i);
-
-                BitmapCharInfo charInfo = font.getCharInfo(c);
-
-                if (charInfo == null) {
-                    continue;
-                }
-
-                int pX = charInfo.x();
-                int pY = charInfo.y();
-                int pW = charInfo.width();
-                int pH = charInfo.height();
-
-                float charWidth = charInfo.width();
-                float charHeight = charInfo.height();
-
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth)) {
-                    drawX = 0;
-                    drawY += (charHeight + lineSpacing);
-
-                    if (boundHeight != 0 && drawY > boundHeight) {
-                        break;
+                        g.drawImage(charImage, (int)drawX, (int)drawY - charInfo.height(), null);
                     }
                 }
 
-                if (c != '\n') {
-                    if(pY > 0) {
+            },
+            null
+        );
 
-                        BufferedImage charImage = textureRegionToImage(
-                                fontTextureAtlas, pX, pY, pW, pH
-                        );
-
-                        g.drawImage(charImage, drawX, drawY, null);
-                    }
-                }
-
-                drawX += (charWidth + (c != '\n' ? spacing : 0));
-            }
-        }
 
         final TextureAtlas textureAtlas = createTextureAtlasFromBufferedImage(image);
         D2D2.getTextureManager().addTexture("_textureAtlas_text_" + textureAtlas.getId(), textureAtlas.createTexture());
         return textureAtlas;
+
+
+//        String text = bitmapText.getText();
+//        float spacing = bitmapText.getSpacing();
+//        float lineSpacing = bitmapText.getLineSpacing();
+//
+//        BitmapFont bitmapFont = bitmapText.getBitmapFont();
+//
+//        float boundWidth = bitmapText.getWidth() * bitmapText.getAbsoluteScaleX() + bitmapFont.getCharInfo('0').width() * 2;
+//        float boundHeight = bitmapText.getHeight() * bitmapText.getAbsoluteScaleY();
+//
+//        TextureAtlas fontTextureAtlas = bitmapFont.getTextureAtlas();
+//
+//        int drawX = 0;
+//        int drawY = 0;
+//
+//        if (bitmapText.isMulticolorEnabled()) {
+//            BitmapText.ColorTextData colorTextData = bitmapText.getColorTextData();
+//
+//            for (int i = 0; i < colorTextData.length(); i++) {
+//                BitmapText.ColorTextData.Letter letter = colorTextData.getColoredLetter(i);
+//                char c = letter.getCharacter();
+//                BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
+//
+//                if (charInfo == null) continue;
+//
+//                if (bitmapFont.getCharInfo(c) == null) {
+//                    continue;
+//                }
+//
+//                com.ancevt.d2d2.display.Color letterColor = letter.getColor();
+//
+//                float charWidth = charInfo.width();
+//                float charHeight = charInfo.height();
+//
+//                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5 + 5)) {
+//                    drawX = 0;
+//                    drawY += (charHeight + lineSpacing);
+//
+//                    if (boundHeight != 0 && drawY > boundHeight - charHeight) {
+//                        break;
+//                    }
+//                }
+//
+//                if (c != '\n') {
+//                    int charX = charInfo.x();
+//                    int charY = charInfo.y();
+//
+//                    if (charY >= 0) {
+//
+//                        BufferedImage charImage = textureRegionToImage(
+//                            fontTextureAtlas, charX, charY, (int) charWidth, (int) charHeight
+//                        );
+//
+//                        charImage = copyImage(charImage);
+//
+//                        applyColorFilter(
+//                            charImage,
+//                            letterColor.getR(),
+//                            letterColor.getG(),
+//                            letterColor.getB()
+//                        );
+//
+//                        g.drawImage(charImage, drawX, drawY, null);
+//
+//
+//                        try {
+//                            ImageIO.write(charImage, "PNG", new File("/home/ancevt/tmp/tmp" + i + ".png"));
+//                        } catch (IOException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//
+//
+//                    }
+//
+//                    drawX += charWidth + spacing;
+//                }
+//            }
+//        } else {
+//            for (int i = 0; i < text.length(); i++) {
+//                char c = text.charAt(i);
+//
+//                BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
+//
+//                if (charInfo == null) {
+//                    continue;
+//                }
+//
+//                int charX = charInfo.x();
+//                int charY = charInfo.y();
+//
+//                float charWidth = charInfo.width();
+//                float charHeight = charInfo.height();
+//
+//                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5)) {
+//                    drawX = 0;
+//                    drawY += (charHeight + lineSpacing);
+//
+//                    if (boundHeight != 0 && drawY > boundHeight - charHeight) {
+//                        break;
+//                    }
+//                }
+//
+//                if (c != '\n') {
+//                    if (charY > 0) {
+//
+//                        BufferedImage charImage = textureRegionToImage(
+//                            fontTextureAtlas, charX, charY, (int) charWidth, (int) charHeight
+//                        );
+//
+//                        g.drawImage(charImage, drawX, drawY, null);
+//                    }
+//                }
+//
+//                drawX += (charWidth + (c != '\n' ? spacing : 0));
+//            }
+//        }
+
     }
 
     public static BufferedImage copyImage(BufferedImage source) {
@@ -454,16 +515,22 @@ public class LWJGLTextureEngine implements ITextureEngine {
     private BufferedImage textureRegionToImage(@NotNull TextureAtlas textureAtlas, int x, int y, int width, int height) {
         BufferedImage bufferedImage = mapping.images().get(textureAtlas.getId());
 
+//        try {
+//            ImageIO.write(bufferedImage, "PNG", new File("/home/ancevt/tmp/tmp.png"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
         return bufferedImage.getSubimage(x, y, width, height);
     }
 
     private BufferedImage textureRegionToImage(@NotNull Texture texture) {
         return textureRegionToImage(
-                texture.getTextureAtlas(),
-                texture.x(),
-                texture.y(),
-                texture.width(),
-                texture.height()
+            texture.getTextureAtlas(),
+            texture.x(),
+            texture.y(),
+            texture.width(),
+            texture.height()
         );
     }
 }

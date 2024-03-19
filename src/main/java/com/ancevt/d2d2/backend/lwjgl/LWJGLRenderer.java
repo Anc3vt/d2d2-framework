@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -35,7 +35,7 @@ import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.input.Mouse;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 import static java.lang.Math.round;
@@ -58,23 +58,23 @@ public class LWJGLRenderer implements IRenderer {
 
     @Override
     public void init(long windowId) {
-        GL20.glEnable(GL_BLEND);
-        GL20.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL_BLEND);
+        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
-        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
-        GL20.glMatrixMode(GL20.GL_MODELVIEW);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
     }
 
     @Override
     public void reshape(int width, int height) {
-        GL20.glViewport(0, 0, width, height);
-        GL20.glMatrixMode(GL20.GL_PROJECTION);
-        GL20.glLoadIdentity();
+        GL11.glViewport(0, 0, width, height);
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
         GLU.gluOrtho2D(0, width, height, 0);
-        GL20.glMatrixMode(GL20.GL_MODELVIEW);
-        GL20.glLoadIdentity();
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
     }
 
     @Override
@@ -83,18 +83,18 @@ public class LWJGLRenderer implements IRenderer {
 
         clear();
 
-        GL20.glLoadIdentity();
+        GL11.glLoadIdentity();
 
         zOrderCounter = 0;
 
         renderDisplayObject(stage,
-                0,
-                stage.getX(),
-                stage.getY(),
-                stage.getScaleX(),
-                stage.getScaleY(),
-                stage.getRotation(),
-                stage.getAlpha());
+            0,
+            stage.getX(),
+            stage.getY(),
+            stage.getScaleX(),
+            stage.getScaleY(),
+            stage.getRotation(),
+            stage.getAlpha());
 
         IDisplayObject cursor = D2D2.getCursor();
         if (cursor != null) {
@@ -116,8 +116,8 @@ public class LWJGLRenderer implements IRenderer {
         float backgroundColorRed = backgroundColor.getR() / 255.0f;
         float backgroundColorGreen = backgroundColor.getG() / 255.0f;
         float backgroundColorBlue = backgroundColor.getB() / 255.0f;
-        GL20.glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, 1.0f);
-        GL20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        GL11.glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, 1.0f);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
     }
 
     private synchronized void renderDisplayObject(@NotNull IDisplayObject displayObject,
@@ -131,10 +131,10 @@ public class LWJGLRenderer implements IRenderer {
 
         if (!displayObject.isVisible()) return;
 
+        displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.ENTER_FRAME, displayObject));
+
         zOrderCounter++;
         displayObject.setAbsoluteZOrderIndex(zOrderCounter);
-        displayObject.onEachFrame();
-        displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EACH_FRAME, displayObject));
 
         float scX = displayObject.getScaleX() * toScaleX;
         float scY = displayObject.getScaleY() * toScaleY;
@@ -148,20 +148,18 @@ public class LWJGLRenderer implements IRenderer {
         x = round(x);
         y = round(y);
 
-        GL20.glPushMatrix();
-        GL20.glTranslatef(x, y, 0);
-        GL20.glRotatef(r, 0, 0, 1);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x, y, 0);
+        GL11.glRotatef(r, 0, 0, 1);
 
-        if (displayObject instanceof IContainer) {
-            IContainer container = (IContainer) displayObject;
-            for (int i = 0; i < container.getChildCount(); i++) {
+        if (displayObject instanceof IContainer container) {
+            for (int i = 0; i < container.getNumberOfChildren(); i++) {
                 renderDisplayObject(container.getChild(i), level + 1, x + toX, y + toY, scX, scY, 0, a);
             }
 
         } else if (displayObject instanceof ISprite s) {
             renderSprite(s, a, scX, scY, 0);
-        } else if (displayObject instanceof BitmapText) {
-            BitmapText btx = (BitmapText) displayObject;
+        } else if (displayObject instanceof BitmapText btx) {
             if (btx.isCacheAsSprite()) {
                 renderSprite(btx.cachedSprite(), a, scX, scY, btx.getBitmapFont().getPaddingTop() * scY);
             } else {
@@ -169,12 +167,14 @@ public class LWJGLRenderer implements IRenderer {
             }
         }
 
-        if (displayObject instanceof IFramedDisplayObject) {
-            IFramedDisplayObject f = (IFramedDisplayObject) displayObject;
+        if (displayObject instanceof IFramedDisplayObject f) {
             f.processFrame();
         }
 
-        GL20.glPopMatrix();
+        GL11.glPopMatrix();
+
+        displayObject.onEachFrame();
+        displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EXIT_FRAME, displayObject));
     }
 
     private void renderSprite(@NotNull ISprite sprite, float alpha, float scaleX, float scaleY, float paddingTop) {
@@ -187,8 +187,8 @@ public class LWJGLRenderer implements IRenderer {
 
         //textureParamsHandle();
 
-        GL20.glEnable(GL_BLEND);
-        GL20.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL_BLEND);
+        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         boolean bindResult = D2D2.getTextureManager().getTextureEngine().bind(textureAtlas);
 
@@ -201,11 +201,11 @@ public class LWJGLRenderer implements IRenderer {
         final Color color = sprite.getColor();
 
         if (color != null) {
-            GL20.glColor4f(
-                    color.getR() / 255f,
-                    color.getG() / 255f,
-                    color.getB() / 255f,
-                    alpha
+            GL11.glColor4f(
+                color.getR() / 255f,
+                color.getG() / 255f,
+                color.getB() / 255f,
+                alpha
             );
         }
 
@@ -255,56 +255,67 @@ public class LWJGLRenderer implements IRenderer {
                     textureBottom = (h * val + y) - textureBleedingFix;
                 }
 
-                GL20.glBegin(GL20.GL_QUADS);
+                GL11.glBegin(GL11.GL_QUADS);
 
                 // L
-                GL20.glTexCoord2d(textureLeft, textureBottom);
-                GL20.glVertex2d(vertexLeft, vertexBottom);
+                GL11.glTexCoord2d(textureLeft, textureBottom);
+                GL11.glVertex2d(vertexLeft, vertexBottom);
 
                 // _|
-                GL20.glTexCoord2d(textureRight, textureBottom);
-                GL20.glVertex2d(vertexRight, vertexBottom);
+                GL11.glTexCoord2d(textureRight, textureBottom);
+                GL11.glVertex2d(vertexRight, vertexBottom);
 
                 // ^|
-                GL20.glTexCoord2d(textureRight, textureTop);
-                GL20.glVertex2d(vertexRight, vertexTop);
+                GL11.glTexCoord2d(textureRight, textureTop);
+                GL11.glVertex2d(vertexRight, vertexTop);
 
                 // Г
-                GL20.glTexCoord2d(textureLeft, textureTop);
-                GL20.glVertex2d(vertexLeft, vertexTop);
+                GL11.glTexCoord2d(textureLeft, textureTop);
+                GL11.glVertex2d(vertexLeft, vertexTop);
 
-                GL20.glEnd();
+                GL11.glEnd();
             }
         }
 
-        GL20.glDisable(GL_BLEND);
+        GL11.glDisable(GL_BLEND);
         D2D2.getTextureManager().getTextureEngine().disable(textureAtlas);
     }
 
     private void renderBitmapText(@NotNull BitmapText bitmapText, float alpha, float scaleX, float scaleY) {
         if (bitmapText.isEmpty()) return;
 
+        Color color = bitmapText.getColor();
+
+        GL11.glColor4f(
+            (float) color.getR() / 255f,
+            (float) color.getG() / 255f,
+            (float) color.getB() / 255f,
+            alpha
+        );
+
         BitmapFont bitmapFont = bitmapText.getBitmapFont();
         TextureAtlas textureAtlas = bitmapFont.getTextureAtlas();
 
-        GL20.glEnable(GL_BLEND);
-        GL20.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        D2D2.getTextureManager().getTextureEngine().enable(textureAtlas);
+
+        GL11.glEnable(GL_BLEND);
+        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         boolean bindResult = D2D2.getTextureManager().getTextureEngine().bind(textureAtlas);
 
         if (!bindResult) return;
 
-        D2D2.getTextureManager().getTextureEngine().enable(textureAtlas);
+        GL11.glBegin(GL11.GL_QUADS);
 
-        Color color = bitmapText.getColor();
-
-        GL20.glColor4f(
-                (float) color.getR() / 255f,
-                (float) color.getG() / 255f,
-                (float) color.getB() / 255f,
-                alpha
+        BitmapTextDrawHelper.draw(bitmapText,
+            alpha,
+            scaleX,
+            scaleY,
+            LWJGLRenderer::drawChar,
+            LWJGLRenderer::applyColor
         );
 
+        /*
         String text = bitmapText.getText();
 
         int textureWidth = textureAtlas.getWidth();
@@ -322,8 +333,6 @@ public class LWJGLRenderer implements IRenderer {
         double textureBleedingFix = bitmapText.getTextureBleedingFix();
         double vertexBleedingFix = bitmapText.getVertexBleedingFix();
 
-        GL20.glBegin(GL20.GL_QUADS);
-
         if (bitmapText.isMulticolorEnabled()) {
 
             BitmapText.ColorTextData colorTextData = bitmapText.getColorTextData();
@@ -335,40 +344,38 @@ public class LWJGLRenderer implements IRenderer {
 
                 BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
 
-                if (charInfo == null) {
-                    continue;
-                }
+                if (charInfo == null) continue;
 
                 Color letterColor = letter.getColor();
 
-                GL20.glColor4f(
-                        (float) letterColor.getR() / 255f,
-                        (float) letterColor.getG() / 255f,
-                        (float) letterColor.getB() / 255f,
-                        alpha
+                GL11.glColor4f(
+                    (float) letterColor.getR() / 255f,
+                    (float) letterColor.getG() / 255f,
+                    (float) letterColor.getB() / 255f,
+                    alpha
                 );
 
                 float charWidth = charInfo.width();
                 float charHeight = charInfo.height();
 
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 3)) {
+                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5)) {
                     drawX = 0;
                     drawY += (charHeight + lineSpacing) * scaleY;
 
-                    if (boundHeight != 0 && drawY > boundHeight) {
+                    if (boundHeight != 0 && drawY > boundHeight - charHeight) {
                         break;
                     }
                 }
 
                 drawChar(drawX,
-                        (drawY + scaleY * charHeight),
-                        textureWidth,
-                        textureHeight,
-                        charInfo,
-                        scaleX,
-                        scaleY,
-                        textureBleedingFix,
-                        vertexBleedingFix);
+                    (drawY + scaleY * charHeight),
+                    textureWidth,
+                    textureHeight,
+                    charInfo,
+                    scaleX,
+                    scaleY,
+                    textureBleedingFix,
+                    vertexBleedingFix);
 
                 drawX += (charWidth + (c != '\n' ? spacing : 0)) * scaleX;
             }
@@ -386,49 +393,57 @@ public class LWJGLRenderer implements IRenderer {
                 float charWidth = charInfo.width();
                 float charHeight = charInfo.height();
 
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 3)) {
+                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5)) {
                     drawX = 0;
                     drawY += (charHeight + lineSpacing) * scaleY;
 
-                    if (boundHeight != 0 && drawY > boundHeight) {
+                    if (boundHeight != 0 && drawY > boundHeight - charHeight) {
                         break;
                     }
                 }
 
                 drawChar(drawX,
-                        (drawY + scaleY * charHeight),
-                        textureWidth,
-                        textureHeight,
-                        charInfo,
-                        scaleX,
-                        scaleY,
-                        textureBleedingFix,
-                        vertexBleedingFix);
+                    (drawY + scaleY * charHeight),
+                    textureWidth,
+                    textureHeight,
+                    charInfo,
+                    scaleX,
+                    scaleY,
+                    textureBleedingFix,
+                    vertexBleedingFix);
 
                 drawX += (charWidth + (c != '\n' ? spacing : 0)) * scaleX;
             }
         }
+        */
 
-        GL20.glEnd();
+        GL11.glEnd();
 
-        GL20.glDisable(GL_BLEND);
+        GL11.glDisable(GL_BLEND);
         D2D2.getTextureManager().getTextureEngine().disable(textureAtlas);
+    }
+
+    private static void applyColor(float r, float g, float b, float a) {
+        GL11.glColor4f(r, g, b, a);
     }
 
     private static float nextHalf(float v) {
         return (float) (Math.ceil(v * 2) / 2);
     }
 
-    private void drawChar(
-            float x,
-            float y,
-            int textureAtlasWidth,
-            int textureAtlasHeight,
-            @NotNull BitmapCharInfo charInfo,
-            float scX,
-            float scY,
-            double textureBleedingFix,
-            double vertexBleedingFix) {
+    private static void drawChar(
+        TextureAtlas textureAtlas,
+        char c,
+        BitmapText.ColorTextData.Letter letter,
+        float x,
+        float y,
+        int textureAtlasWidth,
+        int textureAtlasHeight,
+        @NotNull BitmapCharInfo charInfo,
+        float scX,
+        float scY,
+        double textureBleedingFix,
+        double vertexBleedingFix) {
 
         //scX = nextHalf(scX);
         scY = nextHalf(scY);
@@ -444,17 +459,17 @@ public class LWJGLRenderer implements IRenderer {
         float cw = charWidth / textureAtlasWidth;
         float ch = -charHeight / textureAtlasHeight;
 
-        GL20.glTexCoord2d(cx, -cy);
-        GL20.glVertex2d(x - vertexBleedingFix, y + vertexBleedingFix);
+        GL11.glTexCoord2d(cx, -cy);
+        GL11.glVertex2d(x - vertexBleedingFix, y + vertexBleedingFix);
 
-        GL20.glTexCoord2d(cx + cw, -cy);
-        GL20.glVertex2d(charWidth * scX + x + vertexBleedingFix, y + vertexBleedingFix);
+        GL11.glTexCoord2d(cx + cw, -cy);
+        GL11.glVertex2d(charWidth * scX + x + vertexBleedingFix, y + vertexBleedingFix);
 
-        GL20.glTexCoord2d(cx + cw, -cy + ch);
-        GL20.glVertex2d(charWidth * scX + x + vertexBleedingFix, charHeight * -scY + y - vertexBleedingFix);
+        GL11.glTexCoord2d(cx + cw, -cy + ch);
+        GL11.glVertex2d(charWidth * scX + x + vertexBleedingFix, charHeight * -scY + y - vertexBleedingFix);
 
-        GL20.glTexCoord2d(cx, -cy + ch);
-        GL20.glVertex2d(x - vertexBleedingFix, charHeight * -scY + y - vertexBleedingFix);
+        GL11.glTexCoord2d(cx, -cy + ch);
+        GL11.glVertex2d(x - vertexBleedingFix, charHeight * -scY + y - vertexBleedingFix);
     }
 
     public void setLWJGLTextureEngine(LWJGLTextureEngine textureEngine) {

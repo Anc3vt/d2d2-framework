@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -18,12 +18,9 @@
 package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.texture.Texture;
-
-import static com.ancevt.d2d2.D2D2.init;
-import static com.ancevt.d2d2.D2D2.loop;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 
 public class Sprite extends DisplayObject implements ISprite {
 
@@ -60,7 +57,7 @@ public class Sprite extends DisplayObject implements ISprite {
 
     @Override
     public void setColor(int rgb) {
-        this.color = new Color(rgb);
+        setColor(new Color(rgb));
     }
 
     @Override
@@ -114,12 +111,12 @@ public class Sprite extends DisplayObject implements ISprite {
 
     @Override
     public float getWidth() {
-        return texture.width();
+        return texture == null ? 0f : texture.width();
     }
 
     @Override
     public float getHeight() {
-        return texture.height();
+        return texture == null ? 0f : texture.height();
     }
 
     @Override
@@ -172,11 +169,11 @@ public class Sprite extends DisplayObject implements ISprite {
     }
 
     public static void main(String[] args) {
-        Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
 
 
-        loop();
+        D2D2.loop();
     }
 }

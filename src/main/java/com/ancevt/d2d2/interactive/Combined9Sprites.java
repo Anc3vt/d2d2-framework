@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -18,16 +18,16 @@
 package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.KeyCode;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.Texture;
-import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.input.KeyCode;
 
 public class Combined9Sprites extends InteractiveContainer implements IColored {
 

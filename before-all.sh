@@ -7,10 +7,3 @@ mvn install:install-file \
    -Dpackaging=jar \
    -DgeneratePom=true
 
-mvn install:install-file \
-   -Dfile=lib/vorbisspi-1.0.3.3.jar \
-   -DgroupId=local-jar \
-   -DartifactId=vorbisspi \
-   -Dversion=1.0.3.3 \
-   -Dpackaging=jar \
-   -DgeneratePom=true

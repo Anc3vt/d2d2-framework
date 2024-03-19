@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -33,7 +33,7 @@ public interface IContainer extends IDisplayObject {
 	
 	int indexOf(@NotNull IDisplayObject child);
 
-	int getChildCount();
+	int getNumberOfChildren();
 
 	@NotNull IDisplayObject getChild(int index);
 

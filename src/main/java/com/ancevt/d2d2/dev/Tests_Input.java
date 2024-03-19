@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,17 +17,17 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.debug.DebugGrid;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.debug.Grid;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.Mouse;
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
 
 public class Tests_Input {
 
@@ -53,8 +53,8 @@ public class Tests_Input {
 
         cursor = container;
 
-        DebugGrid debugGrid = new DebugGrid();
-        stage.add(debugGrid);
+        Grid grid = new Grid();
+        stage.add(grid);
 
         D2D2.loop();
     }

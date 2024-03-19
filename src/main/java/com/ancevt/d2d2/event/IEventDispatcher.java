@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -21,11 +21,11 @@ public interface IEventDispatcher {
 
     void addEventListener(String type, EventListener listener);
 
-    void addEventListener(Object owner, String type, EventListener listener);
+    void addEventListener(Object key, String type, EventListener listener);
 
     void removeEventListener(String type, EventListener listener);
 
-    void removeEventListener(Object owner, String type);
+    void removeEventListener(Object key, String type);
 
     void dispatchEvent(Event event);
 

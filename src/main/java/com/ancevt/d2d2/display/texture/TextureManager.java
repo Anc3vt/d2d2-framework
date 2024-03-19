@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -29,12 +29,16 @@ import java.util.Map;
 public class TextureManager {
 
     private final List<TextureAtlas> textureAtlases;
+
+    private final Map<String, TextureAtlas> textureAtlasCache;
+
     private final Map<String, Texture> textures;
     private ITextureEngine textureEngine;
 
     public TextureManager() {
         textures = new HashMap<>();
         textureAtlases = new ArrayList<>();
+        textureAtlasCache = new HashMap<>();
     }
 
     public void setTextureEngine(ITextureEngine textureEngine) {
@@ -52,14 +56,27 @@ public class TextureManager {
     }
 
     public TextureAtlas loadTextureAtlas(String assetPath) {
+        if (textureAtlasCache.containsKey(assetPath)) {
+            return textureAtlasCache.get(assetPath);
+        }
+
         final TextureAtlas result = textureEngine.createTextureAtlas(assetPath);
         textureAtlases.add(result);
+        textureAtlasCache.put(assetPath, result);
         return result;
     }
 
     public void unloadTextureAtlas(TextureAtlas textureAtlas) {
         textureEngine.unloadTextureAtlas(textureAtlas);
         textureAtlases.remove(textureAtlas);
+
+        for (Map.Entry<String, TextureAtlas> e : textureAtlasCache.entrySet()) {
+            if (e.getValue() == textureAtlas) {
+                textureAtlasCache.remove(e.getKey());
+                break;
+            }
+        }
+
         textureAtlas.setDisposed(true);
     }
 

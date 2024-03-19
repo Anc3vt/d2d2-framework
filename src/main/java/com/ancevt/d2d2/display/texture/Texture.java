@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -33,10 +33,13 @@ public class Texture {
         this.height = height;
     }
 
-    public int x() { return x; }
-    public int y() { return y; }
-    public int width() { return width; }
-    public int height() { return height; }
+    public int x() {return x;}
+
+    public int y() {return y;}
+
+    public int width() {return width;}
+
+    public int height() {return height;}
 
 
     public Texture getSubtexture(int x, int y, int width, int height) {
@@ -47,15 +50,19 @@ public class Texture {
         return textureAtlas;
     }
 
+    public String stringify() {
+        return "%d,%d,%d,%d".formatted(x, y, width, height);
+    }
+
     @Override
     public String toString() {
         return "Texture{" +
-                "textureAtlas=" + textureAtlas +
-                ", x=" + x +
-                ", y=" + y +
-                ", width=" + width +
-                ", height=" + height +
-                '}';
+            "textureAtlas=" + textureAtlas +
+            ", x=" + x +
+            ", y=" + y +
+            ", width=" + width +
+            ", height=" + height +
+            '}';
     }
 }
 

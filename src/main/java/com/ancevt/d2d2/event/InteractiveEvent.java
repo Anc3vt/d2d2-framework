@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -47,8 +47,8 @@ public class InteractiveEvent extends Event {
     private final boolean rightMouseButton;
     private final boolean middleMouseButton;
     private final boolean onArea;
-    private final int keyCode;
-    private final char keyChar;
+    private final int code;
+    private final char character;
     private final boolean alt;
     private final boolean control;
     private final boolean shift;

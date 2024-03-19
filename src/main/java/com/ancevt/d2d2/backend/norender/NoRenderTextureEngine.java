@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,13 +17,13 @@
  */
 package com.ancevt.d2d2.backend.norender;
 
-import org.jetbrains.annotations.NotNull;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.ITextureEngine;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.display.texture.TextureCell;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

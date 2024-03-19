@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -212,7 +212,7 @@ public class FramedContainer extends Container implements IFramedDisplayObject {
     }
 
     @Override
-    public int getFrame() {
+    public int getCurrentFrameIndex() {
         return currentFrameIndex;
     }
 

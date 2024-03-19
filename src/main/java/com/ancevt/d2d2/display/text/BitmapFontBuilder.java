@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -18,11 +18,17 @@
 package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.asset.Assets;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.Stage;
 
 import java.io.InputStream;
 import java.nio.file.Path;
 
-public class BitmapFontGenerator {
+public class BitmapFontBuilder {
 
     private static final int DEFAULT_ATLAS_WIDTH = 512;
     private static final int DEFAULT_ATLAS_HEIGHT = 512;
@@ -132,101 +138,101 @@ public class BitmapFontGenerator {
         return offsetY;
     }
 
-    public BitmapFontGenerator charSourceString(String charSourceString) {
+    public BitmapFontBuilder charSourceString(String charSourceString) {
         this.charSourceString = charSourceString;
         return this;
     }
 
-    public BitmapFontGenerator name(String name) {
+    public BitmapFontBuilder name(String name) {
         this.name = name;
         return this;
     }
 
-    public BitmapFontGenerator bold(boolean bold) {
+    public BitmapFontBuilder bold(boolean bold) {
         this.bold = bold;
         return this;
     }
 
-    public BitmapFontGenerator offsetY(int offsetY) {
+    public BitmapFontBuilder offsetY(int offsetY) {
         this.offsetY = offsetY;
         return this;
     }
 
-    public BitmapFontGenerator ttfPath(String ttfPath) {
+    public BitmapFontBuilder ttfPath(String ttfPath) {
         return ttfPath(Path.of(ttfPath));
     }
 
-    public BitmapFontGenerator ttfPath(Path ttfPath) {
+    public BitmapFontBuilder ttfPath(Path ttfPath) {
         this.ttfPath = ttfPath;
         return this;
     }
 
-    public BitmapFontGenerator atlasWidth(int atlasWidth) {
+    public BitmapFontBuilder atlasWidth(int atlasWidth) {
         this.atlasWidth = atlasWidth;
         return this;
     }
 
-    public BitmapFontGenerator atlasHeight(int atlasHeight) {
+    public BitmapFontBuilder atlasHeight(int atlasHeight) {
         this.atlasHeight = atlasHeight;
         return this;
     }
 
-    public BitmapFontGenerator ttfInputStream(InputStream ttfInputStream) {
+    public BitmapFontBuilder ttfInputStream(InputStream ttfInputStream) {
         this.ttfInputStream = ttfInputStream;
         return this;
     }
 
-    public BitmapFontGenerator fontSize(int fontSize) {
+    public BitmapFontBuilder fontSize(int fontSize) {
         this.fontSize = fontSize;
         return this;
     }
 
-    public BitmapFontGenerator textAntialiasOn(boolean textAntialiasOn) {
+    public BitmapFontBuilder textAntialiasOn(boolean textAntialiasOn) {
         this.textAntialiasOn = textAntialiasOn;
         return this;
     }
 
-    public BitmapFontGenerator textAntialiasGasp(boolean textAntialiasGasp) {
+    public BitmapFontBuilder textAntialiasGasp(boolean textAntialiasGasp) {
         this.textAntialiasGasp = textAntialiasGasp;
         return this;
     }
 
-    public BitmapFontGenerator textAntialiasLcdHrgb(boolean textAntialiasLcdHrgb) {
+    public BitmapFontBuilder textAntialiasLcdHrgb(boolean textAntialiasLcdHrgb) {
         this.textAntialiasLcdHrgb = textAntialiasLcdHrgb;
         return this;
     }
 
-    public BitmapFontGenerator textAntialiasLcdHbgr(boolean textAntialiasLcdHbgr) {
+    public BitmapFontBuilder textAntialiasLcdHbgr(boolean textAntialiasLcdHbgr) {
         this.textAntialiasLcdHbgr = textAntialiasLcdHbgr;
         return this;
     }
 
-    public BitmapFontGenerator textAntialiasLcdVrgb(boolean textAntialiasLcdVrgb) {
+    public BitmapFontBuilder textAntialiasLcdVrgb(boolean textAntialiasLcdVrgb) {
         this.textAntialiasLcdVrgb = textAntialiasLcdVrgb;
         return this;
     }
 
-    public BitmapFontGenerator textAntialiasLcdVbgr(boolean textAntialiasLcdVbgr) {
+    public BitmapFontBuilder textAntialiasLcdVbgr(boolean textAntialiasLcdVbgr) {
         this.textAntialiasLcdVbgr = textAntialiasLcdVbgr;
         return this;
     }
 
-    public BitmapFontGenerator fractionalMetricsOn(boolean fractionalMetricsOn) {
+    public BitmapFontBuilder fractionalMetricsOn(boolean fractionalMetricsOn) {
         this.fractionalMetricsOn = fractionalMetricsOn;
         return this;
     }
 
-    public BitmapFontGenerator spacingX(int spacingX) {
+    public BitmapFontBuilder spacingX(int spacingX) {
         this.spacingX = spacingX;
         return this;
     }
 
-    public BitmapFontGenerator spacingY(int spacingY) {
+    public BitmapFontBuilder spacingY(int spacingY) {
         this.spacingY = spacingY;
         return this;
     }
 
-    public BitmapFont generate() {
+    public BitmapFont build() {
         if (ttfPath == null && ttfInputStream == null) {
             throw new IllegalStateException("ttfPath == null && ttfInputStream == null");
         }
@@ -241,6 +247,41 @@ public class BitmapFontGenerator {
         }
 
         return D2D2.getBackend().generateBitmapFont(this);
+    }
+
+    public static void main(String[] args) {
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        StarletSpace.haveFun();
+
+        InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/NotoSansMono-Bold.ttf");
+
+        BitmapFont bitmapFont = new BitmapFontBuilder()
+            .ttfInputStream(inputStream)
+            .fontSize(12)
+            .spacingY(10)
+            .offsetY(3)
+            .build();
+
+
+        BitmapText bitmapText = new BitmapText(bitmapFont);
+        //bitmapText.setAutosize(true);
+        bitmapText.setSize(200, 200);
+
+        bitmapText.setText("""
+                Copyright (C) 2022 the original author or authors.
+                See the notice.md file distributed with this work for additional
+                information regarding copyright ownership.""");
+
+
+        PlainRect plainRect = new PlainRect(Color.BLACK);
+        plainRect.setSize(bitmapText.getWidth(), bitmapText.getHeight());
+
+        stage.add(plainRect, 100, 250);
+        stage.add(bitmapText, 100, 250);
+
+
+
+        D2D2.loop();
     }
 }
 

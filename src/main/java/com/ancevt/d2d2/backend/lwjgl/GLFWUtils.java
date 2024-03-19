@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ancevt.d2d2.backend.lwjgl.OSDetector.isUnix;
 import static org.lwjgl.glfw.GLFW.glfwGetMonitorName;
 import static org.lwjgl.glfw.GLFW.glfwGetMonitors;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
@@ -140,7 +139,7 @@ public class GLFWUtils {
 
     @SneakyThrows
     public static void setVideoMode(long monitor, long windowId, @NotNull VideoMode videoMode) {
-        if (isUnix()) {
+        if (OSDetector.isUnix()) {
             linuxCare(monitor, videoMode);
 
         }

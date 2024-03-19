@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -20,6 +20,7 @@ package com.ancevt.d2d2.display.text;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.IColored;
@@ -30,9 +31,6 @@ import com.ancevt.d2d2.event.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ancevt.d2d2.D2D2.init;
-import static com.ancevt.d2d2.D2D2.loop;
-import static com.ancevt.d2d2.debug.StarletSpace.haveFun;
 import static java.lang.Integer.parseInt;
 
 public class BitmapText extends DisplayObject implements IColored {
@@ -64,11 +62,11 @@ public class BitmapText extends DisplayObject implements IColored {
     private boolean cacheAsSprite;
     private Sprite sprite;
 
-    public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight, String text) {
+    public BitmapText(final BitmapFont bitmapFont, float width, float height, String text) {
         setBitmapFont(bitmapFont);
         setColor(DEFAULT_COLOR);
-        setWidth(boundWidth);
-        setHeight(boundHeight);
+        setWidth(width);
+        setHeight(height);
         setText(text);
         setName("_" + getClass().getSimpleName() + displayObjectId());
     }
@@ -144,7 +142,7 @@ public class BitmapText extends DisplayObject implements IColored {
             D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
         }
 
-        if(isCacheAsSprite()) sprite = toSprite();
+        if (isCacheAsSprite()) sprite = toSprite();
     }
 
     public void setTextureBleedingFix(double textureBleedingFix) {
@@ -200,7 +198,7 @@ public class BitmapText extends DisplayObject implements IColored {
             if (result > max) max = result;
         }
 
-        return (int) (max - getSpacing() + getBitmapFont().getZeroCharWidth());
+        return (int) (max - getSpacing() + getBitmapFont().getZeroCharWidth() * 2);
     }
 
     public float getTextHeight() {
@@ -362,14 +360,14 @@ public class BitmapText extends DisplayObject implements IColored {
     @Override
     public String toString() {
         return "BitmapText{" +
-                "text='" + text + '\'' +
-                ", color=" + color +
-                ", bitmapFont=" + bitmapFont +
-                ", lineSpacing=" + lineSpacing +
-                ", spacing=" + spacing +
-                ", boundWidth=" + width +
-                ", boundHeight=" + height +
-                '}';
+            "text='" + text + '\'' +
+            ", color=" + color +
+            ", bitmapFont=" + bitmapFont +
+            ", lineSpacing=" + lineSpacing +
+            ", spacing=" + spacing +
+            ", boundWidth=" + width +
+            ", boundHeight=" + height +
+            '}';
     }
 
     public static class ColorTextData {
@@ -403,12 +401,21 @@ public class BitmapText extends DisplayObject implements IColored {
                     try {
 
                         if (c == '<') {
-                            String colorString = text.substring(i + 1, i + 8);
-                            colorString = colorString.substring(0, colorString.indexOf('>'));
+                            try {
+                                String colorString = text.substring(i + 1, i + 8);
 
-                            color = Color.of(parseInt(colorString, 16));
+                                if (colorString.indexOf('>') >= 0) {
+                                    colorString = colorString.substring(0, colorString.indexOf('>'));
+                                } else {
+                                    continue;
+                                }
 
-                            i += colorString.length() + 1;
+                                color = Color.of(parseInt(colorString, 16));
+
+                                i += colorString.length() + 1;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             letterList.add(new Letter(c, color));
                             stringBuilder.append(c);
@@ -465,26 +472,26 @@ public class BitmapText extends DisplayObject implements IColored {
             @Override
             public String toString() {
                 return "Letter{" +
-                        "character=" + character +
-                        ", color=" + color +
-                        '}';
+                    "character=" + character +
+                    ", color=" + color +
+                    '}';
             }
         }
 
     }
 
     public static void main(String[] args) {
-        Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
-        haveFun();
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        StarletSpace.haveFun();
 
         stage.setBackgroundColor(Color.GRAY);
 
         String text = """
-                #<0000FF>Hello <FFFF00>D2D2 <0000FF>world
-                <FFFFFF>Second line
-                                
-                ABCDEFGHIJKLMNOPQRSTUWYXYZ
-                abcdefghijklmnopqrstuvwxyz""";
+            #<0000FF>Hello <FFFF00>D2D2 <0000FF>world
+            <FFFFFF>Second line
+                            
+            ABCDEFGHIJKLMNOPQRSTUWYXYZ
+            abcdefghijklmnopqrstuvwxyz""";
 
         BitmapText bitmapText = new BitmapText(BitmapFontManager.getInstance().loadBitmapFont("terminus/Terminus-16-Bold"));
         bitmapText.setMulticolorEnabled(true);
@@ -502,7 +509,7 @@ public class BitmapText extends DisplayObject implements IColored {
         fpsMeter.setBitmapFont(BitmapFontManager.getInstance().loadBitmapFont("terminus/Terminus-16-Bold"));
         stage.add(fpsMeter);
 
-        loop();
+        D2D2.loop();
     }
 
 

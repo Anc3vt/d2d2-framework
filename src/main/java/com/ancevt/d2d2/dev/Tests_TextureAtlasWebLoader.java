@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,15 +17,15 @@
  */
 package com.ancevt.d2d2.dev;
 
+import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.event.TextureUrlLoaderEvent;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.display.texture.TextureUrlLoader;
-import com.ancevt.d2d2.event.TextureUrlLoaderEvent;
 
 public class Tests_TextureAtlasWebLoader {
 
@@ -38,7 +38,8 @@ public class Tests_TextureAtlasWebLoader {
         TextureUrlLoader loader = new TextureUrlLoader("https://d2d2.world/test.png");
         loader.addEventListener(TextureUrlLoaderEvent.TEXTURE_LOAD_START, event -> stage.add(preloader, 252f / 2, 167f / 2));
         loader.addEventListener(TextureUrlLoaderEvent.TEXTURE_LOAD_COMPLETE, event -> {
-            TextureAtlas atlas = loader.getLastLoadedTextureAtlas();
+            var e = (TextureUrlLoaderEvent) event;
+            TextureAtlas atlas = e.getTextureAtlas();
             Sprite sprite = new Sprite(atlas.createTexture());
             stage.add(sprite);
             stage.remove(preloader);

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -18,9 +18,9 @@
 package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.D2D2;
-import org.jetbrains.annotations.NotNull;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
+import org.jetbrains.annotations.NotNull;
 
 public class Stage extends Container {
 
@@ -77,7 +77,7 @@ public class Stage extends Container {
         if (displayObject.isOnScreen()) {
             displayObject.dispatchEvent(EventPool.createEvent(Event.ADD_TO_STAGE));
             if (displayObject instanceof IContainer container) {
-                for (int i = 0; i < container.getChildCount(); i++) {
+                for (int i = 0; i < container.getNumberOfChildren(); i++) {
                     dispatchAddToStage(container.getChild(i));
                 }
             }
@@ -89,7 +89,7 @@ public class Stage extends Container {
             displayObject.dispatchEvent(EventPool.createEvent(Event.REMOVE_FROM_STAGE));
 
             if (displayObject instanceof IContainer container) {
-                for (int i = 0; i < container.getChildCount(); i++) {
+                for (int i = 0; i < container.getNumberOfChildren(); i++) {
                     dispatchRemoveFromStage(container.getChild(i));
                 }
             }

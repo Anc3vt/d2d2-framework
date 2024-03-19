@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -219,6 +219,16 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
     }
 
     @Override
+    public float getScaledWidth() {
+        return getWidth() * getScaleX();
+    }
+
+    @Override
+    public float getScaledHeight() {
+        return getHeight() * getScaleY();
+    }
+
+    @Override
     public float getAbsoluteX() {
         return DisplayObjectAbsoluteComputer.getAbsoluteX(this);
     }
@@ -250,7 +260,7 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
 
     @Override
     public final void removeFromParent() {
-        if (getParent() != null) {
+        if (hasParent()) {
             getParent().remove(this);
         }
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -18,12 +18,12 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Resizable;
-import com.ancevt.d2d2.event.Event;
 
 public class DebugBorder extends Container implements Resizable, IColored {
 	
@@ -64,7 +64,7 @@ public class DebugBorder extends Container implements Resizable, IColored {
 		
 		setSize(width, height);
 
-		addEventListener(Event.EACH_FRAME, this::eachFrame);
+		addEventListener(Event.EXIT_FRAME, this::eachFrame);
 	}
 
 	private void rebuild() {
