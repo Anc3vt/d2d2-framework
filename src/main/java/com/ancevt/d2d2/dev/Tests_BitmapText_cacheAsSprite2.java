@@ -68,14 +68,13 @@ public class Tests_BitmapText_cacheAsSprite2 {
 
         String text2 = "#<FFFF00> HELLO<FFFF00> wordl!\n\n line <CCCCCC>line2\n<FFFFFF>HHHHEEEEELLLLooooo 123www";
 
-
         BorderedRect bg1 = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
         stage.add(bg1, 100, 100);
 
         BorderedRect bg2 = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
         stage.add(bg2, 700, 100);
 
-        InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/NotoSansMono-SemiCondensedBold.ttf");
+        InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/FreeMonoBold.ttf");
         BitmapFont bitmapFont = new BitmapFontBuilder()
             .ttfInputStream(inputStream)
             .fontSize(12)
