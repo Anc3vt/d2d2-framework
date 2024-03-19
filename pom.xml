@@ -9,9 +9,9 @@
 
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-core</artifactId>
-    <version>0.1.5.2-SNAPSHOT</version>
+    <version>0.1.5.2-beta</version>
 
-    <url>https://github.com/Anc3vt/d2d2</url>
+    <url>https://github.com/Anc3vt/d2d2-core</url>
 
     <licenses>
         <license>
