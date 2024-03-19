@@ -1,6 +1,5 @@
 # D2D2 core
-### Simple Java LWJGL-based 2D framework
-
+### Simple Java LWJGL-based 2D framework (Action Script 3.0-like DSL)
 
 D2D2 is a simple 2D framework for the Java language, based on LWJGL (OpenGL), designed for game and application development. It focuses on ease of use and is heavily influenced by the ActionScript 3.0 paradigm, providing a familiar interface for working with display graph, events, and other core components.
 
@@ -20,10 +19,6 @@ D2D2 is a simple 2D framework for the Java language, based on LWJGL (OpenGL), de
 
 The goal of D2D2 is to create an easy-to-use framework for rapid development of 2D games and applications in the Java language. I aim to provide developers with tools that allow them to focus on the creative process and achieve desired results without unnecessary difficulties.
 
-## Contribution
-
-Contributions to the D2D2 project are welcome. If you have ideas, suggestions, or bug fixes, please open a new issue or create a pull request in our GitHub repository.
-
 ## A basic example of initializing and creating a simple animation:
 ```java
 public static void main(String[] args) {
@@ -35,7 +30,7 @@ public static void main(String[] args) {
     
     // Adding an event listener triggered on each frame to rotate the sprite
     sprite.addEventListener(Event.ENTER_FRAME, e -> {
-        sprite.setRotation(sprite.getRotation() + 0.01f);
+        sprite.rotate(0.01f);
     });
     
     // Setting the position of the sprite
@@ -48,9 +43,49 @@ public static void main(String[] args) {
     D2D2.loop();
 }
 ```
-## Visual example:
-[Watch the video](https://www.youtube.com/watch?v=YrSkHELR89w)
+## Demo videos
+### Multiplayer game (Click on the picture to watch the video)
+[![Multiplayer game](img/game_preview.png)](https://www.youtube.com/watch?v=YrSkHELR89w)<br/><a href="https://www.youtube.com/watch?v=YrSkHELR89w" target="_blank">Watch the video</a>
+### Window manager (Click on the picture to watch the video)
+[![Window manager](img/window_manager_preview.png)](https://www.youtube.com/watch?v=P3SNHOAOBMo)<br/><a href="https://www.youtube.com/watch?v=P3SNHOAOBMo" target="_blank">Watch the video</a>
+
+## Include in your project:
+
+To include the D2D2 library in your Maven project, add the following to your `pom.xml`:
+
+In the `<repositories>` section:
+
+```xml
+<repository>
+    <id>ancevt</id>
+    <url>https://packages.ancevt.com/releases</url>
+    <snapshots>
+        <enabled>false</enabled>
+        <updatePolicy>always</updatePolicy>
+    </snapshots>
+</repository>
+<repository>
+    <id>ancevt-snapshot</id>
+    <url>https://packages.ancevt.com/snapshots</url>
+    <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+    </snapshots>
+</repository>
+```
+
+And in the `<dependencies>` section:
+
+```xml
+<dependency>
+    <groupId>com.ancevt.d2d2</groupId>
+    <artifactId>d2d2-core</artifactId>
+    <version>0.1.5.2-beta</version>
+</dependency>
+```
+
+## Contribution
+Contributions to the D2D2 project are welcome. If you have ideas, suggestions, or bug fixes, please open a new issue or create a pull request in our GitHub repository.
 
 ## License
 D2D2 is distributed under the Apache 2.0 license. Details can be found in the LICENSE file.
-
