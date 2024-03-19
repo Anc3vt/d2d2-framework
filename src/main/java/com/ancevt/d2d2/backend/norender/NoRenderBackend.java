@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -23,7 +23,10 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLTextureEngine;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapFontGenerator;
+import com.ancevt.d2d2.display.text.BitmapFontBuilder;
+import com.ancevt.d2d2.time.Timer;
+import lombok.Getter;
+import lombok.Setter;
 
 import static java.lang.Thread.sleep;
 
@@ -35,10 +38,44 @@ public class NoRenderBackend implements D2D2Backend {
     private String title;
     private IRenderer renderer;
     private boolean alive;
+    private int frameRate = 60;
+    private int frameCounter;
+    private int fps = frameRate;
+    private long time;
+    private long tick;
+
+    @Getter
+    @Setter
+    private int timerCheckFrameFrequency = 100;
 
     public NoRenderBackend(int width, int height) {
         D2D2.getTextureManager().setTextureEngine(new LWJGLTextureEngine());
         setWindowSize(width, height);
+    }
+
+    @Override
+    public void setAlwaysOnTop(boolean b) {
+
+    }
+
+    @Override
+    public boolean isAlwaysOnTop() {
+        return false;
+    }
+
+    @Override
+    public void setFrameRate(int frameRate) {
+        this.frameRate = frameRate;
+    }
+
+    @Override
+    public int getFrameRate() {
+        return frameRate;
+    }
+
+    @Override
+    public int getFps() {
+        return fps;
     }
 
     @Override
@@ -132,11 +169,28 @@ public class NoRenderBackend implements D2D2Backend {
     private void startNoRenderLoop() {
         while (alive) {
             try {
-                sleep(1000 / 70);//1000/60);
                 renderer.renderFrame();
+                if (fps > frameRate) {
+                    Thread.sleep(1000 / (frameRate + 10));
+                } else {
+                    Thread.sleep((long) (1000 / (frameRate * 1.5f)));
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            frameCounter++;
+            final long time2 = System.currentTimeMillis();
+
+            if (time2 - time >= 1000) {
+                time = System.currentTimeMillis();
+                fps = frameCounter;
+                frameCounter = 0;
+            }
+
+            tick++;
+
+            if(tick % timerCheckFrameFrequency == 0) Timer.processTimers();
         }
     }
 
@@ -166,7 +220,17 @@ public class NoRenderBackend implements D2D2Backend {
     }
 
     @Override
-    public BitmapFont generateBitmapFont(BitmapFontGenerator bitmapFontGenerator) {
+    public BitmapFont generateBitmapFont(BitmapFontBuilder bitmapFontBuilder) {
         return D2D2.getBitmapFontManager().getDefaultBitmapFont();
+    }
+
+    @Override
+    public void setBorderless(boolean borderless) {
+
+    }
+
+    @Override
+    public boolean isBorderless() {
+        return false;
     }
 }

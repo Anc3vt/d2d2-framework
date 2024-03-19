@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -21,7 +21,6 @@ import com.ancevt.util.args.Args;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import static java.lang.Integer.parseInt;
@@ -145,14 +144,34 @@ public class TextureAtlas {
         return textures;
     }
 
+    public Texture[] createTexturesHor(int x, int y, int w, int h, int count) {
+        Texture[] result = new Texture[count];
+
+        for (int i = 0; i < result.length; i++) {
+            result[i] = new Texture(this, x + (i * w), y, w, h);
+        }
+
+        return result;
+    }
+
+    public Texture[] createTexturesVert(int x, int y, int w, int h, int count) {
+        Texture[] result = new Texture[count];
+
+        for (int i = 0; i < result.length; i++) {
+            result[i] = new Texture(this, x, y + (i * h), w, h);
+        }
+
+        return result;
+    }
+
     @Contract("_ -> new")
     private static int @NotNull [] get4Values(@NotNull String coords) {
         String[] split = coords.split(",");
         return new int[]{
-                parseInt(split[0]),
-                parseInt(split[1]),
-                parseInt(split[2]),
-                parseInt(split[3]),
+            parseInt(split[0]),
+            parseInt(split[1]),
+            parseInt(split[2]),
+            parseInt(split[3]),
         };
     }
 
@@ -179,19 +198,13 @@ public class TextureAtlas {
     @Override
     public String toString() {
         return "TextureAtlas{" +
-                "id=" + id +
-                ", width=" + width +
-                ", height=" + height +
-                ", disposed=" + disposed +
-                '}';
+            "id=" + id +
+            ", width=" + width +
+            ", height=" + height +
+            ", disposed=" + disposed +
+            '}';
     }
 
-    public static void main(String[] args) {
-        TextureAtlas textureAtlas = new TextureAtlas(0, 1000, 1000);
-
-        Texture[] textures = textureAtlas.createTextures("0,0,16,16; 16,0,16,16; 0,0,16,16; 32,0,16,16");
-        System.out.println(Arrays.toString(textures));
-    }
 }
 
 

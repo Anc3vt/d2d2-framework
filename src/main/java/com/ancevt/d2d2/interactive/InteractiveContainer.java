@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -66,17 +66,27 @@ public class InteractiveContainer extends Container implements Interactive {
         return tabbingEnabled;
     }
 
+    private void dispatchResizeEvent() {
+        dispatchEvent(Event.builder()
+            .type(Event.RESIZE)
+            .source(this)
+            .build()
+        );
+    }
+
     public void setSize(float width, float height) {
-        interactiveArea.setWidth(width);
-        interactiveArea.setHeight(height);
+        setWidth(width);
+        setHeight(height);
     }
 
     public void setWidth(float width) {
         interactiveArea.setWidth(width);
+        dispatchResizeEvent();
     }
 
     public void setHeight(float height) {
         interactiveArea.setHeight(height);
+        dispatchResizeEvent();
     }
 
     @Override

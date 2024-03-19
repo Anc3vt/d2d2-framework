@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -20,9 +20,19 @@ package com.ancevt.d2d2.backend;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapFontGenerator;
+import com.ancevt.d2d2.display.text.BitmapFontBuilder;
 
 public interface D2D2Backend {
+
+    void setAlwaysOnTop(boolean b);
+
+    boolean isAlwaysOnTop();
+
+    void setFrameRate(int value);
+
+    int getFrameRate();
+
+    int getFps();
 
     long getWindowId();
 
@@ -64,7 +74,7 @@ public interface D2D2Backend {
 
     default void setSmoothMode(boolean value) {}
 
-    default boolean isSmoothMode() { return false; }
+    default boolean isSmoothMode() {return false;}
 
     void setWindowXY(int x, int y);
 
@@ -72,6 +82,13 @@ public interface D2D2Backend {
 
     int getWindowY();
 
-    BitmapFont generateBitmapFont(BitmapFontGenerator bitmapFontGenerator);
+    BitmapFont generateBitmapFont(BitmapFontBuilder bitmapFontBuilder);
 
+    void setBorderless(boolean borderless);
+
+    boolean isBorderless();
+
+    void setTimerCheckFrameFrequency(int v);
+
+    int getTimerCheckFrameFrequency();
 }

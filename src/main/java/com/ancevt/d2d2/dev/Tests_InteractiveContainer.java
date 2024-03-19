@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,13 +17,13 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.FpsMeter;
-import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 
 public class Tests_InteractiveContainer {
@@ -72,12 +72,12 @@ public class Tests_InteractiveContainer {
 
         private void this_keyDown(Event event) {
             var e = (InteractiveEvent) event;
-            System.out.println("key down: " + e.getKeyChar());
+            System.out.println("key down: " + e.getCharacter());
         }
 
         private void this_keyRepeat(Event event) {
             var e = (InteractiveEvent) event;
-            System.out.println("key repeat: " + e.getKeyChar());
+            System.out.println("key repeat: " + e.getCharacter());
         }
 
         private void this_up(Event event) {

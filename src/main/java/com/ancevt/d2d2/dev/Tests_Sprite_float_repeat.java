@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,25 +17,25 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.debug.DebugGrid;
+import com.ancevt.d2d2.debug.Grid;
 import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.event.Event;
 
 public class Tests_Sprite_float_repeat {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
-        DebugGrid debugGrid = new DebugGrid();
-        stage.add(debugGrid);
-        debugGrid.setScale(1f, 1f);
-        debugGrid.setAlpha(0.25f);
+        Grid grid = new Grid();
+        stage.add(grid);
+        grid.setScale(1f, 1f);
+        grid.setAlpha(0.25f);
 
         Sprite sprite = new Sprite("test16x16");
 
@@ -44,7 +44,7 @@ public class Tests_Sprite_float_repeat {
         DebugPanel.setEnabled(true);
         DebugPanel.show("repeatxf", "").ifPresent(debugPanel -> {
 
-            debugPanel.addEventListener(Event.EACH_FRAME, event -> {
+            debugPanel.addEventListener(Event.EXIT_FRAME, event -> {
                 debugPanel.setText("repeatX: " + sprite.getRepeatX() + "\n" +
                         "repeatY: " + sprite.getRepeatY());
             });

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,17 +17,17 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.KeyCode;
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.display.texture.TextureCombiner;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 
 public class Tests_TextureCombiner {
@@ -89,7 +89,7 @@ public class Tests_TextureCombiner {
             Sprite sprite = new Sprite(D2D2.getTextureManager().loadTextureAtlas("d2d2-logo.png").createTexture());
             stage.add(sprite);
         } else if (inputEvent.getKeyChar() == 'S') {
-            stage.addEventListener(Event.EACH_FRAME, e -> {
+            stage.addEventListener(Event.EXIT_FRAME, e -> {
                 for (int i = 0; i < 1; i++) {
                     D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
                     sprite.removeFromParent();

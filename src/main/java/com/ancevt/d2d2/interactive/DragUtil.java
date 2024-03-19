@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -18,9 +18,9 @@
 package com.ancevt.d2d2.interactive;
 
 import com.ancevt.commons.Holder;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.event.InteractiveEvent;
 
 public class DragUtil {
 

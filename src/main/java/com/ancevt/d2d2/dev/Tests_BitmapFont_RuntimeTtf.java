@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,14 +17,14 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapFontGenerator;
+import com.ancevt.d2d2.display.text.BitmapFontBuilder;
 import com.ancevt.d2d2.display.text.BitmapText;
 
 public class Tests_BitmapFont_RuntimeTtf {
@@ -33,12 +33,12 @@ public class Tests_BitmapFont_RuntimeTtf {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
-        BitmapFont bitmapFont = new BitmapFontGenerator()
-                .ttfPath("/home/ancevt/.fonts/Roboto/RobotoMono-Italic.ttf")
-                .fontSize(28)
+        BitmapFont bitmapFont = new BitmapFontBuilder()
+                .ttfPath("/home/ancevt/.fonts/Quicksand-Medium.ttf")
+                .fontSize(14)
                 .spacingY(10)
                 .offsetY(3)
-                .generate();
+                .build();
 
 
         BitmapText bitmapText = new BitmapText(bitmapFont);

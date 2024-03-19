@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,12 +17,13 @@
  */
 package com.ancevt.d2d2.dev;
 
+import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.event.Event;
 
 public class Tests_SimpleDemo {
     public static void main(String[] args) {
@@ -45,10 +46,13 @@ public class Tests_SimpleDemo {
 
         // ригистрируем событие "каждый кадр"
         // лямбда event -> {} будет выполняться каждый кадр отрисовки
-        sprite.addEventListener(Event.EACH_FRAME, event -> {
+        sprite.addEventListener(Event.EXIT_FRAME, event -> {
             sprite.moveX(1); // двигаем спрайт на 1 пиксель право по X
             sprite.rotate(1); // вращаем спрайт на 1 градус
         });
+
+
+        stage.add(new FpsMeter());
 
         // это запуск мейн-лупа, считай запуск движка, все остальное на событиях (например ввод с клавиатуры)
         D2D2.loop();

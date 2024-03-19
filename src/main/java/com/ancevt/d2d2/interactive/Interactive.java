@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -47,4 +47,10 @@ public interface Interactive extends IDisplayObject, IDisposable {
     void focus();
 
     boolean isFocused();
+
+    default void unfocus() {
+        if (isFocused()) {
+            InteractiveManager.getInstance().resetFocus();
+        }
+    }
 }

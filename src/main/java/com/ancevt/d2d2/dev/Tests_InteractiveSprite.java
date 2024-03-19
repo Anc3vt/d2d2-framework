@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,13 +17,13 @@
  */
 package com.ancevt.d2d2.dev;
 
+import com.ancevt.d2d2.common.BorderedRect;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveManager;
 import com.ancevt.d2d2.interactive.InteractiveSprite;
 

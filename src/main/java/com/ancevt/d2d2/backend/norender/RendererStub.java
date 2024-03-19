@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,13 +17,13 @@
  */
 package com.ancevt.d2d2.backend.norender;
 
-import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.IContainer;
-import com.ancevt.d2d2.display.IFramedDisplayObject;
+import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
+import com.ancevt.d2d2.display.IFramedDisplayObject;
 
 public class RendererStub implements IRenderer {
 
@@ -58,7 +58,7 @@ public class RendererStub implements IRenderer {
 
         if (displayObject instanceof IContainer) {
             IContainer container = (IContainer) displayObject;
-            for (int i = 0; i < container.getChildCount(); i++) {
+            for (int i = 0; i < container.getNumberOfChildren(); i++) {
                 renderDisplayObject(container.getChild(i));
             }
         }
@@ -68,6 +68,6 @@ public class RendererStub implements IRenderer {
         }
 
         displayObject.onEachFrame();
-        displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EACH_FRAME, displayObject));
+        displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EXIT_FRAME, displayObject));
     }
 }

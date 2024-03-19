@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -18,17 +18,18 @@
 package com.ancevt.d2d2.dev;
 
 import com.ancevt.commons.concurrent.Async;
+import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.common.PlainRect;
-import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.text.BitmapText;
-import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.interactive.DragUtil;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 import com.ancevt.d2d2.interactive.InteractiveManager;
@@ -69,6 +70,8 @@ public class Tests_BitmapText_sizes {
             return 1;
         });
 
+        stage.add(new FpsMeter());
+
         D2D2.loop();
     }
 
@@ -107,7 +110,7 @@ public class Tests_BitmapText_sizes {
 
                 final float S = 10;
 
-                switch (e.getKeyCode()) {
+                switch (e.getCode()) {
                     case KeyCode.W -> setSize(getWidth(), getHeight() - S);
                     case KeyCode.S -> setSize(getWidth(), getHeight() + S);
                     case KeyCode.A -> setSize(getWidth() - S, getHeight());

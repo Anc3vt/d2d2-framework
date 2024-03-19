@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -18,6 +18,7 @@
 package com.ancevt.d2d2.event;
 
 import com.ancevt.commons.Pair;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Slf4j
 public class EventDispatcher implements IEventDispatcher {
 
     private final Map<String, List<EventListener>> map;
@@ -45,19 +47,23 @@ public class EventDispatcher implements IEventDispatcher {
         List<EventListener> listeners = map.getOrDefault(type, createList());
         listeners.add(listener);
         map.put(type, listeners);
+
+        log.trace("{} addEventListener: type={}, listener={}", this, type, listener);
     }
 
     private void addEventListenerByKey(Object key, String type, EventListener listener) {
-        addEventListener(type, listener);
-        if(keysTypeListenerMap.containsKey(key)) {
-            throw new IllegalStateException("key '%s' is already exists".formatted(key));
+        if (keysTypeListenerMap.containsKey(key)) {
+            removeEventListenerByKey(key);
+            //throw new IllegalStateException("key '%s' is already exists".formatted(key));
         }
+        addEventListener(type, listener);
         keysTypeListenerMap.put(key, Pair.of(type, listener));
     }
 
     @Override
-    public void addEventListener(@NotNull Object owner, String type, EventListener listener) {
-        addEventListenerByKey(owner.hashCode() + type, type, listener);
+    public void addEventListener(@NotNull Object key, String type, EventListener listener) {
+        addEventListenerByKey(key.hashCode() + type, type, listener);
+        log.trace("{} addEventListener key: {}, type: {}, listener: {}", this, key, type, listener);
     }
 
     private @NotNull List<EventListener> createList() {
@@ -70,6 +76,7 @@ public class EventDispatcher implements IEventDispatcher {
         if (listeners != null) {
             listeners.remove(listener);
         }
+        log.trace("{} removeEventListener: type={}, listener={}", this, type, listener);
     }
 
     private void removeEventListenerByKey(Object key) {
@@ -80,8 +87,9 @@ public class EventDispatcher implements IEventDispatcher {
     }
 
     @Override
-    public void removeEventListener(@NotNull Object owner, String type) {
-        removeEventListenerByKey(owner.hashCode() + type);
+    public void removeEventListener(@NotNull Object key, String type) {
+        log.trace("{} removeEventListener: type={}", this, type);
+        removeEventListenerByKey(key.hashCode() + type);
     }
 
     @Override
@@ -96,10 +104,12 @@ public class EventDispatcher implements IEventDispatcher {
     @Override
     public void removeAllEventListeners(String type) {
         map.remove(type);
+        log.trace("removeAllEventListeners type: {}", type);
     }
 
     @Override
     public void removeAllEventListeners() {
         map.clear();
+        log.trace("removeAllEventListeners");
     }
 }

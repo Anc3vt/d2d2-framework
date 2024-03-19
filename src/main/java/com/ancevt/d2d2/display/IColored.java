@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -20,7 +20,9 @@ package com.ancevt.d2d2.display;
 public interface IColored extends IDisplayObject {
     void setColor(Color color);
 
-    void setColor(int rgb);
+    default void setColor(int rgb) {
+        setColor(new Color(rgb));
+    }
 
     Color getColor();
 }

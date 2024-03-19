@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,8 +17,9 @@
  */
 package com.ancevt.d2d2.dev;
 
-import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.debug.FpsMeter;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
@@ -26,7 +27,6 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
-import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 
 public class Tests {
@@ -42,7 +42,7 @@ public class Tests {
 
             Sprite sprite = new Sprite(texture);
             sprite.setColor(Color.createRandomColor());
-            container.addEventListener(Event.EACH_FRAME, e -> {
+            container.addEventListener(Event.EXIT_FRAME, e -> {
                 container.move(0.01f, 0.01f);
                 container.rotate(1);
                 //container.toScale(1.005f, 1.005f);
@@ -57,7 +57,7 @@ public class Tests {
         bitmapText.setName("_test_");
         bitmapText.setColor(Color.WHITE);
         bitmapText.setText("Hello BitmapText\nSecond line");
-        bitmapText.addEventListener(Event.EACH_FRAME, e -> {
+        bitmapText.addEventListener(Event.EXIT_FRAME, e -> {
             //bitmapText.toScale(1.001f, 1.001f);
             //bitmapText.rotate(1f);
             bitmapText.moveX(0.01f);

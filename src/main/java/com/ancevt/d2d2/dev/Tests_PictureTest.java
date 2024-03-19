@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -18,13 +18,13 @@
 package com.ancevt.d2d2.dev;
 
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.debug.FpsMeter;
-import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.input.Mouse;
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
 
 public class Tests_PictureTest {
 
@@ -44,7 +44,7 @@ public class Tests_PictureTest {
 
         sprite.setRepeat(repeat, repeat);
 
-        sprite.addEventListener(Event.EACH_FRAME, event -> {
+        sprite.addEventListener(Event.EXIT_FRAME, event -> {
             float x = Mouse.getX();
             float y = Mouse.getY();
             float cx = D2D2.stage().getWidth() / 2;

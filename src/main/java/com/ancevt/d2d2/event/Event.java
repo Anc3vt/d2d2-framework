@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -25,7 +25,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Event {
 
-    public static final String EACH_FRAME = "eachFrame";
+    public static final String EXIT_FRAME = "exitFrame";
+    public static final String ENTER_FRAME = "enterFrame";
     public static final String ADD = "add";
     public static final String REMOVE = "remove";
     public static final String ADD_TO_STAGE = "addToStage";
@@ -38,6 +39,10 @@ public class Event {
     String type;
     Object source;
     private IContainer parent;
+
+    public <T> T casted() {
+        return (T)this;
+    }
 
     public void setType(String type) {
         this.type = type;

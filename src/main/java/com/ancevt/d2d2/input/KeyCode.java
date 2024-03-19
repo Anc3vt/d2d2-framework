@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -80,6 +80,27 @@ public class KeyCode {
     public static final int Y = 89;
     public static final int Z = 90;
 
+    public static final int N_0 = 48;
+    public static final int N_1 = 49;
+    public static final int N_2 = 50;
+    public static final int N_3 = 51;
+    public static final int N_4 = 52;
+    public static final int N_5 = 53;
+    public static final int N_6 = 54;
+    public static final int N_7 = 55;
+    public static final int N_8 = 56;
+    public static final int N_9 = 57;
+
+    public static final int NUM_0 = 320;
+    public static final int NUM_1 = 321;
+    public static final int NUM_2 = 322;
+    public static final int NUM_3 = 323;
+    public static final int NUM_4 = 324;
+    public static final int NUM_5 = 325;
+    public static final int NUM_6 = 326;
+    public static final int NUM_7 = 327;
+    public static final int NUM_8 = 328;
+    public static final int NUM_9 = 329;
 
     public static boolean isShift(int keyCode) {
         return keyCode == LEFT_SHIFT || keyCode == RIGHT_SHIFT;

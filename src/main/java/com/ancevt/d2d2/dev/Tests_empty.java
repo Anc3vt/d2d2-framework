@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -17,15 +17,28 @@
  */
 package com.ancevt.d2d2.dev;
 
+import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.text.BitmapText;
 
 public class Tests_empty {
 
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+
+
+        stage.add(new FpsMeter(), 100, 100);
+
+
+        BitmapText bitmapText = new BitmapText();
+        bitmapText.setText("TEst");
+        bitmapText.setColor(Color.WHITE);
+
+        stage.add(bitmapText, 150, 150);
 
         D2D2.loop();
     }
