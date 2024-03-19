@@ -1,4 +1,3 @@
-#!/bin/bash
 mvn install:install-file \
    -Dfile=lib/Blooming.jar \
    -DgroupId=local-jar \
