@@ -48,7 +48,7 @@ public interface Media {
     }
 
     static @NotNull Media lookupSoundAsset(String path) {
-        Media media = medias.get(path);
+        Media media = medias.get(':' + path);
         if (media == null) {
             media = new BlockingSound(Assets.getAssetAsStream(path));
             medias.put(':' + path, media);

@@ -100,7 +100,7 @@
 
     <dependencies>
 
-        <!-- NOTE: run ./before-all.sh to install these jars to your .m2 directory  -->
+        <!-- NOTE: run before-all.sh (or before-all.bat depending on your OS) from project root to install local jars -->
         <dependency>
             <groupId>local-jar</groupId>
             <artifactId>blooming-jar</artifactId>

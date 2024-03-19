@@ -30,33 +30,18 @@ public class Tests_Media {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
-        Media media = Media.lookupSound("/home/ancevt/Software/FLStudio12/Data/Patches/Packs/Packs/Mine3/Skoraya_pomosch.mp3");
+        Media media = Media.lookupSoundAsset("sound/2022-02-16.mp3");
 
         DebugPanel.setEnabled(true);
+
         DebugPanel.show("test")
             .orElseThrow()
-            .addButton("sound1", () -> {
-                System.out.println(123);
-                media.asyncPlay();
-            })
-            .addButton("sound2", () -> {
-                System.out.println(123);
-                media.stop();
-            });
-
-
-        DebugPanel.saveAll();
+            .addButton("sound1", media::asyncPlay)
+            .addButton("sound2", media::stop)
+            .setXY(50, 50);
 
         D2D2.loop();
+        System.exit(0);
     }
 }
 
-/*
-
-/home/ancevt/Software/FLStudio12/Data/Patches/Packs/Packs/Mine3/hollywood.mp3
-/home/ancevt/Software/FLStudio12/Data/Patches/Packs/Packs/Mine3/kon-vocs.mp3
-/home/ancevt/Software/FLStudio12/Data/Patches/Packs/Packs/Mine3/Skoraya_pomosch.mp3
-/home/ancevt/Software/FLStudio12/Data/Patches/Packs/Packs/Mine3/tosample1.mp3
-
-
- */

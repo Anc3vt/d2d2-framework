@@ -22,8 +22,19 @@ import lombok.SneakyThrows;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import javax.sound.sampled.*;
-import java.io.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static com.ancevt.commons.util.Slash.slashSafe;
 
@@ -131,8 +142,10 @@ public class BlockingSound implements Media {
     private void stream(AudioInputStream in, SourceDataLine line) throws IOException {
         final byte[] buffer = new byte[4096];
         for (int n = 0; n != -1; n = in.read(buffer, 0, buffer.length)) {
-            FloatControl floatControlPan = (FloatControl) line.getControl(FloatControl.Type.PAN);
-            floatControlPan.setValue(pan);
+            if(line.isControlSupported(FloatControl.Type.PAN)) {
+                FloatControl floatControlPan = (FloatControl) line.getControl(FloatControl.Type.PAN);
+                floatControlPan.setValue(pan);
+            }
             FloatControl floatControlVolume = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
             floatControlVolume.setValue(volume);
             line.write(buffer, 0, n);
