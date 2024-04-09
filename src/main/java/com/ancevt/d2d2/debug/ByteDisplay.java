@@ -95,6 +95,7 @@ public class ByteDisplay extends InteractiveContainer {
         addEventListener(this, InteractiveEvent.KEY_DOWN, this::keyDown);
         addEventListener(this, InteractiveEvent.KEY_REPEAT, this::keyDown);
         addEventListener(this, InteractiveEvent.WHEEL, this::wheel);
+
     }
 
     private void wheel(Event event) {
