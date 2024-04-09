@@ -9,7 +9,7 @@
 
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-core</artifactId>
-    <version>0.1.5.2-beta</version>
+    <version>0.1.5.3-SNAPSHOT</version>
 
     <url>https://github.com/Anc3vt/d2d2-core</url>
 
@@ -99,13 +99,6 @@
     </properties>
 
     <dependencies>
-
-        <!-- NOTE: run before-all.sh (or before-all.bat depending on your OS) from project root to install local jars -->
-        <dependency>
-            <groupId>local-jar</groupId>
-            <artifactId>blooming-jar</artifactId>
-            <version>1</version>
-        </dependency>
 
         <dependency>
             <groupId>com.ancevt.commons</groupId>

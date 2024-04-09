@@ -27,8 +27,6 @@ import com.ancevt.d2d2.display.texture.ITextureEngine;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.display.texture.TextureCell;
-import com.filters.GaussianFilter;
-import com.filters.LensBlurFilter;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL30;
@@ -64,15 +62,12 @@ import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 public class LWJGLTextureEngine implements ITextureEngine {
 
-    private static boolean texturePreprocessingEnabled = false;
     private final TextureLoadQueue loadQueue;
     private final Queue<TextureAtlas> unloadQueue;
     private final TextureMapping mapping;
     private int textureAtlasIdCounter;
 
     public LWJGLTextureEngine() {
-        texturePreprocessingEnabled = "true".equals(System.getProperties().get("d2d2.experimental.bloom"));
-
         mapping = new TextureMapping();
         loadQueue = new TextureLoadQueue();
         unloadQueue = new LinkedList<>();
@@ -164,24 +159,6 @@ public class LWJGLTextureEngine implements ITextureEngine {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        if (texturePreprocessingEnabled) {
-            GaussianFilter f = new GaussianFilter(1.5f);
-            image = f.filter(image, new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
-//            var f2 = new GlowFilter();
-//            f2.setAmount(0.05f);
-//            image = f2.filter(image, new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
-            LensBlurFilter f3 = new LensBlurFilter();
-            f3.setBloom(1.25f);
-            f3.setRadius(0.75f);
-            f3.setSides(5);
-            f3.setBloomThreshold(2f);
-            try {
-                image = f3.filter(image, new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
-            } catch (Exception c) {
-                System.out.println(c.getMessage());
-            }
-        }
-
         int[] pixels = new int[image.getWidth() * image.getHeight()];
         image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
 
@@ -248,7 +225,7 @@ public class LWJGLTextureEngine implements ITextureEngine {
 
         BufferedImage fullImageRegion = textureRegionToImage(cell.getTexture());
 
-        BufferedImage imageRegion = fullImageRegion;
+        BufferedImage imageRegion;
 
         float texWidth = cell.getTexture().width();
         float texHeight = cell.getTexture().height();
