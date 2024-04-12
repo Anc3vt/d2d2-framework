@@ -20,7 +20,9 @@ package com.ancevt.d2d2.display;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
-import org.jetbrains.annotations.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
 
 public class Stage extends Container {
 
@@ -29,6 +31,8 @@ public class Stage extends Container {
     private int width;
     private int height;
 
+    @Setter
+    @Getter
     private Color backgroundColor;
 
     public Stage() {
@@ -36,16 +40,8 @@ public class Stage extends Container {
         setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     }
 
-    public Color getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(Color backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
     public void setSize(float width, float height) {
-        D2D2.getBackend().setWindowSize((int) width, (int) height);
+        D2D2.backend().setWindowSize((int) width, (int) height);
     }
 
     public void onResize(int width, int height) {
@@ -57,10 +53,10 @@ public class Stage extends Container {
     @Override
     public String toString() {
         return "Stage{" +
-                "name=" + getName() +
-                ", width=" + width +
-                ", height=" + height +
-                '}';
+            "name=" + getName() +
+            ", width=" + width +
+            ", height=" + height +
+            '}';
     }
 
     @Override
@@ -73,7 +69,7 @@ public class Stage extends Container {
         return height;
     }
 
-    static void dispatchAddToStage(@NotNull IDisplayObject displayObject) {
+    static void dispatchAddToStage( IDisplayObject displayObject) {
         if (displayObject.isOnScreen()) {
             displayObject.dispatchEvent(EventPool.createEvent(Event.ADD_TO_STAGE));
             if (displayObject instanceof IContainer container) {
@@ -84,7 +80,7 @@ public class Stage extends Container {
         }
     }
 
-    static void dispatchRemoveFromStage(@NotNull IDisplayObject displayObject) {
+    static void dispatchRemoveFromStage( IDisplayObject displayObject) {
         if (displayObject.isOnScreen()) {
             displayObject.dispatchEvent(EventPool.createEvent(Event.REMOVE_FROM_STAGE));
 

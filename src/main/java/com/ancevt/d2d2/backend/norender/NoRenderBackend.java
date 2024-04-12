@@ -19,11 +19,13 @@ package com.ancevt.d2d2.backend.norender;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.D2D2Backend;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLTextureEngine;
+import com.ancevt.d2d2.backend.VideoModeControl;
+import com.ancevt.d2d2.backend.lwjgl.LwjglTextureEngine;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapFontBuilder;
+import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
+import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,8 +51,13 @@ public class NoRenderBackend implements D2D2Backend {
     private int timerCheckFrameFrequency = 100;
 
     public NoRenderBackend(int width, int height) {
-        D2D2.getTextureManager().setTextureEngine(new LWJGLTextureEngine());
+        D2D2.textureManager().setTextureEngine(new LwjglTextureEngine());
         setWindowSize(width, height);
+    }
+
+    @Override
+    public VideoModeControl getVideoModeControl() {
+        throw new RuntimeException("No video mode control in NoRenderBackend");
     }
 
     @Override
@@ -93,7 +100,17 @@ public class NoRenderBackend implements D2D2Backend {
     @Override
     public void start() {
         alive = true;
+        stage.dispatchEvent(
+            LifecycleEvent.builder()
+                .type(LifecycleEvent.START)
+                .build()
+        );
         startNoRenderLoop();
+        stage.dispatchEvent(
+            LifecycleEvent.builder()
+                .type(LifecycleEvent.EXIT)
+                .build()
+        );
     }
 
     @Override
@@ -220,8 +237,8 @@ public class NoRenderBackend implements D2D2Backend {
     }
 
     @Override
-    public BitmapFont generateBitmapFont(BitmapFontBuilder bitmapFontBuilder) {
-        return D2D2.getBitmapFontManager().getDefaultBitmapFont();
+    public BitmapFont generateBitmapFont(TtfBitmapFontBuilder ttfBitmapFontBuilder) {
+        return D2D2.bitmapFontManager().getDefaultBitmapFont();
     }
 
     @Override

@@ -19,7 +19,7 @@ package com.ancevt.d2d2.media;
 
 import com.ancevt.commons.concurrent.Lock;
 import com.ancevt.d2d2.asset.Assets;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +38,7 @@ public interface Media {
     void setPan(float pan);
     float getPan();
 
-    static @NotNull Media lookupSound(String path) {
+    static  Media lookupSound(String path) {
         Media media = medias.get(path);
         if (media == null) {
             media = new BlockingSound(path);
@@ -47,7 +47,7 @@ public interface Media {
         return media;
     }
 
-    static @NotNull Media lookupSoundAsset(String path) {
+    static  Media lookupSoundAsset(String path) {
         Media media = medias.get(':' + path);
         if (media == null) {
             media = new BlockingSound(Assets.getAssetAsStream(path));

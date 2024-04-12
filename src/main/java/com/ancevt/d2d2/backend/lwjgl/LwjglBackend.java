@@ -19,12 +19,15 @@ package com.ancevt.d2d2.backend.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.D2D2Backend;
+import com.ancevt.d2d2.backend.VideoModeControl;
 import com.ancevt.d2d2.backend.VideoMode;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapFontBuilder;
+import com.ancevt.d2d2.display.text.FractionalMetrics;
+import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
 import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.InteractiveManager;
@@ -41,7 +44,7 @@ import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
@@ -107,7 +110,7 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 @Slf4j
-public class LWJGLBackend implements D2D2Backend {
+public class LwjglBackend implements D2D2Backend {
 
     private static final String DEMO_TEXTURE_DATA_INF_FILE = "d2d2-core-demo-texture-data.inf";
 
@@ -131,7 +134,7 @@ public class LWJGLBackend implements D2D2Backend {
     private int videoModeHeight;
     private long monitor;
     private VideoMode previousVideoMode;
-    private boolean stopped;
+    private boolean alive;
     private boolean borderless;
     private int frameRate = 60;
     private int fps = frameRate;
@@ -142,16 +145,22 @@ public class LWJGLBackend implements D2D2Backend {
     private int tick;
     private int frameCounter;
     private long time;
+    private final VideoModeControl videoModeControl = new LwjglVideoModeControl();
 
     @Getter
     @Setter
     private int timerCheckFrameFrequency = 1;
 
-    public LWJGLBackend(int width, int height, String title) {
+    public LwjglBackend(int width, int height, String title) {
         this.width = width;
         this.height = height;
         this.title = title;
-        D2D2.getTextureManager().setTextureEngine(new LWJGLTextureEngine());
+        D2D2.textureManager().setTextureEngine(new LwjglTextureEngine());
+    }
+
+    @Override
+    public VideoModeControl getVideoModeControl() {
+        return videoModeControl;
     }
 
     @Override
@@ -178,8 +187,8 @@ public class LWJGLBackend implements D2D2Backend {
 
     @Override
     public void stop() {
-        if (stopped) return;
-        stopped = true;
+        if (!alive) return;
+        alive = false;
     }
 
     @Override
@@ -197,8 +206,8 @@ public class LWJGLBackend implements D2D2Backend {
     public void create() {
         stage = new Stage();
         stage.onResize(width, height);
-        renderer = new LWJGLRenderer(stage, this);
-        ((LWJGLRenderer) renderer).setLWJGLTextureEngine((LWJGLTextureEngine) D2D2.getTextureManager().getTextureEngine());
+        renderer = new LwjglRenderer(stage, this);
+        ((LwjglRenderer) renderer).setLWJGLTextureEngine((LwjglTextureEngine) D2D2.textureManager().getTextureEngine());
         windowId = createWindow();
         setVisible(true);
     }
@@ -210,29 +219,40 @@ public class LWJGLBackend implements D2D2Backend {
 
     @Override
     public void setSmoothMode(boolean value) {
-        ((LWJGLRenderer) renderer).smoothMode = value;
+        ((LwjglRenderer) renderer).smoothMode = value;
 
-        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
-        GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
         if (value) {
-            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_LINEAR);
-            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_LINEAR);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         } else {
-            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MAG_FILTER, GL20.GL_NEAREST);
-            GL20.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_MIN_FILTER, GL20.GL_NEAREST);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
         }
     }
 
 
     @Override
     public boolean isSmoothMode() {
-        return ((LWJGLRenderer) renderer).smoothMode;
+        return ((LwjglRenderer) renderer).smoothMode;
     }
 
     @Override
     public void start() {
+        alive = true;
+        stage.dispatchEvent(
+            LifecycleEvent.builder()
+                .type(LifecycleEvent.START)
+                .build()
+        );
         startRenderLoop();
+        stage.dispatchEvent(
+            LifecycleEvent.builder()
+                .type(LifecycleEvent.EXIT)
+                .build()
+        );
     }
 
     @Override
@@ -269,9 +289,11 @@ public class LWJGLBackend implements D2D2Backend {
     }
 
     @Override
-    public void setVisible(boolean value) {
-        this.visible = value;
-        if (value) {
+    public void setVisible(boolean visible) {
+        if (this.visible == visible) return;
+
+        this.visible = visible;
+        if (visible) {
             glfwShowWindow(windowId);
         } else {
             glfwHideWindow(windowId);
@@ -457,7 +479,7 @@ public class LWJGLBackend implements D2D2Backend {
         glfwSwapInterval(1);
 
         // TODO: remove loading demo texture data info from here
-        D2D2.getTextureManager().loadTextureDataInfo(DEMO_TEXTURE_DATA_INF_FILE);
+        D2D2.textureManager().loadTextureDataInfo(DEMO_TEXTURE_DATA_INF_FILE);
 
         renderer.init(windowId);
         renderer.reshape(width, height);
@@ -550,7 +572,7 @@ public class LWJGLBackend implements D2D2Backend {
     }
 
     private void startRenderLoop() {
-        while (!glfwWindowShouldClose(windowId)) {
+        while (!glfwWindowShouldClose(windowId) && alive) {
             glfwPollEvents();
 
             try {
@@ -608,60 +630,53 @@ public class LWJGLBackend implements D2D2Backend {
 
     @SneakyThrows
     @Override
-    public BitmapFont generateBitmapFont(BitmapFontBuilder bitmapFontBuilder) {
+    public BitmapFont generateBitmapFont(TtfBitmapFontBuilder ttfBitmapFontBuilder) {
 
         final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-        InputStream inputStream = bitmapFontBuilder.getTtfInputStream() != null ?
-            bitmapFontBuilder.getTtfInputStream() : new FileInputStream(bitmapFontBuilder.getTtfPath().toFile());
+        InputStream inputStream = ttfBitmapFontBuilder.getTtfInputStream() != null ?
+            ttfBitmapFontBuilder.getTtfInputStream() : new FileInputStream(ttfBitmapFontBuilder.getTtfPath().toFile());
 
         Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
         String fontName = font.getName();
         ge.registerFont(font);
 
-        boolean bold = bitmapFontBuilder.isBold();
-        boolean italic = bitmapFontBuilder.isItalic();
-        int fontSize = bitmapFontBuilder.getFontSize();
+        boolean bold = ttfBitmapFontBuilder.isBold();
+        boolean italic = ttfBitmapFontBuilder.isItalic();
+        int fontSize = ttfBitmapFontBuilder.getFontSize();
         int fontStyle = Font.PLAIN | (bold ? Font.BOLD : Font.PLAIN) | (italic ? Font.ITALIC : Font.PLAIN);
 
         font = new Font(fontName, fontStyle, fontSize);
 
-        BufferedImage bufferedImage = new BufferedImage(bitmapFontBuilder.getAtlasWidth(), bitmapFontBuilder.getAtlasHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = new BufferedImage(ttfBitmapFontBuilder.getAtlasWidth(), ttfBitmapFontBuilder.getAtlasHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
 
-        if (bitmapFontBuilder.isFractionalMetricsOn()) {
-            g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        }
+        if (ttfBitmapFontBuilder.fractionalMetrics() != null)
+            g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, FractionalMetrics.nativeValue(ttfBitmapFontBuilder.fractionalMetrics()));
 
-        if (bitmapFontBuilder.isTextAntialiasOn()) {
+        if (ttfBitmapFontBuilder.isTextAntialiasOn())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        }
 
-        if (bitmapFontBuilder.isTextAntialiasGasp()) {
+        if (ttfBitmapFontBuilder.isTextAntialiasGasp())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
-        }
 
-        if (bitmapFontBuilder.isTextAntialiasLcdHrgb()) {
+        if (ttfBitmapFontBuilder.isTextAntialiasLcdHrgb())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-        }
 
-        if (bitmapFontBuilder.isTextAntialiasLcdHbgr()) {
+        if (ttfBitmapFontBuilder.isTextAntialiasLcdHbgr())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
-        }
 
-        if (bitmapFontBuilder.isTextAntialiasLcdVrgb()) {
+        if (ttfBitmapFontBuilder.isTextAntialiasLcdVrgb())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VRGB);
-        }
 
-        if (bitmapFontBuilder.isTextAntialiasLcdVbgr()) {
+        if (ttfBitmapFontBuilder.isTextAntialiasLcdVbgr())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VBGR);
-        }
 
         g2.setColor(Color.WHITE);
 
         List<CharInfo> charInfos = new ArrayList<>();
 
-        String string = bitmapFontBuilder.getCharSourceString();
+        String string = ttfBitmapFontBuilder.getCharSourceString();
 
         int x = 0, y = font.getSize();
 
@@ -680,17 +695,17 @@ public class LWJGLBackend implements D2D2Backend {
             CharInfo charInfo = new CharInfo();
             charInfo.character = c;
             charInfo.x = x;
-            charInfo.y = y - height + toY + bitmapFontBuilder.getOffsetY();
+            charInfo.y = y - height + toY + ttfBitmapFontBuilder.getOffsetY();
 
             charInfo.width = width;
-            charInfo.height = height + bitmapFontBuilder.getOffsetY();
+            charInfo.height = height + ttfBitmapFontBuilder.getOffsetY();
 
             charInfos.add(charInfo);
 
-            x += width + bitmapFontBuilder.getSpacingX();
+            x += width + ttfBitmapFontBuilder.getSpacingX();
 
             if (x >= bufferedImage.getWidth() - font.getSize()) {
-                y += height + bitmapFontBuilder.getSpacingY();
+                y += height + ttfBitmapFontBuilder.getSpacingY();
                 x = 0;
             }
         }
@@ -716,10 +731,10 @@ public class LWJGLBackend implements D2D2Backend {
 
         byte[] pngDataBytes = pngOutputStream.toByteArray();
 
-        return D2D2.getBitmapFontManager().loadBitmapFont(
+        return D2D2.bitmapFontManager().loadBitmapFont(
             new ByteArrayInputStream(charsDataBytes),
             new ByteArrayInputStream(pngDataBytes),
-            bitmapFontBuilder.getName()
+            ttfBitmapFontBuilder.getName()
         );
     }
 
@@ -742,40 +757,3 @@ public class LWJGLBackend implements D2D2Backend {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -20,7 +20,7 @@ package com.ancevt.d2d2.media;
 import com.ancevt.commons.concurrent.Async;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -46,7 +46,7 @@ public class BlockingSound implements Media {
     private float pan = 0f;
 
     @SneakyThrows
-    public BlockingSound(@NotNull InputStream inputStream) {
+    public BlockingSound( InputStream inputStream) {
         byteArrayOutputStream = new ByteArrayOutputStream();
         byteArrayOutputStream.write(inputStream.readAllBytes());
     }
@@ -129,11 +129,11 @@ public class BlockingSound implements Media {
     }
 
     @Contract(" -> new")
-    private @NotNull InputStream getInputStream() {
+    private  InputStream getInputStream() {
         return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     }
 
-    private @NotNull AudioFormat getOutFormat(@NotNull AudioFormat inFormat) {
+    private  AudioFormat getOutFormat( AudioFormat inFormat) {
         final int ch = inFormat.getChannels();
         final float rate = inFormat.getSampleRate();
         return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, rate, 16, ch, ch * 2, rate, false);

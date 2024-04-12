@@ -25,47 +25,31 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Event {
 
-    public static final String EXIT_FRAME = "exitFrame";
-    public static final String ENTER_FRAME = "enterFrame";
-    public static final String ADD = "add";
-    public static final String REMOVE = "remove";
-    public static final String ADD_TO_STAGE = "addToStage";
+    public static final String EXIT_FRAME        = "exitFrame";
+    public static final String ENTER_FRAME       = "enterFrame";
+    public static final String ADD               = "add";
+    public static final String REMOVE            = "remove";
+    public static final String ADD_TO_STAGE      = "addToStage";
     public static final String REMOVE_FROM_STAGE = "removeFromStage";
-    public static final String COMPLETE = "complete";
-    public static final String RESIZE = "resize";
-    public static final String CHANGE = "change";
-    public static final String ACTION = "action";
+    public static final String COMPLETE          = "complete";
+    public static final String RESIZE            = "resize";
+    public static final String CHANGE            = "change";
+    public static final String ACTION            = "action";
 
     String type;
     Object source;
     private IContainer parent;
 
     public <T> T casted() {
-        return (T)this;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setSource(Object source) {
-        this.source = source;
-    }
-
-    public Object getSource() {
-        return source;
+        return (T) this;
     }
 
     @Override
     public String toString() {
         return "Event{" +
-                "type='" + type + '\'' +
-                ", source=" + source +
-                ", parent=" + parent +
-                '}';
+            "type='" + type + '\'' +
+            ", source=" + source +
+            ", parent=" + parent +
+            '}';
     }
 }

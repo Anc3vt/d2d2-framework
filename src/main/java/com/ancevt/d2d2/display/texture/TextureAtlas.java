@@ -19,7 +19,7 @@ package com.ancevt.d2d2.display.texture;
 
 import com.ancevt.util.args.Args;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.StringTokenizer;
 
@@ -67,7 +67,7 @@ public class TextureAtlas {
         return new Texture(this, a.next(int.class), a.next(int.class), a.next(int.class), a.next(int.class));
     }
 
-    public static @NotNull String convertCoords(@NotNull String textureCoords) {
+    public static  String convertCoords( String textureCoords) {
         if (textureCoords.contains("h")) {
             StringTokenizer stringTokenizer = new StringTokenizer(textureCoords, "h");
             String firstToken = stringTokenizer.nextToken().trim();
@@ -130,7 +130,7 @@ public class TextureAtlas {
      * or
      * 16,16,48,48h3
      */
-    public Texture[] createTextures(@NotNull String textureCoords) {
+    public Texture[] createTextures( String textureCoords) {
         textureCoords = convertCoords(textureCoords);
         if (textureCoords.endsWith(";")) {
             textureCoords = textureCoords.substring(0, textureCoords.length() - 2);
@@ -165,7 +165,7 @@ public class TextureAtlas {
     }
 
     @Contract("_ -> new")
-    private static int @NotNull [] get4Values(@NotNull String coords) {
+    private static int  [] get4Values( String coords) {
         String[] split = coords.split(",");
         return new int[]{
             parseInt(split[0]),

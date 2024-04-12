@@ -19,7 +19,7 @@ package com.ancevt.d2d2.event;
 
 import com.ancevt.commons.Pair;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -61,12 +61,12 @@ public class EventDispatcher implements IEventDispatcher {
     }
 
     @Override
-    public void addEventListener(@NotNull Object key, String type, EventListener listener) {
+    public void addEventListener( Object key, String type, EventListener listener) {
         addEventListenerByKey(key.hashCode() + type, type, listener);
         log.trace("{} addEventListener key: {}, type: {}, listener: {}", this, key, type, listener);
     }
 
-    private @NotNull List<EventListener> createList() {
+    private  List<EventListener> createList() {
         return new CopyOnWriteArrayList<>();
     }
 
@@ -87,15 +87,16 @@ public class EventDispatcher implements IEventDispatcher {
     }
 
     @Override
-    public void removeEventListener(@NotNull Object key, String type) {
+    public void removeEventListener( Object key, String type) {
         log.trace("{} removeEventListener: type={}", this, type);
         removeEventListenerByKey(key.hashCode() + type);
     }
 
     @Override
-    public void dispatchEvent(@NotNull Event event) {
+    public void dispatchEvent( Event event) {
         List<EventListener> listeners = map.get(event.getType());
         event.setSource(this);
+
         if (listeners != null) {
             listeners.forEach(e -> e.onEvent(event));
         }

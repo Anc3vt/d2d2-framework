@@ -35,7 +35,7 @@ public class FpsMeter extends BitmapText {
     }
 
     public int getFps() {
-        return D2D2.getBackend().getFps();
+        return D2D2.backend().getFps();
     }
 
     public FpsMeter() {
@@ -48,7 +48,7 @@ public class FpsMeter extends BitmapText {
         final long time2 = System.currentTimeMillis();
         if (time2 - time >= 1000) {
             time = System.currentTimeMillis();
-            setText("FPS: " + D2D2.getBackend().getFps());
+            setText("" + D2D2.backend().getFps());
 
             int fps = getFps();
 

@@ -18,13 +18,13 @@
 package com.ancevt.d2d2.display;
 
 
-import org.jetbrains.annotations.NotNull;
+
 
 class DisplayObjectAbsoluteComputer {
 
 	private DisplayObjectAbsoluteComputer(){}
 
-	static float getAbsoluteX(@NotNull DisplayObject displayObject) {
+	static float getAbsoluteX( DisplayObject displayObject) {
 		float result = displayObject.getX();
 
 		IContainer parent = displayObject.getParent();
@@ -38,7 +38,7 @@ class DisplayObjectAbsoluteComputer {
 		return result;
 	}
 
-	static float getAbsoluteY(final @NotNull DisplayObject displayObject) {
+	static float getAbsoluteY(final  DisplayObject displayObject) {
 		float result = displayObject.getY();
 
 		IContainer parent = displayObject.getParent();
@@ -52,7 +52,7 @@ class DisplayObjectAbsoluteComputer {
 		return result;
 	}
 
-	static float getAbsoluteScaleX(final @NotNull DisplayObject displayObject) {
+	static float getAbsoluteScaleX(final  DisplayObject displayObject) {
 		float result = displayObject.getScaleX();
 
 		IContainer parent = displayObject.getParent();
@@ -65,7 +65,7 @@ class DisplayObjectAbsoluteComputer {
 		return result;
 	}
 
-	static float getAbsoluteScaleY(final @NotNull DisplayObject displayObject) {
+	static float getAbsoluteScaleY(final  DisplayObject displayObject) {
 		float result = displayObject.getScaleY();
 
 		IContainer parent = displayObject.getParent();
@@ -78,7 +78,7 @@ class DisplayObjectAbsoluteComputer {
 		return result;
 	}
 
-	static float getAbsoluteAlpha(final @NotNull DisplayObject displayObject) {
+	static float getAbsoluteAlpha(final  DisplayObject displayObject) {
 		float result = displayObject.getAlpha();
 
 		IContainer parent = displayObject.getParent();
@@ -91,7 +91,7 @@ class DisplayObjectAbsoluteComputer {
 		return result;
 	}
 
-	static float getAbsoluteRotation(final @NotNull DisplayObject displayObject) {
+	static float getAbsoluteRotation(final  DisplayObject displayObject) {
 		float result = displayObject.getRotation();
 
 		IContainer parent = displayObject.getParent();

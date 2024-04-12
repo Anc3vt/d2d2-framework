@@ -22,13 +22,13 @@ import com.ancevt.commons.io.ByteOutput;
 import com.ancevt.commons.io.InputStreamFork;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapFontBuilder;
+import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
@@ -76,12 +76,11 @@ public class ByteDisplay extends InteractiveContainer {
         add(bgRect);
 
         InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/NotoSansMono-SemiCondensedBold.ttf");
-        BitmapFont bitmapFont = new BitmapFontBuilder()
+        BitmapFont bitmapFont = new TtfBitmapFontBuilder()
             .ttfInputStream(inputStream)
             .fontSize(12)
             .spacingY(3)
             .offsetY(1)
-            .fractionalMetricsOn(false)
             .build();
 
         bitmapText = new BitmapText(bitmapFont);
@@ -444,7 +443,7 @@ public class ByteDisplay extends InteractiveContainer {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
 
 
         byte[] bytes = ("\0".repeat(new Random().nextInt(100)) + (Math.random() + "hello world ЯЯЯЯ").repeat(100)).getBytes(StandardCharsets.UTF_8);

@@ -22,7 +22,7 @@ import com.ancevt.d2d2.display.text.BitmapCharInfo;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
-import org.jetbrains.annotations.NotNull;
+
 
 public class BitmapTextDrawHelper {
 
@@ -162,7 +162,7 @@ public class BitmapTextDrawHelper {
             float y,
             int textureAtlasWidth,
             int textureAtlasHeight,
-            @NotNull BitmapCharInfo charInfo,
+             BitmapCharInfo charInfo,
             float scX,
             float scY,
             double textureBleedingFix,

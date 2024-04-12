@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
@@ -76,7 +76,7 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public BitmapText(String text) {
-        this(BitmapFontManager.getInstance().getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, text);
+        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, text);
     }
 
     public BitmapText(final BitmapFont bitmapFont) {
@@ -84,11 +84,11 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public BitmapText(float boundWidth, float boundHeight) {
-        this(BitmapFontManager.getInstance().getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
+        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
     }
 
     public BitmapText() {
-        this(BitmapFontManager.getInstance().getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
+        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
     }
 
     public BitmapText cloneBitmapText() {
@@ -132,14 +132,14 @@ public class BitmapText extends DisplayObject implements IColored {
         addEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE, event -> {
             removeEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE);
             if (sprite != null && sprite.getTexture() != null) {
-                D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
+                D2D2.textureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
             }
         });
     }
 
     private void updateCachedSprite() {
         if (sprite != null && sprite.getTexture() != null) {
-            D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
+            D2D2.textureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
         }
 
         if (isCacheAsSprite()) sprite = toSprite();
@@ -219,7 +219,7 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public Sprite toSprite() {
-        Sprite result = new Sprite(D2D2.getTextureManager().bitmapTextToTextureAtlas(this).createTexture());
+        Sprite result = new Sprite(D2D2.textureManager().bitmapTextToTextureAtlas(this).createTexture());
         result.setXY(getX(), getY());
         result.setScale(getScaleX(), getScaleY());
         result.setRotation(getRotation());
@@ -481,7 +481,7 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
         stage.setBackgroundColor(Color.GRAY);
@@ -493,20 +493,20 @@ public class BitmapText extends DisplayObject implements IColored {
             ABCDEFGHIJKLMNOPQRSTUWYXYZ
             abcdefghijklmnopqrstuvwxyz""";
 
-        BitmapText bitmapText = new BitmapText(BitmapFontManager.getInstance().loadBitmapFont("terminus/Terminus-16-Bold"));
+        BitmapText bitmapText = new BitmapText(D2D2.bitmapFontManager().loadBitmapFont("terminus/Terminus-16-Bold"));
         bitmapText.setMulticolorEnabled(true);
         bitmapText.setText(text);
         bitmapText.setScale(1, 1);
         stage.add(bitmapText, 100, 250);
 
-        BitmapText bitmapText1 = new BitmapText(BitmapFontManager.getInstance().loadBitmapFont("terminus/Terminus-16-Bold"));
+        BitmapText bitmapText1 = new BitmapText(D2D2.bitmapFontManager().loadBitmapFont("terminus/Terminus-16-Bold"));
         bitmapText1.setText("AUTOSIZE BITMAP TEXT");
         bitmapText1.setAutosize(true);
         bitmapText1.setScale(5, 5);
         stage.add(bitmapText1, 100, 450);
 
         FpsMeter fpsMeter = new FpsMeter();
-        fpsMeter.setBitmapFont(BitmapFontManager.getInstance().loadBitmapFont("terminus/Terminus-16-Bold"));
+        fpsMeter.setBitmapFont(D2D2.bitmapFontManager().loadBitmapFont("terminus/Terminus-16-Bold"));
         stage.add(fpsMeter);
 
         D2D2.loop();

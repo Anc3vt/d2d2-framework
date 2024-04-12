@@ -22,7 +22,7 @@ import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
@@ -173,15 +173,15 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
     }
 
     public void setTextures(String[] textureKeys) {
-        topLeft.setTexture(D2D2.getTextureManager().getTexture(textureKeys[0]));
-        top.setTexture(D2D2.getTextureManager().getTexture(textureKeys[1]));
-        topRight.setTexture(D2D2.getTextureManager().getTexture(textureKeys[2]));
-        left.setTexture(D2D2.getTextureManager().getTexture(textureKeys[3]));
-        center.setTexture(D2D2.getTextureManager().getTexture(textureKeys[4]));
-        right.setTexture(D2D2.getTextureManager().getTexture(textureKeys[5]));
-        bottomLeft.setTexture(D2D2.getTextureManager().getTexture(textureKeys[6]));
-        bottom.setTexture(D2D2.getTextureManager().getTexture(textureKeys[7]));
-        bottomRight.setTexture(D2D2.getTextureManager().getTexture(textureKeys[8]));
+        topLeft.setTexture(D2D2.textureManager().getTexture(textureKeys[0]));
+        top.setTexture(D2D2.textureManager().getTexture(textureKeys[1]));
+        topRight.setTexture(D2D2.textureManager().getTexture(textureKeys[2]));
+        left.setTexture(D2D2.textureManager().getTexture(textureKeys[3]));
+        center.setTexture(D2D2.textureManager().getTexture(textureKeys[4]));
+        right.setTexture(D2D2.textureManager().getTexture(textureKeys[5]));
+        bottomLeft.setTexture(D2D2.textureManager().getTexture(textureKeys[6]));
+        bottom.setTexture(D2D2.textureManager().getTexture(textureKeys[7]));
+        bottomRight.setTexture(D2D2.textureManager().getTexture(textureKeys[8]));
     }
 
     @Override
@@ -292,11 +292,11 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
 
-        var tm = D2D2.getTextureManager();
+        var tm = D2D2.textureManager();
 
         Combined9Sprites combined9Sprites = new Combined9Sprites(tm.getTexture("d2d2-demo-combined-9-2-sprites"), 8, 8);
 

@@ -33,7 +33,7 @@ public class PlainRect extends Sprite {
 	private static Texture get1x1Texture() {
 		if(texture != null) return texture;
 		
-		final TextureManager textureManager = D2D2.getTextureManager();
+		final TextureManager textureManager = D2D2.textureManager();
 		final TextureAtlas textureAtlas = textureManager.loadTextureAtlas(FILE_PATH);
 		return texture = textureAtlas.createTexture();
 	}

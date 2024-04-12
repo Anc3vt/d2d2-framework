@@ -20,7 +20,7 @@ package com.ancevt.d2d2.display;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
-import org.jetbrains.annotations.NotNull;
+
 
 public class FramedSprite extends Sprite implements IFramedDisplayObject {
 
@@ -143,7 +143,7 @@ public class FramedSprite extends Sprite implements IFramedDisplayObject {
     }
 
     @Override
-    public void setFrameSprites(ISprite @NotNull [] sprites, boolean cloneEach) {
+    public void setFrameSprites(ISprite  [] sprites, boolean cloneEach) {
         Texture[] textures = new Texture[sprites.length];
         for (int i = 0; i < sprites.length; i++) {
             textures[i] = sprites[i].getTexture();

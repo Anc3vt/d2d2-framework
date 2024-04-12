@@ -20,7 +20,7 @@ package com.ancevt.d2d2.backend;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapFontBuilder;
+import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
 
 public interface D2D2Backend {
 
@@ -82,7 +82,7 @@ public interface D2D2Backend {
 
     int getWindowY();
 
-    BitmapFont generateBitmapFont(BitmapFontBuilder bitmapFontBuilder);
+    BitmapFont generateBitmapFont(TtfBitmapFontBuilder ttfBitmapFontBuilder);
 
     void setBorderless(boolean borderless);
 
@@ -91,4 +91,5 @@ public interface D2D2Backend {
     void setTimerCheckFrameFrequency(int v);
 
     int getTimerCheckFrameFrequency();
+    VideoModeControl getVideoModeControl();
 }

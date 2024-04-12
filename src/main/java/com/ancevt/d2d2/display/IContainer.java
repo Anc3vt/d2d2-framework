@@ -17,29 +17,29 @@
  */
 package com.ancevt.d2d2.display;
 
-import org.jetbrains.annotations.NotNull;
+
 
 public interface IContainer extends IDisplayObject {
 
-	void add(@NotNull IDisplayObject child);
+	void add( IDisplayObject child);
 
-	void add(@NotNull IDisplayObject child, int index);
+	void add( IDisplayObject child, int index);
 	
-	void add(@NotNull IDisplayObject child, float x, float y);
+	void add( IDisplayObject child, float x, float y);
 	
-	void add(@NotNull IDisplayObject child, int index, float x, float y);
+	void add( IDisplayObject child, int index, float x, float y);
 	
-	void remove(@NotNull IDisplayObject child);
+	void remove( IDisplayObject child);
 	
-	int indexOf(@NotNull IDisplayObject child);
+	int indexOf( IDisplayObject child);
 
 	int getNumberOfChildren();
 
-	@NotNull IDisplayObject getChild(int index);
+	 IDisplayObject getChild(int index);
 
-	@NotNull IDisplayObject getChild(String name);
+	 IDisplayObject getChild(String name);
 
-	boolean contains(@NotNull IDisplayObject child);
+	boolean contains( IDisplayObject child);
 
 	void removeAllChildren();
 }

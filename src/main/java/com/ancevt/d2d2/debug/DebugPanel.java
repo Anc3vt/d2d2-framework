@@ -20,7 +20,7 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.commons.hash.MD5;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
@@ -37,7 +37,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -349,7 +349,7 @@ public class DebugPanel extends Container {
         return Optional.empty();
     }
 
-    public static Optional<DebugPanel> show(String propertyName, @NotNull Supplier<Object> supplier) {
+    public static Optional<DebugPanel> show(String propertyName,  Supplier<Object> supplier) {
         return show(propertyName, supplier.get());
     }
 
@@ -358,7 +358,7 @@ public class DebugPanel extends Container {
     }
 
     public static void main(String[] args) {
-        D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        D2D2.init(new LwjglBackend(800, 600, "(floating)"));
         D2D2.stage().setBackgroundColor(Color.DARK_GRAY);
 
         DebugPanel.setEnabled(true);
