@@ -19,6 +19,7 @@ package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
+import lombok.Getter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,12 +33,6 @@ import static java.lang.Integer.parseInt;
 
 public class BitmapFontManager {
 
-    private static BitmapFontManager instance;
-
-    public static BitmapFontManager getInstance() {
-        return instance == null ? instance = new BitmapFontManager() : instance;
-    }
-
     private static final int MAX_CHARS = 65536;
 
     private static final String BITMAP_FONTS_ASSET_DIR = "bitmapfonts/";
@@ -45,16 +40,13 @@ public class BitmapFontManager {
 
     private final Map<String, BitmapFont> bitmapFontMap;
 
+    @Getter
     private final BitmapFont defaultBitmapFont;
 
-    private BitmapFontManager() {
+    public BitmapFontManager() {
         bitmapFontMap = new HashMap<>();
 
         defaultBitmapFont = loadBitmapFont(DEFAULT_BITMAP_FONT);
-    }
-
-    public BitmapFont getDefaultBitmapFont() {
-        return defaultBitmapFont;
     }
 
     public BitmapFont loadBitmapFont(InputStream charsDataInputStream, InputStream pngInputStream, String name) {
@@ -87,7 +79,7 @@ public class BitmapFontManager {
             throw new IllegalArgumentException(e);
         }
 
-        BitmapFont bitmapFont = new BitmapFont(name, D2D2.getTextureManager().loadTextureAtlas(pngInputStream), charInfos);
+        BitmapFont bitmapFont = new BitmapFont(name, D2D2.textureManager().loadTextureAtlas(pngInputStream), charInfos);
 
         bitmapFontMap.put(name, bitmapFont);
 

@@ -23,7 +23,7 @@ import com.ancevt.d2d2.asset.Assets;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class TextureDataInfoReadHelper {
+class TextureDataInfoReadHelper {
 
     private TextureDataInfoReadHelper() {
     }
@@ -48,7 +48,7 @@ public class TextureDataInfoReadHelper {
         char firstChar = line.charAt(0);
         if (firstChar == ':') {
             String tileSetName = line.substring(1);
-            currentTextureAtlas = D2D2.getTextureManager().loadTextureAtlas(tileSetName);
+            currentTextureAtlas = D2D2.textureManager().loadTextureAtlas(tileSetName);
             return;
         }
 
@@ -61,7 +61,7 @@ public class TextureDataInfoReadHelper {
         int h = Integer.parseInt(splitted[4]);
 
         Texture texture = currentTextureAtlas.createTexture(x, y, w, h);
-        D2D2.getTextureManager().addTexture(textureKey, texture);
+        D2D2.textureManager().addTexture(textureKey, texture);
     }
 
 }

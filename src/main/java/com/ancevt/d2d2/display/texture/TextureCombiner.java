@@ -159,12 +159,12 @@ public class TextureCombiner {
 	}
 	
 	public final TextureAtlas createTextureAtlas() {
-		return D2D2.getTextureManager().getTextureEngine().
+		return D2D2.textureManager().getTextureEngine().
 			createTextureAtlas(width, height, cells.toArray(new TextureCell[] {}));
 	}
 	
 	public static TextureAtlas bitmapTextToTextureAtlas(final BitmapText bitmapText) {
-		return D2D2.getTextureManager().bitmapTextToTextureAtlas(bitmapText);
+		return D2D2.textureManager().bitmapTextToTextureAtlas(bitmapText);
 	}
 	
 	public static Texture bitmapTextToTexture(final BitmapText bitmapText) {

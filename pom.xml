@@ -9,7 +9,7 @@
 
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-core</artifactId>
-    <version>0.1.5.3-SNAPSHOT</version>
+    <version>0.1.6.0-SNAPSHOT</version>
 
     <url>https://github.com/Anc3vt/d2d2-core</url>
 
@@ -69,13 +69,10 @@
 
         <!-- Ancevt -->
         <args.version>2.1.2</args.version>
-        <ancevt-commons.version>1.0.0.8-SNAPSHOT</ancevt-commons.version>
+        <ancevt-commons.version>1.0.0.9-SNAPSHOT</ancevt-commons.version>
 
         <!-- Log -->
         <logback.version>1.4.12</logback.version>
-
-        <!-- JetBrains -->
-        <annotations.version>24.0.1</annotations.version>
 
         <!-- LWJGL -->
         <joml.version>1.10.4</joml.version>
@@ -115,7 +112,7 @@
         <dependency>
             <groupId>com.ancevt.util</groupId>
             <artifactId>commands</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
 
         <!-- Sound -->
@@ -274,13 +271,6 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>${annotations.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Testing -->

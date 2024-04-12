@@ -23,7 +23,7 @@ import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.ITextureEngine;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.display.texture.TextureCell;
-import org.jetbrains.annotations.NotNull;
+
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -86,7 +86,7 @@ public class NoRenderTextureEngine implements ITextureEngine {
     }
 
     @Override
-    public void unloadTextureAtlas(@NotNull TextureAtlas textureAtlas) {
+    public void unloadTextureAtlas( TextureAtlas textureAtlas) {
         images.remove(textureAtlas.getId());
     }
 
@@ -96,7 +96,7 @@ public class NoRenderTextureEngine implements ITextureEngine {
         int height = (int) bitmapText.getHeight();
         textureAtlasIdCounter++;
         TextureAtlas textureAtlas = new TextureAtlas(textureAtlasIdCounter, width, height);
-        D2D2.getTextureManager().addTexture("_textureAtlas_text_" + textureAtlas.getId(), textureAtlas.createTexture());
+        D2D2.textureManager().addTexture("_textureAtlas_text_" + textureAtlas.getId(), textureAtlas.createTexture());
         return textureAtlas;
     }
 }

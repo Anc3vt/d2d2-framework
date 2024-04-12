@@ -22,7 +22,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.VideoMode;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFW;
 
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.lwjgl.glfw.GLFW.glfwGetMonitorName;
 import static org.lwjgl.glfw.GLFW.glfwGetMonitors;
@@ -42,10 +43,10 @@ public class GLFWUtils {
 
     private static final Map<Long, String> monitorNameMap = new HashMap<>();
 
-    public static @NotNull Map<Long, String> getMonitors() {
+    public static  Map<Long, String> getMonitors() {
         Map<Long, String> monitors = new HashMap<>();
         PointerBuffer glfwMonitors = glfwGetMonitors();
-        for (int i = 0; i < glfwMonitors.limit(); i++) {
+        for (int i = 0; i < Objects.requireNonNull(glfwMonitors).limit(); i++) {
             long monitor = glfwMonitors.get(i);
             String name = glfwGetMonitorName(monitor);
             monitors.put(monitor, name);
@@ -54,21 +55,21 @@ public class GLFWUtils {
     }
 
     @Contract(" -> new")
-    public static int @NotNull [] getWindowInfo() {
+    public static int  [] getWindowInfo() {
         int x[] = new int[1];
         int y[] = new int[1];
         int w[] = new int[1];
         int h[] = new int[1];
 
-        GLFW.glfwGetWindowPos(D2D2.getBackend().getWindowId(), x, y);
-        GLFW.glfwGetWindowSize(D2D2.getBackend().getWindowId(), w, h);
+        GLFW.glfwGetWindowPos(D2D2.backend().getWindowId(), x, y);
+        GLFW.glfwGetWindowSize(D2D2.backend().getWindowId(), w, h);
 
         return new int[]{
                 x[0], y[0], w[0], h[0]
         };
     }
 
-    public static int @NotNull [] getMonitorInfo(long monitorId) {
+    public static int  [] getMonitorInfo(long monitorId) {
         int x[] = new int[1];
         int y[] = new int[1];
         int w[] = new int[1];
@@ -88,7 +89,7 @@ public class GLFWUtils {
         return result.getValue();
     }
 
-    public static @NotNull List<VideoMode> getVideoModes(long monitor) {
+    public static  List<VideoMode> getVideoModes(long monitor) {
         List<VideoMode> videoModes = new ArrayList<>();
 
         glfwGetVideoModes(monitor).stream().toList().forEach(glfwVidMode -> {
@@ -104,7 +105,7 @@ public class GLFWUtils {
         return videoModes;
     }
 
-    public static @NotNull VideoMode getMaxVideoMode(long monitor) {
+    public static  VideoMode getMaxVideoMode(long monitor) {
         var videoModes = getVideoModes(monitor);
         return videoModes.get(videoModes.size() - 1);
     }
@@ -138,7 +139,7 @@ public class GLFWUtils {
     }
 
     @SneakyThrows
-    public static void setVideoMode(long monitor, long windowId, @NotNull VideoMode videoMode) {
+    public static void setVideoMode(long monitor, long windowId,  VideoMode videoMode) {
         if (OSDetector.isUnix()) {
             linuxCare(monitor, videoMode);
 
@@ -162,7 +163,7 @@ public class GLFWUtils {
     }
 
     @SneakyThrows
-    public static void linuxCare(long monitor, @NotNull VideoMode videoMode) {
+    public static void linuxCare(long monitor,  VideoMode videoMode) {
         String monitorName = monitorNameMap.get(monitor);
         if (monitorName == null) {
             monitorName = glfwGetMonitorName(monitor);

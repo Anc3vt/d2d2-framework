@@ -20,7 +20,7 @@ package com.ancevt.d2d2.display;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.exception.ContainerException;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -38,7 +38,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void add(@NotNull IDisplayObject child) {
+    public void add( IDisplayObject child) {
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
 
@@ -49,7 +49,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void add(@NotNull IDisplayObject child, int index) {
+    public void add( IDisplayObject child, int index) {
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
 
@@ -60,7 +60,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void add(@NotNull IDisplayObject child, float x, float y) {
+    public void add( IDisplayObject child, float x, float y) {
         child.setXY(x, y);
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
@@ -72,7 +72,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void add(@NotNull IDisplayObject child, int index, float x, float y) {
+    public void add( IDisplayObject child, int index, float x, float y) {
         child.setXY(x, y);
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
@@ -84,7 +84,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void remove(@NotNull IDisplayObject child) {
+    public void remove( IDisplayObject child) {
         Stage.dispatchRemoveFromStage(child);
         ((DisplayObject) child).setParent(null);
         child.dispatchEvent(EventPool.createEvent(Event.REMOVE, this));
@@ -92,7 +92,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public int indexOf(@NotNull IDisplayObject child) {
+    public int indexOf( IDisplayObject child) {
         return children.indexOf(child);
     }
 
@@ -110,7 +110,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public @NotNull IDisplayObject getChild(String name) {
+    public  IDisplayObject getChild(String name) {
         for (IDisplayObject displayObject : children) {
             if (displayObject.getName().equals(name)) return displayObject;
         }
@@ -123,7 +123,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public boolean contains(@NotNull IDisplayObject child) {
+    public boolean contains( IDisplayObject child) {
         return children.contains(child);
     }
 

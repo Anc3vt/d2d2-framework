@@ -39,7 +39,7 @@ public class TextureFactory {
                         textureWidth,
                         textureHeight
                     )),
-                key -> D2D2.getTextureManager()
+                key -> D2D2.textureManager()
                     .loadTextureAtlas(asset)
                     .createTexture(textureX, textureY, textureWidth, textureHeight)
             );

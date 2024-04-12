@@ -15,25 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.dev;
+package com.ancevt.d2d2.display.text;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapText;
+import java.awt.RenderingHints;
+import java.util.Map;
 
-public class Tests_ColoredBitmapText {
-    public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+public enum FractionalMetrics {
 
-        BitmapText bitmapText = new BitmapText("#<FFFF00>Colored <FF0000>text <FFFFFF>test");
+    DEFAULT,
+    ON,
+    OF;
 
-        bitmapText.setMulticolorEnabled(true);
+    private static final Map<FractionalMetrics, Object> map = Map.of(
+        FractionalMetrics.DEFAULT, RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT,
+        FractionalMetrics.ON, RenderingHints.VALUE_FRACTIONALMETRICS_ON,
+        FractionalMetrics.OF, RenderingHints.VALUE_FRACTIONALMETRICS_OFF
+    );
 
-
-        bitmapText.setScale(3,3);
-        stage.add(bitmapText, 100, 100);
-
-        D2D2.loop();
+    public static Object nativeValue(FractionalMetrics en) {
+        return map.get(en);
     }
 }

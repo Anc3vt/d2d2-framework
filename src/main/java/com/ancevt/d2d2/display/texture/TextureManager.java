@@ -116,25 +116,7 @@ public class TextureManager {
         try {
             TextureDataInfoReadHelper.readTextureDataInfoFile(assetPath);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new TextureException(e);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

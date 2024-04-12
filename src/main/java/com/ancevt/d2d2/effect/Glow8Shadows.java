@@ -18,28 +18,27 @@
 package com.ancevt.d2d2.effect;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.ISprite;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.text.StandardBitmapFonts;
 
-public class Glow8 extends Container {
+public class Glow8Shadows extends Container {
 
     private final IColored[] elements;
 
-    public Glow8(IColored source, Color color, float distance, float alpha, float offsetX, float offsetY) {
+    public Glow8Shadows(IColored source, Color color, float distance, float alpha, float offsetX, float offsetY) {
         float[][] coords = {
-                {0.0f, -1.0f},
-                {1.0f, -1.0f},
-                {1.0f, 0.0f},
-                {1.0f, 1.0f},
-                {0.0f, 1.0f},
+                {0.0f , -1.0f},
+                {1.0f , -1.0f},
+                {1.0f , 0.0f},
+                {1.0f , 1.0f},
+                {0.0f , 1.0f},
                 {-1.0f, 1.0f},
                 {-1.0f, 0.0f},
                 {-1.0f, -1.0f}
@@ -72,11 +71,11 @@ public class Glow8 extends Container {
 
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        StarletSpace.haveFun();
+        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        //StarletSpace.haveFun();
         stage.setBackgroundColor(Color.WHITE);
 
-        BitmapText bitmapText = new BitmapText(BitmapFontManager.getInstance().loadBitmapFont(StandardBitmapFonts.OPEN_SANS_28));
+        BitmapText bitmapText = new BitmapText(D2D2.bitmapFontManager().loadBitmapFont(StandardBitmapFonts.OPEN_SANS_28));
         bitmapText.setAutosize(true);
 
         bitmapText.setText("#<FFFF00>This <FFFFFF>is a text i have no imagination");
@@ -84,11 +83,13 @@ public class Glow8 extends Container {
         bitmapText.setCacheAsSprite(true);
         System.out.println(bitmapText.getWidth());
 
-        Glow8 glow8 = new Glow8(bitmapText, Color.BLACK, 1, 1f, 1, 1);
+        Glow8Shadows glow8Shadows = new Glow8Shadows(bitmapText, Color.BLACK, 1f, 1f, 0f, 0f);
 
-        stage.add(glow8, 100, 250);
+        stage.add(glow8Shadows, 100, 250);
         stage.add(bitmapText, 100, 250);
 
+
+        stage.add(new FpsMeter());
 
         D2D2.loop();
     }

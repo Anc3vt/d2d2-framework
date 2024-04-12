@@ -33,7 +33,7 @@ import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.input.Mouse;
-import org.jetbrains.annotations.NotNull;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -43,15 +43,15 @@ import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
-public class LWJGLRenderer implements IRenderer {
+public class LwjglRenderer implements IRenderer {
 
     private final Stage stage;
-    private final LWJGLBackend lwjglBackend;
+    private final LwjglBackend lwjglBackend;
     boolean smoothMode = false;
-    private LWJGLTextureEngine textureEngine;
+    private LwjglTextureEngine textureEngine;
     private int zOrderCounter;
 
-    public LWJGLRenderer(Stage stage, LWJGLBackend lwjglStarter) {
+    public LwjglRenderer(Stage stage, LwjglBackend lwjglStarter) {
         this.stage = stage;
         this.lwjglBackend = lwjglStarter;
     }
@@ -120,7 +120,7 @@ public class LWJGLRenderer implements IRenderer {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
     }
 
-    private synchronized void renderDisplayObject(@NotNull IDisplayObject displayObject,
+    private synchronized void renderDisplayObject( IDisplayObject displayObject,
                                                   int level,
                                                   float toX,
                                                   float toY,
@@ -177,7 +177,7 @@ public class LWJGLRenderer implements IRenderer {
         displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EXIT_FRAME, displayObject));
     }
 
-    private void renderSprite(@NotNull ISprite sprite, float alpha, float scaleX, float scaleY, float paddingTop) {
+    private void renderSprite( ISprite sprite, float alpha, float scaleX, float scaleY, float paddingTop) {
         Texture texture = sprite.getTexture();
 
         if (texture == null) return;
@@ -190,13 +190,13 @@ public class LWJGLRenderer implements IRenderer {
         GL11.glEnable(GL_BLEND);
         GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        boolean bindResult = D2D2.getTextureManager().getTextureEngine().bind(textureAtlas);
+        boolean bindResult = D2D2.textureManager().getTextureEngine().bind(textureAtlas);
 
         if (!bindResult) {
             return;
         }
 
-        D2D2.getTextureManager().getTextureEngine().enable(textureAtlas);
+        D2D2.textureManager().getTextureEngine().enable(textureAtlas);
 
         final Color color = sprite.getColor();
 
@@ -278,10 +278,10 @@ public class LWJGLRenderer implements IRenderer {
         }
 
         GL11.glDisable(GL_BLEND);
-        D2D2.getTextureManager().getTextureEngine().disable(textureAtlas);
+        D2D2.textureManager().getTextureEngine().disable(textureAtlas);
     }
 
-    private void renderBitmapText(@NotNull BitmapText bitmapText, float alpha, float scaleX, float scaleY) {
+    private void renderBitmapText( BitmapText bitmapText, float alpha, float scaleX, float scaleY) {
         if (bitmapText.isEmpty()) return;
 
         Color color = bitmapText.getColor();
@@ -296,12 +296,12 @@ public class LWJGLRenderer implements IRenderer {
         BitmapFont bitmapFont = bitmapText.getBitmapFont();
         TextureAtlas textureAtlas = bitmapFont.getTextureAtlas();
 
-        D2D2.getTextureManager().getTextureEngine().enable(textureAtlas);
+        D2D2.textureManager().getTextureEngine().enable(textureAtlas);
 
         GL11.glEnable(GL_BLEND);
         GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        boolean bindResult = D2D2.getTextureManager().getTextureEngine().bind(textureAtlas);
+        boolean bindResult = D2D2.textureManager().getTextureEngine().bind(textureAtlas);
 
         if (!bindResult) return;
 
@@ -311,8 +311,8 @@ public class LWJGLRenderer implements IRenderer {
             alpha,
             scaleX,
             scaleY,
-            LWJGLRenderer::drawChar,
-            LWJGLRenderer::applyColor
+            LwjglRenderer::drawChar,
+            LwjglRenderer::applyColor
         );
 
         /*
@@ -420,7 +420,7 @@ public class LWJGLRenderer implements IRenderer {
         GL11.glEnd();
 
         GL11.glDisable(GL_BLEND);
-        D2D2.getTextureManager().getTextureEngine().disable(textureAtlas);
+        D2D2.textureManager().getTextureEngine().disable(textureAtlas);
     }
 
     private static void applyColor(float r, float g, float b, float a) {
@@ -439,7 +439,7 @@ public class LWJGLRenderer implements IRenderer {
         float y,
         int textureAtlasWidth,
         int textureAtlasHeight,
-        @NotNull BitmapCharInfo charInfo,
+         BitmapCharInfo charInfo,
         float scX,
         float scY,
         double textureBleedingFix,
@@ -472,7 +472,7 @@ public class LWJGLRenderer implements IRenderer {
         GL11.glVertex2d(x - vertexBleedingFix, charHeight * -scY + y - vertexBleedingFix);
     }
 
-    public void setLWJGLTextureEngine(LWJGLTextureEngine textureEngine) {
+    public void setLWJGLTextureEngine(LwjglTextureEngine textureEngine) {
         this.textureEngine = textureEngine;
     }
 

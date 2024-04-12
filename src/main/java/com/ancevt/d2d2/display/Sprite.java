@@ -20,7 +20,7 @@ package com.ancevt.d2d2.display;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.texture.Texture;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 
 public class Sprite extends DisplayObject implements ISprite {
 
@@ -40,7 +40,7 @@ public class Sprite extends DisplayObject implements ISprite {
     }
 
     public Sprite(String textureKey) {
-        this(D2D2.getTextureManager().getTexture(textureKey));
+        this(D2D2.textureManager().getTexture(textureKey));
     }
 
     public Sprite(Texture texture) {
@@ -106,7 +106,7 @@ public class Sprite extends DisplayObject implements ISprite {
 
     @Override
     public void setTexture(String textureKey) {
-        setTexture(D2D2.getTextureManager().getTexture(textureKey));
+        setTexture(D2D2.textureManager().getTexture(textureKey));
     }
 
     @Override
@@ -169,7 +169,7 @@ public class Sprite extends DisplayObject implements ISprite {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
 

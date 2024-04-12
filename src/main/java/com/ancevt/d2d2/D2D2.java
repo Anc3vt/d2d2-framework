@@ -24,15 +24,34 @@ import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.texture.TextureManager;
-import org.jetbrains.annotations.NotNull;
+import lombok.Getter;
+
 
 public class D2D2 {
 
     private static final TextureManager textureManager = new TextureManager();
-    private static D2D2Backend backend;
+    private static BitmapFontManager bitmapFontManager;
+
+    @Getter
     private static IDisplayObject cursor;
+    private static D2D2Backend backend;
 
     private D2D2() {
+    }
+
+    public static TextureManager textureManager() {
+        return textureManager;
+    }
+
+    public static BitmapFontManager bitmapFontManager() {
+        return bitmapFontManager;
+    }
+
+    public static Stage init( D2D2Backend backend) {
+        bitmapFontManager = new BitmapFontManager();
+        D2D2.backend = backend;
+        backend.create();
+        return backend.getStage();
     }
 
     public static void setFullscreen(boolean value) {
@@ -53,46 +72,16 @@ public class D2D2 {
         D2D2.cursor = cursor;
     }
 
-    public static IDisplayObject getCursor() {
-        return cursor;
-    }
-
-    public static boolean isFullscreen() {
-        return backend.isFullscreen();
-    }
-
-    public static void setSmoothMode(boolean value) {
-        backend.setSmoothMode(value);
-    }
-
-    public static boolean isSmoothMode() {
-        return backend.isSmoothMode();
-    }
-
-    public static D2D2Backend getBackend() {
-        return backend;
-    }
-
-    public static @NotNull Stage init(@NotNull D2D2Backend backend) {
-        D2D2.backend = backend;
-        backend.create();
-        return backend.getStage();
-    }
-
     public static Stage stage() {
         return backend.getStage();
     }
 
+    public static D2D2Backend backend() {
+        return backend;
+    }
+
     public static void loop() {
         backend.start();
-    }
-
-    public static TextureManager getTextureManager() {
-        return textureManager;
-    }
-
-    public static BitmapFontManager getBitmapFontManager() {
-        return BitmapFontManager.getInstance();
     }
 
     public static void exit() {
