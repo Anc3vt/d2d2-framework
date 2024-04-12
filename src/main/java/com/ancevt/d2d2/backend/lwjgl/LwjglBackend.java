@@ -19,8 +19,8 @@ package com.ancevt.d2d2.backend.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.D2D2Backend;
-import com.ancevt.d2d2.backend.VideoModeControl;
 import com.ancevt.d2d2.backend.VideoMode;
+import com.ancevt.d2d2.backend.VideoModeControl;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
@@ -97,7 +97,6 @@ import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowCloseCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback;
@@ -244,13 +243,13 @@ public class LwjglBackend implements D2D2Backend {
         alive = true;
         stage.dispatchEvent(
             LifecycleEvent.builder()
-                .type(LifecycleEvent.START)
+                .type(LifecycleEvent.START_MAIN_LOOP)
                 .build()
         );
         startRenderLoop();
         stage.dispatchEvent(
             LifecycleEvent.builder()
-                .type(LifecycleEvent.EXIT)
+                .type(LifecycleEvent.EXIT_MAIN_LOOP)
                 .build()
         );
     }
@@ -329,11 +328,14 @@ public class LwjglBackend implements D2D2Backend {
 
         monitor = glfwGetPrimaryMonitor();
 
+        /* TODO: takme care of linux any other way
         glfwSetWindowCloseCallback(windowId, window -> {
             if (OSDetector.isUnix()) {
                 GLFWUtils.linuxCare(monitor, previousVideoMode);
             }
         });
+
+         */
 
         glfwSetWindowSizeCallback(windowId, new GLFWWindowSizeCallback() {
             @Override

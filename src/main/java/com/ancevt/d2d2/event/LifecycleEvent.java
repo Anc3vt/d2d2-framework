@@ -9,6 +9,6 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class LifecycleEvent extends Event {
 
-    public static final String START = "lifecycleStart";
-    public static final String EXIT = "lifecycleExit";
+    public static final String START_MAIN_LOOP = "startMainLoop";
+    public static final String EXIT_MAIN_LOOP = "exitMainLoop";
 }
