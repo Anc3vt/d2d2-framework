@@ -20,9 +20,15 @@ public interface VideoModeControl {
 
     long getPrimaryMonitorId();
 
-    VideoMode getVideoMode(long monitorId);
+    VideoMode getCurrentVideoMode(long monitorId);
 
-    void setVideoMode(long monitorId, VideoMode videoMode);
+    void setCurrentVideoMode(long monitorId, VideoMode videoMode);
+
+    VideoMode setCurrentVideoMode(long monitorId, int width, int height, int refreshRate);
+
+    VideoMode getMaxVideoMode(long monitorId);
+
+    void reset(long monitorId);
 
     @Getter
     @RequiredArgsConstructor
@@ -32,5 +38,9 @@ public interface VideoModeControl {
         private final int y;
         private final int width;
         private final int height;
+
+        public Info clone() {
+            return new Info(id, x, y, width, height);
+        }
     }
 }
