@@ -24,12 +24,12 @@ public enum FractionalMetrics {
 
     DEFAULT,
     ON,
-    OF;
+    OFF;
 
     private static final Map<FractionalMetrics, Object> map = Map.of(
         FractionalMetrics.DEFAULT, RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT,
         FractionalMetrics.ON, RenderingHints.VALUE_FRACTIONALMETRICS_ON,
-        FractionalMetrics.OF, RenderingHints.VALUE_FRACTIONALMETRICS_OFF
+        FractionalMetrics.OFF, RenderingHints.VALUE_FRACTIONALMETRICS_OFF
     );
 
     public static Object nativeValue(FractionalMetrics en) {
