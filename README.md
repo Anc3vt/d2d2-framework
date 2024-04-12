@@ -60,7 +60,7 @@ In the `<repositories>` section:
     <id>ancevt</id>
     <url>https://packages.ancevt.com/releases</url>
     <snapshots>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
     </snapshots>
 </repository>
