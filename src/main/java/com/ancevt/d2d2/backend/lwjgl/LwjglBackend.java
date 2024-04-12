@@ -244,13 +244,13 @@ public class LwjglBackend implements D2D2Backend {
         alive = true;
         stage.dispatchEvent(
             LifecycleEvent.builder()
-                .type(LifecycleEvent.START)
+                .type(LifecycleEvent.START_MAIN_LOOP)
                 .build()
         );
         startRenderLoop();
         stage.dispatchEvent(
             LifecycleEvent.builder()
-                .type(LifecycleEvent.EXIT)
+                .type(LifecycleEvent.EXIT_MAIN_LOOP)
                 .build()
         );
     }

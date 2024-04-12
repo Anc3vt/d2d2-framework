@@ -2,8 +2,8 @@ package com.ancevt.d2d2.backend.lwjgl;
 
 import com.ancevt.commons.Holder;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.VideoModeControl;
 import com.ancevt.d2d2.backend.VideoMode;
+import com.ancevt.d2d2.backend.VideoModeControl;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -14,14 +14,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.lwjgl.glfw.GLFW.GLFW_DONT_CARE;
 import static org.lwjgl.glfw.GLFW.glfwGetMonitorName;
 import static org.lwjgl.glfw.GLFW.glfwGetMonitors;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoModes;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowMonitor;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class LwjglVideoModeControl implements VideoModeControl {
+
+    private Info savedWindowInfo;
+
     @Override
     public Map<Long, String> getMonitors() {
         Map<Long, String> monitors = new HashMap<>();
@@ -90,7 +95,7 @@ public class LwjglVideoModeControl implements VideoModeControl {
     }
 
     @Override
-    public VideoMode getVideoMode(long monitorId) {
+    public VideoMode getCurrentVideoMode(long monitorId) {
         GLFWVidMode glfwVideMode = glfwGetVideoMode(monitorId);
         return VideoMode.builder()
             .width(glfwVideMode.width())
@@ -100,19 +105,53 @@ public class LwjglVideoModeControl implements VideoModeControl {
     }
 
     @Override
-    public void setVideoMode(long monitorId, VideoMode videoMode) {
+    public void setCurrentVideoMode(long monitorId, VideoMode videoMode) {
         int width = videoMode.getWidth();
         int height = videoMode.getHeight();
+        int refreshRate = videoMode.getRefreshRate();
+        glfwSetWindowMonitor(getWindowInfo().getId(), monitorId, 0, 0, width, height, refreshRate);
+    }
+
+    @Override
+    public VideoMode setCurrentVideoMode(long monitorId, int width, int height, int refreshRate) {
+        savedWindowInfo = getWindowInfo().clone();
+
+        List<VideoMode> videoModes = getVideoModes(monitorId);
+        VideoMode videoMode = videoModes
+            .stream()
+            .filter(vm -> vm.getWidth() == width)
+            .filter(vm -> vm.getHeight() == height)
+            .filter(vm -> vm.getRefreshRate() == refreshRate)
+            .findFirst()
+            .orElseThrow();
+        setCurrentVideoMode(monitorId, videoMode);
+        return videoMode;
+    }
+
+    @Override
+    public VideoMode getMaxVideoMode(long monitorId) {
+        List<VideoMode> videoModes = getVideoModes(monitorId);
+        return videoModes.get(videoModes.size() - 1);
+    }
+
+    @Override
+    public void reset(long monitorId) {
+        if (savedWindowInfo == null) {
+            savedWindowInfo = getWindowInfo().clone();
+        }
 
         glfwSetWindowMonitor(
-            D2D2.backend().getWindowId(),
-            monitorId,
-            0,
-            0,
-            videoMode.getWidth(),
-            videoMode.getHeight(),
-            videoMode.getRefreshRate()
+            getWindowInfo().getId(),
+            NULL,
+            savedWindowInfo.getX(),
+            savedWindowInfo.getY(),
+            savedWindowInfo.getWidth(),
+            savedWindowInfo.getHeight(),
+            GLFW_DONT_CARE
         );
 
+        savedWindowInfo = null;
     }
+
+
 }
