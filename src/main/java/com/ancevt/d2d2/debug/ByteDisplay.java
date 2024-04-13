@@ -186,8 +186,8 @@ public class ByteDisplay extends InteractiveContainer {
     }
 
     @Override
-    public void onEachFrame() {
-        super.onEachFrame();
+    public void onExitFrame() {
+        super.onExitFrame();
         focus();
     }
 

@@ -2,6 +2,7 @@ package com.ancevt.d2d2.backend;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ public interface VideoModeControl {
 
     @Getter
     @RequiredArgsConstructor
+    @ToString
     class Info {
         private final long id;
         private final int x;

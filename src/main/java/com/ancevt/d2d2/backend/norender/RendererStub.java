@@ -67,7 +67,7 @@ public class RendererStub implements IRenderer {
             ((IFramedDisplayObject) displayObject).processFrame();
         }
 
-        displayObject.onEachFrame();
+        displayObject.onExitFrame();
         displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EXIT_FRAME, displayObject));
     }
 }

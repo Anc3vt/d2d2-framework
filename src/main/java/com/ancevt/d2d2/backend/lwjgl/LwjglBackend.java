@@ -19,8 +19,8 @@ package com.ancevt.d2d2.backend.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.D2D2Backend;
-import com.ancevt.d2d2.backend.VideoModeControl;
 import com.ancevt.d2d2.backend.VideoMode;
+import com.ancevt.d2d2.backend.VideoModeControl;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
@@ -31,7 +31,6 @@ import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.InteractiveManager;
-import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -97,7 +96,6 @@ import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowCloseCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback;
@@ -114,7 +112,7 @@ public class LwjglBackend implements D2D2Backend {
 
     private static final String DEMO_TEXTURE_DATA_INF_FILE = "d2d2-core-demo-texture-data.inf";
 
-    private IRenderer renderer;
+    private LwjglRenderer renderer;
     long windowId;
     private boolean mouseVisible;
     private int width;
@@ -175,15 +173,7 @@ public class LwjglBackend implements D2D2Backend {
         return alwaysOnTop;
     }
 
-    @Override
-    public void setFrameRate(int frameRate) {
-        this.frameRate = frameRate;
-    }
 
-    @Override
-    public int getFrameRate() {
-        return frameRate;
-    }
 
     @Override
     public void stop() {
@@ -329,11 +319,14 @@ public class LwjglBackend implements D2D2Backend {
 
         monitor = glfwGetPrimaryMonitor();
 
+        /* TODO: takme care of linux any other way
         glfwSetWindowCloseCallback(windowId, window -> {
             if (OSDetector.isUnix()) {
                 GLFWUtils.linuxCare(monitor, previousVideoMode);
             }
         });
+
+         */
 
         glfwSetWindowSizeCallback(windowId, new GLFWWindowSizeCallback() {
             @Override
@@ -567,39 +560,28 @@ public class LwjglBackend implements D2D2Backend {
     }
 
     @Override
-    public int getFps() {
-        return fps;
+    public void setFrameRate(int frameRate) {
+        this.frameRate = frameRate;
+        renderer.setFrameRate(frameRate);
+    }
+
+    @Override
+    public int getFrameRate() {
+        return frameRate;
+    }
+
+    @Override
+    public int getActualFps() {
+        return renderer.getFps();
     }
 
     private void startRenderLoop() {
+
         while (!glfwWindowShouldClose(windowId) && alive) {
             glfwPollEvents();
-
-            try {
-                renderer.renderFrame();
-                if (fps > frameRate + 10) {
-                    Thread.sleep(1000 / (frameRate + 10));
-                } else {
-                    Thread.sleep((long) (1000 / (frameRate * 1.25f)));
-                }
-            } catch (InterruptedException e) {
-                log.error(e.getMessage(), e);
-            }
-
-            frameCounter++;
-            final long time2 = System.currentTimeMillis();
-
-            if (time2 - time >= 1000) {
-                time = System.currentTimeMillis();
-                fps = frameCounter;
-                frameCounter = 0;
-            }
-
+            renderer.renderFrame();
             glfwSwapBuffers(windowId);
-
-            tick++;
-
-            if (tick % timerCheckFrameFrequency == 0) Timer.processTimers();
+            // Проверка времени до следующего кадра
         }
 
         String prop = System.getProperty("d2d2.glfw.no-terminate");
@@ -610,6 +592,16 @@ public class LwjglBackend implements D2D2Backend {
 
         glfwTerminate();
     }
+
+
+    private static void sleep(long t) {
+        try {
+            Thread.sleep(t);
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
 
     @Override
     public void setWindowXY(int x, int y) {

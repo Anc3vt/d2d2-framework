@@ -296,7 +296,7 @@ public class DebugPanel extends Container {
                 + File.separator
                 + ".d2d2-debug-panel"
                 + File.separator
-                + ApplicationMainClassNameExtractor.get()
+                + ApplicationMainClassNameExtractor.getMainClassName()
         );
 
         if (!dir.exists()) {
@@ -377,7 +377,7 @@ public class DebugPanel extends Container {
         }
 
         try {
-            System.out.println(ApplicationMainClassNameExtractor.get());
+            System.out.println(ApplicationMainClassNameExtractor.getMainClassName());
         } catch (ApplicationMainClassNameExtractor.MainClassNameExtractorException e) {
             throw new RuntimeException(e);
         }

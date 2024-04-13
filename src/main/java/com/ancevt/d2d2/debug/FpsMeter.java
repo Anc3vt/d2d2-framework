@@ -23,19 +23,18 @@ import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FpsMeter extends BitmapText {
 
     private long time = System.currentTimeMillis();
 
+
     public FpsMeter(BitmapFont font) {
         super(font);
-        setName(getClass().getSimpleName() + displayObjectId());
         addEventListener(Event.EXIT_FRAME, this::eachFrame);
 
-    }
-
-    public int getFps() {
-        return D2D2.backend().getFps();
     }
 
     public FpsMeter() {
@@ -43,17 +42,18 @@ public class FpsMeter extends BitmapText {
         addEventListener(Event.EXIT_FRAME, this::eachFrame);
     }
 
+    public int getFps() {
+        return D2D2.backend().getActualFps();
+    }
 
     public void eachFrame(Event event) {
         final long time2 = System.currentTimeMillis();
         if (time2 - time >= 1000) {
             time = System.currentTimeMillis();
-            setText("" + D2D2.backend().getFps());
-
-            int fps = getFps();
-
-            if (fps >= 40) setColor(Color.of(0x00FF00));
-            else if (fps >= 30) setColor(Color.YELLOW);
+            int displayFps = getFps();
+            setText("" + displayFps);
+            if (displayFps >= 40) setColor(Color.of(0x00FF00));
+            else if (displayFps >= 30) setColor(Color.YELLOW);
             else setColor(Color.RED);
         }
     }

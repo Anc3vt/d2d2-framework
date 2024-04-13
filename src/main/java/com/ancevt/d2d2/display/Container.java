@@ -128,7 +128,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void onEachFrame() {
+    public void onExitFrame() {
         // For overriding
     }
 
