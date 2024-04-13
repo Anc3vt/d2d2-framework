@@ -23,13 +23,17 @@ import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
+import lombok.Getter;
+import lombok.Setter;
 
 import static com.ancevt.d2d2.D2D2.stage;
 
 public class StarletSpace extends Container {
 
     private float velocityX = 30f;
-
+    @Getter
+    @Setter
+    private int someVal = 5;
     public StarletSpace(int count) {
         for (int i = 0; i < count; i++) {
             createStarlet().setX((float) (Math.random() * stage().getWidth()));
@@ -72,6 +76,7 @@ public class StarletSpace extends Container {
         private float t;
         private final StarletSpace starletSpace;
 
+
         public Starlet(StarletSpace starletSpace) {
             this.starletSpace = starletSpace;
             sprite = new Sprite("d2d2-demo-starlet");
@@ -90,7 +95,7 @@ public class StarletSpace extends Container {
         }
 
         @Override
-        public void onEachFrame() {
+        public void onLoopUpdate() {
             setAlpha(getAlpha() + t);
             t -= 0.01f;
             if (getAlpha() <= 0.0f) t += 0.1f;
@@ -105,9 +110,9 @@ public class StarletSpace extends Container {
             while (x != newX) {
                 x += step;
 
-                if (x % 5 == 0) {
+                if (x % starletSpace.someVal == 0) {
                     Sprite plume = sprite.cloneSprite();
-                    plume.addEventListener(Event.EXIT_FRAME, event -> {
+                    plume.addEventListener(Event.LOOP_UPDATE, event -> {
                         plume.setAlpha(plume.getAlpha() - 0.01f);
                         plume.moveY(0.05f);
                         plume.rotate(1f);

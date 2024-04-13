@@ -353,7 +353,7 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     @Override
-    public void onEachFrame() {
+    public void onExitFrame() {
         // For overriding
     }
 

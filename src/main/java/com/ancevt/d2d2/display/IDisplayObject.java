@@ -131,7 +131,7 @@ public interface IDisplayObject extends IEventDispatcher {
 
     String toString();
 
-    default void onEachFrame() {}
-
-    ;
+    default void onExitFrame() {}
+    default void onEnterFrame() {}
+    default void onLoopUpdate() {}
 }

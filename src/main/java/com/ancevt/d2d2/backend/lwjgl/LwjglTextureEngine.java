@@ -319,7 +319,7 @@ public class LwjglTextureEngine implements ITextureEngine {
 
                         charImage = copyImage(charImage);
 
-                        Color letterColor = letter.getColor();
+                        Color letterColor = letter == null ? bitmapText.getColor() : letter.getColor();
 
                         applyColorFilter(
                             charImage,

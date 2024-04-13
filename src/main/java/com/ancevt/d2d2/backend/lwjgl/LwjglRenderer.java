@@ -33,7 +33,8 @@ import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.input.Mouse;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -50,6 +51,15 @@ public class LwjglRenderer implements IRenderer {
     boolean smoothMode = false;
     private LwjglTextureEngine textureEngine;
     private int zOrderCounter;
+
+    @Getter
+    @Setter
+    private int frameRate = 60;
+
+    @Getter
+    @Setter
+    private int fps = frameRate;
+
 
     public LwjglRenderer(Stage stage, LwjglBackend lwjglStarter) {
         this.stage = stage;
@@ -77,16 +87,43 @@ public class LwjglRenderer implements IRenderer {
         GL11.glLoadIdentity();
     }
 
+
+    private long lastTime = System.currentTimeMillis();
+    private double delta = 0;
+
+    private int frames;
+    private long lastFpsTime = System.currentTimeMillis();
+
     @Override
     public void renderFrame() {
+        double nsPerUpdate = 1000.0 / this.frameRate;
+        long now = System.currentTimeMillis();
+        delta += (now - lastTime) / nsPerUpdate;
+
+        // Выполнить обновление игровой логики, даже если кадры пропущены
+        while (delta >= 1) {
+            dispatchLoopUpdate(stage);
+            delta--;
+        }
+
+        render();
+        frames++;
+
+        if (now - lastFpsTime > 1000) {
+            fps = Math.min(frames, frameRate);
+            frames = 0;
+            lastFpsTime = System.currentTimeMillis();
+        }
+
+        lastTime = now;
+    }
+
+    // Метод для рендеринга кадра
+    private void render() {
         textureEngine.loadTextureAtlases();
 
-        clear();
-
-        GL11.glLoadIdentity();
-
         zOrderCounter = 0;
-
+        clear();
         renderDisplayObject(stage,
             0,
             stage.getX(),
@@ -94,7 +131,9 @@ public class LwjglRenderer implements IRenderer {
             stage.getScaleX(),
             stage.getScaleY(),
             stage.getRotation(),
-            stage.getAlpha());
+            stage.getAlpha()
+        );
+        GL11.glLoadIdentity();
 
         IDisplayObject cursor = D2D2.getCursor();
         if (cursor != null) {
@@ -106,6 +145,20 @@ public class LwjglRenderer implements IRenderer {
         GLFW.glfwGetCursorPos(lwjglBackend.windowId, mouseX, mouseY);
 
         Mouse.setXY((int) mouseX[0], (int) mouseY[0]);
+    }
+
+    private void dispatchLoopUpdate(IDisplayObject o) {
+        if (!o.isVisible()) return;
+
+        if (o instanceof IContainer c) {
+            for (int i = 0; i < c.getNumberOfChildren(); i++) {
+                IDisplayObject child = c.getChild(i);
+                dispatchLoopUpdate(child);
+            }
+        }
+
+        o.dispatchEvent(EventPool.simpleEventSingleton(Event.LOOP_UPDATE, o));
+        o.onLoopUpdate();
     }
 
     private final double[] mouseX = new double[1];
@@ -120,7 +173,7 @@ public class LwjglRenderer implements IRenderer {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
     }
 
-    private synchronized void renderDisplayObject( IDisplayObject displayObject,
+    private synchronized void renderDisplayObject(IDisplayObject displayObject,
                                                   int level,
                                                   float toX,
                                                   float toY,
@@ -173,11 +226,11 @@ public class LwjglRenderer implements IRenderer {
 
         GL11.glPopMatrix();
 
-        displayObject.onEachFrame();
+        displayObject.onExitFrame();
         displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EXIT_FRAME, displayObject));
     }
 
-    private void renderSprite( ISprite sprite, float alpha, float scaleX, float scaleY, float paddingTop) {
+    private void renderSprite(ISprite sprite, float alpha, float scaleX, float scaleY, float paddingTop) {
         Texture texture = sprite.getTexture();
 
         if (texture == null) return;
@@ -281,7 +334,7 @@ public class LwjglRenderer implements IRenderer {
         D2D2.textureManager().getTextureEngine().disable(textureAtlas);
     }
 
-    private void renderBitmapText( BitmapText bitmapText, float alpha, float scaleX, float scaleY) {
+    private void renderBitmapText(BitmapText bitmapText, float alpha, float scaleX, float scaleY) {
         if (bitmapText.isEmpty()) return;
 
         Color color = bitmapText.getColor();
@@ -315,108 +368,6 @@ public class LwjglRenderer implements IRenderer {
             LwjglRenderer::applyColor
         );
 
-        /*
-        String text = bitmapText.getText();
-
-        int textureWidth = textureAtlas.getWidth();
-        int textureHeight = textureAtlas.getHeight();
-
-        float lineSpacing = bitmapText.getLineSpacing();
-        float spacing = bitmapText.getSpacing();
-
-        float boundWidth = bitmapText.getWidth() * scaleX + bitmapFont.getCharInfo('0').width() * 3;
-        float boundHeight = bitmapText.getHeight() * scaleY;
-
-        float drawX = 0;
-        float drawY = bitmapFont.getPaddingTop() * scaleY;
-
-        double textureBleedingFix = bitmapText.getTextureBleedingFix();
-        double vertexBleedingFix = bitmapText.getVertexBleedingFix();
-
-        if (bitmapText.isMulticolorEnabled()) {
-
-            BitmapText.ColorTextData colorTextData = bitmapText.getColorTextData();
-
-            for (int i = 0; i < colorTextData.length(); i++) {
-                BitmapText.ColorTextData.Letter letter = colorTextData.getColoredLetter(i);
-
-                char c = letter.getCharacter();
-
-                BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
-
-                if (charInfo == null) continue;
-
-                Color letterColor = letter.getColor();
-
-                GL11.glColor4f(
-                    (float) letterColor.getR() / 255f,
-                    (float) letterColor.getG() / 255f,
-                    (float) letterColor.getB() / 255f,
-                    alpha
-                );
-
-                float charWidth = charInfo.width();
-                float charHeight = charInfo.height();
-
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5)) {
-                    drawX = 0;
-                    drawY += (charHeight + lineSpacing) * scaleY;
-
-                    if (boundHeight != 0 && drawY > boundHeight - charHeight) {
-                        break;
-                    }
-                }
-
-                drawChar(drawX,
-                    (drawY + scaleY * charHeight),
-                    textureWidth,
-                    textureHeight,
-                    charInfo,
-                    scaleX,
-                    scaleY,
-                    textureBleedingFix,
-                    vertexBleedingFix);
-
-                drawX += (charWidth + (c != '\n' ? spacing : 0)) * scaleX;
-            }
-
-        } else {
-            for (int i = 0; i < text.length(); i++) {
-                char c = text.charAt(i);
-
-                BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
-
-                if (charInfo == null) {
-                    continue;
-                }
-
-                float charWidth = charInfo.width();
-                float charHeight = charInfo.height();
-
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5)) {
-                    drawX = 0;
-                    drawY += (charHeight + lineSpacing) * scaleY;
-
-                    if (boundHeight != 0 && drawY > boundHeight - charHeight) {
-                        break;
-                    }
-                }
-
-                drawChar(drawX,
-                    (drawY + scaleY * charHeight),
-                    textureWidth,
-                    textureHeight,
-                    charInfo,
-                    scaleX,
-                    scaleY,
-                    textureBleedingFix,
-                    vertexBleedingFix);
-
-                drawX += (charWidth + (c != '\n' ? spacing : 0)) * scaleX;
-            }
-        }
-        */
-
         GL11.glEnd();
 
         GL11.glDisable(GL_BLEND);
@@ -439,7 +390,7 @@ public class LwjglRenderer implements IRenderer {
         float y,
         int textureAtlasWidth,
         int textureAtlasHeight,
-         BitmapCharInfo charInfo,
+        BitmapCharInfo charInfo,
         float scX,
         float scY,
         double textureBleedingFix,

@@ -120,7 +120,7 @@ public class Sprite extends DisplayObject implements ISprite {
     }
 
     @Override
-    public void onEachFrame() {
+    public void onExitFrame() {
         // For overriding
     }
 

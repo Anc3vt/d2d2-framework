@@ -32,7 +32,7 @@ public interface D2D2Backend {
 
     int getFrameRate();
 
-    int getFps();
+    int getActualFps();
 
     long getWindowId();
 

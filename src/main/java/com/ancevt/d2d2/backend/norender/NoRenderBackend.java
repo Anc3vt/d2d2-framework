@@ -81,7 +81,7 @@ public class NoRenderBackend implements D2D2Backend {
     }
 
     @Override
-    public int getFps() {
+    public int getActualFps() {
         return fps;
     }
 

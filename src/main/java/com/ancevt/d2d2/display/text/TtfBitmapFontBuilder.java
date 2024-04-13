@@ -71,7 +71,8 @@ public class TtfBitmapFontBuilder {
     private String name;
 
     @Getter
-    private String charSourceString = " !\"#№$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў";
+        //private String charSourceString = " !\"#№$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў";
+        private String charSourceString = " !\"#$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў";
 
     public TtfBitmapFontBuilder charSourceString(String charSourceString) {
         this.charSourceString = charSourceString;
@@ -195,26 +196,31 @@ public class TtfBitmapFontBuilder {
     public static void main(String[] args) {
         D2D2.init(new LwjglBackend(1000, 600, "(floating)"));
 
-        createBitmapText("The quick brown fox jumps over the lazy dog",
+        //InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/PressStart2P-Regular.ttf");
+
+        String fontPath = "d2d2ttf/terminus/TerminusTTF-Bold-4.49.3.ttf";
+
+        int size = 16;
+
+        createBitmapText("The quick brown fox jumps over the lazy dog абвгдежз АБВГДЕЖЗ",
             new TtfBitmapFontBuilder()
-                .ttfAssetPath("d2d2ttf/FreeSans.ttf")
-                .fontSize(20)
+                .ttfAssetPath(fontPath)
+                .fontSize(16)
                 .spacingY(10)
                 .textAntialias(true)
-                .fractionalMetrics(FractionalMetrics.DEFAULT)
-                .offsetY(3)
+                .fractionalMetrics(FractionalMetrics.OFF)
+                .offsetY(5)
                 .build());
 
-        createBitmapText("The quick brown fox jumps over the lazy dog",
+        createBitmapText("The quick brown fox jumps over the lazy dog абвгдежз АБВГДЕЖЗ",
             new TtfBitmapFontBuilder()
-                .ttfAssetPath("d2d2ttf/FreeSans.ttf")
-                .fontSize(20)
+                .ttfAssetPath(fontPath)
+                .fontSize(16)
                 .spacingY(10)
-                .textAntialias(true)
-                .fractionalMetrics(FractionalMetrics.ON)
-                .offsetY(3)
+                .textAntialias(false)
+                .fractionalMetrics(FractionalMetrics.OFF)
+                .offsetY(5)
                 .build());
-
 
         D2D2.loop();
     }
@@ -230,27 +236,3 @@ public class TtfBitmapFontBuilder {
         return bitmapText;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
