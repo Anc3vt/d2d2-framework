@@ -574,34 +574,38 @@ public class LwjglBackend implements D2D2Backend {
     }
 
     private void startRenderLoop() {
+        long lastTime = System.nanoTime();
+        double nsPerFrame = 1000000000.0 / frameRate;
+        double delta = 0;
+        long timer = System.currentTimeMillis();
+        int frames = 0;
+
         while (!glfwWindowShouldClose(windowId) && alive) {
-            glfwPollEvents();
+            long now = System.nanoTime();
+            delta += (now - lastTime) / nsPerFrame;
+            lastTime = now;
 
-            try {
+            while (delta >= 1) {
+                glfwPollEvents();
                 renderer.renderFrame();
-                if (fps > frameRate + 10) {
-                    Thread.sleep(1000 / (frameRate + 10));
-                } else {
-                    Thread.sleep((long) (1000 / (frameRate * 1.25f)));
+                glfwSwapBuffers(windowId);
+                frames++;
+                delta--;
+            }
+
+            if (frames < frameRate) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    log.error(e.getMessage(), e);
                 }
-            } catch (InterruptedException e) {
-                log.error(e.getMessage(), e);
             }
 
-            frameCounter++;
-            final long time2 = System.currentTimeMillis();
-
-            if (time2 - time >= 1000) {
-                time = System.currentTimeMillis();
-                fps = frameCounter;
-                frameCounter = 0;
+            if (System.currentTimeMillis() - timer > 1000) {
+                timer += 1000;
+                fps = frames;
+                frames = 0;
             }
-
-            glfwSwapBuffers(windowId);
-
-            tick++;
-
-            if (tick % timerCheckFrameFrequency == 0) Timer.processTimers();
         }
 
         String prop = System.getProperty("d2d2.glfw.no-terminate");
@@ -612,6 +616,7 @@ public class LwjglBackend implements D2D2Backend {
 
         glfwTerminate();
     }
+
 
     @Override
     public void setWindowXY(int x, int y) {
