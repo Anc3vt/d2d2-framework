@@ -48,6 +48,7 @@ public class D2D2 {
     }
 
     public static Stage init( D2D2Backend backend) {
+        System.setProperty("file.encoding", "UTF-8");
         bitmapFontManager = new BitmapFontManager();
         D2D2.backend = backend;
         backend.create();

@@ -23,52 +23,65 @@ import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
-import com.ancevt.d2d2.display.ISprite;
+import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.text.StandardBitmapFonts;
 
 public class Glow8Shadows extends Container {
 
-    private final IColored[] elements;
+    private final IDisplayObject[] elements;
 
     public Glow8Shadows(IColored source, Color color, float distance, float alpha, float offsetX, float offsetY) {
         float[][] coords = {
-                {0.0f , -1.0f},
-                {1.0f , -1.0f},
-                {1.0f , 0.0f},
-                {1.0f , 1.0f},
-                {0.0f , 1.0f},
-                {-1.0f, 1.0f},
-                {-1.0f, 0.0f},
-                {-1.0f, -1.0f}
+            {0.0f, -1.0f},
+            {1.0f, -1.0f},
+            {1.0f, 0.0f},
+            {1.0f, 1.0f},
+            {0.0f, 1.0f},
+            {-1.0f, 1.0f},
+            {-1.0f, 0.0f},
+            {-1.0f, -1.0f}
         };
+
+
+        Sprite sprite = null;
+
 
         elements = new IColored[8];
         for (int i = 0; i < coords.length; i++) {
             float[] currentCoords = coords[i];
 
-            IColored clone;
 
-            if (source instanceof BitmapText bitmapText) {
-                clone = bitmapText.cloneBitmapText();
-            } else if (source instanceof ISprite sprite) {
-                clone = sprite.cloneSprite();
+            if (sprite == null) {
+                if (source instanceof BitmapText bitmapText) {
+                    bitmapText = bitmapText.cloneBitmapText();
+                    bitmapText.setCacheAsSprite(true);
+                    sprite = bitmapText.cachedSprite();
+                } else if (source instanceof Sprite s) {
+                    sprite = s.cloneSprite();
+                } else {
+                    throw new IllegalArgumentException("Could not glow8 display object type: " + source.getClass().getName());
+                }
             } else {
-                throw new UnsupportedOperationException("Can't glow8 display object type: " + source.getClass().getName());
+                sprite = sprite.cloneSprite();
             }
 
-            clone.setXY(currentCoords[0] * distance, currentCoords[1] * distance);
-            clone.move(offsetX, offsetY);
-            clone.setColor(color);
-            clone.setAlpha(alpha);
-            elements[i] = clone;
+            sprite.setXY(currentCoords[0] * distance, currentCoords[1] * distance);
+            sprite.move(offsetX, offsetY);
+            sprite.setColor(color);
+            sprite.setAlpha(alpha);
+            elements[i] = sprite;
 
-            add(clone);
+            add(sprite);
         }
 
     }
 
+    public static Glow8Shadows createDefault(IColored o) {
+        return new Glow8Shadows(o, Color.BLACK, 0.80f, 1f, 0, 0);
+    }
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
