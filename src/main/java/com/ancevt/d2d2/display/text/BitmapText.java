@@ -193,7 +193,7 @@ public class BitmapText extends DisplayObject implements IColored {
             BitmapCharInfo info = font.getCharInfo(c);
             if (info == null) continue;
 
-            result += info.width() + getSpacing();
+            result += (int) (info.width() + getSpacing());
 
             if (result > max) max = result;
         }
@@ -211,7 +211,7 @@ public class BitmapText extends DisplayObject implements IColored {
 
         for (final char c : chars) {
             if (c == '\n' || (getWidth() > 0 && result > getWidth())) {
-                result += font.getZeroCharHeight() + getLineSpacing();
+                result += (int) (font.getZeroCharHeight() + getLineSpacing());
             }
         }
 
