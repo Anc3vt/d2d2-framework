@@ -22,9 +22,9 @@ import com.ancevt.d2d2.event.IEventDispatcher;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface IDisplayObject extends IEventDispatcher {
+import static com.ancevt.d2d2.display.Maps.extraMap;
 
-    Map<IDisplayObject, Map<String, Object>> extraMap = new HashMap<>();
+public interface IDisplayObject extends IEventDispatcher {
 
     default void setExtra(Map<String, Object> extra) {
         extraMap.put(this, extra);
