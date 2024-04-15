@@ -71,8 +71,10 @@ public class TtfBitmapFontBuilder {
     private String name;
 
     @Getter
-        //private String charSourceString = " !\"#№$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў";
-        private String charSourceString = " !\"#$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў";
+    //private String charSourceString = " !\"#№$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў";
+    private String charSourceString = " !\"#$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў¡¿ÑñÁÉÍÓÚÜáéíóúüßäÄöÖüÜçÇğĞıİşŞøæÆåÅøØæÆęĘłŁńŃśŚźŹżŻđĐďĎťŤŕŔůŮôÔâÂêÊûÛîÎôÔŷŶŵŴŝŜĉĈĥĤẅẄỳỲỵỴẉẈỹỸỷỶỻỺṃṂṗṖṙṘṣṢṭṬỡỠẃẂẁẀẘẘễỄẽẼỹỸỵỴḿḾṫṪȯȮḟḞġĠṅṄṇṆñÑóÓúÚìÌèÈàÀâÂêÊûÛîÎôÔäÄëËïÏöÖüÜçÇøØåÅæÆãÃõÕāĀēĒīĪōŌūŪǎǍěĚǐǏǒǑǔǕǖǗǘǙǚǛǜǺǻǼǽɛƐɔƆɪɨɒƝƉɖɗƐɛʒƷʃƨƱƲɣƔʔʡʕʢəƏʌʊʋʁʀŋɲɳɴɤƷƸɚɝɨɩɾɽʙʜɦɧɥʎʟʤʦʧʨɟʎɧʂʈʐɖɳɱɫɬɮɲɳɴɸɹɻɰɯɸɡɣɢɠʖɥɦɧɨɪɨɭɬɮɫɬɱɯɰɲɳɵɶɷɸɹɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮʯʰʱʲʳʴʵʶʷʸʹʺʻʼʽʾʿˀˁ˂˃˄˅ˆˇˈˉˊˋˌˍˎˏːˑ˒˓˔˕˖˗˘˙˚˛˜˝˞˟ˠˡˢˣˤ˥˦˧˨˩˪˫ˬ˭ˮ" +
+        "⎗⎘⎙⎚⎛⎜⎝⎞⎟⎠⎡⎢⎣⎤⎥⎦⎧⎨⎩⎪⎬⎭┌┍┎┏┐┑┒┓└┕┖┗┘┙┚┛├┝┞┟┠┡┢┣┤┥┦┧┨┩┪┫┬┭┮┯┰┱┲┳┴┵┶┷┸┹┺┻┼┽┾┿╀╁╂╃╄╅╆╇╈╉╊╋╌╍╎╏═║╒╓╔╕╖╗╘╙╚╛╜╝╞╟╠╡╢╣╤╥╦╧╨╩╪╫╬▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟▲△▴▵▶▷▸►▹▻▼▽▾▿◀◁◂◃◄◅◆◇◈◉◊○◌◍◎●◐◑◒◓◔◕◖◗◘◙◚◛◜◝◞◟◠◡◢◣◤◥◦◧◨◩◪◫◬◭◮◯◰◱◲◳◴◵◶◷◸◹◺◻◼◽◾◿";
+
 
     public TtfBitmapFontBuilder charSourceString(String charSourceString) {
         this.charSourceString = charSourceString;
@@ -199,10 +201,11 @@ public class TtfBitmapFontBuilder {
         //InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/PressStart2P-Regular.ttf");
 
         String fontPath = "d2d2ttf/terminus/TerminusTTF-Bold-4.49.3.ttf";
+        //String fontPath = "d2d2ttf/FreeMonoBold.ttf";
 
         int size = 16;
 
-        createBitmapText("The quick brown fox jumps over the lazy dog абвгдежз АБВГДЕЖЗ",
+        createBitmapText("▉▉ The quick brown fox jumps over the lazy dog абвгдежз АБВГДЕЖЗ ",
             new TtfBitmapFontBuilder()
                 .ttfAssetPath(fontPath)
                 .fontSize(16)
@@ -212,7 +215,7 @@ public class TtfBitmapFontBuilder {
                 .offsetY(5)
                 .build());
 
-        createBitmapText("The quick brown fox jumps over the lazy dog абвгдежз АБВГДЕЖЗ",
+        createBitmapText("▉▉ The quick brown fox jumps over the lazy dog абвгдежз АБВГДЕЖЗ",
             new TtfBitmapFontBuilder()
                 .ttfAssetPath(fontPath)
                 .fontSize(16)
@@ -235,4 +238,5 @@ public class TtfBitmapFontBuilder {
         _y += bitmapText.getHeight() + 5;
         return bitmapText;
     }
+
 }
