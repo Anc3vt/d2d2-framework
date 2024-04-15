@@ -9,7 +9,7 @@
 
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-core</artifactId>
-    <version>0.1.6.0-SNAPSHOT</version>
+    <version>0.1.6.0-beta</version>
 
     <url>https://github.com/Anc3vt/d2d2-core</url>
 
@@ -69,7 +69,7 @@
 
         <!-- Ancevt -->
         <args.version>2.1.2</args.version>
-        <ancevt-commons.version>1.0.0.9-SNAPSHOT</ancevt-commons.version>
+        <ancevt-commons.version>1.0.0.9</ancevt-commons.version>
 
         <!-- Log -->
         <logback.version>1.4.12</logback.version>
