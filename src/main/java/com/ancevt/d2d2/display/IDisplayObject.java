@@ -43,6 +43,29 @@ public interface IDisplayObject extends IEventDispatcher {
         return (T) getExtra().get(key);
     }
 
+    default void centerX() {
+        if (hasParent()) {
+            IContainer parent = getParent();
+            setX((parent.getWidth() - getWidth()) / 2);
+        } else {
+            setX(-getWidth() / 2);
+        }
+    }
+
+    default void centerY() {
+        if (hasParent()) {
+            IContainer parent = getParent();
+            setY((parent.getHeight() - getHeight()) / 2);
+        } else {
+            setX(-getWidth() / 2);
+        }
+    }
+
+    default void center() {
+        centerX();
+        centerY();
+    }
+
     int displayObjectId();
 
     String getName();
@@ -132,6 +155,8 @@ public interface IDisplayObject extends IEventDispatcher {
     String toString();
 
     default void onExitFrame() {}
+
     default void onEnterFrame() {}
+
     default void onLoopUpdate() {}
 }

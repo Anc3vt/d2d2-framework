@@ -13,6 +13,7 @@ The goal of D2D2 is to create an easy-to-use framework for rapid development of 
 - [Dependency](#dependency)
 - [Usage](#usage)
   - [General basic example](#general-basic-example)
+  - [Framework Initialization](#framework-initialization)
 - [Demo videos](#demo-videos)
 - [Contribution](#contribution)
 

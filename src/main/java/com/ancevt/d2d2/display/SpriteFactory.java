@@ -19,14 +19,17 @@ package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.texture.Texture;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SpriteFactory {
 
-    private final static Map<String, Texture> textureCacheFiles = new HashMap<>();
+    private static final Map<String, Texture> textureCacheFiles = new HashMap<>();
 
     public static Sprite createSprite(String asset, int textureX, int textureY, int textureWidth, int textureHeight) {
         return new Sprite(
@@ -45,6 +48,14 @@ public class SpriteFactory {
                     .createTexture(textureX, textureY, textureWidth, textureHeight)
             )
         );
+    }
+
+    public static Sprite createSprite(String textureKey) {
+        return new Sprite(D2D2.textureManager().getTexture(textureKey));
+    }
+
+    public static Sprite createSprite() {
+        return new Sprite();
     }
 
     public static void clearCache() {

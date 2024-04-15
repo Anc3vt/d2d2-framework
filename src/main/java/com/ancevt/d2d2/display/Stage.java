@@ -21,7 +21,6 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import lombok.Getter;
-import lombok.Setter;
 
 
 public class Stage extends Container {
@@ -31,13 +30,21 @@ public class Stage extends Container {
     private int width;
     private int height;
 
-    @Setter
+
     @Getter
     private Color backgroundColor;
 
     public Stage() {
         setName("_" + getClass().getSimpleName() + displayObjectId());
         setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+    }
+
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public void setBackgroundColor(int rgb) {
+        setBackgroundColor(Color.of(rgb));
     }
 
     public void setSize(float width, float height) {
@@ -69,7 +76,7 @@ public class Stage extends Container {
         return height;
     }
 
-    static void dispatchAddToStage( IDisplayObject displayObject) {
+    static void dispatchAddToStage(IDisplayObject displayObject) {
         if (displayObject.isOnScreen()) {
             displayObject.dispatchEvent(EventPool.createEvent(Event.ADD_TO_STAGE));
             if (displayObject instanceof IContainer container) {
@@ -80,7 +87,7 @@ public class Stage extends Container {
         }
     }
 
-    static void dispatchRemoveFromStage( IDisplayObject displayObject) {
+    static void dispatchRemoveFromStage(IDisplayObject displayObject) {
         if (displayObject.isOnScreen()) {
             displayObject.dispatchEvent(EventPool.createEvent(Event.REMOVE_FROM_STAGE));
 

@@ -23,7 +23,7 @@ import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
-import com.ancevt.d2d2.display.IFramedDisplayObject;
+import com.ancevt.d2d2.display.IAnimated;
 
 public class RendererStub implements IRenderer {
 
@@ -63,8 +63,8 @@ public class RendererStub implements IRenderer {
             }
         }
 
-        if (displayObject instanceof IFramedDisplayObject) {
-            ((IFramedDisplayObject) displayObject).processFrame();
+        if (displayObject instanceof IAnimated) {
+            ((IAnimated) displayObject).processFrame();
         }
 
         displayObject.onExitFrame();

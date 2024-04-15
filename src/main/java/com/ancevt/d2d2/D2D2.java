@@ -18,45 +18,56 @@
 package com.ancevt.d2d2;
 
 import com.ancevt.d2d2.backend.D2D2Backend;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.texture.TextureManager;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.input.Mouse;
+import com.ancevt.d2d2.util.D2D2Initializer;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Properties;
 
-public class D2D2 {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class D2D2 {
 
     private static final TextureManager textureManager = new TextureManager();
+
     private static BitmapFontManager bitmapFontManager;
 
     @Getter
     private static IDisplayObject cursor;
+
     private static D2D2Backend backend;
 
-    private D2D2() {
-    }
-
-    public static TextureManager textureManager() {
-        return textureManager;
-    }
-
-    public static BitmapFontManager bitmapFontManager() {
-        return bitmapFontManager;
-    }
-
-    public static Stage init( D2D2Backend backend) {
-        System.setProperty("file.encoding", "UTF-8");
+    public static Stage directInit(D2D2Backend backend) {
         bitmapFontManager = new BitmapFontManager();
         D2D2.backend = backend;
         backend.create();
         return backend.getStage();
     }
 
-    public static void setFullscreen(boolean value) {
-        backend.setFullscreen(value);
+    public static void init(Class<? extends D2D2Main> d2d2EntryPointClass) {
+        D2D2Initializer.init(d2d2EntryPointClass);
+    }
+
+    public static void init(Class<? extends D2D2Main> d2d2EntryPointClass, Map<String, String> propertyMap) {
+        Properties properties = new Properties();
+        properties.putAll(propertyMap);
+        D2D2Initializer.init(d2d2EntryPointClass, properties);
+    }
+
+    public static void init(Class<? extends D2D2Main> d2d2EntryPointClass, Properties properties) {
+        D2D2Initializer.init(d2d2EntryPointClass, properties);
+    }
+
+    public static void init(Class<? extends D2D2Main> d2d2EntryPointClass, InputStream propertiesInputStream) {
+        D2D2Initializer.init(d2d2EntryPointClass, propertiesInputStream);
     }
 
     public static void setCursor(IDisplayObject cursor) {
@@ -64,21 +75,17 @@ public class D2D2 {
 
         if (cursor != null) {
             Mouse.setVisible(false);
-            cursor.removeEventListener(Mouse.class, Event.EXIT_FRAME);
-            cursor.addEventListener(Mouse.class, Event.EXIT_FRAME, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
+            cursor.removeEventListener(Mouse.class, Event.LOOP_UPDATE);
+            cursor.addEventListener(Mouse.class, Event.LOOP_UPDATE, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
         } else {
             Mouse.setVisible(true);
-            D2D2.cursor.removeEventListener(Mouse.class, Event.EXIT_FRAME);
+            D2D2.cursor.removeEventListener(Mouse.class, Event.LOOP_UPDATE);
         }
         D2D2.cursor = cursor;
     }
 
     public static Stage stage() {
         return backend.getStage();
-    }
-
-    public static D2D2Backend backend() {
-        return backend;
     }
 
     public static void loop() {
@@ -89,4 +96,15 @@ public class D2D2 {
         backend.stop();
     }
 
+    public static D2D2Backend backend() {
+        return backend;
+    }
+
+    public static TextureManager textureManager() {
+        return textureManager;
+    }
+
+    public static BitmapFontManager bitmapFontManager() {
+        return bitmapFontManager;
+    }
 }

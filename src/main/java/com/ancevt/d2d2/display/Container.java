@@ -21,7 +21,6 @@ import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.exception.ContainerException;
 
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -38,7 +37,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void add( IDisplayObject child) {
+    public void add(IDisplayObject child) {
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
 
@@ -49,7 +48,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void add( IDisplayObject child, int index) {
+    public void add(IDisplayObject child, int index) {
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
 
@@ -60,7 +59,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void add( IDisplayObject child, float x, float y) {
+    public void add(IDisplayObject child, float x, float y) {
         child.setXY(x, y);
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
@@ -72,7 +71,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void add( IDisplayObject child, int index, float x, float y) {
+    public void add(IDisplayObject child, int index, float x, float y) {
         child.setXY(x, y);
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
@@ -84,7 +83,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public void remove( IDisplayObject child) {
+    public void remove(IDisplayObject child) {
         Stage.dispatchRemoveFromStage(child);
         ((DisplayObject) child).setParent(null);
         child.dispatchEvent(EventPool.createEvent(Event.REMOVE, this));
@@ -92,7 +91,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public int indexOf( IDisplayObject child) {
+    public int indexOf(IDisplayObject child) {
         return children.indexOf(child);
     }
 
@@ -110,7 +109,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public  IDisplayObject getChild(String name) {
+    public IDisplayObject getChild(String name) {
         for (IDisplayObject displayObject : children) {
             if (displayObject.getName().equals(name)) return displayObject;
         }
@@ -123,13 +122,8 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public boolean contains( IDisplayObject child) {
+    public boolean contains(IDisplayObject child) {
         return children.contains(child);
-    }
-
-    @Override
-    public void onExitFrame() {
-        // For overriding
     }
 
     @Override
@@ -154,8 +148,8 @@ public class Container extends DisplayObject implements IContainer {
         float max = 0;
 
         for (final IDisplayObject child : children) {
-             float y = child.getY();
-             float yh = y + child.getHeight();
+            float y = child.getY();
+            float yh = y + child.getHeight();
 
             min = Math.min(y, min);
             max = Math.max(yh, max);
@@ -167,41 +161,17 @@ public class Container extends DisplayObject implements IContainer {
     @Override
     public String toString() {
         return "Container{" +
-                getName() +
-                '}';
+            getName() +
+            '}';
+    }
+
+    public static IContainer createContainer() {
+        return new Container();
+    }
+
+    public static IContainer createContainer(IDisplayObject childDisplayObject) {
+        IContainer container = createContainer();
+        container.add(childDisplayObject);
+        return container;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -9,7 +9,7 @@
 
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-core</artifactId>
-    <version>0.1.6.0-beta</version>
+    <version>0.1.6.1-SNAPSHOT</version>
 
     <url>https://github.com/Anc3vt/d2d2-core</url>
 
@@ -62,23 +62,23 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <gson.version>2.9.1</gson.version>
         <java.version>17</java.version>
 
-        <mainClass>com.ancevt.d2d2.dev.Tests_BitmapText_cacheAsSprite2</mainClass>
+        <vorbisspi.version>1.0.3.3</vorbisspi.version>
+        <mp3spi.version>1.9.5.4</mp3spi.version>
+        <lombok.version>1.18.26</lombok.version>
+        <gson.version>2.9.1</gson.version>
 
         <!-- Ancevt -->
-        <args.version>2.1.2</args.version>
-        <ancevt-commons.version>1.0.0.9</ancevt-commons.version>
+        <args.version>2.1.3</args.version>
+        <ancevt-commons.version>1.0.1-SNAPSHOT</ancevt-commons.version>
 
         <!-- Log -->
         <logback.version>1.4.12</logback.version>
 
         <!-- LWJGL -->
-        <joml.version>1.10.4</joml.version>
         <lwjgl.version>3.3.3</lwjgl.version>
         <lwjgl_util.version>2.9.3</lwjgl_util.version>
-        <swt.maven.version>3.105.3</swt.maven.version> <!-- contains Eclipse SWT 4.6.2.9 software -->
 
         <!-- PNG -->
         <pngdecoder.version>1.0</pngdecoder.version>
@@ -93,6 +93,8 @@
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+
+        <mainClass>com.ancevt.d2d2.samples.FrameworkInitDemo</mainClass>
     </properties>
 
     <dependencies>
@@ -100,7 +102,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
+            <version>${lombok.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -116,22 +118,16 @@
             <version>${args.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.ancevt.util</groupId>
-            <artifactId>commands</artifactId>
-            <version>1.0.4</version>
-        </dependency>
-
         <!-- Sound -->
         <dependency>
             <groupId>com.googlecode.soundlibs</groupId>
             <artifactId>mp3spi</artifactId>
-            <version>1.9.5.4</version>
+            <version>${mp3spi.version}</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.soundlibs</groupId>
             <artifactId>vorbisspi</artifactId>
-            <version>1.0.3.3</version>
+            <version>${vorbisspi.version}</version>
         </dependency>
 
         <!-- PNG -->
@@ -142,11 +138,6 @@
         </dependency>
 
         <!-- LWJGL -->
-        <dependency>
-            <groupId>org.joml</groupId>
-            <artifactId>joml</artifactId>
-            <version>${joml.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-glfw</artifactId>
@@ -162,7 +153,6 @@
             <artifactId>lwjgl</artifactId>
             <version>${lwjgl.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
@@ -187,12 +177,6 @@
             <version>${lwjgl.version}</version>
             <classifier>natives-macos-arm64</classifier>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>org.lwjgl</groupId>-->
-<!--            <artifactId>lwjgl-opengl</artifactId>-->
-<!--            <version>${lwjgl.version}</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-opengl</artifactId>
@@ -223,12 +207,6 @@
             <version>${lwjgl.version}</version>
             <classifier>natives-macos-arm64</classifier>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>org.lwjgl</groupId>-->
-<!--            <artifactId>lwjgl-glfw</artifactId>-->
-<!--            <version>${lwjgl.version}</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-glfw</artifactId>
@@ -267,7 +245,6 @@
         </dependency>
 
         <!-- ////////////////// -->
-
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -281,18 +258,10 @@
         </dependency>
 
         <!-- Testing -->
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit-jupiter-api.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-junit</artifactId>
-            <version>${hamcrest-junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

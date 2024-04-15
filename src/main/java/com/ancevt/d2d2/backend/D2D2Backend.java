@@ -68,10 +68,6 @@ public interface D2D2Backend {
 
     String getStringFromClipboard();
 
-    boolean isFullscreen();
-
-    void setFullscreen(boolean value);
-
     default void setSmoothMode(boolean value) {}
 
     default boolean isSmoothMode() {return false;}

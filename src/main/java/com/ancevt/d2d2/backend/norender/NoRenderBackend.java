@@ -30,8 +30,6 @@ import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
 
-import static java.lang.Thread.sleep;
-
 public class NoRenderBackend implements D2D2Backend {
 
     private int width;
@@ -207,18 +205,8 @@ public class NoRenderBackend implements D2D2Backend {
 
             tick++;
 
-            if(tick % timerCheckFrameFrequency == 0) Timer.processTimers();
+            if (tick % timerCheckFrameFrequency == 0) Timer.processTimers();
         }
-    }
-
-    @Override
-    public boolean isFullscreen() {
-        return false;
-    }
-
-    @Override
-    public void setFullscreen(boolean value) {
-
     }
 
     @Override

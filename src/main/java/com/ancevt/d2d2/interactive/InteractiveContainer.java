@@ -18,6 +18,7 @@
 package com.ancevt.d2d2.interactive;
 
 import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.exception.InteractiveException;
 
@@ -184,5 +185,22 @@ public class InteractiveContainer extends Container implements Interactive {
     @Override
     public boolean isDisposed() {
         return disposed;
+    }
+
+    public static InteractiveContainer createInteractiveContainer(float width, float height) {
+        return new InteractiveContainer(width, height);
+    }
+
+    public static InteractiveContainer createInteractiveContainer() {
+        return new InteractiveContainer();
+    }
+
+    public static InteractiveContainer createInteractiveContainer(IDisplayObject childDisplayObject) {
+        InteractiveContainer interactiveContainer = new InteractiveContainer(
+            childDisplayObject.getWidth(),
+            childDisplayObject.getHeight()
+        );
+        interactiveContainer.add(childDisplayObject);
+        return interactiveContainer;
     }
 }

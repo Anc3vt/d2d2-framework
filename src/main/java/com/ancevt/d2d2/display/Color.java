@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Color {
-
+    public static final Color NO_COLOR = null;
     public static final Color ALICE_BLUE = new Color(0xF0F8FF, true);
     public static final Color ANTIQUE_WHITE = new Color(0xFAEBD7, true);
     public static final Color AQUA = new Color(0x00FFFF, true);
@@ -46,8 +46,8 @@ public class Color {
     public static final Color DARK_BLUE = new Color(0x00008B, true);
     public static final Color DARK_CYAN = new Color(0x008B8B, true);
     public static final Color DARKGOLDEN_ROD = new Color(0xB8860B, true);
-    public static final Color DARK_GRAY = new Color(0xA9A9A9, true);
-    public static final Color DARK_GREY = new Color(0xA9A9A9, true);
+    public static final Color DARK_GRAY = new Color(0x222222, true);
+    public static final Color DARK_GREY = new Color(0x222222, true);
     public static final Color DARK_GREEN = new Color(0x006400, true);
     public static final Color DARK_KHAKI = new Color(0xBDB76B, true);
     public static final Color DARK_MAGENTA = new Color(0x8B008B, true);

@@ -18,7 +18,6 @@
 package com.ancevt.d2d2.asset;
 
 import com.ancevt.d2d2.exception.AssetException;
-import org.jetbrains.annotations.Contract;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,12 +43,10 @@ public class Assets {
         return result;
     }
 
-    @Contract("_ -> new")
     public static BufferedReader getAssetAsBufferedReader(InputStream inputStream) {
         return getAssetAsBufferedReader(inputStream, StandardCharsets.UTF_8.name());
     }
 
-    @Contract("_, _ -> new")
     public static BufferedReader getAssetAsBufferedReader(InputStream inputStream, String charsetName) {
         try {
             return new BufferedReader(new InputStreamReader(inputStream, charsetName));
@@ -58,12 +55,10 @@ public class Assets {
         }
     }
 
-    @Contract("_ -> new")
     public static BufferedReader getAssetAsBufferedReader(String assetPath) {
         return getAssetAsBufferedReader(getAssetAsStream(assetPath), StandardCharsets.UTF_8.name());
     }
 
-    @Contract("_, _ -> new")
     public static BufferedReader getAssetAsBufferedReader(String assetPath, String charsetName) {
         return getAssetAsBufferedReader(getAssetAsStream(assetPath), charsetName);
     }
