@@ -34,6 +34,7 @@ public class StarletSpace extends Container {
     @Getter
     @Setter
     private int someVal = 5;
+
     public StarletSpace(int count) {
         for (int i = 0; i < count; i++) {
             createStarlet().setX((float) (Math.random() * stage().getWidth()));
@@ -54,7 +55,7 @@ public class StarletSpace extends Container {
     public static StarletSpace haveFun(boolean logo) {
         Stage stage = stage();
         stage.setBackgroundColor(Color.of(0x000510));
-        Sprite d2d2Title = new Sprite("d2d2-title");
+        Sprite d2d2Title = new Sprite("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
         d2d2Title.setColor(Color.LIGHT_GRAY);
         StarletSpace starletSpace = new StarletSpace(100);
         if (logo) starletSpace.add(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
@@ -79,7 +80,7 @@ public class StarletSpace extends Container {
 
         public Starlet(StarletSpace starletSpace) {
             this.starletSpace = starletSpace;
-            sprite = new Sprite("d2d2-demo-starlet");
+            sprite = new Sprite("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
             sprite.setXY(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
             add(sprite);
 

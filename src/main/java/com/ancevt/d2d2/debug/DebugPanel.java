@@ -358,7 +358,7 @@ public class DebugPanel extends Container {
     }
 
     public static void main(String[] args) {
-        D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         D2D2.stage().setBackgroundColor(Color.DARK_GRAY);
 
         DebugPanel.setEnabled(true);

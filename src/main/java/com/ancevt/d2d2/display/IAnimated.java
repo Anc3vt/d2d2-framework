@@ -19,7 +19,7 @@ package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.display.texture.Texture;
 
-public interface IFramedDisplayObject extends IDisplayObject {
+public interface IAnimated extends IDisplayObject {
     int DEFAULT_SLOWING = 5;
 
     void processFrame();

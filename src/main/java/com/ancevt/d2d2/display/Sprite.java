@@ -18,9 +18,7 @@
 package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.texture.Texture;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 
 public class Sprite extends DisplayObject implements ISprite {
 
@@ -39,8 +37,21 @@ public class Sprite extends DisplayObject implements ISprite {
         setName("_" + getClass().getSimpleName() + displayObjectId());
     }
 
-    public Sprite(String textureKey) {
-        this(D2D2.textureManager().getTexture(textureKey));
+    public Sprite(String assetPathToImage) {
+        this(D2D2.textureManager().loadTextureAtlas(assetPathToImage).createTexture());
+    }
+
+    public Sprite(String assetPathToImage, int textureX, int textureY, int textureWidth, int textureHeight) {
+        this(
+            D2D2.textureManager()
+                .loadTextureAtlas(assetPathToImage)
+                .createTexture(
+                    textureX,
+                    textureY,
+                    textureWidth,
+                    textureHeight
+                )
+        );
     }
 
     public Sprite(Texture texture) {
@@ -140,7 +151,6 @@ public class Sprite extends DisplayObject implements ISprite {
     @Override
     public void setTextureBleedingFix(double v) {
         this.textureBleedingFix = v;
-
         if (getName().equals("_renderer_test_")) {
 
             System.out.println(v);
@@ -166,14 +176,5 @@ public class Sprite extends DisplayObject implements ISprite {
     @Override
     public double getVertexBleedingFix() {
         return vertexBleedingFix;
-    }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
-        StarletSpace.haveFun();
-
-
-
-        D2D2.loop();
     }
 }

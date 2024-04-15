@@ -19,7 +19,6 @@ package com.ancevt.d2d2.media;
 
 import com.ancevt.commons.concurrent.Async;
 import lombok.SneakyThrows;
-import org.jetbrains.annotations.Contract;
 
 
 import javax.sound.sampled.AudioFormat;
@@ -46,7 +45,7 @@ public class BlockingSound implements Media {
     private float pan = 0f;
 
     @SneakyThrows
-    public BlockingSound( InputStream inputStream) {
+    public BlockingSound(InputStream inputStream) {
         byteArrayOutputStream = new ByteArrayOutputStream();
         byteArrayOutputStream.write(inputStream.readAllBytes());
     }
@@ -54,15 +53,15 @@ public class BlockingSound implements Media {
     @SneakyThrows
     public BlockingSound(String path) {
         byteArrayOutputStream = new ByteArrayOutputStream();
-        try(FileInputStream is = new FileInputStream(slashSafe(path))) {
+        try (FileInputStream is = new FileInputStream(slashSafe(path))) {
             byteArrayOutputStream.write(is.readAllBytes());
         }
     }
 
     @Override
     public void setVolume(float volume) {
-        if(volume < -80f) volume = -80f;
-        if(volume >= 6f) volume = 6f;
+        if (volume < -80f) volume = -80f;
+        if (volume >= 6f) volume = 6f;
         this.volume = volume;
     }
 
@@ -108,7 +107,7 @@ public class BlockingSound implements Media {
             final DataLine.Info info = new DataLine.Info(SourceDataLine.class, outFormat);
 
             try (final SourceDataLine line =
-                         (SourceDataLine) AudioSystem.getLine(info)) {
+                     (SourceDataLine) AudioSystem.getLine(info)) {
 
                 if (line != null) {
                     line.open(outFormat);
@@ -128,12 +127,11 @@ public class BlockingSound implements Media {
         Async.run(this::play);
     }
 
-    @Contract(" -> new")
-    private  InputStream getInputStream() {
+    private InputStream getInputStream() {
         return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     }
 
-    private  AudioFormat getOutFormat( AudioFormat inFormat) {
+    private AudioFormat getOutFormat(AudioFormat inFormat) {
         final int ch = inFormat.getChannels();
         final float rate = inFormat.getSampleRate();
         return new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, rate, 16, ch, ch * 2, rate, false);
@@ -142,7 +140,7 @@ public class BlockingSound implements Media {
     private void stream(AudioInputStream in, SourceDataLine line) throws IOException {
         final byte[] buffer = new byte[4096];
         for (int n = 0; n != -1; n = in.read(buffer, 0, buffer.length)) {
-            if(line.isControlSupported(FloatControl.Type.PAN)) {
+            if (line.isControlSupported(FloatControl.Type.PAN)) {
                 FloatControl floatControlPan = (FloatControl) line.getControl(FloatControl.Type.PAN);
                 floatControlPan.setValue(pan);
             }

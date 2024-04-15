@@ -84,8 +84,6 @@ import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
-import static org.lwjgl.glfw.GLFW.glfwGetWindowPos;
-import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwHideWindow;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
@@ -107,6 +105,7 @@ import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+// TODO: rewrite with VBO
 @Slf4j
 public class LwjglBackend implements D2D2Backend {
 
@@ -523,40 +522,6 @@ public class LwjglBackend implements D2D2Backend {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    @SneakyThrows
-    @Override
-    public void setFullscreen(boolean value) {
-        if (!fullscreen) {
-            int[] x = new int[1];
-            int[] y = new int[1];
-            int[] w = new int[1];
-            int[] h = new int[1];
-            glfwGetWindowPos(windowId, x, y);
-            glfwGetWindowSize(windowId, w, h);
-            windowX = x[0];
-            windowY = y[0];
-            windowWidth = w[0];
-            windowHeight = h[0];
-        }
-
-        if (value) {
-            glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-            glfwSetWindowPos(windowId, 0, -20);
-            glfwSetWindowSize(windowId, videoModeWidth, videoModeHeight);
-        } else {
-            glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
-            glfwSetWindowPos(windowId, windowX, windowY);
-            glfwSetWindowSize(windowId, windowWidth, windowHeight);
-        }
-
-        this.fullscreen = value;
-    }
-
-    @Override
-    public boolean isFullscreen() {
-        return fullscreen;
     }
 
     @Override

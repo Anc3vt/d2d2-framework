@@ -196,7 +196,7 @@ public class TtfBitmapFontBuilder {
     }
 
     public static void main(String[] args) {
-        D2D2.init(new LwjglBackend(1000, 600, "(floating)"));
+        D2D2.directInit(new LwjglBackend(1000, 600, "(floating)"));
 
         //InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/PressStart2P-Regular.ttf");
 

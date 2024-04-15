@@ -18,6 +18,7 @@
 package com.ancevt.d2d2.display;
 
 
+import java.util.Collection;
 
 public interface IContainer extends IDisplayObject {
 
@@ -28,7 +29,15 @@ public interface IContainer extends IDisplayObject {
 	void add( IDisplayObject child, float x, float y);
 	
 	void add( IDisplayObject child, int index, float x, float y);
-	
+
+	default void add(Collection<IDisplayObject> children) {
+		children.forEach(this::add);
+	}
+
+	default void remove(Collection<IDisplayObject> children){
+		children.forEach(this::remove);
+	}
+
 	void remove( IDisplayObject child);
 	
 	int indexOf( IDisplayObject child);

@@ -128,7 +128,7 @@ public class DraggingContainer extends InteractiveContainer {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 600, "D2D2 Application"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "D2D2 Application"));
         stage.setBackgroundColor(Color.WHITE);
 
         DraggingContainer draggingContainer = new DraggingContainer();

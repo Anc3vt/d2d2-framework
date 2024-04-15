@@ -18,6 +18,8 @@
 package com.ancevt.d2d2.display.texture;
 
 import com.ancevt.d2d2.display.text.BitmapText;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,20 +35,15 @@ public class TextureManager {
     private final Map<String, TextureAtlas> textureAtlasCache;
 
     private final Map<String, Texture> textures;
+
+    @Getter
+    @Setter
     private ITextureEngine textureEngine;
 
     public TextureManager() {
         textures = new HashMap<>();
         textureAtlases = new ArrayList<>();
         textureAtlasCache = new HashMap<>();
-    }
-
-    public void setTextureEngine(ITextureEngine textureEngine) {
-        this.textureEngine = textureEngine;
-    }
-
-    public ITextureEngine getTextureEngine() {
-        return textureEngine;
     }
 
     public TextureAtlas loadTextureAtlas(InputStream pngInputStream) {

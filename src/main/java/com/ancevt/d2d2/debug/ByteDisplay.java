@@ -443,7 +443,7 @@ public class ByteDisplay extends InteractiveContainer {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
 
 
         byte[] bytes = ("\0".repeat(new Random().nextInt(100)) + (Math.random() + "hello world ЯЯЯЯ").repeat(100)).getBytes(StandardCharsets.UTF_8);

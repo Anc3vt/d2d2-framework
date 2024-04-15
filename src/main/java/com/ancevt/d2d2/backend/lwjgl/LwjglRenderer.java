@@ -21,7 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.display.IFramedDisplayObject;
+import com.ancevt.d2d2.display.IAnimated;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.ISprite;
 import com.ancevt.d2d2.display.Stage;
@@ -44,6 +44,8 @@ import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
+
+// TODO: rewrite with VBO
 public class LwjglRenderer implements IRenderer {
 
     private final Stage stage;
@@ -106,6 +108,10 @@ public class LwjglRenderer implements IRenderer {
             delta--;
         }
 
+        if (D2D2.getCursor() != null) {
+            dispatchLoopUpdate(D2D2.getCursor());
+        }
+
         render();
         frames++;
 
@@ -143,7 +149,6 @@ public class LwjglRenderer implements IRenderer {
         textureEngine.unloadTextureAtlases();
 
         GLFW.glfwGetCursorPos(lwjglBackend.windowId, mouseX, mouseY);
-
         Mouse.setXY((int) mouseX[0], (int) mouseY[0]);
     }
 
@@ -220,7 +225,7 @@ public class LwjglRenderer implements IRenderer {
             }
         }
 
-        if (displayObject instanceof IFramedDisplayObject f) {
+        if (displayObject instanceof IAnimated f) {
             f.processFrame();
         }
 

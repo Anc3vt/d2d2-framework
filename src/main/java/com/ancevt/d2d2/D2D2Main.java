@@ -15,17 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.event;
+package com.ancevt.d2d2;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.SuperBuilder;
+import com.ancevt.d2d2.display.Stage;
 
-@Data
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-public class LifecycleEvent extends Event {
+public class D2D2Main {
+    public void onCreate(Stage stage) {}
 
-    public static final String START_MAIN_LOOP = "startMainLoop";
-    public static final String EXIT_MAIN_LOOP = "exitMainLoop";
+    public void onDispose() {}
 }
