@@ -85,7 +85,6 @@ And in the `<dependencies>` section:
 ```
 
 ## Contribution
-Contributions to the D2D2 project are welcome. If you have ideas, suggestions, or bug fixes, please open a new issue or create a pull request in our GitHub repository.
+Contributions to the D2D2 project are welcome. If you have ideas, suggestions, or bug fixes, please open a new issue or create a pull request in my GitHub repository.
 
-## License
-D2D2 is distributed under the Apache 2.0 license. Details can be found in the LICENSE file.
+
