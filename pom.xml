@@ -98,6 +98,13 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.26</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.ancevt.commons</groupId>
             <artifactId>ancevt-commons</artifactId>
             <version>${ancevt-commons.version}</version>
@@ -287,13 +294,6 @@
             <artifactId>hamcrest-junit</artifactId>
             <version>${hamcrest-junit.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
