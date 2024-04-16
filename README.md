@@ -1,4 +1,4 @@
-![Logo](https://raw.githubusercontent.com/Anc3vt/d2d2-core/1c07888634179fbfb1eb65110859168b14da00b9/img/logo.png
+![Logo](https://raw.githubusercontent.com/Anc3vt/d2d2-core/9dc0b2adc6d279dc394db609ec4a829c58277c59/img/logo.png
 )
 
 
@@ -7,14 +7,14 @@
 # About
 D2D2 is a fast and user-friendly 2D Java framework with a simple DSL, a display graph for rendered screen objects, and an event model akin to JavaScript and ActionScript (addEventListener). It benefits from accelerated hardware rendering for enhanced performance.
 
-- [Features](#features)
+The goal of D2D2 is to create an easy-to-use framework for rapid development of 2D games and applications in the Java language. I aim to provide developers with tools that allow them to focus on the creative process and achieve desired results without unnecessary difficulties.
 - [Project goal](#project-goal)
+- [Features](#features)
 - [Dependency](#dependency)
 - [Usage](#usage)
   - [General basic example](#general-basic-example)
 - [Demo videos](#demo-videos)
 - [Contribution](#contribution)
-
 
 # Features
 
@@ -27,10 +27,6 @@ D2D2 is a fast and user-friendly 2D Java framework with a simple DSL, a display 
 - **User Input Handling:** The framework provides tools for handling user input through computer input devices, making it easy to create interactive applications.
 
 - **Additional Tools and Utilities:** Additional tools are provided within the project, including working with textures, sound effects, and other features inspired by ActionScript 3.0 functionality.
-
-# Project goal
-
-The goal of D2D2 is to create an easy-to-use framework for rapid development of 2D games and applications in the Java language. I aim to provide developers with tools that allow them to focus on the creative process and achieve desired results without unnecessary difficulties.
 
 # Dependency
 
@@ -95,9 +91,9 @@ public static void main(String[] args) {
 ```
 # Demo videos
 ### Multiplayer game (Click on the picture to watch the video)
-[![Multiplayer game](https://raw.githubusercontent.com/Anc3vt/d2d2-core/1c07888634179fbfb1eb65110859168b14da00b9/img/game_preview.png)](https://www.youtube.com/watch?v=YrSkHELR89w)
+[![Multiplayer game](https://raw.githubusercontent.com/Anc3vt/d2d2-core/9dc0b2adc6d279dc394db609ec4a829c58277c59/img/game_preview.png)](https://www.youtube.com/watch?v=YrSkHELR89w)
 ### Window manager (Click on the picture to watch the video)
-[![Window manager](https://raw.githubusercontent.com/Anc3vt/d2d2-core/1c07888634179fbfb1eb65110859168b14da00b9/img/window_manager_preview.png)](https://www.youtube.com/watch?v=P3SNHOAOBMo)
+[![Window manager](https://raw.githubusercontent.com/Anc3vt/d2d2-core/9dc0b2adc6d279dc394db609ec4a829c58277c59/img/window_manager.gif)](https://www.youtube.com/watch?v=P3SNHOAOBMo)
 
 
 
