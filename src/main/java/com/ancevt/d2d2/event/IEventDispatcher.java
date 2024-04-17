@@ -21,15 +21,15 @@ public interface IEventDispatcher {
 
     void addEventListener(String type, EventListener listener);
 
-    void addEventListener(Object key, String type, EventListener listener);
-
     void removeEventListener(String type, EventListener listener);
-
-    void removeEventListener(Object key, String type);
 
     void dispatchEvent(Event event);
 
+    void removeAllEventListeners();
+
     void removeAllEventListeners(String type);
 
-    void removeAllEventListeners();
+    void removeEventListener(Object key, String type);
+
+    void addEventListener(Object key, String type, EventListener listener);
 }
