@@ -5,13 +5,9 @@
 
 # About
 
-D2D2 is a fast and user-friendly 2D Java framework with a simple DSL, a display graph for rendered display objects, and
-an event model akin to JavaScript and ActionScript (addEventListener). It benefits from accelerated hardware rendering
-for enhanced performance.
+D2D2 is a fast and user-friendly 2D Java framework with a simple DSL, a display graph for rendered display objects, and an event model akin to JavaScript and ActionScript (`addEventListener`) but it benefits from accelerated hardware rendering for enhanced performance.
 
-The goal of D2D2 is to create an easy-to-use framework for rapid development of 2D games and applications in the Java
-language. I aim to provide developers with tools that allow them to focus on the creative process and achieve desired
-results without unnecessary difficulties.
+The goal of D2D2 is to create an easy-to-use framework for rapid development of 2D games and applications in the Java language. I aim to provide developers with tools that allow them to focus on the creative process and achieve desired results without unnecessary difficulties.
 
 - [Project goal](#project-goal)
 - [Features](#features)
@@ -31,22 +27,16 @@ results without unnecessary difficulties.
 
 # Features
 
-- **Display Graph:** D2D2 provides classes for working with display objects (DisplayObject), containers, as well as
-  methods like addChild and removeChild for managing object display. All DisplayObject and their descendants retain
-  basic properties and methods from ActionScript 3.0, such as x, y, rotation, alpha, scaleX, scaleY, visible, and
-  others. This ensures a familiar interface for controlling the position, rotation, transparency, and scaling of objects
-  on the scene.
+- **Display Graph:** D2D2 provides classes for working with display objects (`IDisplayObject`), containers (`IContainer`), as well as methods like `add` and `remove` for managing object display in display graph. All `IDisplayObject` and their descendants retain
+  basic properties and methods from ActionScript 3.0, such as x, y, rotation, alpha, scaleX, scaleY, visible, and others. This ensures a familiar interface for controlling the position, rotation, transparency, and scaling of objects on the `Stage`.
 
-- **Event Model:** Support for adding and removing event handlers via addEventListener and removeEventListener methods,
-  simplifying the organization of event logic.
+- **Event Model:** Support for adding and removing event handlers via `addEventListener`, `removeEventListener`, and `dispatchEvent` methods, simplifying the organization of event logic.
 
 - **Screen Text:** Ability to display text using TrueType fonts, providing flexibility in formatting text elements.
 
-- **User Input Handling:** The framework provides tools for handling user input through computer input devices, making
-  it easy to create interactive applications.
+- **User Input Handling:** The framework provides tools for handling user input through computer input devices, making it easy to create interactive applications.
 
-- **Additional Tools and Utilities:** Additional tools are provided within the project, including working with textures,
-  sound effects, and other features inspired by ActionScript 3.0 functionality.
+- **Additional Tools and Utilities:** Additional tools are provided within the project, including working with textures, sound, and other features.
 
 # Dependency
 
@@ -56,22 +46,22 @@ In the `<repositories>` section:
 
 ```xml
 
-<repository>
-    <id>ancevt</id>
-    <url>https://packages.ancevt.com/releases</url>
-    <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-    </snapshots>
-</repository>
-<repository>
-<id>ancevt-snapshot</id>
-<url>https://packages.ancevt.com/snapshots</url>
-<snapshots>
-    <enabled>true</enabled>
-    <updatePolicy>always</updatePolicy>
-</snapshots>
-</repository>
+<repositories>
+    <repository>
+        <id>ancevt</id>
+        <url>https://packages.ancevt.com/releases</url>
+        <snapshots>
+            <updatePolicy>always</updatePolicy>
+        </snapshots>
+    </repository>
+    <repository>
+        <id>ancevt-snapshot</id>
+        <url>https://packages.ancevt.com/snapshots</url>
+        <snapshots>
+            <updatePolicy>always</updatePolicy>
+        </snapshots>
+    </repository>
+</repositories>
 ```
 
 And in the `<dependencies>` section:
@@ -89,7 +79,7 @@ And in the `<dependencies>` section:
 
 ## Framework initialization
 
-After connecting the necessary dependency (d2d2-core) to your project, it is necessary to add a configuration file d2d2.properties to the resources with the following contents::
+After adding the necessary dependency (d2d2-core) to your project, it is necessary to add a configuration file `d2d2.properties` to the resources with the following contents::
 
 ```properties
 d2d2.backend=com.ancevt.d2d2.backend.lwjgl.LwjglBackend
@@ -134,7 +124,7 @@ or after calling `D2D2.exit()` Here, you should program resource cleanup, saving
 
 `Sprite` is one of the primary types of display objects, representing a static customizable image. The example below demonstrates how to create, configure, and add it to the scene. Since `Sprite` inherits methods from `IDisplayObject`, we can customize it using them.
 
-Resource files like the one shown in the example below, `flowers.png`, should be located in the subdirectory of the classpath `assets/`. Consequently, by default in a Maven project, this would be `src/resources/assets/`.
+Resource files like the one shown in the example below, `flowers.png`, should be located in the subdirectory of the classpath `assets/`. Consequently, by default in a Maven project, this would be `src/main/resources/assets/`.
 
 ```java
 
@@ -162,7 +152,7 @@ Upon running the application, the `Sprite` will be displayed with all the proper
 
 ![Sprite demo](https://raw.githubusercontent.com/Anc3vt/d2d2-core/4c64630309467b85978e933a7d12da2bca138e48/img/SimpleSpriteDemo.png)
 
-Теперь в stage содержится один экранный объект, это наш `Sprite`.
+Now the stage contains one display object, which is `Sprite`.
 
 `Sprite` provides many other useful methods. Additionally, for creating sprites, you can use the `SpriteFactory` class.
 
@@ -184,7 +174,7 @@ Suppose we need a sprite that will display only the large letter 'D' from this a
 public void onCreate(Stage stage) {
     // Get the texture manager from D2D2
     TextureManager textureManager = D2D2.textureManager();
-    // Load the texture atlas from src/resources/assets/
+    // Load the texture atlas from src/main/resources/assets/
     TextureAtlas textureAtlas = textureManager.loadTextureAtlas("d2d2-samples-tileset.png");
     // Create a texture from the atlas with the specified coordinates and dimensions
     Texture texture = textureAtlas.createTexture(256, 0, 144, 128);
@@ -368,7 +358,7 @@ public void onCreate(Stage stage) {
 
 In the example above, we subscribed to the `RESIZE` event and implemented an event handler. In this case, we change the status text when the application window is resized.
 
-It will look like this:
+It will look like this (animated GIF):
 
 ![EventListener1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/EventListenerDemo1.gif)
 
@@ -387,7 +377,7 @@ public void onCreate(Stage stage) {
 }
 ```
 
-It will look like this:
+It will look like this (animated GIF):
 
 ![EventListener2](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/EventListenerDemo2.gif)
 
@@ -414,7 +404,7 @@ public void onCreate(Stage stage) {
 
 ```
 
-It will look like this:
+It will look like this (animated GIF):
 
 ![EventListener3](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/controt.gif)
 
@@ -485,7 +475,7 @@ public void onCreate(Stage stage) {
 }
 ```
 
-It will look like this:
+It will look like this (animated GIF):
 
 ![Interactive](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/InteractiveDemo.gif)
 
@@ -532,7 +522,7 @@ public void onCreate(Stage stage) {
 }
 ```
 
-It will look like this:
+It will look like this (animated GIF):
 
 ![Animated](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/AnimatedDemo.gif)
 
