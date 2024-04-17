@@ -46,7 +46,6 @@
             <id>ancevt</id>
             <url>https://packages.ancevt.com/releases</url>
             <snapshots>
-                <enabled>false</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
@@ -54,7 +53,6 @@
             <id>ancevt-snapshot</id>
             <url>https://packages.ancevt.com/snapshots</url>
             <snapshots>
-                <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
