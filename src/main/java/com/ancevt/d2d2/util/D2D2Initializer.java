@@ -19,8 +19,8 @@ package com.ancevt.d2d2.util;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.D2D2Main;
-import com.ancevt.d2d2.backend.D2D2Backend;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.Engine;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.display.Stage;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -60,13 +60,13 @@ public class D2D2Initializer {
     }
 
     private static Stage handlePropertiesAndCreateStage(Properties properties) {
-        String backendClass = properties.getProperty("d2d2.backend", LwjglBackend.class.getName());
+        String backendClass = properties.getProperty("d2d2.backend", LwjglEngine.class.getName());
         String titleText = properties.getProperty("d2d2.window.title", "D2D2 Application");
         int width = convert(properties.getProperty("d2d2.window.width", "800")).toInt();
         int height = convert(properties.getProperty("d2d2.window.height", "600")).toInt();
 
         try {
-            D2D2Backend backend = (D2D2Backend) Class.forName(backendClass)
+            Engine backend = (Engine) Class.forName(backendClass)
                 .getConstructor(int.class, int.class, String.class)
                 .newInstance(width, height, titleText);
 

@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.backend;
+package com.ancevt.d2d2.engine;
 
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
 
-public interface D2D2Backend {
+public interface Engine {
 
     void setAlwaysOnTop(boolean b);
 

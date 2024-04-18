@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.backend.norender;
+package com.ancevt.d2d2.engine.norender;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.D2D2Backend;
-import com.ancevt.d2d2.backend.VideoModeControl;
-import com.ancevt.d2d2.backend.lwjgl.LwjglTextureEngine;
+import com.ancevt.d2d2.engine.Engine;
+import com.ancevt.d2d2.engine.VideoModeControl;
+import com.ancevt.d2d2.engine.lwjgl.LwjglTextureEngine;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
@@ -30,7 +30,7 @@ import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
 
-public class NoRenderBackend implements D2D2Backend {
+public class ServerSideEngine implements Engine {
 
     private int width;
     private int height;
@@ -48,7 +48,7 @@ public class NoRenderBackend implements D2D2Backend {
     @Setter
     private int timerCheckFrameFrequency = 100;
 
-    public NoRenderBackend(int width, int height) {
+    public ServerSideEngine(int width, int height) {
         D2D2.textureManager().setTextureEngine(new LwjglTextureEngine());
         setWindowSize(width, height);
     }

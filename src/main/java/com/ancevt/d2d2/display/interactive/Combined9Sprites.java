@@ -20,9 +20,9 @@ package com.ancevt.d2d2.display.interactive;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
@@ -290,7 +290,7 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
 

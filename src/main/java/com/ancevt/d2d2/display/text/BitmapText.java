@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
@@ -481,7 +481,7 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
         stage.setBackgroundColor(Color.GRAY);

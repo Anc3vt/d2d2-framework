@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.backend.lwjgl;
+package com.ancevt.d2d2.engine.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
@@ -49,7 +49,7 @@ import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 public class LwjglRenderer implements IRenderer {
 
     private final Stage stage;
-    private final LwjglBackend lwjglBackend;
+    private final LwjglEngine lwjglMediaEngine;
     boolean smoothMode = false;
     private LwjglTextureEngine textureEngine;
     private int zOrderCounter;
@@ -63,9 +63,9 @@ public class LwjglRenderer implements IRenderer {
     private int fps = frameRate;
 
 
-    public LwjglRenderer(Stage stage, LwjglBackend lwjglStarter) {
+    public LwjglRenderer(Stage stage, LwjglEngine lwjglStarter) {
         this.stage = stage;
-        this.lwjglBackend = lwjglStarter;
+        this.lwjglMediaEngine = lwjglStarter;
     }
 
     @Override
@@ -148,7 +148,7 @@ public class LwjglRenderer implements IRenderer {
 
         textureEngine.unloadTextureAtlases();
 
-        GLFW.glfwGetCursorPos(lwjglBackend.windowId, mouseX, mouseY);
+        GLFW.glfwGetCursorPos(lwjglMediaEngine.windowId, mouseX, mouseY);
         Mouse.setXY((int) mouseX[0], (int) mouseY[0]);
     }
 

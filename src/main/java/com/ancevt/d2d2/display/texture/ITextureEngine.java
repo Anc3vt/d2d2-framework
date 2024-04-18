@@ -21,6 +21,7 @@ import com.ancevt.d2d2.display.text.BitmapText;
 
 import java.io.InputStream;
 
+// TODO: refactor and delete this interface
 public interface ITextureEngine {
 
     boolean bind(TextureAtlas textureAtlas);

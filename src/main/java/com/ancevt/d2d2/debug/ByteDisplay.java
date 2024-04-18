@@ -22,7 +22,7 @@ import com.ancevt.commons.io.ByteOutput;
 import com.ancevt.commons.io.InputStreamFork;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IContainer;
@@ -443,7 +443,7 @@ public class ByteDisplay extends InteractiveContainer {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
 
 
         byte[] bytes = ("\0".repeat(new Random().nextInt(100)) + (Math.random() + "hello world ЯЯЯЯ").repeat(100)).getBytes(StandardCharsets.UTF_8);

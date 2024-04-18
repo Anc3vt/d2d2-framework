@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.backend.lwjgl;
+package com.ancevt.d2d2.engine.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.D2D2Backend;
-import com.ancevt.d2d2.backend.VideoMode;
-import com.ancevt.d2d2.backend.VideoModeControl;
+import com.ancevt.d2d2.engine.Engine;
+import com.ancevt.d2d2.engine.VideoMode;
+import com.ancevt.d2d2.engine.VideoModeControl;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.interactive.InteractiveManager;
@@ -108,7 +108,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 // TODO: rewrite with VBO abd refactor
 @Slf4j
-public class LwjglBackend implements D2D2Backend {
+public class LwjglEngine implements Engine {
 
     private static final String DEMO_TEXTURE_DATA_INF_FILE = "d2d2-core-demo-texture-data.inf";
 
@@ -147,7 +147,7 @@ public class LwjglBackend implements D2D2Backend {
     @Setter
     private int timerCheckFrameFrequency = 1;
 
-    public LwjglBackend(int width, int height, String title) {
+    public LwjglEngine(int width, int height, String title) {
         this.width = width;
         this.height = height;
         this.title = title;

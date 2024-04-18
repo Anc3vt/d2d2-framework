@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2;
 
-import com.ancevt.d2d2.backend.D2D2Backend;
+import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFontManager;
@@ -43,9 +43,9 @@ public final class D2D2 {
     @Getter
     private static IDisplayObject cursor;
 
-    private static D2D2Backend backend;
+    private static Engine backend;
 
-    public static Stage directInit(D2D2Backend backend) {
+    public static Stage directInit(Engine backend) {
         bitmapFontManager = new BitmapFontManager();
         D2D2.backend = backend;
         backend.create();
@@ -96,7 +96,7 @@ public final class D2D2 {
         backend.stop();
     }
 
-    public static D2D2Backend backend() {
+    public static Engine backend() {
         return backend;
     }
 

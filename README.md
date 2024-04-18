@@ -5,12 +5,11 @@
 
 # About
 
-D2D2 is a fast and user-friendly 2D Java framework with a simple DSL, a display graph for rendered display objects, and an event model akin to JavaScript and ActionScript (`addEventListener`) but it benefits from accelerated hardware rendering for enhanced performance.
+D2D2 is a fast and user-friendly 2D Java framework with a simple DSL, a display graph for rendered display objects, and an event model akin to JavaScript and ActionScript. **One of its standout features is the ability to use the same codebase for both server and client, offering unparalleled convenience in development**.
 
 The goal of D2D2 is to create an easy-to-use framework for rapid development of 2D games and applications in the Java language. I aim to provide developers with tools that allow them to focus on the creative process and achieve desired results without unnecessary difficulties.
 
-- [Project goal](#project-goal)
-- [Features](#features)
+- [Benefits and features](#Benefits-and-features)
 - [Dependency](#dependency)
 - [Usage & examples](#usage--examples)
     - [Framework Initialization](#framework-initialization)
@@ -25,14 +24,22 @@ The goal of D2D2 is to create an easy-to-use framework for rapid development of 
 - [Contribution](#contribution)
 - [Contact](#contact)
 
-# Features
+# Benefits and features
+
+D2D2 provides the ability to develop multiplayer games using the same code for both the client and the server. Developers can operate with the same objects (`Stage`, `IDisplayObject`, `IContainer`, event model), a unified hierarchy of nested display containers, on both sides of the application. The difference lies only in the use of different Engines and control code, which can also be written in D2D2. In the current release of D2D2, there are two implementations of the `Engine` interface: `LwjglEngine` for the client side and `ServerSideEngine` for the server side (this is just a replacement of the value of the `d2d2.engine` property in the configuration properties file).
+
+This allows for representing game objects in a unified way on both sides, ensuring convenience and consistency in the development and support of game mechanics. The difference between the client and server sides is that, unlike `LwjglEngine`, `ServerSideEngine` does not visualize objects, does not play sounds, and does not wait for user input from devices (like keyboard, mouse, etc.). However, the event model and the global event loop will be processed in the same way. This significantly simplifies synchronization between clients and the server, as game logic and data models, such as game objects, remain consistent on both sides.
+
+Additionally, you can develop and test your game mechanics with visualization on your computer using the client engine, and be confident that they will have the same properties and behavior on the server side.
+
+Functionalities include:
 
 - **Display Graph:** D2D2 provides classes for working with display objects (`IDisplayObject`), containers (`IContainer`), as well as methods like `add` and `remove` for managing object display in display graph. All `IDisplayObject` and their descendants retain
   basic properties and methods from ActionScript 3.0, such as x, y, rotation, alpha, scaleX, scaleY, visible, and others. This ensures a familiar interface for controlling the position, rotation, transparency, and scaling of objects on the `Stage`.
 
 - **Event Model:** Support for adding and removing event handlers via `addEventListener`, `removeEventListener`, and `dispatchEvent` methods, simplifying the organization of event logic.
 
-- **Screen Text:** Ability to display text using TrueType fonts, providing flexibility in formatting text elements.
+- **Text:** Ability to display text using TrueType fonts, providing flexibility in formatting text elements.
 
 - **User Input Handling:** The framework provides tools for handling user input through computer input devices, making it easy to create interactive applications.
 
@@ -82,13 +89,13 @@ And in the `<dependencies>` section:
 After adding the necessary dependency (d2d2-core) to your project, it is necessary to add a configuration file `d2d2.properties` to the resources with the following contents::
 
 ```properties
-d2d2.backend=com.ancevt.d2d2.backend.lwjgl.LwjglBackend
+d2d2.engine=com.ancevt.d2d2.engine.lwjgl.LwjglEngine
 d2d2.window.width=800
 d2d2.window.height=600
 d2d2.window.title=Window title
 ```
 
-- `d2d2.backend` determines which backend implementation should be used for graphics and input processing. Currently, in the standard D2D2 distribution, there are two backend implementations: `LwjglBackend`, which uses the LWJGL2 library for rendering on the client side, and `NoRenderBackend`, which does not render anything but can be useful for implementing the server-side of D2D2 applications.
+- `d2d2.engine` determines which _engine_ implementation should be used for graphics and input processing. Currently, in the standard D2D2 distribution, there are two _engine_ implementations: `LwjglEngine`, which uses the LWJGL2 library for rendering on the client side, and `ServerSideEngine`, which does not render anything but can be useful for implementing the server-side of D2D2 applications.
 - `d2d2.window.title` specifies the title of the application window.
 - `d2d2.window.width` and `d2d2.window.height` determine the initial dimensions of the application window.
 - `d2d2.window.title` defines the title of the application window.

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.backend.norender;
+package com.ancevt.d2d2.engine.norender;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
@@ -33,12 +33,11 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NoRenderTextureEngine implements ITextureEngine {
-
+public class ServerSideTextureEngine implements ITextureEngine {
     private int textureAtlasIdCounter;
     private final Map<Integer, Image> images;
 
-    public NoRenderTextureEngine() {
+    public ServerSideTextureEngine() {
         images = new HashMap<>();
     }
 
