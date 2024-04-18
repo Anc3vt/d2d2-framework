@@ -17,9 +17,9 @@
  */
 package com.ancevt.d2d2.event;
 
-import com.ancevt.commons.Pair;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 
 import java.util.HashMap;
 import java.util.List;
@@ -61,12 +61,12 @@ public class EventDispatcher implements IEventDispatcher {
     }
 
     @Override
-    public void addEventListener( Object key, String type, EventListener listener) {
+    public void addEventListener(Object key, String type, EventListener listener) {
         addEventListenerByKey(key.hashCode() + type, type, listener);
         log.trace("{} addEventListener key: {}, type: {}, listener: {}", this, key, type, listener);
     }
 
-    private  List<EventListener> createList() {
+    private List<EventListener> createList() {
         return new CopyOnWriteArrayList<>();
     }
 
@@ -87,13 +87,13 @@ public class EventDispatcher implements IEventDispatcher {
     }
 
     @Override
-    public void removeEventListener( Object key, String type) {
+    public void removeEventListener(Object key, String type) {
         log.trace("{} removeEventListener: type={}", this, type);
         removeEventListenerByKey(key.hashCode() + type);
     }
 
     @Override
-    public void dispatchEvent( Event event) {
+    public void dispatchEvent(Event event) {
         List<EventListener> listeners = map.get(event.getType());
         event.setSource(this);
 
@@ -112,5 +112,12 @@ public class EventDispatcher implements IEventDispatcher {
     public void removeAllEventListeners() {
         map.clear();
         log.trace("removeAllEventListeners");
+    }
+
+    @RequiredArgsConstructor(staticName = "of")
+    @Getter
+    private static class Pair<T1, T2> {
+        public final T1 first;
+        public final T2 second;
     }
 }

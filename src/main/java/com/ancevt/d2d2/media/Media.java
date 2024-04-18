@@ -17,28 +17,30 @@
  */
 package com.ancevt.d2d2.media;
 
-import com.ancevt.commons.concurrent.Lock;
 import com.ancevt.d2d2.asset.Assets;
-
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public interface Media {
 
     Map<String, Media> medias = new HashMap<>();
 
     void play();
+
     void asyncPlay();
+
     void stop();
 
     void setVolume(float vaolume);
+
     float getVolume();
+
     void setPan(float pan);
+
     float getPan();
 
-    static  Media lookupSound(String path) {
+    static Media lookupSound(String path) {
         Media media = medias.get(path);
         if (media == null) {
             media = new BlockingSound(path);
@@ -47,7 +49,7 @@ public interface Media {
         return media;
     }
 
-    static  Media lookupSoundAsset(String path) {
+    static Media lookupSoundAsset(String path) {
         Media media = medias.get(':' + path);
         if (media == null) {
             media = new BlockingSound(Assets.getAssetAsStream(path));
@@ -56,11 +58,4 @@ public interface Media {
         return media;
     }
 
-    static void main(String[] args) {
-        while (true) {
-            Media media = Media.lookupSound("/home/ancevt/java/workspace/d2d2-core/src/main/resources/assets/sound/jump.mp3");
-            media.play();
-            new Lock().lock(250, TimeUnit.MILLISECONDS);
-        }
-    }
 }

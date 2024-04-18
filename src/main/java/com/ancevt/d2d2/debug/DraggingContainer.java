@@ -26,7 +26,7 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.MouseButton;
-import com.ancevt.d2d2.interactive.InteractiveContainer;
+import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import lombok.Getter;
 
 public class DraggingContainer extends InteractiveContainer {

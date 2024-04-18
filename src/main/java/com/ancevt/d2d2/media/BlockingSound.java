@@ -17,9 +17,7 @@
  */
 package com.ancevt.d2d2.media;
 
-import com.ancevt.commons.concurrent.Async;
 import lombok.SneakyThrows;
-
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -34,8 +32,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
 
-import static com.ancevt.commons.util.Slash.slashSafe;
 
 public class BlockingSound implements Media {
     private final ByteArrayOutputStream byteArrayOutputStream;
@@ -53,7 +51,7 @@ public class BlockingSound implements Media {
     @SneakyThrows
     public BlockingSound(String path) {
         byteArrayOutputStream = new ByteArrayOutputStream();
-        try (FileInputStream is = new FileInputStream(slashSafe(path))) {
+        try (FileInputStream is = new FileInputStream(path)) {
             byteArrayOutputStream.write(is.readAllBytes());
         }
     }
@@ -124,7 +122,7 @@ public class BlockingSound implements Media {
 
     @Override
     public void asyncPlay() {
-        Async.run(this::play);
+        CompletableFuture.runAsync(this::play);
     }
 
     private InputStream getInputStream() {
@@ -151,17 +149,5 @@ public class BlockingSound implements Media {
         }
     }
 
-    @SneakyThrows
-    public static void main(String[] args) {
-        //SoundImpl sound = new SoundImpl("sound/tap.ogg");
-
-        Async.run(() -> {
-            BlockingSound sound = null;
-            sound = new BlockingSound("/home/ancevt/workspace/ancevt/d2d2/d2d2-world-arena-server/data/mapkits/builtin-mapkit/character-damage.ogg");
-            while (true) {
-                sound.play();
-            }
-        });
-    }
 }
 

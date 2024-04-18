@@ -19,36 +19,39 @@ package com.ancevt.d2d2.display;
 
 
 import java.util.Collection;
+import java.util.stream.Stream;
 
 public interface IContainer extends IDisplayObject {
 
-	void add( IDisplayObject child);
+    void add(IDisplayObject child);
 
-	void add( IDisplayObject child, int index);
-	
-	void add( IDisplayObject child, float x, float y);
-	
-	void add( IDisplayObject child, int index, float x, float y);
+    void add(IDisplayObject child, int index);
 
-	default void add(Collection<IDisplayObject> children) {
-		children.forEach(this::add);
-	}
+    void add(IDisplayObject child, float x, float y);
 
-	default void remove(Collection<IDisplayObject> children){
-		children.forEach(this::remove);
-	}
+    void add(IDisplayObject child, int index, float x, float y);
 
-	void remove( IDisplayObject child);
-	
-	int indexOf( IDisplayObject child);
+    default void addAll(Collection<IDisplayObject> children) {
+        children.forEach(this::add);
+    }
 
-	int getNumberOfChildren();
+    default void removeAll(Collection<IDisplayObject> children) {
+        children.forEach(this::remove);
+    }
 
-	 IDisplayObject getChild(int index);
+    Stream<IDisplayObject> childrenStream();
 
-	 IDisplayObject getChild(String name);
+    void remove(IDisplayObject child);
 
-	boolean contains( IDisplayObject child);
+    int indexOf(IDisplayObject child);
 
-	void removeAllChildren();
+    int getNumChildren();
+
+    IDisplayObject getChild(int index);
+
+    IDisplayObject getChild(String name);
+
+    boolean contains(IDisplayObject child);
+
+    void removeAllChildren();
 }

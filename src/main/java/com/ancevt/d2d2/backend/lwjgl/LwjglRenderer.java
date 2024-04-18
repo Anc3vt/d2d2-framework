@@ -45,7 +45,7 @@ import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
 
-// TODO: rewrite with VBO
+// TODO: rewrite with VBO abd refactor
 public class LwjglRenderer implements IRenderer {
 
     private final Stage stage;
@@ -156,7 +156,7 @@ public class LwjglRenderer implements IRenderer {
         if (!o.isVisible()) return;
 
         if (o instanceof IContainer c) {
-            for (int i = 0; i < c.getNumberOfChildren(); i++) {
+            for (int i = 0; i < c.getNumChildren(); i++) {
                 IDisplayObject child = c.getChild(i);
                 dispatchLoopUpdate(child);
             }
@@ -189,6 +189,7 @@ public class LwjglRenderer implements IRenderer {
 
         if (!displayObject.isVisible()) return;
 
+        displayObject.onEnterFrame();
         displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.ENTER_FRAME, displayObject));
 
         zOrderCounter++;
@@ -211,7 +212,7 @@ public class LwjglRenderer implements IRenderer {
         GL11.glRotatef(r, 0, 0, 1);
 
         if (displayObject instanceof IContainer container) {
-            for (int i = 0; i < container.getNumberOfChildren(); i++) {
+            for (int i = 0; i < container.getNumChildren(); i++) {
                 renderDisplayObject(container.getChild(i), level + 1, x + toX, y + toY, scX, scY, 0, a);
             }
 
