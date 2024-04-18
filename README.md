@@ -248,7 +248,7 @@ It will look like this:
 
 ![BitmapText1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/bitmapText1.png)
 
-### BitmapText with the TrueType font, с using `TtfBitmapFontBuilder`
+### BitmapText with the TrueType font, using `TtfBitmapFontBuilder`
 
 ```java
 public void onCreate(Stage stage) {
@@ -372,7 +372,7 @@ It will look like this (animated GIF):
 
 ![Events](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/EventListenerDemo1.gif)
 
-display objects also dispatch events. There are three events that occur regularly/every frame: before frame rendering `Event.ENTER_FRAME`, after frame rendering `Event.EXIT_FRAME`, and during the next iteration of the global event loop `Event.LOOP_UPDATE`, which can be useful if you need to perform any actions continuously regardless of rendering and FPS.
+Display objects also can dispatch events. There are three events that occur regularly/every frame: before frame rendering `Event.ENTER_FRAME`, after frame rendering `Event.EXIT_FRAME`, and during the next iteration of the global event loop `Event.LOOP_UPDATE`, which can be useful if you need to perform any actions continuously regardless of rendering and FPS.
 
 ```java
 public void onCreate(Stage stage) {
