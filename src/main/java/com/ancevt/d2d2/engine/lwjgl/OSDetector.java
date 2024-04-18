@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.backend.lwjgl;
+package com.ancevt.d2d2.engine.lwjgl;
 
 import java.util.LinkedList;
 import java.util.List;

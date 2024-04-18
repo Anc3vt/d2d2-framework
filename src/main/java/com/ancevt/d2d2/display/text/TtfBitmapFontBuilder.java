@@ -19,7 +19,7 @@ package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import lombok.Getter;
 
 import java.io.InputStream;
@@ -196,7 +196,7 @@ public class TtfBitmapFontBuilder {
     }
 
     public static void main(String[] args) {
-        D2D2.directInit(new LwjglBackend(1000, 600, "(floating)"));
+        D2D2.directInit(new LwjglEngine(1000, 600, "(floating)"));
 
         //InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/PressStart2P-Regular.ttf");
 

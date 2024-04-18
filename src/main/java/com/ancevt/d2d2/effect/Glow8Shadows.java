@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.effect;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
@@ -84,7 +84,7 @@ public class Glow8Shadows extends Container {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
         //StarletSpace.haveFun();
         stage.setBackgroundColor(Color.WHITE);
 

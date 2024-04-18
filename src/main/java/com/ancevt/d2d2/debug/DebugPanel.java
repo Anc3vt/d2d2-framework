@@ -20,7 +20,7 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.commons.hash.MD5;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
@@ -358,7 +358,7 @@ public class DebugPanel extends Container {
     }
 
     public static void main(String[] args) {
-        D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
         D2D2.stage().setBackgroundColor(Color.DARK_GRAY);
 
         DebugPanel.setEnabled(true);
