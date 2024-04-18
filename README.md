@@ -131,7 +131,7 @@ or after calling `D2D2.exit()` Here, you should program resource cleanup, saving
 
 `Sprite` is one of the primary types of display objects, representing a static customizable image. The example below demonstrates how to create, configure, and add it to the scene. Since `Sprite` inherits methods from `IDisplayObject`, we can customize it using them.
 
-Resource files like the one shown in the example below, `flowers.png`, should be located in the subdirectory of the classpath `assets/`. Consequently, by default in a Maven project, this would be `src/main/resources/assets/`.
+Resource files like the one shown in the example below, `flower.png`, should be located in the subdirectory of the classpath `assets/`. Consequently, by default in a Maven project, this would be `src/main/resources/assets/`.
 
 ```java
 
@@ -195,12 +195,16 @@ public void onCreate(Stage stage) {
 }
 ```
 
+Running example looks like this:
+
+![TextureManager1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/TextureManagerDemo.png)
+
 In the example above, pay attention to the method call `textureAtlas.createTexture(256, 0, 144, 128)`, where the coordinates of the required texture on the texture atlas and its size in pixels are passed.
 
 `256,0` - are the coordinates of the top-left corner of the texture on the atlas, and `144,128` - is the size of the texture.
 > Please note that the image has been scaled for convenience in the diagram.
 
-![TextureManager](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/textureManagerScheme.png)
+![TextureManager2](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/textureManagerScheme.png)
 
 To ensure optimal use of video memory and texture performance, it's advisable to make the dimensions of textures on the atlas power-of-two multiples. Instead of using multiples of 8, 16, 32, etc., which are suitable for specific architectures, a good practice is to choose sizes that are multiples of 2.
 
@@ -292,7 +296,7 @@ public void onCreate(Stage stage) {
 
 It will look like this:
 
-![BitmapText3](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/bitmapText3.png)
+![Container1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/bitmapText3.png)
 
 ## Container
 
@@ -301,9 +305,6 @@ It will look like this:
 Initially, all empty containers are invisible to the user. Therefore, in the example below, we create a gray `BorderedRect` without fill, and create a `Container`, filling it with this `BorderedRect`.
 
 ```java
-
-import com.ancevt.d2d2.display.Container;
-
 @Override
 public void onCreate(Stage stage) {
   BorderedRect borderedRect = new BorderedRect(500, 500, Color.NO_COLOR, Color.DARK_GRAY);
@@ -336,7 +337,7 @@ Here's how it will look when the application is launched:
 
 > It's important to understand that nested containers and other display objects placed inside containers apply their properties relative to their parent container, not the global coordinate axis of the `Stage`. Thus, if we, for example, rotate the container using the `rotate` or `setRotation` methods, visually, all its contents will also rotate along with it. Of course, this applies not only to rotation but also to other properties of `IDisplayObject`, such as x, y, alpha, scaleX, scaleY, and others.
 
-![TextureAltas](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/containerScheme.png)
+![Container2](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/containerScheme.png)
 
 All display objects can retrieve their parent container using the `getParent()` method. If a display object is not added to any container, the method will return `null`, so it's a good practice to check for the presence of a parent container using the `hasParent()` method. In turn, containers have methods such as `getNumChildren()`, `getChild(int index)`, and `childrenStream()`. Check out other useful methods in the `IContainer` interface in the documentation and source code.
 
@@ -369,7 +370,7 @@ In the example above, we subscribed to the `RESIZE` event and implemented an eve
 
 It will look like this (animated GIF):
 
-![EventListener1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/EventListenerDemo1.gif)
+![Events](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/EventListenerDemo1.gif)
 
 display objects also dispatch events. There are three events that occur regularly/every frame: before frame rendering `Event.ENTER_FRAME`, after frame rendering `Event.EXIT_FRAME`, and during the next iteration of the global event loop `Event.LOOP_UPDATE`, which can be useful if you need to perform any actions continuously regardless of rendering and FPS.
 
@@ -396,7 +397,7 @@ Example of rotation around its own center:
 
 ```java
 
-import com.ancevt.d2d2.display.Container;@Override
+@Override
 public void onCreate(Stage stage) {
     IContainer container = new Container();
 
