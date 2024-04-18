@@ -40,7 +40,7 @@ public class Timer {
     @Getter
     private boolean loop;
 
-    private long startTime;
+    private long startTime = System.currentTimeMillis();
 
     public Timer(Consumer<Timer> func, long delay) {
         this.func = func;

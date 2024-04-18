@@ -295,26 +295,28 @@ Initially, all empty containers are invisible to the user. Therefore, in the exa
 
 ```java
 
+import com.ancevt.d2d2.display.Container;
+
 @Override
 public void onCreate(Stage stage) {
-    BorderedRect borderedRect = new BorderedRect(500, 500, Color.NO_COLOR, Color.DARK_GRAY);
+  BorderedRect borderedRect = new BorderedRect(500, 500, Color.NO_COLOR, Color.DARK_GRAY);
 
-    // Create a container with an instant placement of the frame into itк
-    IContainer container = Container.createContainer(borderedRect);
+  // Create a container with an instant placement of the frame into it
+  IContainer container = new Container(borderedRect);
 
-    // Create two sprites
-    Sprite sprite1 = new Sprite("flower.png");
-    Sprite sprite2 = new Sprite("flower.png");
+  // Create two sprites
+  Sprite sprite1 = new Sprite("flower.png");
+  Sprite sprite2 = new Sprite("flower.png");
 
-    container.add(sprite1, 50, 50);
-    container.add(sprite2, 200, 200);
+  container.add(sprite1, 50, 50);
+  container.add(sprite2, 200, 200);
 
-    // Rotate the entire container by 10 degrees
-    container.rotate(10);
+  // Rotate the entire container by 10 degrees
+  container.rotate(10);
 
-    // Add our container to the stage. In fact, Stage is also a container, since
-    // it implements the IContainer interface
-    stage.add(container, 100, 100);
+  // Add our container to the stage. In fact, Stage is also a container, since
+  // it implements the IContainer interface
+  stage.add(container, 100, 100);
 
 }
 ```
@@ -329,7 +331,7 @@ Here's how it will look when the application is launched:
 
 ![TextureAltas](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/containerScheme.png)
 
-All display objects can retrieve their parent container using the `getParent()` method. If a display object is not added to any container, the method will return `null`, so it's a good practice to check for the presence of a parent container using the `hasParent()` method. In turn, containers have methods such as `getChildrenCount()` and `getChild(int index)`. Check out other useful methods in the `IContainer` interface in the documentation and source code.
+All display objects can retrieve their parent container using the `getParent()` method. If a display object is not added to any container, the method will return `null`, so it's a good practice to check for the presence of a parent container using the `hasParent()` method. In turn, containers have methods such as `getNumChildren()`, `getChild(int index)`, and `childrenStream()`. Check out other useful methods in the `IContainer` interface in the documentation and source code.
 
 ## Event dispatching & listening
 
@@ -387,9 +389,9 @@ Example of rotation around its own center:
 
 ```java
 
-@Override
+import com.ancevt.d2d2.display.Container;@Override
 public void onCreate(Stage stage) {
-    IContainer container = Container.createContainer();
+    IContainer container = new Container();
 
     Sprite sprite = new Sprite("flower.png");
 
@@ -433,7 +435,7 @@ public void onCreate(Stage stage) {
     stage.add(statusText, 300, 50);
 
     // Create an interactive container with the sprite "flower.png"
-    InteractiveContainer interactiveContainer = InteractiveContainer.createInteractiveContainer(new Sprite("flower.png"));
+    InteractiveContainer interactiveContainer = new InteractiveContainer(new Sprite("flower.png"));
 
     // Register a listener for the DOWN event for the container
     interactiveContainer.addEventListener(InteractiveEvent.DOWN, event -> {

@@ -23,6 +23,7 @@ import com.ancevt.d2d2.backend.VideoMode;
 import com.ancevt.d2d2.backend.VideoModeControl;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.interactive.InteractiveManager;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.FractionalMetrics;
 import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
@@ -30,7 +31,7 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.interactive.InteractiveManager;
+import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -105,7 +106,7 @@ import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-// TODO: rewrite with VBO
+// TODO: rewrite with VBO abd refactor
 @Slf4j
 public class LwjglBackend implements D2D2Backend {
 
@@ -125,8 +126,6 @@ public class LwjglBackend implements D2D2Backend {
     private boolean fullscreen;
     private int windowX;
     private int windowY;
-    private int windowWidth;
-    private int windowHeight;
     private int videoModeWidth;
     private int videoModeHeight;
     private long monitor;
@@ -171,7 +170,6 @@ public class LwjglBackend implements D2D2Backend {
     public boolean isAlwaysOnTop() {
         return alwaysOnTop;
     }
-
 
 
     @Override
@@ -546,7 +544,7 @@ public class LwjglBackend implements D2D2Backend {
             glfwPollEvents();
             renderer.renderFrame();
             glfwSwapBuffers(windowId);
-            // Проверка времени до следующего кадра
+            Timer.processTimers();
         }
 
         String prop = System.getProperty("d2d2.glfw.no-terminate");

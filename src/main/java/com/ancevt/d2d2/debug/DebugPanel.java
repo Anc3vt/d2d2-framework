@@ -32,7 +32,7 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
-import com.ancevt.d2d2.interactive.InteractiveContainer;
+import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;

@@ -23,6 +23,7 @@ import com.ancevt.d2d2.exception.ContainerException;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Stream;
 
 public class Container extends DisplayObject implements IContainer {
 
@@ -34,6 +35,11 @@ public class Container extends DisplayObject implements IContainer {
     public Container() {
         children = new CopyOnWriteArrayList<>();
         setName("_" + getClass().getSimpleName() + displayObjectId());
+    }
+
+    public Container(IDisplayObject firstChild) {
+        this();
+        add(firstChild);
     }
 
     @Override
@@ -91,12 +97,17 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
+    public Stream<IDisplayObject> childrenStream() {
+        return children.stream();
+    }
+
+    @Override
     public int indexOf(IDisplayObject child) {
         return children.indexOf(child);
     }
 
     @Override
-    public int getNumberOfChildren() {
+    public int getNumChildren() {
         return children.size();
     }
 
@@ -165,13 +176,4 @@ public class Container extends DisplayObject implements IContainer {
             '}';
     }
 
-    public static IContainer createContainer() {
-        return new Container();
-    }
-
-    public static IContainer createContainer(IDisplayObject childDisplayObject) {
-        IContainer container = createContainer();
-        container.add(childDisplayObject);
-        return container;
-    }
 }

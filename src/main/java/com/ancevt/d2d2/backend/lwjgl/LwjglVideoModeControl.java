@@ -17,7 +17,6 @@
  */
 package com.ancevt.d2d2.backend.lwjgl;
 
-import com.ancevt.commons.Holder;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.VideoMode;
 import com.ancevt.d2d2.backend.VideoModeControl;
@@ -82,11 +81,12 @@ public class LwjglVideoModeControl implements VideoModeControl {
 
     @Override
     public long getMonitorIdByName(String name) {
-        Holder<Long> result = new Holder<>(0L);
-        getMonitors().forEach((monitor, n) -> {
-            if (Objects.equals(name, n)) result.setValue(monitor);
-        });
-        return result.getValue();
+        for (Map.Entry<Long, String> entry : getMonitors().entrySet()) {
+            Long monitor = entry.getKey();
+            String n = entry.getValue();
+            if (Objects.equals(name, n)) return monitor;
+        }
+        throw new IllegalArgumentException("No such monitor with name \"%s\"".formatted(name));
     }
 
     @Override

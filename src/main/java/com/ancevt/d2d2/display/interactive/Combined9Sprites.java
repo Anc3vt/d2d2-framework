@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.interactive;
+package com.ancevt.d2d2.display.interactive;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.debug.FpsMeter;
@@ -28,6 +28,7 @@ import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.Texture;
+import lombok.Getter;
 
 public class Combined9Sprites extends InteractiveContainer implements IColored {
 
@@ -41,6 +42,7 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
     private final Sprite bottom;
     private final Sprite bottomRight;
 
+    @Getter
     private boolean repeatsEnabled;
 
 
@@ -128,10 +130,6 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
     public void setRepeatsEnabled(boolean repeatsEnabled) {
         this.repeatsEnabled = repeatsEnabled;
         rebuild();
-    }
-
-    public boolean isRepeatsEnabled() {
-        return repeatsEnabled;
     }
 
     public void setTextures(Texture all9partsTexture, int partWidth, int partHeight) {

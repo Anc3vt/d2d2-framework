@@ -15,23 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.interactive;
+package com.ancevt.d2d2.display.interactive;
 
-import com.ancevt.commons.Holder;
-import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.event.InteractiveEvent;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DragUtil {
 
     public static void enableDrag(IDisplayObject displayObject, Interactive interactive) {
-        Holder<Float> oldXHolder = new Holder<>(0f);
-        Holder<Float> oldYHolder = new Holder<>(0f);
+        AtomicReference<Float> oldXHolder = new AtomicReference<>(0f);
+        AtomicReference<Float> oldYHolder = new AtomicReference<>(0f);
 
         interactive.addEventListener(DragUtil.class + displayObject.getName(), InteractiveEvent.DOWN, event -> {
             var e = (InteractiveEvent) event;
-            oldXHolder.setValue(e.getX() + displayObject.getX());
-            oldYHolder.setValue(e.getY() + displayObject.getY());
+            oldXHolder.set(e.getX() + displayObject.getX());
+            oldYHolder.set(e.getY() + displayObject.getY());
             IContainer parent = displayObject.getParent();
             parent.remove(displayObject);
             parent.add(displayObject);
@@ -43,10 +47,10 @@ public class DragUtil {
             final float tx = e.getX() + displayObject.getX();
             final float ty = e.getY() + displayObject.getY();
 
-            displayObject.move(tx - oldXHolder.getValue(), ty - oldYHolder.getValue());
+            displayObject.move(tx - oldXHolder.get(), ty - oldYHolder.get());
 
-            oldXHolder.setValue(tx);
-            oldYHolder.setValue(ty);
+            oldXHolder.set(tx);
+            oldYHolder.set(ty);
         });
     }
 

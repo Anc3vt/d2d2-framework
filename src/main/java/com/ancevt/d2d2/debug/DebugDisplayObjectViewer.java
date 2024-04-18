@@ -108,7 +108,7 @@ public class DebugDisplayObjectViewer {
     public void show(IContainer container, int deep) {
         int counter = 0;
 
-        for (int i = 0; i < container.getNumberOfChildren(); i++) {
+        for (int i = 0; i < container.getNumChildren(); i++) {
             IDisplayObject o = container.getChild(i);
 
             if ((typesIncluded.isEmpty() || typesIncluded.contains(o.getClass())) &&

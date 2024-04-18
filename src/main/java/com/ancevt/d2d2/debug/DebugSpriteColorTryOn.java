@@ -17,11 +17,11 @@
  */
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.commons.concurrent.Async;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.ISprite;
 import com.ancevt.d2d2.event.Event;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DebugSpriteColorTryOn {
@@ -60,7 +60,7 @@ public class DebugSpriteColorTryOn {
             });
         });
 
-        Async.run(() -> {
+        CompletableFuture.runAsync(() -> {
             while (true) {
 
                 if (b.get() != null) {
@@ -70,7 +70,6 @@ public class DebugSpriteColorTryOn {
                         (int) g.get().getX(),
                         (int) b.get().getX()
                     ));
-
                 }
 
                 try {

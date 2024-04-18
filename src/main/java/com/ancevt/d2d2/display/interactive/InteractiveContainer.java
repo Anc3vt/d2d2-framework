@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.interactive;
+package com.ancevt.d2d2.display.interactive;
 
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IDisplayObject;
@@ -45,6 +45,12 @@ public class InteractiveContainer extends Container implements Interactive {
 
     public InteractiveContainer() {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+
+    public InteractiveContainer(IDisplayObject firstChild) {
+        this();
+        add(firstChild);
+        setSize(firstChild.getWidth(), firstChild.getHeight());
     }
 
     @Override
