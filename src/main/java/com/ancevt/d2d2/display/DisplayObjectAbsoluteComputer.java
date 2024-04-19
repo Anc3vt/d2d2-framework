@@ -18,89 +18,100 @@
 package com.ancevt.d2d2.display;
 
 
-
-
 class DisplayObjectAbsoluteComputer {
 
-	private DisplayObjectAbsoluteComputer(){}
+    private DisplayObjectAbsoluteComputer() {}
 
-	static float getAbsoluteX( DisplayObject displayObject) {
-		float result = displayObject.getX();
+    static float getAbsoluteX(DisplayObject displayObject) {
+        float result = displayObject.getX();
 
-		IContainer parent = displayObject.getParent();
+        IContainer parent = displayObject.getParent();
 
-		while (parent != null && !(parent instanceof Stage)) {
-			result *= parent.getScaleX();
-			result += parent.getX();
-			parent = parent.getParent();
-		}
+        while (parent != null && !(parent instanceof Stage)) {
+            result *= parent.getScaleX();
+            result += parent.getX();
+            parent = parent.getParent();
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	static float getAbsoluteY(final  DisplayObject displayObject) {
-		float result = displayObject.getY();
+    static float getAbsoluteY(final DisplayObject displayObject) {
+        float result = displayObject.getY();
 
-		IContainer parent = displayObject.getParent();
+        IContainer parent = displayObject.getParent();
 
-		while (parent != null && !(parent instanceof Stage)) {
-			result *= parent.getScaleY();
-			result += parent.getY();
-			parent = parent.getParent();
-		}
+        while (parent != null && !(parent instanceof Stage)) {
+            result *= parent.getScaleY();
+            result += parent.getY();
+            parent = parent.getParent();
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	static float getAbsoluteScaleX(final  DisplayObject displayObject) {
-		float result = displayObject.getScaleX();
+    static float getAbsoluteScaleX(final DisplayObject displayObject) {
+        float result = displayObject.getScaleX();
 
-		IContainer parent = displayObject.getParent();
+        IContainer parent = displayObject.getParent();
 
-		while (parent != null && !(parent instanceof Stage)) {
-			result *= parent.getScaleX();
-			parent = parent.getParent();
-		}
+        while (parent != null && !(parent instanceof Stage)) {
+            result *= parent.getScaleX();
+            parent = parent.getParent();
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	static float getAbsoluteScaleY(final  DisplayObject displayObject) {
-		float result = displayObject.getScaleY();
+    static float getAbsoluteScaleY(final DisplayObject displayObject) {
+        float result = displayObject.getScaleY();
 
-		IContainer parent = displayObject.getParent();
+        IContainer parent = displayObject.getParent();
 
-		while (parent != null && !(parent instanceof Stage)) {
-			result *= parent.getScaleY();
-			parent = parent.getParent();
-		}
+        while (parent != null && !(parent instanceof Stage)) {
+            result *= parent.getScaleY();
+            parent = parent.getParent();
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	static float getAbsoluteAlpha(final  DisplayObject displayObject) {
-		float result = displayObject.getAlpha();
+    static float getAbsoluteAlpha(final DisplayObject displayObject) {
+        float result = displayObject.getAlpha();
 
-		IContainer parent = displayObject.getParent();
+        IContainer parent = displayObject.getParent();
 
-		while (parent != null && !(parent instanceof Stage)) {
-			result *= parent.getAlpha();
-			parent = parent.getParent();
-		}
+        while (parent != null && !(parent instanceof Stage)) {
+            result *= parent.getAlpha();
+            parent = parent.getParent();
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	static float getAbsoluteRotation(final  DisplayObject displayObject) {
-		float result = displayObject.getRotation();
+    static float getAbsoluteRotation(final DisplayObject displayObject) {
+        float result = displayObject.getRotation();
 
-		IContainer parent = displayObject.getParent();
+        IContainer parent = displayObject.getParent();
 
-		while (parent != null && !(parent instanceof Stage)) {
-			result += parent.getRotation();
-			parent = parent.getParent();
-		}
+        while (parent != null && !(parent instanceof Stage)) {
+            result += parent.getRotation();
+            parent = parent.getParent();
+        }
 
-		return result;
-	}
+        return result;
+    }
+
+    public static boolean isAbsoluteVisible(DisplayObject displayObject) {
+        IContainer parent = displayObject.getParent();
+
+        if (!displayObject.isVisible()) return false;
+
+        while (parent != null && !(parent instanceof Stage)) {
+            if (!parent.isVisible()) return false;
+            parent = parent.getParent();
+        }
+
+        return true;
+    }
 }

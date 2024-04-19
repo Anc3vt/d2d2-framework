@@ -259,6 +259,11 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
     }
 
     @Override
+    public boolean isAbsoluteVisible() {
+        return DisplayObjectAbsoluteComputer.isAbsoluteVisible(this);
+    }
+
+    @Override
     public final void removeFromParent() {
         if (hasParent()) {
             getParent().remove(this);
