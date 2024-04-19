@@ -106,7 +106,7 @@ public class ByteDisplay extends InteractiveContainer {
     private void keyDown(Event event) {
         var e = (InteractiveEvent) event;
 
-        int keyCode = e.getCode();
+        int keyCode = e.getKeyCode();
 
         switch (keyCode) {
             case KeyCode.A, KeyCode.LEFT -> {

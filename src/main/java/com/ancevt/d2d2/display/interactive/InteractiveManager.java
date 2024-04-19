@@ -59,7 +59,7 @@ public class InteractiveManager {
                 dispatch(focused, InteractiveEvent.builder()
                     .type(InteractiveEvent.KEY_DOWN)
                     .character(e.getKeyChar())
-                    .code(e.getKeyCode())
+                    .keyCode(e.getKeyCode())
                     .alt(e.isAlt())
                     .control(e.isControl())
                     .shift(e.isShift())
@@ -74,7 +74,7 @@ public class InteractiveManager {
                 dispatch(focused, InteractiveEvent.builder()
                     .type(InteractiveEvent.KEY_REPEAT)
                     .character(e.getKeyChar())
-                    .code(e.getKeyCode())
+                    .keyCode(e.getKeyCode())
                     .alt(e.isAlt())
                     .control(e.isControl())
                     .shift(e.isShift())
@@ -89,7 +89,7 @@ public class InteractiveManager {
                 dispatch(focused, InteractiveEvent.builder()
                     .type(InteractiveEvent.KEY_UP)
                     .character(e.getKeyChar())
-                    .code(e.getKeyCode())
+                    .keyCode(e.getKeyCode())
                     .alt(e.isAlt())
                     .control(e.isControl())
                     .shift(e.isShift())
@@ -119,7 +119,7 @@ public class InteractiveManager {
             if (focused != null) {
                 dispatch(focused, InteractiveEvent.builder()
                     .type(InteractiveEvent.KEY_TYPE)
-                    .code(e.getKeyCode())
+                    .keyCode(e.getKeyCode())
                     .character(e.getKeyChar())
                     .keyType(e.getKeyType())
                     .alt(e.isAlt())
@@ -502,6 +502,8 @@ public class InteractiveManager {
     }
 
     private static void dispatch(Interactive interactive, InteractiveEvent event) {
+        if (!interactive.isEnabled() || !interactive.isAbsoluteVisible()) return;
+
         interactive.dispatchEvent(event);
         if (interactive.isPushEventsUp() && interactive.getParent() instanceof Interactive parent) {
             dispatch(parent, event);

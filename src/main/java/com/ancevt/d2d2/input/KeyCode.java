@@ -26,6 +26,7 @@ public class KeyCode {
     public static final int LEFT_SHIFT = 340;
     public static final int RIGHT_SHIFT = 344;
     public static final int ENTER = 257;
+    public static final int RIGHT_ENTER = 335;
     public static final int DELETE = 261;
     public static final int BACKSPACE = 259;
     public static final int LEFT_CONTROL = 341;
@@ -52,6 +53,8 @@ public class KeyCode {
     public static final int F10 = 299;
     public static final int F11 = 300;
     public static final int F12 = 301;
+
+    public static final int TILDA = 96;
 
     public static final int A = 65;
     public static final int B = 66;

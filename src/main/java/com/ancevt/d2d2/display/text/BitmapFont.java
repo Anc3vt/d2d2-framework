@@ -23,11 +23,6 @@ import com.ancevt.d2d2.display.texture.TextureAtlas;
 
 public class BitmapFont implements IDisposable {
 
-    private static final int MAX_CHARS = 65536;
-
-    private static BitmapFont defaultBitmapFont;
-    private static final String BITMAP_FONTS_DIR = "bitmapfonts/";
-
     private final BitmapCharInfo[] charInfos;
     private final TextureAtlas textureAtlas;
     private final String name;

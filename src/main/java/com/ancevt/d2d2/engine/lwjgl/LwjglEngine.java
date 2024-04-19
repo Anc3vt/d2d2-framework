@@ -18,20 +18,21 @@
 package com.ancevt.d2d2.engine.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.engine.VideoMode;
-import com.ancevt.d2d2.engine.VideoModeControl;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.interactive.InteractiveManager;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.FractionalMetrics;
 import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
+import com.ancevt.d2d2.engine.Engine;
+import com.ancevt.d2d2.engine.VideoMode;
+import com.ancevt.d2d2.engine.VideoModeControl;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.time.Timer;
+import com.ancevt.d2d2.util.D2D2SystemProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -64,6 +65,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -585,55 +588,57 @@ public class LwjglEngine implements Engine {
 
     @SneakyThrows
     @Override
-    public BitmapFont generateBitmapFont(TtfBitmapFontBuilder ttfBitmapFontBuilder) {
+    public BitmapFont generateBitmapFont(TtfBitmapFontBuilder builder) {
 
         final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-        InputStream inputStream = ttfBitmapFontBuilder.getTtfInputStream() != null ?
-            ttfBitmapFontBuilder.getTtfInputStream() : new FileInputStream(ttfBitmapFontBuilder.getTtfPath().toFile());
+        InputStream inputStream = builder.getTtfInputStream() != null ?
+            builder.getTtfInputStream() : new FileInputStream(builder.getTtfPath().toFile());
 
         Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
         String fontName = font.getName();
         ge.registerFont(font);
 
-        boolean bold = ttfBitmapFontBuilder.isBold();
-        boolean italic = ttfBitmapFontBuilder.isItalic();
-        int fontSize = ttfBitmapFontBuilder.getFontSize();
+        boolean bold = builder.isBold();
+        boolean italic = builder.isItalic();
+        int fontSize = builder.getFontSize();
         int fontStyle = Font.PLAIN | (bold ? Font.BOLD : Font.PLAIN) | (italic ? Font.ITALIC : Font.PLAIN);
 
         font = new Font(fontName, fontStyle, fontSize);
 
-        BufferedImage bufferedImage = new BufferedImage(ttfBitmapFontBuilder.getAtlasWidth(), ttfBitmapFontBuilder.getAtlasHeight(), BufferedImage.TYPE_INT_ARGB);
+        //TODO: compute atlas height automatically
+        BufferedImage bufferedImage = new BufferedImage(builder.getAtlasWidth(), builder.getAtlasHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
 
-        if (ttfBitmapFontBuilder.fractionalMetrics() != null)
-            g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, FractionalMetrics.nativeValue(ttfBitmapFontBuilder.fractionalMetrics()));
+        if (builder.fractionalMetrics() != null)
+            g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, FractionalMetrics.nativeValue(builder.fractionalMetrics()));
 
-        if (ttfBitmapFontBuilder.isTextAntialiasOn())
+        if (builder.isTextAntialiasOn())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        if (ttfBitmapFontBuilder.isTextAntialiasGasp())
+        if (builder.isTextAntialiasGasp())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
 
-        if (ttfBitmapFontBuilder.isTextAntialiasLcdHrgb())
+        if (builder.isTextAntialiasLcdHrgb())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 
-        if (ttfBitmapFontBuilder.isTextAntialiasLcdHbgr())
+        if (builder.isTextAntialiasLcdHbgr())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR);
 
-        if (ttfBitmapFontBuilder.isTextAntialiasLcdVrgb())
+        if (builder.isTextAntialiasLcdVrgb())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VRGB);
 
-        if (ttfBitmapFontBuilder.isTextAntialiasLcdVbgr())
+        if (builder.isTextAntialiasLcdVbgr())
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VBGR);
 
         g2.setColor(Color.WHITE);
 
         List<CharInfo> charInfos = new ArrayList<>();
 
-        String string = ttfBitmapFontBuilder.getCharSourceString();
+        String string = builder.getCharSourceString();
 
-        int x = 0, y = font.getSize();
+        int x = 0;
+        int y = font.getSize();
 
         for (int i = 0; i < string.length(); i++) {
 
@@ -649,47 +654,73 @@ public class LwjglEngine implements Engine {
 
             CharInfo charInfo = new CharInfo();
             charInfo.character = c;
-            charInfo.x = x;
-            charInfo.y = y - height + toY + ttfBitmapFontBuilder.getOffsetY();
+            charInfo.x = x + builder.getOffsetX();
+            charInfo.y = y - height + toY + builder.getOffsetY();
 
             charInfo.width = width;
-            charInfo.height = height + ttfBitmapFontBuilder.getOffsetY();
+            charInfo.height = height + builder.getOffsetY();
 
             charInfos.add(charInfo);
 
-            x += width + ttfBitmapFontBuilder.getSpacingX();
+            x += width + builder.getSpacingX();
 
             if (x >= bufferedImage.getWidth() - font.getSize()) {
-                y += height + ttfBitmapFontBuilder.getSpacingY();
+                y += height + builder.getSpacingY();
                 x = 0;
             }
         }
 
         StringBuilder stringBuilder = new StringBuilder();
-        charInfos.forEach(charInfo -> {
-            stringBuilder.append(charInfo.character);
-            stringBuilder.append(' ');
-            stringBuilder.append(charInfo.x);
-            stringBuilder.append(' ');
-            stringBuilder.append(charInfo.y);
-            stringBuilder.append(' ');
-            stringBuilder.append(charInfo.width);
-            stringBuilder.append(' ');
-            stringBuilder.append(charInfo.height);
-            stringBuilder.append('\n');
-        });
+
+        // meta
+        stringBuilder.append("#meta ");
+        stringBuilder.append("spacingX ").append(builder.getSpacingX()).append(" ");
+        stringBuilder.append("spacingY ").append(builder.getSpacingY()).append(" ");
+        stringBuilder.append("\n");
+
+        // char infos
+        charInfos.forEach(charInfo ->
+            stringBuilder
+                .append(charInfo.character)
+                .append(' ')
+                .append(charInfo.x)
+                .append(' ')
+                .append(charInfo.y)
+                .append(' ')
+                .append(charInfo.width)
+                .append(' ')
+                .append(charInfo.height)
+                .append('\n')
+        );
 
         byte[] charsDataBytes = stringBuilder.toString().getBytes(StandardCharsets.UTF_8);
 
         ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "png", pngOutputStream);
-
         byte[] pngDataBytes = pngOutputStream.toByteArray();
+
+        if (System.getProperty(D2D2SystemProperties.BITMAPFONT_SAVEBMF) != null) {
+            String assetPath = builder.getTtfAssetPath();
+            Path ttfPath = builder.getTtfPath();
+
+            String fileName = assetPath != null ?
+                Path.of(assetPath).getFileName().toString() : ttfPath.getFileName().toString();
+
+            String saveToPathString = System.getProperty(D2D2SystemProperties.BITMAPFONT_SAVEBMF);
+
+            Path destinationPath = Files.createDirectories(Path.of(saveToPathString));
+
+            fileName = fileName.substring(0, fileName.length() - 4) + "-" + fontSize;
+
+            Files.write(destinationPath.resolve(fileName + ".png"), pngDataBytes);
+            Files.writeString(destinationPath.resolve(fileName + ".bmf"), stringBuilder.toString());
+            log.info("BMF written {}/{}", destinationPath, fileName);
+        }
 
         return D2D2.bitmapFontManager().loadBitmapFont(
             new ByteArrayInputStream(charsDataBytes),
             new ByteArrayInputStream(pngDataBytes),
-            ttfBitmapFontBuilder.getName()
+            builder.getName()
         );
     }
 

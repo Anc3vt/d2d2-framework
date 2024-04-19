@@ -19,6 +19,7 @@ package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
+import com.ancevt.util.args.Args;
 import lombok.Getter;
 
 import java.io.BufferedReader;
@@ -49,30 +50,54 @@ public class BitmapFontManager {
         defaultBitmapFont = loadBitmapFont(DEFAULT_BITMAP_FONT);
     }
 
+    private static String convertToString(InputStream inputStream) throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line);
+        }
+        bufferedReader.close();
+        return stringBuilder.toString();
+    }
+
     public BitmapFont loadBitmapFont(InputStream charsDataInputStream, InputStream pngInputStream, String name) {
         BitmapCharInfo[] charInfos = new BitmapCharInfo[MAX_CHARS];
+        int spacingX = 0;
+        int spacingY = 0;
+
+        System.out.println("name " + name);
 
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(charsDataInputStream))) {
 
             String line;
             while ((line = bufferedReader.readLine()) != null) {
+
+                if (line.startsWith("#meta")) {
+                    System.out.println(line);
+                    Args meta = Args.of(line);
+                    spacingX = meta.get(int.class, "spacingX", 0);
+                    spacingY = meta.get(int.class, "spacingY", 0);
+                    continue;
+                }
+
                 StringTokenizer stringTokenizer = new StringTokenizer(line);
                 char c = line.charAt(0) == ' ' ? ' ' : stringTokenizer.nextToken().charAt(0);
                 charInfos[c] = new BitmapCharInfo(
-                        c,
-                        parseInt(stringTokenizer.nextToken()),
-                        parseInt(stringTokenizer.nextToken()),
-                        parseInt(stringTokenizer.nextToken()),
-                        parseInt(stringTokenizer.nextToken())
+                    c,
+                    parseInt(stringTokenizer.nextToken()),
+                    parseInt(stringTokenizer.nextToken()),
+                    parseInt(stringTokenizer.nextToken()) + spacingX,
+                    parseInt(stringTokenizer.nextToken()) + spacingY
                 );
             }
 
             charInfos['\n'] = new BitmapCharInfo(
-                    '\n',
-                    charInfos[' '].x(),
-                    charInfos[' '].y(),
-                    0,
-                    charInfos[' '].height()
+                '\n',
+                charInfos[' '].x(),
+                charInfos[' '].y(),
+                0,
+                charInfos[' '].height()
             );
 
         } catch (IOException e) {
@@ -86,23 +111,12 @@ public class BitmapFontManager {
         return bitmapFont;
     }
 
-    public void remove(String name) {
-        BitmapFont bitmapFont = bitmapFontMap.remove(name);
-        if(bitmapFont != null) {
-            bitmapFont.dispose();
-        }
-    }
-
-    public Map<String, BitmapFont> getBitmapFonts() {
-        return Map.copyOf(bitmapFontMap);
-    }
-
     public BitmapFont loadBitmapFont(String assetWithoutExtension) {
         return loadBitmapFont(assetWithoutExtension, false);
     }
 
     public BitmapFont loadBitmapFont(String assetWithoutExtension, boolean forceUpdate) {
-        if(!forceUpdate) {
+        if (!forceUpdate) {
             BitmapFont fromCache = bitmapFontMap.get(assetWithoutExtension);
 
             if (fromCache != null) {
@@ -111,13 +125,26 @@ public class BitmapFontManager {
         }
 
         BitmapFont bitmapFont = loadBitmapFont(
-                Assets.getAssetAsStream(BITMAP_FONTS_ASSET_DIR + assetWithoutExtension + ".bmf"),
-                Assets.getAssetAsStream(BITMAP_FONTS_ASSET_DIR + assetWithoutExtension + ".png"),
-                assetWithoutExtension
+            Assets.getAssetAsStream(BITMAP_FONTS_ASSET_DIR + assetWithoutExtension + ".bmf"),
+            Assets.getAssetAsStream(BITMAP_FONTS_ASSET_DIR + assetWithoutExtension + ".png"),
+            assetWithoutExtension
         );
 
         bitmapFontMap.put(assetWithoutExtension, bitmapFont);
 
         return bitmapFont;
     }
+
+    public void remove(String name) {
+        BitmapFont bitmapFont = bitmapFontMap.remove(name);
+        if (bitmapFont != null) {
+            bitmapFont.dispose();
+        }
+    }
+
+    public Map<String, BitmapFont> getBitmapFonts() {
+        return Map.copyOf(bitmapFontMap);
+    }
+
+
 }

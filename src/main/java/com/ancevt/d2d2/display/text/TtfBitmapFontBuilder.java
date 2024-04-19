@@ -19,7 +19,6 @@ package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import lombok.Getter;
 
 import java.io.InputStream;
@@ -65,6 +64,9 @@ public class TtfBitmapFontBuilder {
     private boolean bold;
     @Getter
     private boolean italic;
+
+    @Getter
+    private int offsetX;
     @Getter
     private int offsetY;
     @Getter
@@ -74,6 +76,9 @@ public class TtfBitmapFontBuilder {
     //private String charSourceString = " !\"#№$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў";
     private String charSourceString = " !\"#$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў¡¿ÑñÁÉÍÓÚÜáéíóúüßäÄöÖüÜçÇğĞıİşŞøæÆåÅøØæÆęĘłŁńŃśŚźŹżŻđĐďĎťŤŕŔůŮôÔâÂêÊûÛîÎôÔŷŶŵŴŝŜĉĈĥĤẅẄỳỲỵỴẉẈỹỸỷỶỻỺṃṂṗṖṙṘṣṢṭṬỡỠẃẂẁẀẘẘễỄẽẼỹỸỵỴḿḾṫṪȯȮḟḞġĠṅṄṇṆñÑóÓúÚìÌèÈàÀâÂêÊûÛîÎôÔäÄëËïÏöÖüÜçÇøØåÅæÆãÃõÕāĀēĒīĪōŌūŪǎǍěĚǐǏǒǑǔǕǖǗǘǙǚǛǜǺǻǼǽɛƐɔƆɪɨɒƝƉɖɗƐɛʒƷʃƨƱƲɣƔʔʡʕʢəƏʌʊʋʁʀŋɲɳɴɤƷƸɚɝɨɩɾɽʙʜɦɧɥʎʟʤʦʧʨɟʎɧʂʈʐɖɳɱɫɬɮɲɳɴɸɹɻɰɯɸɡɣɢɠʖɥɦɧɨɪɨɭɬɮɫɬɱɯɰɲɳɵɶɷɸɹɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮʯʰʱʲʳʴʵʶʷʸʹʺʻʼʽʾʿˀˁ˂˃˄˅ˆˇˈˉˊˋˌˍˎˏːˑ˒˓˔˕˖˗˘˙˚˛˜˝˞˟ˠˡˢˣˤ˥˦˧˨˩˪˫ˬ˭ˮ" +
         "⎗⎘⎙⎚⎛⎜⎝⎞⎟⎠⎡⎢⎣⎤⎥⎦⎧⎨⎩⎪⎬⎭┌┍┎┏┐┑┒┓└┕┖┗┘┙┚┛├┝┞┟┠┡┢┣┤┥┦┧┨┩┪┫┬┭┮┯┰┱┲┳┴┵┶┷┸┹┺┻┼┽┾┿╀╁╂╃╄╅╆╇╈╉╊╋╌╍╎╏═║╒╓╔╕╖╗╘╙╚╛╜╝╞╟╠╡╢╣╤╥╦╧╨╩╪╫╬▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟▲△▴▵▶▷▸►▹▻▼▽▾▿◀◁◂◃◄◅◆◇◈◉◊○◌◍◎●◐◑◒◓◔◕◖◗◘◙◚◛◜◝◞◟◠◡◢◣◤◥◦◧◨◩◪◫◬◭◮◯◰◱◲◳◴◵◶◷◸◹◺◻◼◽◾◿";
+
+    @Getter
+    private String ttfAssetPath;
 
 
     public TtfBitmapFontBuilder charSourceString(String charSourceString) {
@@ -88,6 +93,11 @@ public class TtfBitmapFontBuilder {
 
     public TtfBitmapFontBuilder bold(boolean bold) {
         this.bold = bold;
+        return this;
+    }
+
+    public TtfBitmapFontBuilder offsetX(int offsetX) {
+        this.offsetX = offsetX;
         return this;
     }
 
@@ -116,6 +126,7 @@ public class TtfBitmapFontBuilder {
     }
 
     public TtfBitmapFontBuilder ttfAssetPath(String assetPath) {
+        this.ttfAssetPath = assetPath;
         return ttfInputStream(Assets.getAssetAsStream(assetPath));
     }
 
@@ -179,64 +190,20 @@ public class TtfBitmapFontBuilder {
     }
 
     public BitmapFont build() {
-        if (ttfPath == null && ttfInputStream == null) {
-            throw new IllegalStateException("ttfPath == null && ttfInputStream == null");
+        if (ttfPath == null && ttfInputStream == null && ttfAssetPath == null) {
+            throw new IllegalStateException("ttfPath == null && ttfInputStream == null && ttfAssetPath == null");
         }
 
         if (name == null) {
+            if(ttfAssetPath != null) {
+                name = ttfAssetPath;
+            } else
             if (ttfPath != null) {
                 name = ttfPath.toString();
-            }
-            if (ttfInputStream != null) {
-                name = ttfInputStream.toString();
             }
         }
 
         return D2D2.backend().generateBitmapFont(this);
-    }
-
-    public static void main(String[] args) {
-        D2D2.directInit(new LwjglEngine(1000, 600, "(floating)"));
-
-        //InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/PressStart2P-Regular.ttf");
-
-        String fontPath = "d2d2ttf/terminus/TerminusTTF-Bold-4.49.3.ttf";
-        //String fontPath = "d2d2ttf/FreeMonoBold.ttf";
-
-        int size = 16;
-
-        createBitmapText("▉▉ The quick brown fox jumps over the lazy dog абвгдежз АБВГДЕЖЗ ",
-            new TtfBitmapFontBuilder()
-                .ttfAssetPath(fontPath)
-                .fontSize(16)
-                .spacingY(10)
-                .textAntialias(true)
-                .fractionalMetrics(FractionalMetrics.OFF)
-                .offsetY(5)
-                .build());
-
-        createBitmapText("▉▉ The quick brown fox jumps over the lazy dog абвгдежз АБВГДЕЖЗ",
-            new TtfBitmapFontBuilder()
-                .ttfAssetPath(fontPath)
-                .fontSize(16)
-                .spacingY(10)
-                .textAntialias(false)
-                .fractionalMetrics(FractionalMetrics.OFF)
-                .offsetY(5)
-                .build());
-
-        D2D2.loop();
-    }
-
-    private static float _y = 0;
-
-    private static BitmapText createBitmapText(String text, BitmapFont bitmapFont) {
-        BitmapText bitmapText = new BitmapText(bitmapFont);
-        bitmapText.setAutosize(true);
-        bitmapText.setText(text);
-        D2D2.stage().add(bitmapText, 50, _y + 10);
-        _y += bitmapText.getHeight() + 5;
-        return bitmapText;
     }
 
 }

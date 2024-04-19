@@ -146,6 +146,8 @@ public interface IDisplayObject extends IEventDispatcher {
 
     float getAbsoluteRotation();
 
+    boolean isAbsoluteVisible();
+
     void setAbsoluteZOrderIndex(int zOrder);
 
     int getAbsoluteZOrderIndex();
