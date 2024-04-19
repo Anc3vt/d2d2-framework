@@ -5,11 +5,13 @@
 
 # About
 
-D2D2 is a fast and user-friendly 2D Java framework with a simple DSL, a display graph for rendered display objects, and an event model akin to JavaScript and ActionScript. **One of its standout features is the ability to use the same codebase for both server and client, offering unparalleled convenience in development**.
+D2D2 is a fast and user-friendly 2D Java framework with a simple DSL, providing a display graph for rendered display objects, and an event model akin to JavaScript and ActionScript. **One of its standout features is the ability to use the same codebase for both client (GPU) and server (no-render), offering unparalleled convenience in development**.
 
 The goal of D2D2 is to create an easy-to-use framework for rapid development of 2D games and applications in the Java language. I aim to provide developers with tools that allow them to focus on the creative process and achieve desired results without unnecessary difficulties.
 
 - [Benefits and features](#Benefits-and-features)
+  - [Server-side (no-render) engine](#server-side-no-render-engine)
+  - [Functionalities include](#server-side-no-render-engine)
 - [Dependency](#dependency)
 - [Usage & examples](#usage--examples)
     - [Framework Initialization](#framework-initialization)
@@ -26,33 +28,32 @@ The goal of D2D2 is to create an easy-to-use framework for rapid development of 
 
 # Benefits and features
 
-D2D2 provides the ability to develop multiplayer games using the same code for both the client and the server. Developers can operate with the same objects (`Stage`, `IDisplayObject`, `IContainer`, event model), a unified hierarchy of nested display containers, on both sides of the application. The difference lies only in the use of different Engines and control code, which can also be written in D2D2. In the current release of D2D2, there are two implementations of the `Engine` interface: `LwjglEngine` for the client side and `ServerSideEngine` for the server side (this is just a replacement of the value of the `d2d2.engine` property in the configuration properties file).
+D2D2 provides the ability to develop multiplayer games using the same code for both the client and the server. Developers can operate with the same objects (`Stage`, `IDisplayObject`, `IContainer`, event model, etc.), a unified hierarchy of nested display containers, on both sides of the application. The difference lies only in the use of different _engines_ and control code, which can also be written in D2D2. In the current release of D2D2, there are two implementations of the `Engine` interface: `LwjglEngine` for the client side and `ServerSideEngine` for the server side (in practice, this is just a replacement of the value of the `d2d2.engine` property in the configuration properties file).
 
 
 ![Same classes diagram](https://raw.githubusercontent.com/Anc3vt/d2d2-core/c61a938b76bd2e3e2ea40d9eaefc111c726f7cfa/img/sameclasses.png)
 
+## Server-side (no-render) engine
 
-
-This allows for representing game objects in a unified way on both sides, ensuring convenience and consistency in the development and support of game mechanics. The difference between the client and server sides is that, unlike `LwjglEngine`, `ServerSideEngine` does not visualize objects, does not play sounds, and does not wait for user input from devices (like keyboard, mouse, etc.). However, the event model and the global event loop will be processed in the same way. This significantly simplifies synchronization between clients and the server, as game logic and data models, such as game objects, remain consistent on both sides.
+D2D2 allows for representing game objects in a unified way on both sides, ensuring convenience and consistency in the development and support of game mechanics. The difference between the client and server sides is that, `ServerSideEngine` does not visualize objects, does not play sounds, and does not wait for user input from devices (like keyboard, mouse, etc.). However, the event model and the global event loop will be processed in the same way. This significantly simplifies synchronization between clients and the server, as game logic and data models, such as game objects, remain consistent on both sides.
 
 Additionally, you can develop and test your game mechanics with visualization on your computer using the client engine, and be confident that they will have the same properties and behavior on the server side.
 
-Functionalities include:
+## Functionalities include:
 
-- **Display Graph:** D2D2 provides classes for working with display objects (`IDisplayObject`), containers (`IContainer`), as well as methods like `add` and `remove` for managing object display in display graph. All `IDisplayObject` and their descendants retain
-  basic properties and methods from ActionScript 3.0, such as x, y, rotation, alpha, scaleX, scaleY, visible, and others. This ensures a familiar interface for controlling the position, rotation, transparency, and scaling of objects on the `Stage`.
+- **Display Graph:** D2D2 provides classes for working with display objects (`IDisplayObject`), containers (`IContainer`), as well as methods like `add` and `remove` for managing object display in display graph. All `IDisplayObject` and their descendants retain basic properties and methods from ActionScript 3.0, such as _x_, _y_, _rotation_, _alpha_, _scaleX_, _scaleY_, _visible_, and others. This ensures a familiar interface for controlling the position, rotation, opacity, and scaling of objects on the `Stage`.
 
 - **Event Model:** Support for adding and removing event handlers via `addEventListener`, `removeEventListener`, and `dispatchEvent` methods, simplifying the organization of event logic.
 
 - **Text:** Ability to display text using TrueType fonts, providing flexibility in formatting text elements.
 
-- **User Input Handling:** The framework provides tools for handling user input through computer input devices, making it easy to create interactive applications.
+- **User Input Handling:** The framework provides tools for handling user input through input devices, making it easy to create interactive applications.
 
-- **Additional Tools and Utilities:** Additional tools are provided within the project, including working with textures, sound, and other features.
+- **Additional Tools and Utilities:** Additional tools are provided within the framework, including working with textures, sound, and other features.
 
 # Dependency
 
-To include the D2D2 library in your Maven project, add the following to your `pom.xml`:
+To include the D2D2 dependency in your Maven project, add the following to your `pom.xml`:
 
 In the `<repositories>` section:
 
@@ -83,13 +84,15 @@ And in the `<dependencies>` section:
 <dependency>
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-core</artifactId>
-    <version>0.1.6.0-beta</version>
+    <version>0.1.6.1-beta</version>
 </dependency>
 ```
 
 # Usage & examples
 
 ## Framework initialization
+
+> See samples source code at https://github.com/Anc3vt/d2d2-samples
 
 After adding the necessary dependency (d2d2-core) to your project, it is necessary to add a configuration file `d2d2.properties` to the resources with the following contents::
 
@@ -127,16 +130,17 @@ public class FrameworkInitDemo extends D2D2Main {
 }
 ```
 
+> **NOTE:** Your class extending D2D2Main must be public
+
 The `onCreate` method is called immediately after the framework initialization. The `stage` is the root container for the entire application and will contain all displayed display objects with the entire hierarchy of nested containers within each other.
 
-`onDispose` method is automatically called when the application is closed by the operating system's standard means
-or after calling `D2D2.exit()` Here, you should program resource cleanup, saving various states, etc.
+`onDispose` method is automatically called when the application is closed by the operating system's standard means or after calling `D2D2.exit()` Here, you should program resource cleanup, saving various states, etc.
 
 ## Sprite
 
 `Sprite` is one of the primary types of display objects, representing a static customizable image. The example below demonstrates how to create, configure, and add it to the scene. Since `Sprite` inherits methods from `IDisplayObject`, we can customize it using them.
 
-Resource files like the one shown in the example below, `flower.png`, should be located in the subdirectory of the classpath `assets/`. Consequently, by default in a Maven project, this would be `src/main/resources/assets/`.
+Resource files like the one shown in the example below, `flower.png`, should be located in the `assets/` subdirectory of the classpath. Consequently, by default in a Maven project, this would be `src/main/resources/assets/`.
 
 ```java
 
@@ -174,7 +178,7 @@ There's a more detailed and flexible way to manage texture resources - `TextureM
 
 This way, you can store multiple images in a single PNG file, extracting the textures we need from it based on specified coordinates on the atlas.
 
-For example, in the `assets/` directory of our project, there's a source resource file `d2d2-samples-tileset.png`, which looks like this:
+For example, in the `../assets/` directory of our project, there's a source resource file `d2d2-samples-tileset.png`, which looks like this:
 
 ![Sprite demo](https://raw.githubusercontent.com/Anc3vt/d2d2-core/4c64630309467b85978e933a7d12da2bca138e48/img/d2d2-samples-tileset.png)
 
@@ -207,7 +211,8 @@ Running example looks like this:
 In the example above, pay attention to the method call `textureAtlas.createTexture(256, 0, 144, 128)`, where the coordinates of the required texture on the texture atlas and its size in pixels are passed.
 
 `256,0` - are the coordinates of the top-left corner of the texture on the atlas, and `144,128` - is the size of the texture.
-> Please note that the image has been scaled for convenience in the diagram.
+
+> **NOTE:** The image has been scaled for convenience in the diagram.
 
 ![TextureManager2](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/textureManagerScheme.png)
 
@@ -270,7 +275,7 @@ public void onCreate(Stage stage) {
 }
 ```
 
-In this example, the TrueType font file is located in the resources as `assets/d2d2fonts/FreeSansBold.ttf`.
+In this example, the TrueType font file is located in the resources as `../assets/d2d2fonts/FreeSansBold.ttf`.
 
 It will look like this:
 
@@ -315,7 +320,7 @@ public void onCreate(Stage stage) {
   BorderedRect borderedRect = new BorderedRect(500, 500, Color.NO_COLOR, Color.DARK_GRAY);
 
   // Create a container with an instant placement of the frame into it
-  IContainer container = new Container(borderedRect);
+  Container container = new Container(borderedRect);
 
   // Create two sprites
   Sprite sprite1 = new Sprite("flower.png");
@@ -340,11 +345,11 @@ Here's how it will look when the application is launched:
 
 ![TextureAltas](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/ContainerDemo.png)
 
-> It's important to understand that nested containers and other display objects placed inside containers apply their properties relative to their parent container, not the global coordinate axis of the `Stage`. Thus, if we, for example, rotate the container using the `rotate` or `setRotation` methods, visually, all its contents will also rotate along with it. Of course, this applies not only to rotation but also to other properties of `IDisplayObject`, such as x, y, alpha, scaleX, scaleY, and others.
+> **NOTE:** It's important to understand that nested containers and other display objects placed inside containers apply their properties relative to their parent container, not the global coordinate axis of the `Stage`. Thus, if we, for example, rotate the container using the `rotate` or `setRotation` methods, visually, all its contents will also rotate along with it. Of course, this applies not only to rotation but also to other properties of `IDisplayObject`, such as _x_, _y_, _alpha_, _scaleX_, _scaleY_, _visible_ and others.
 
 ![Container2](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/containerScheme.png)
 
-All display objects can retrieve their parent container using the `getParent()` method. If a display object is not added to any container, the method will return `null`, so it's a good practice to check for the presence of a parent container using the `hasParent()` method. In turn, containers have methods such as `getNumChildren()`, `getChild(int index)`, and `childrenStream()`. Check out other useful methods in the `IContainer` interface in the documentation and source code.
+You can retrieve all display objects parent container using their `getParent()` method. If a display object is not added to any container, the method will return `null`, so it's a good practice to check for the presence of a parent container using the `hasParent()` method. In turn, containers have methods such as `getNumChildren()`, `getChild(int index)`, and `childrenStream()` as a stream. Check out other useful methods in the `IContainer` interface in the documentation and source code.
 
 ## Event dispatching & listening
 
@@ -377,7 +382,11 @@ It will look like this (animated GIF):
 
 ![Events](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/EventListenerDemo1.gif)
 
-Display objects also can dispatch events. There are three events that occur regularly/every frame: before frame rendering `Event.ENTER_FRAME`, after frame rendering `Event.EXIT_FRAME`, and during the next iteration of the global event loop `Event.LOOP_UPDATE`, which can be useful if you need to perform any actions continuously regardless of rendering and FPS.
+Display objects also can dispatch events. There are three events that occur regularly/every frame: 
+
+  - `Event.ENTER_FRAME` dispatches before frame rendering
+  - `Event.EXIT_FRAME` dispatches after frame rendering
+  - `Event.LOOP_UPDATE` dispatches during the next iteration of the global event loop,  which can be useful if you need to perform any actions continuously regardless of rendering and FPS.
 
 ```java
 public void onCreate(Stage stage) {
@@ -396,7 +405,7 @@ It will look like this (animated GIF):
 
 ![EventListener2](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/EventListenerDemo2.gif)
 
-> It's easy to notice that the sprite rotates around its top-left corner, which is the correct behavior for the example above. To make the object rotate around its own center, you need to add it to a container, move it to the left and up by half of its size, and then rotate the container instead of the object itself.
+> **NOTE:** It's easy to notice that the sprite rotates around its top-left corner, which is the correct behavior for the example above. To make the object rotate around its own center, you need to add it to a container, move sprite to the left and up by half of its size, and then rotate the container instead of the sprite itself.
 
 Example of rotation around its own center:
 
@@ -404,7 +413,7 @@ Example of rotation around its own center:
 
 @Override
 public void onCreate(Stage stage) {
-    IContainer container = new Container();
+    Container container = new Container();
 
     Sprite sprite = new Sprite("flower.png");
 
@@ -440,11 +449,9 @@ Interactive objects are based on the event model described above. Here's an exam
 
 @Override
 public void onCreate(Stage stage) {
-    // Create a text object for status display
+    // Create, setup, and add a text object for status display
     BitmapText statusText = new BitmapText();
-    // Set the text scale
     statusText.setScale(3, 3);
-    // Add the text to the stage and set its position
     stage.add(statusText, 300, 50);
 
     // Create an interactive container with the sprite "flower.png"
@@ -490,13 +497,15 @@ public void onCreate(Stage stage) {
 }
 ```
 
+> **NOTE:** There is also an `InteractiveSprite`, which is based on the `Sprite` class and also implements the `Interactive` interface.
+
 It will look like this (animated GIF):
 
 ![Interactive](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/InteractiveDemo.gif)
 
 For the `Stage`, user interaction events are also implemented.
 
-> Unlike the `Interactive` interface, which dispatches `InteractiveEvent`, the `Stage` dispatches `InputEvent`, which is important to consider to avoid "nothing-happens" errors.
+> **NOTE:** Unlike the `Interactive` interface, which dispatches `InteractiveEvent`, the `Stage` dispatches `InputEvent`. It's important to consider this difference to avoid encountering "nothing-happens" errors.
 
 ## Animated display objects & loading multiple textures in a row
 
@@ -541,14 +550,15 @@ It will look like this (animated GIF):
 
 ![Animated](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/AnimatedDemo.gif)
 
-> Pay attention to the method call `createTexturesHor(256, 128, 48, 48, 4)`. It creates multiple textures at once, arranged horizontally on the atlas. The first four arguments are the position of the texture on the atlas and its dimensions, and the fifth argument is the number of repetitions to the right, as shown in the diagram:
+> **NOTE:** Pay attention to the method call `createTexturesHor(256, 128, 48, 48, 4)`. It creates multiple textures at once, arranged horizontally on the atlas. The first four arguments are the position of the texture on the atlas and its dimensions, and the fifth argument is the number of repetitions to the right, as shown in the diagram:
 
 ![AnimatedScheme](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/animatedScheme.png)
 
 
 To create multiple textures vertically, the `TextureAtlas` also has a method called `createTextureVert`.
 
----
+
+
 
 # Some demo videos
 
