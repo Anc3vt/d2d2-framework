@@ -17,11 +17,11 @@
  */
 package com.ancevt.d2d2;
 
-import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.texture.TextureManager;
+import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.util.D2D2Initializer;
@@ -106,5 +106,16 @@ public final class D2D2 {
 
     public static BitmapFontManager bitmapFontManager() {
         return bitmapFontManager;
+    }
+
+    private static class Test extends D2D2Main {
+        public static void main(String[] args) {
+            D2D2.init(Test.class);
+        }
+
+        @Override
+        public void onCreate(Stage stage) {
+            super.onCreate(stage);
+        }
     }
 }
