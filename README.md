@@ -28,6 +28,11 @@ The goal of D2D2 is to create an easy-to-use framework for rapid development of 
 
 D2D2 provides the ability to develop multiplayer games using the same code for both the client and the server. Developers can operate with the same objects (`Stage`, `IDisplayObject`, `IContainer`, event model), a unified hierarchy of nested display containers, on both sides of the application. The difference lies only in the use of different Engines and control code, which can also be written in D2D2. In the current release of D2D2, there are two implementations of the `Engine` interface: `LwjglEngine` for the client side and `ServerSideEngine` for the server side (this is just a replacement of the value of the `d2d2.engine` property in the configuration properties file).
 
+
+![flower.png](https://raw.githubusercontent.com/Anc3vt/d2d2-core/4b2f2f6b1c13a4a605be7067017aa8df2cbb002c/img/sameclasses.png)
+
+
+
 This allows for representing game objects in a unified way on both sides, ensuring convenience and consistency in the development and support of game mechanics. The difference between the client and server sides is that, unlike `LwjglEngine`, `ServerSideEngine` does not visualize objects, does not play sounds, and does not wait for user input from devices (like keyboard, mouse, etc.). However, the event model and the global event loop will be processed in the same way. This significantly simplifies synchronization between clients and the server, as game logic and data models, such as game objects, remain consistent on both sides.
 
 Additionally, you can develop and test your game mechanics with visualization on your computer using the client engine, and be confident that they will have the same properties and behavior on the server side.
