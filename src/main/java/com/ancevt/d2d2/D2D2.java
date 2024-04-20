@@ -96,7 +96,7 @@ public final class D2D2 {
         backend.stop();
     }
 
-    public static Engine backend() {
+    public static Engine engine() {
         return backend;
     }
 

@@ -163,6 +163,11 @@ public class LwjglEngine implements Engine {
     }
 
     @Override
+    public void focusWindow() {
+        GLFW.glfwFocusWindow(windowId);
+    }
+
+    @Override
     public void setAlwaysOnTop(boolean b) {
         this.alwaysOnTop = b;
 
@@ -645,8 +650,8 @@ public class LwjglEngine implements Engine {
             char c = string.charAt(i);
 
             FontMetrics fontMetrics = g2.getFontMetrics(font);
-            int width = fontMetrics.charWidth(c);
-            int height = fontMetrics.getHeight();
+            int w = fontMetrics.charWidth(c);
+            int h = fontMetrics.getHeight();
             int toY = fontMetrics.getDescent();
 
             g2.setFont(font);
@@ -655,17 +660,17 @@ public class LwjglEngine implements Engine {
             CharInfo charInfo = new CharInfo();
             charInfo.character = c;
             charInfo.x = x + builder.getOffsetX();
-            charInfo.y = y - height + toY + builder.getOffsetY();
+            charInfo.y = y - h + toY + builder.getOffsetY();
 
-            charInfo.width = width;
-            charInfo.height = height + builder.getOffsetY();
+            charInfo.width = w + builder.getOffsetX();
+            charInfo.height = h + builder.getOffsetY();
 
             charInfos.add(charInfo);
 
-            x += width + builder.getSpacingX();
+            x += w + builder.getSpacingX();
 
             if (x >= bufferedImage.getWidth() - font.getSize()) {
-                y += height + builder.getSpacingY();
+                y += h + builder.getSpacingY();
                 x = 0;
             }
         }

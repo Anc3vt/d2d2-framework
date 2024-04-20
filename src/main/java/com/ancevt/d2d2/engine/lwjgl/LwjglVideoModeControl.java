@@ -62,10 +62,10 @@ public class LwjglVideoModeControl implements VideoModeControl {
         int w[] = new int[1];
         int h[] = new int[1];
 
-        GLFW.glfwGetWindowPos(D2D2.backend().getWindowId(), x, y);
-        GLFW.glfwGetWindowSize(D2D2.backend().getWindowId(), w, h);
+        GLFW.glfwGetWindowPos(D2D2.engine().getWindowId(), x, y);
+        GLFW.glfwGetWindowSize(D2D2.engine().getWindowId(), w, h);
 
-        return new Info(D2D2.backend().getWindowId(), x[0], y[0], w[0], h[0]);
+        return new Info(D2D2.engine().getWindowId(), x[0], y[0], w[0], h[0]);
     }
 
     @Override

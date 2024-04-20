@@ -387,15 +387,14 @@ public class BitmapText extends DisplayObject implements IColored {
 
             if (text.isEmpty()) text = " ";
 
-            boolean firstIndexSharp = text.charAt(0) == '#';
-            int firstIndexOpen = text.indexOf('<');
+            int firstIndexOpen = text.indexOf("<");
             int lastIndexClose = text.lastIndexOf('>');
 
             StringBuilder stringBuilder = new StringBuilder();
 
-            if (firstIndexSharp && firstIndexOpen < lastIndexClose) {
+            if (firstIndexOpen < lastIndexClose) {
 
-                for (int i = 1; i < text.length(); i++) {
+                for (int i = 0; i < text.length(); i++) {
                     char c = text.charAt(i);
 
                     try {

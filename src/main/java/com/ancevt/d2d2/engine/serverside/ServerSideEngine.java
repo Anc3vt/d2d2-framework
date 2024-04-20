@@ -18,13 +18,13 @@
 package com.ancevt.d2d2.engine.serverside;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.engine.VideoModeControl;
-import com.ancevt.d2d2.engine.lwjgl.LwjglTextureEngine;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
+import com.ancevt.d2d2.engine.Engine;
+import com.ancevt.d2d2.engine.VideoModeControl;
+import com.ancevt.d2d2.engine.lwjgl.LwjglTextureEngine;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
@@ -56,6 +56,11 @@ public class ServerSideEngine implements Engine {
     @Override
     public VideoModeControl getVideoModeControl() {
         throw new RuntimeException("No video mode control in NoRenderBackend");
+    }
+
+    @Override
+    public void focusWindow() {
+
     }
 
     @Override
