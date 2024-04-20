@@ -203,7 +203,7 @@ public class TtfBitmapFontBuilder {
             }
         }
 
-        return D2D2.backend().generateBitmapFont(this);
+        return D2D2.engine().generateBitmapFont(this);
     }
 
 }

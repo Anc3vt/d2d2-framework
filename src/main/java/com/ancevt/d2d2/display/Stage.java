@@ -48,7 +48,7 @@ public class Stage extends Container {
     }
 
     public void setSize(float width, float height) {
-        D2D2.backend().setWindowSize((int) width, (int) height);
+        D2D2.engine().setWindowSize((int) width, (int) height);
     }
 
     public void onResize(int width, int height) {

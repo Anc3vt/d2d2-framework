@@ -88,4 +88,6 @@ public interface Engine {
 
     int getTimerCheckFrameFrequency();
     VideoModeControl getVideoModeControl();
+
+    void focusWindow();
 }

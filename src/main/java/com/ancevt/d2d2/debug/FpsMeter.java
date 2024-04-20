@@ -23,9 +23,6 @@ import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FpsMeter extends BitmapText {
 
     private long time = System.currentTimeMillis();
@@ -43,7 +40,7 @@ public class FpsMeter extends BitmapText {
     }
 
     public int getFps() {
-        return D2D2.backend().getActualFps();
+        return D2D2.engine().getActualFps();
     }
 
     public void eachFrame(Event event) {
