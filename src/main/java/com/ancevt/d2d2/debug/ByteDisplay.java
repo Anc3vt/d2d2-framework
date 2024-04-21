@@ -21,21 +21,15 @@ import com.ancevt.commons.io.ByteInput;
 import com.ancevt.commons.io.ByteOutput;
 import com.ancevt.commons.io.InputStreamFork;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.asset.Assets;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IContainer;
-import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
+import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
-import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -75,15 +69,7 @@ public class ByteDisplay extends InteractiveContainer {
         bgRect = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
         add(bgRect);
 
-        InputStream inputStream = Assets.getAssetAsStream("d2d2ttf/NotoSansMono-SemiCondensedBold.ttf");
-        BitmapFont bitmapFont = new TtfBitmapFontBuilder()
-            .ttfInputStream(inputStream)
-            .fontSize(12)
-            .spacingY(3)
-            .offsetY(1)
-            .build();
-
-        bitmapText = new BitmapText(bitmapFont);
+        bitmapText = new BitmapText();
         bitmapText.setText("#<FFFF00>ready");
         bitmapText.setMulticolorEnabled(true);
         bitmapText.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -440,36 +426,5 @@ public class ByteDisplay extends InteractiveContainer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-
-
-        byte[] bytes = ("\0".repeat(new Random().nextInt(100)) + (Math.random() + "hello world ЯЯЯЯ").repeat(100)).getBytes(StandardCharsets.UTF_8);
-        bytes[1] = -120;
-        bytes[2] = -120;
-        bytes[3] = -120;
-        bytes[4] = -120;
-        //byte[] bytes = new byte[512]; new Random().nextBytes(bytes);
-
-        ByteDisplay byteDisplay = ByteDisplay.show(bytes);
-
-        stage.add(new FpsMeter());
-
-        stage.addEventListener(InputEvent.KEY_DOWN, event -> {
-            var e = (InputEvent) event;
-            switch (e.getKeyCode()) {
-                case KeyCode.P -> {
-                    byteDisplay.getBitmapText().setCacheAsSprite(
-                        !byteDisplay.getBitmapText().isCacheAsSprite()
-                    );
-
-                    System.out.println(byteDisplay.getBitmapText().isCacheAsSprite());
-                }
-            }
-        });
-
-        D2D2.loop();
     }
 }

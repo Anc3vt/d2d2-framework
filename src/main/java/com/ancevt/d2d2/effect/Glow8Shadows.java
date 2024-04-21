@@ -17,17 +17,12 @@
  */
 package com.ancevt.d2d2.effect;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
-import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
-import com.ancevt.d2d2.display.text.StandardBitmapFonts;
 
 public class Glow8Shadows extends Container {
 
@@ -83,27 +78,4 @@ public class Glow8Shadows extends Container {
         return new Glow8Shadows(o, Color.BLACK, 0.80f, 1f, 0, 0);
     }
 
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        //StarletSpace.haveFun();
-        stage.setBackgroundColor(Color.WHITE);
-
-        BitmapText bitmapText = new BitmapText(D2D2.bitmapFontManager().loadBitmapFont(StandardBitmapFonts.OPEN_SANS_28));
-        bitmapText.setAutosize(true);
-
-        bitmapText.setText("#<FFFF00>This <FFFFFF>is a text i have no imagination");
-        bitmapText.setMulticolorEnabled(true);
-        bitmapText.setCacheAsSprite(true);
-        System.out.println(bitmapText.getWidth());
-
-        Glow8Shadows glow8Shadows = new Glow8Shadows(bitmapText, Color.BLACK, 1f, 1f, 0f, 0f);
-
-        stage.add(glow8Shadows, 100, 250);
-        stage.add(bitmapText, 100, 250);
-
-
-        stage.add(new FpsMeter());
-
-        D2D2.loop();
-    }
 }
