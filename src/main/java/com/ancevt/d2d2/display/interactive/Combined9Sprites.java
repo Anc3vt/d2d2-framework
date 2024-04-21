@@ -18,15 +18,9 @@
 package com.ancevt.d2d2.display.interactive;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.debug.FpsMeter;
-import com.ancevt.d2d2.debug.StarletSpace;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
-import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.texture.Texture;
 import lombok.Getter;
 
@@ -86,8 +80,8 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
                             Texture bottomRightTexture) {
         this();
         setTextures(topLeftTexture, topTexture, topRightTexture,
-                leftTexture, centerTexture, rightTexture,
-                bottomLeftTexture, bottomTexture, bottomRightTexture);
+            leftTexture, centerTexture, rightTexture,
+            bottomLeftTexture, bottomTexture, bottomRightTexture);
 
     }
 
@@ -134,17 +128,17 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
 
     public void setTextures(Texture all9partsTexture, int partWidth, int partHeight) {
         setTextures(
-                all9partsTexture.getSubtexture(0, 0, partWidth, partHeight),
-                all9partsTexture.getSubtexture(partWidth, 0, partWidth, partHeight),
-                all9partsTexture.getSubtexture(partWidth * 2, 0, partWidth, partHeight),
+            all9partsTexture.getSubtexture(0, 0, partWidth, partHeight),
+            all9partsTexture.getSubtexture(partWidth, 0, partWidth, partHeight),
+            all9partsTexture.getSubtexture(partWidth * 2, 0, partWidth, partHeight),
 
-                all9partsTexture.getSubtexture(0, partHeight, partWidth, partHeight),
-                all9partsTexture.getSubtexture(partWidth, partHeight, partWidth, partHeight),
-                all9partsTexture.getSubtexture(partWidth * 2, partHeight, partWidth, partHeight),
+            all9partsTexture.getSubtexture(0, partHeight, partWidth, partHeight),
+            all9partsTexture.getSubtexture(partWidth, partHeight, partWidth, partHeight),
+            all9partsTexture.getSubtexture(partWidth * 2, partHeight, partWidth, partHeight),
 
-                all9partsTexture.getSubtexture(0, partHeight * 2, partWidth, partHeight),
-                all9partsTexture.getSubtexture(partWidth, partHeight * 2, partWidth, partHeight),
-                all9partsTexture.getSubtexture(partWidth * 2, partHeight * 2, partWidth, partHeight)
+            all9partsTexture.getSubtexture(0, partHeight * 2, partWidth, partHeight),
+            all9partsTexture.getSubtexture(partWidth, partHeight * 2, partWidth, partHeight),
+            all9partsTexture.getSubtexture(partWidth * 2, partHeight * 2, partWidth, partHeight)
         );
     }
 
@@ -288,77 +282,4 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
             center.setScale(centerScaleX, centerScaleY);
         }
     }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        StarletSpace.haveFun();
-
-
-        var tm = D2D2.textureManager();
-
-        Combined9Sprites combined9Sprites = new Combined9Sprites(tm.getTexture("d2d2-demo-combined-9-2-sprites"), 8, 8);
-
-        combined9Sprites.setRepeatsEnabled(true);
-        combined9Sprites.setSize(100, 100);
-
-        combined9Sprites.setScale(3, 3);
-
-        stage.addEventListener(InputEvent.MOUSE_MOVE, event -> {
-            var e = (InputEvent) event;
-
-            float w = Math.round((e.getX() - combined9Sprites.getX()) / combined9Sprites.getAbsoluteScaleX());
-            float h = Math.round((e.getY() - combined9Sprites.getY()) / combined9Sprites.getAbsoluteScaleY());
-
-            while (w % 8 != 0) w--;
-            while (h % 8 != 0) h--;
-
-            combined9Sprites.setSize(w, h);
-        });
-
-        stage.addEventListener(InputEvent.KEY_DOWN, event -> {
-            var e = (InputEvent) event;
-            if (e.getKeyCode() == KeyCode.SPACE) {
-                combined9Sprites.setRepeatsEnabled(!combined9Sprites.isRepeatsEnabled());
-            }
-        });
-
-        stage.add(combined9Sprites, 100, 300);
-
-        stage.add(new FpsMeter());
-        D2D2.loop();
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

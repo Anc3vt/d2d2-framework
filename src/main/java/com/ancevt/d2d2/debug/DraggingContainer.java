@@ -17,16 +17,13 @@
  */
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IContainer;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.MouseButton;
-import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import lombok.Getter;
 
 public class DraggingContainer extends InteractiveContainer {
@@ -125,18 +122,5 @@ public class DraggingContainer extends InteractiveContainer {
     public void setHeight(float height) {
         super.setHeight(height);
         background.setHeight(height);
-    }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "D2D2 Application"));
-        stage.setBackgroundColor(Color.WHITE);
-
-        DraggingContainer draggingContainer = new DraggingContainer();
-        draggingContainer.setBackgroundColor(Color.BLACK);
-
-        stage.add(draggingContainer);
-
-        D2D2.stage().add(new FpsMeter());
-        D2D2.loop();
     }
 }

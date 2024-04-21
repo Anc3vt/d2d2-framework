@@ -20,24 +20,22 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.commons.hash.MD5;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IContainer;
+import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
-import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -349,42 +347,12 @@ public class DebugPanel extends Container {
         return Optional.empty();
     }
 
-    public static Optional<DebugPanel> show(String propertyName,  Supplier<Object> supplier) {
+    public static Optional<DebugPanel> show(String propertyName, Supplier<Object> supplier) {
         return show(propertyName, supplier.get());
     }
 
     public static void setProperty(String key, Object value) {
         System.setProperty(key, String.valueOf(value));
-    }
-
-    public static void main(String[] args) {
-        D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        D2D2.stage().setBackgroundColor(Color.DARK_GRAY);
-
-        DebugPanel.setEnabled(true);
-
-        for (int i = 0; i < 1; i++) {
-            DebugPanel.show("debug-panel-" + i).ifPresent(debugPanel -> {
-                debugPanel.setText(debugPanel.getX());
-                debugPanel.addEventListener(Event.EXIT_FRAME, event -> {
-                    debugPanel.setText(debugPanel.getX());
-
-                    debugPanel
-                        .addButton("Move<", () -> debugPanel.moveX(-1))
-                        .addButton("Move>", () -> debugPanel.moveX(1));
-                });
-            });
-        }
-
-        try {
-            System.out.println(ApplicationMainClassNameExtractor.getMainClassName());
-        } catch (ApplicationMainClassNameExtractor.MainClassNameExtractorException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        D2D2.loop();
-        DebugPanel.saveAll();
     }
 
     public static class Button extends BorderedRect {

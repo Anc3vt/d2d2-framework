@@ -107,15 +107,4 @@ public final class D2D2 {
     public static BitmapFontManager bitmapFontManager() {
         return bitmapFontManager;
     }
-
-    private static class Test extends D2D2Main {
-        public static void main(String[] args) {
-            D2D2.init(Test.class);
-        }
-
-        @Override
-        public void onCreate(Stage stage) {
-            super.onCreate(stage);
-        }
-    }
 }

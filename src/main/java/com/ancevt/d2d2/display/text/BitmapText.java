@@ -18,14 +18,10 @@
 package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
-import com.ancevt.d2d2.debug.FpsMeter;
-import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 
 import java.util.ArrayList;
@@ -408,12 +404,13 @@ public class BitmapText extends DisplayObject implements IColored {
                                 } else {
                                     continue;
                                 }
-
                                 color = Color.of(parseInt(colorString, 16));
-
                                 i += colorString.length() + 1;
                             } catch (Exception e) {
+                                System.err.println(text);
                                 e.printStackTrace();
+
+
                             }
                         } else {
                             letterList.add(new Letter(c, color));
@@ -478,39 +475,4 @@ public class BitmapText extends DisplayObject implements IColored {
         }
 
     }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        StarletSpace.haveFun();
-
-        stage.setBackgroundColor(Color.GRAY);
-
-        String text = """
-            #<0000FF>Hello <FFFF00>D2D2 <0000FF>world
-            <FFFFFF>Second line
-                            
-            ABCDEFGHIJKLMNOPQRSTUWYXYZ
-            abcdefghijklmnopqrstuvwxyz""";
-
-        BitmapText bitmapText = new BitmapText(D2D2.bitmapFontManager().loadBitmapFont("terminus/Terminus-16-Bold"));
-        bitmapText.setMulticolorEnabled(true);
-        bitmapText.setText(text);
-        bitmapText.setScale(1, 1);
-        stage.add(bitmapText, 100, 250);
-
-        BitmapText bitmapText1 = new BitmapText(D2D2.bitmapFontManager().loadBitmapFont("terminus/Terminus-16-Bold"));
-        bitmapText1.setText("AUTOSIZE BITMAP TEXT");
-        bitmapText1.setAutosize(true);
-        bitmapText1.setScale(5, 5);
-        stage.add(bitmapText1, 100, 450);
-
-        FpsMeter fpsMeter = new FpsMeter();
-        fpsMeter.setBitmapFont(D2D2.bitmapFontManager().loadBitmapFont("terminus/Terminus-16-Bold"));
-        stage.add(fpsMeter);
-
-        D2D2.loop();
-    }
-
-
 }
-
