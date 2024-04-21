@@ -36,7 +36,7 @@ public class AnimatedContainer extends Container implements IAnimated {
     public AnimatedContainer(ISprite[] frameSprites, boolean cloneEach) {
         this();
         setFrameSprites(frameSprites, cloneEach);
-        setName("_" + getClass().getSimpleName() + displayObjectId());
+        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
     public AnimatedContainer(ISprite[] frameSprites) {
@@ -54,7 +54,7 @@ public class AnimatedContainer extends Container implements IAnimated {
         setLoop(false);
         stop();
         setSlowing(DEFAULT_SLOWING);
-        setName("_" + getClass().getSimpleName() + displayObjectId());
+        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
     @Override

@@ -35,7 +35,7 @@ public class Stage extends Container {
     private Color backgroundColor;
 
     public Stage() {
-        setName("_" + getClass().getSimpleName() + displayObjectId());
+        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
         setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     }
 

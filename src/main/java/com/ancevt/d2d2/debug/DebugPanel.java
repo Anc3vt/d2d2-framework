@@ -114,7 +114,7 @@ public class DebugPanel extends Container {
         System.setProperty(systemPropertyName, String.valueOf(text));
     }
 
-    public static void setScale(float scale) {
+    public static void setPanelScale(float scale) {
         DebugPanel.scale = scale;
     }
 

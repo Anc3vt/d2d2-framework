@@ -37,7 +37,7 @@ public class InteractiveContainer extends Container implements Interactive {
 
     public InteractiveContainer(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
-        setName("_" + getClass().getSimpleName() + displayObjectId());
+        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
         enabled = true;
         pushEventsUp = true;
         InteractiveManager.getInstance().registerInteractive(this);

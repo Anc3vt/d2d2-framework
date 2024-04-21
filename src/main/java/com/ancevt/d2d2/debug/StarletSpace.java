@@ -117,7 +117,7 @@ public class StarletSpace extends Container {
                         plume.setAlpha(plume.getAlpha() - 0.01f);
                         plume.moveY(0.05f);
                         plume.rotate(1f);
-                        plume.toScaleY(0.99f);
+                        plume.scaleY(0.99f);
                         if (plume.getAlpha() <= 0) plume.removeFromParent();
                     });
                     plume.setColor(Color.WHITE);

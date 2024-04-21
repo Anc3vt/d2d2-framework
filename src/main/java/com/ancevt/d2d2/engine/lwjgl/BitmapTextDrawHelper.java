@@ -42,7 +42,7 @@ public class BitmapTextDrawHelper {
         float lineSpacing = bitmapText.getLineSpacing();
         float spacing = bitmapText.getSpacing();
 
-        float boundWidth = bitmapText.getWidth() * scaleX + bitmapFont.getCharInfo('0').width() * 3;
+        float boundWidth = bitmapText.getWidth() * scaleX + bitmapFont.getCharInfo('0').width() * 5;
         float boundHeight = bitmapText.getHeight() * scaleY;
 
         float drawX = 0;

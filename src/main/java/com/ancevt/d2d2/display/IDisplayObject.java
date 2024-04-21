@@ -66,7 +66,7 @@ public interface IDisplayObject extends IEventDispatcher {
         centerY();
     }
 
-    int displayObjectId();
+    int getDisplayObjectId();
 
     String getName();
 
@@ -94,6 +94,10 @@ public interface IDisplayObject extends IEventDispatcher {
 
     void setScale(float scaleX, float scaleY);
 
+    default void setScale(float xy) {
+        setScale(xy, xy);
+    }
+
     void setScaleX(float value);
 
     float getScaleX();
@@ -120,11 +124,15 @@ public interface IDisplayObject extends IEventDispatcher {
 
     void move(float toX, float toY);
 
-    void toScaleX(float value);
+    void scaleX(float value);
 
-    void toScaleY(float value);
+    void scaleY(float value);
 
-    void toScale(float toX, float toY);
+    void scale(float toX, float toY);
+
+    default void scale(float xy) {
+        scale(xy, xy);
+    }
 
     float getWidth();
 

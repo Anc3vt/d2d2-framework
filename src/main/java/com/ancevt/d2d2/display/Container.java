@@ -34,7 +34,7 @@ public class Container extends DisplayObject implements IContainer {
 
     public Container() {
         children = new CopyOnWriteArrayList<>();
-        setName("_" + getClass().getSimpleName() + displayObjectId());
+        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
     public Container(IDisplayObject firstChild) {

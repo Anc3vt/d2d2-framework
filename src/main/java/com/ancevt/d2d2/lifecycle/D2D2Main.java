@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2;
+package com.ancevt.d2d2.lifecycle;
 
 import com.ancevt.d2d2.display.Stage;
 

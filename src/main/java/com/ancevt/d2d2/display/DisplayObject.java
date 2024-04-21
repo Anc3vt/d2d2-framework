@@ -45,11 +45,11 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
         visible = true;
         scaleX = scaleY = 1.0f;
         alpha = 1.0f;
-        name = "_" + getClass().getSimpleName() + displayObjectId();
+        name = "_" + getClass().getSimpleName() + getDisplayObjectId();
     }
 
     @Override
-    public int displayObjectId() {
+    public int getDisplayObjectId() {
         return displayObjectId;
     }
 
@@ -193,19 +193,19 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
     }
 
     @Override
-    public void toScaleX(float value) {
+    public void scaleX(float value) {
         setScaleX(getScaleX() * value);
     }
 
     @Override
-    public void toScaleY(float value) {
+    public void scaleY(float value) {
         setScaleY(getScaleY() * value);
     }
 
     @Override
-    public void toScale(float toX, float toY) {
-        toScaleX(toX);
-        toScaleY(toY);
+    public void scale(float toX, float toY) {
+        scaleX(toX);
+        scaleY(toY);
     }
 
     @Override
