@@ -22,52 +22,105 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.texture.TextureManager;
 import com.ancevt.d2d2.engine.Engine;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.lifecycle.D2D2Main;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.util.D2D2Initializer;
+import com.ancevt.d2d2.lifecycle.SystemProperties;
+import com.ancevt.util.args.Args;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 import java.util.Properties;
+
+import static com.ancevt.commons.string.ConvertableString.convert;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class D2D2 {
-
+    private static final String PROPERTIES_FILENAME = "d2d2.properties";
     private static final TextureManager textureManager = new TextureManager();
-
     private static BitmapFontManager bitmapFontManager;
-
     @Getter
     private static IDisplayObject cursor;
+    private static Engine engine;
 
-    private static Engine backend;
+    @Getter
+    private static Args args;
 
-    public static Stage directInit(Engine backend) {
+    public static void init(Class<? extends D2D2Main> d2d2EntryPointClass, String[] args) {
+        D2D2.args = Args.of(args);
+
+        readPropertyFileIfExist();
+        addCliArgsToSystemProperties(args);
+
+        Properties p = System.getProperties();
+        String engineClassName = p.getProperty(SystemProperties.D2D2_ENGINE, LwjglEngine.class.getName());
+        String titleText = p.getProperty(SystemProperties.D2D2_WINDOW_TITLE, "D2D2 Application");
+        int width = convert(p.getProperty(SystemProperties.D2D2_WINDOW_WIDTH, "800")).toInt();
+        int height = convert(p.getProperty(SystemProperties.D2D2_WINDOW_HEIGHT, "600")).toInt();
+        Engine engine = createEngine(engineClassName, width, height, titleText);
+
+        Stage stage = D2D2.createStage(engine);
+        D2D2Main entryPoint = createMain(d2d2EntryPointClass);
+        entryPoint.onCreate(stage);
+        D2D2.loop();
+        entryPoint.onDispose();
+    }
+
+    public static Stage createStage(Engine engine) {
         bitmapFontManager = new BitmapFontManager();
-        D2D2.backend = backend;
-        backend.create();
-        return backend.getStage();
+        D2D2.engine = engine;
+        engine.create();
+        return engine.getStage();
     }
 
-    public static void init(Class<? extends D2D2Main> d2d2EntryPointClass) {
-        D2D2Initializer.init(d2d2EntryPointClass);
+    public static D2D2Main createMain(Class<? extends D2D2Main> clazz) {
+        try {
+            return clazz.getConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
-    public static void init(Class<? extends D2D2Main> d2d2EntryPointClass, Map<String, String> propertyMap) {
-        Properties properties = new Properties();
-        properties.putAll(propertyMap);
-        D2D2Initializer.init(d2d2EntryPointClass, properties);
+    public static Engine createEngine(String engineClassName, int width, int height, String titleText) {
+        try {
+            return (Engine) Class.forName(engineClassName)
+                .getConstructor(int.class, int.class, String.class)
+                .newInstance(width, height, titleText);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
-    public static void init(Class<? extends D2D2Main> d2d2EntryPointClass, Properties properties) {
-        D2D2Initializer.init(d2d2EntryPointClass, properties);
+    private static void readPropertyFileIfExist() {
+        InputStream inputStream = D2D2.class
+            .getClassLoader()
+            .getResourceAsStream(PROPERTIES_FILENAME);
+
+        if (inputStream != null) {
+            try {
+                Properties properties = new Properties();
+                properties.load(inputStream);
+                System.getProperties().putAll(properties);
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }
     }
 
-    public static void init(Class<? extends D2D2Main> d2d2EntryPointClass, InputStream propertiesInputStream) {
-        D2D2Initializer.init(d2d2EntryPointClass, propertiesInputStream);
+    private static void addCliArgsToSystemProperties(String[] args) {
+        for (String arg : args) {
+            if (arg.startsWith("-D")) {
+                arg = arg.substring(2);
+                String[] split = arg.split("=");
+                String key = split[0];
+                String value = split[1];
+                System.setProperty(key, value);
+            }
+        }
     }
 
     public static void setCursor(IDisplayObject cursor) {
@@ -85,19 +138,19 @@ public final class D2D2 {
     }
 
     public static Stage stage() {
-        return backend.getStage();
+        return engine.getStage();
     }
 
     public static void loop() {
-        backend.start();
+        engine.start();
     }
 
     public static void exit() {
-        backend.stop();
+        engine.stop();
     }
 
     public static Engine engine() {
-        return backend;
+        return engine;
     }
 
     public static TextureManager textureManager() {

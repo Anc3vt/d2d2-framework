@@ -47,7 +47,7 @@ public class AnimatedSprite extends Sprite implements IAnimated {
         setLoop(false);
         stop();
         setSlowing(DEFAULT_SLOWING);
-        setName("_" + getClass().getSimpleName() + displayObjectId());
+        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
     public AnimatedSprite(ISprite[] frameSprites, boolean cloneEach) {

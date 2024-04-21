@@ -17,146 +17,106 @@
  */
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.d2d2.common.PlainRect;
-import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.common.BorderedRect;
+import com.ancevt.d2d2.common.IDisposable;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
+import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Resizable;
+import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.event.Event;
 
-public class DebugBorder extends Container implements Resizable, IColored {
-	
-	private final PlainRect l;
-	private final PlainRect t;
-	private final PlainRect r;
-	private final PlainRect b;
-	
-	private float width;
-	private float height;
-	
-	private static final Color COLOR_BLACK = Color.BLACK;
-	private static final Color COLOR_WHITE = Color.WHITE;
-	
-	private byte timer;
-	
-	private DisplayObject assignTarget;
-	
-	public DebugBorder() {
-		this(10, 10);
-	}
-	
-	public DebugBorder(DisplayObject assignTo) {
-		this(assignTo.getWidth(), assignTo.getHeight());
-		assign(assignTo);
-	}
-	
-	public DebugBorder(float width, float height) {
-		l = new PlainRect();
-		t = new PlainRect();
-		r = new PlainRect();
-		b = new PlainRect();
-		
-		add(l);
-		add(t);
-		add(r);
-		add(b);
-		
-		setSize(width, height);
+public class DebugBorder extends Container implements Resizable, IColored, IDisposable {
 
-		addEventListener(Event.EXIT_FRAME, this::eachFrame);
-	}
+    private final BorderedRect borderedRect;
+    private final IDisplayObject displayObject;
+    private final BitmapText label;
 
-	private void rebuild() {
-		t.setScaleX(width);
-		l.setScaleY(height);
-		
-		b.setScaleX(width);
-		r.setScaleY(height);
-		
-		r.setX(width);
-		b.setY(height);
-	}
-	
-	@Override
-	public void setColor(Color color) {
-		l.setColor(color);
-		t.setColor(color);
-		r.setColor(color);
-		b.setColor(color);
-	}
+    private boolean disposed;
 
-	@Override
-	public void setColor(int rgb) {
-		l.setColor(rgb);
-		t.setColor(rgb);
-		r.setColor(rgb);
-		b.setColor(rgb);
-	}
+    private DebugBorder(IDisplayObject displayObject) {
+        Color color = Color.createVisibleRandomColor();
 
-	@Override
-	public Color getColor() {
-		return l.getColor();
-	}
+        this.displayObject = displayObject;
+        borderedRect = new BorderedRect(displayObject.getWidth(),
+            displayObject.getHeight(),
+            Color.NO_COLOR,
+            color
+        );
 
-	@Override
-	public void setSize(float width, float height) {
-		this.width = width;
-		this.height = height;
-		rebuild();
-	}
+        add(borderedRect);
 
-	@Override
-	public void setWidth(float value) {
-		this.width = value;
-		rebuild();
-	}
+        label = new BitmapText();
+        label.setText(displayObject.getDisplayObjectId() + " " + displayObject.getName());
+        label.setAutosize(true);
+        add(label, 2, -label.getHeight());
 
-	@Override
-	public void setHeight(float value) {
-		this.height = value;
-		rebuild();
-	}
-	
-	@Override
-	public final float getWidth() {
-		return width;
-	}
-	
-	@Override
-	public float getHeight() {
-		return height;
-	}
+        displayObject.addEventListener(this, Event.ADD_TO_STAGE, this::displayObject_addToStage);
+        displayObject.addEventListener(this, Event.REMOVE_FROM_STAGE, this::displayObject_removeFromStage);
+    }
 
-	public final void assign(final DisplayObject assignTo) {
-		assignTarget = assignTo;
-	}
-	
-	public void eachFrame(Event event) {
-		
-		if(assignTarget != null) {
-			setSize(
-				assignTarget.getWidth() * assignTarget.getAbsoluteScaleX(), 
-				assignTarget.getHeight() * assignTarget.getAbsoluteScaleY()
-			);
-			
-			setXY(assignTarget.getX(), assignTarget.getY());
-			
-			if(assignTarget.hasParent() && getParent() != assignTarget.getParent()) {
-				if(hasParent()) getParent().remove(this);
-				assignTarget.getParent().add(this);
-			}
-			
-			timer ++;
-			final Color color = timer % 20 < 10 ? COLOR_BLACK : COLOR_WHITE;
-			if(timer >= 20) timer = 0;
-			
-			l.setColor(color);
-			r.setColor(color);
-			t.setColor(color);
-			b.setColor(color);
-		}
-	}
-	
-	
+    private void displayObject_removeFromStage(Event event) {
+        removeFromParent();
+    }
+
+    private void displayObject_addToStage(Event event) {
+        D2D2.stage().add(this);
+    }
+
+    @Override
+    public void setSize(float width, float height) {
+        borderedRect.setSize(width, height);
+    }
+
+    @Override
+    public void setWidth(float value) {
+        borderedRect.setWidth(value);
+    }
+
+    @Override
+    public void setHeight(float value) {
+        borderedRect.setHeight(value);
+    }
+
+    @Override
+    public void setColor(Color color) {
+        borderedRect.setBorderColor(color);
+        label.setColor(color);
+    }
+
+    @Override
+    public Color getColor() {
+        return borderedRect.getBorderColor();
+    }
+
+    @Override
+    public void onEnterFrame() {
+        setXY(displayObject.getAbsoluteX(), displayObject.getAbsoluteY());
+        setSize(displayObject.getWidth(), displayObject.getHeight());
+        setScale(displayObject.getAbsoluteScaleX(), displayObject.getAbsoluteScaleY());
+        setRotation(displayObject.getAbsoluteRotation());
+    }
+
+    @Override
+    public void dispose() {
+        displayObject.removeEventListener(this, Event.ADD_TO_STAGE);
+        displayObject.removeEventListener(this, Event.REMOVE_FROM_STAGE);
+        removeFromParent();
+        disposed = true;
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return disposed;
+    }
+
+    public static DebugBorder create(IDisplayObject displayObject) {
+        DebugBorder debugBorder = new DebugBorder(displayObject);
+        if (displayObject.isOnScreen()) {
+            D2D2.stage().add(debugBorder);
+        }
+        return debugBorder;
+    }
 }

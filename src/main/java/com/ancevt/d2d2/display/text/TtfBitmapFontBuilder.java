@@ -29,8 +29,8 @@ public class TtfBitmapFontBuilder {
     private static final int DEFAULT_ATLAS_WIDTH = 512;
     private static final int DEFAULT_ATLAS_HEIGHT = 512;
     private static final int DEFAULT_FONT_SIZE = 12;
-    private static final int DEFAULT_SPACING_X = 5;
-    private static final int DEFAULT_SPACING_Y = 5;
+    private static final int DEFAULT_SPACING_X = 0;
+    private static final int DEFAULT_SPACING_Y = 0;
 
     @Getter
     private int atlasWidth = DEFAULT_ATLAS_WIDTH;

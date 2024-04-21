@@ -66,15 +66,12 @@ public class BitmapFontManager {
         int spacingX = 0;
         int spacingY = 0;
 
-        System.out.println("name " + name);
-
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(charsDataInputStream))) {
 
             String line;
             while ((line = bufferedReader.readLine()) != null) {
 
                 if (line.startsWith("#meta")) {
-                    System.out.println(line);
                     Args meta = Args.of(line);
                     spacingX = meta.get(int.class, "spacingX", 0);
                     spacingY = meta.get(int.class, "spacingY", 0);

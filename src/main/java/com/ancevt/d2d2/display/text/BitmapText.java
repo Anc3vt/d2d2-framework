@@ -23,6 +23,8 @@ import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.event.Event;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +35,11 @@ public class BitmapText extends DisplayObject implements IColored {
 
     protected static final String DEFAULT_TEXT = "";
 
-    protected static final float DEFAULT_BOUND_WIDTH = 512f;
-    protected static final float DEFAULT_BOUND_HEIGHT = 512f;
+    protected static final float DEFAULT_WIDTH = 256f;
+    protected static final float DEFAULT_HEIGHT = 128f;
+    protected static final float DEFAULT_MAX_WIDTH = 1024f;
+    protected static final float DEFAULT_MAX_HEIGHT = 512f;
+
 
     protected static final Color DEFAULT_COLOR = Color.WHITE;
 
@@ -49,10 +54,23 @@ public class BitmapText extends DisplayObject implements IColored {
     private float width;
     private float height;
 
+    @Getter
+    private float maxWidth = DEFAULT_MAX_WIDTH;
+
+    @Getter
+    private float maxHeight = DEFAULT_MAX_HEIGHT;
+
+    @Getter
+    @Setter
     private double textureBleedingFix = 0.0;
+    @Getter
+    @Setter
     private double vertexBleedingFix = 0.0;
+    @Getter
     private boolean multicolorEnabled;
+    @Getter
     private ColorTextData colorTextData;
+    @Getter
     private boolean autosize;
 
     private boolean cacheAsSprite;
@@ -64,7 +82,7 @@ public class BitmapText extends DisplayObject implements IColored {
         setWidth(width);
         setHeight(height);
         setText(text);
-        setName("_" + getClass().getSimpleName() + displayObjectId());
+        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
     public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight) {
@@ -72,11 +90,11 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public BitmapText(String text) {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, text);
+        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
     }
 
     public BitmapText(final BitmapFont bitmapFont) {
-        this(bitmapFont, DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
+        this(bitmapFont, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
     }
 
     public BitmapText(float boundWidth, float boundHeight) {
@@ -84,7 +102,7 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public BitmapText() {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_BOUND_WIDTH, DEFAULT_BOUND_HEIGHT, DEFAULT_TEXT);
+        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
     }
 
     public BitmapText cloneBitmapText() {
@@ -141,22 +159,6 @@ public class BitmapText extends DisplayObject implements IColored {
         if (isCacheAsSprite()) sprite = toSprite();
     }
 
-    public void setTextureBleedingFix(double textureBleedingFix) {
-        this.textureBleedingFix = textureBleedingFix;
-    }
-
-    public double getTextureBleedingFix() {
-        return textureBleedingFix;
-    }
-
-    public void setVertexBleedingFix(double vertexBleedingFix) {
-        this.vertexBleedingFix = vertexBleedingFix;
-    }
-
-    public double getVertexBleedingFix() {
-        return vertexBleedingFix;
-    }
-
     public void setAutosize(boolean autosize) {
         this.autosize = autosize;
         if (autosize) {
@@ -165,8 +167,20 @@ public class BitmapText extends DisplayObject implements IColored {
         updateCachedSprite();
     }
 
-    public boolean isAutosize() {
-        return autosize;
+    public void setMaxWidth(float value) {
+        this.maxWidth = value;
+        setWidth(width);
+    }
+
+    public void setMaxHeight(float value) {
+        this.maxHeight = value;
+        setHeight(height);
+    }
+
+    public void setMaxSize(float maxWidth, float maxHeight) {
+        this.maxWidth = maxWidth;
+        this.maxHeight = maxHeight;
+        setSize(width, height);
     }
 
     public float computeTextWidth(String text) {
@@ -177,42 +191,72 @@ public class BitmapText extends DisplayObject implements IColored {
         if (isEmpty()) return 0;
 
         final char[] chars = getPlainText().toCharArray();
-        int result = 0;
+        int countWidth = 0;
 
         final BitmapFont font = getBitmapFont();
 
         int max = 0;
 
         for (final char c : chars) {
-            if (c == '\n' || (getWidth() > 0 && result > getWidth())) result = 0;
+            if (c == '\n' || (getWidth() > 0 && countWidth > getMaxWidth())) countWidth = 0;
 
             BitmapCharInfo info = font.getCharInfo(c);
             if (info == null) continue;
 
-            result += (int) (info.width() + getSpacing());
+            countWidth += (int) (info.width() + getSpacing());
 
-            if (result > max) max = result;
+            if (countWidth > max) max = countWidth;
         }
 
-        return (int) (max - getSpacing() + getBitmapFont().getZeroCharWidth() * 2);
+        return (int) (max - getSpacing());
     }
 
     public float getTextHeight() {
-        if (getText() == null) return 0;
+        if (isEmpty()) return 0;
 
         final char[] chars = getPlainText().toCharArray();
-        int result = 0;
+        int countWidth = 0;
 
         final BitmapFont font = getBitmapFont();
 
+        int max = 0;
+
+        int countHeight = 0;
+
         for (final char c : chars) {
-            if (c == '\n' || (getWidth() > 0 && result > getWidth())) {
-                result += (int) (font.getZeroCharHeight() + getLineSpacing());
+            if (c == '\n' || (getWidth() > 0 && countWidth > getMaxWidth())) {
+                countHeight += (int) (font.getZeroCharHeight() + getLineSpacing());
+                countWidth = 0;
             }
+
+            BitmapCharInfo info = font.getCharInfo(c);
+            if (info == null) continue;
+
+            countWidth += (int) (info.width() + getSpacing());
+
+            if (countWidth > max) max = countWidth;
         }
 
-        return result + font.getZeroCharHeight();
+        return countHeight + font.getZeroCharHeight();
     }
+
+
+//    public float getTextHeight() {
+//        if (getText() == null) return 0;
+//
+//        final char[] chars = getPlainText().toCharArray();
+//        int result = 0;
+//
+//        final BitmapFont font = getBitmapFont();
+//
+//        for (final char c : chars) {
+//            if (c == '\n' || (result < getMaxHeight())) {
+//                result += (int) (font.getZeroCharHeight() + getLineSpacing());
+//            }
+//        }
+//
+//        return result + font.getZeroCharHeight();
+//    }
 
     public Sprite toSprite() {
         Sprite result = new Sprite(D2D2.textureManager().bitmapTextToTextureAtlas(this).createTexture());
@@ -307,17 +351,36 @@ public class BitmapText extends DisplayObject implements IColored {
 
     public void setWidth(float value) {
         width = value;
+
+        if (width > maxWidth) {
+            width = maxWidth;
+        }
+
         updateCachedSprite();
     }
 
     public void setHeight(float value) {
         height = value;
+
+        if (height > maxHeight) {
+            height = maxHeight;
+        }
+
         updateCachedSprite();
     }
 
     public void setSize(float width, float height) {
         this.width = width;
         this.height = height;
+
+        if (this.width > maxWidth) {
+            this.width = maxWidth;
+        }
+
+        if (this.height > maxHeight) {
+            this.height = maxHeight;
+        }
+
         updateCachedSprite();
     }
 
@@ -338,14 +401,6 @@ public class BitmapText extends DisplayObject implements IColored {
 
     public float getCharHeight() {
         return getBitmapFont().getCharInfo('0').height();
-    }
-
-    public boolean isMulticolorEnabled() {
-        return multicolorEnabled;
-    }
-
-    public ColorTextData getColorTextData() {
-        return colorTextData;
     }
 
     @Override
@@ -397,7 +452,10 @@ public class BitmapText extends DisplayObject implements IColored {
 
                         if (c == '<') {
                             try {
-                                String colorString = text.substring(i + 1, i + 8);
+                                int startIndex = i + 1;
+                                int endIndex = i + 8;
+
+                                String colorString = text.substring(startIndex, endIndex);
 
                                 if (colorString.indexOf('>') >= 0) {
                                     colorString = colorString.substring(0, colorString.indexOf('>'));

@@ -32,7 +32,7 @@ import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.time.Timer;
-import com.ancevt.d2d2.util.D2D2SystemProperties;
+import com.ancevt.d2d2.lifecycle.SystemProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -313,7 +313,7 @@ public class LwjglEngine implements Engine {
 
         glfwDefaultWindowHints();
 
-        if (Objects.equals(System.getProperty("glfwhint.alwaysontop"), "true")) {
+        if (Objects.equals(System.getProperty(SystemProperties.GLFWHINT_ALWAYSONTOP), "true")) {
             glfwWindowHint(GLFW_FLOATING, 1);
         }
 
@@ -612,7 +612,12 @@ public class LwjglEngine implements Engine {
         font = new Font(fontName, fontStyle, fontSize);
 
         //TODO: compute atlas height automatically
-        BufferedImage bufferedImage = new BufferedImage(builder.getAtlasWidth(), builder.getAtlasHeight(), BufferedImage.TYPE_INT_ARGB);
+
+        int atlasWidth = 32 * builder.getFontSize();
+        int atlasHeight = 32 * builder.getFontSize();
+        BufferedImage bufferedImage = new BufferedImage(atlasHeight, atlasWidth, BufferedImage.TYPE_INT_ARGB);
+
+        //BufferedImage bufferedImage = new BufferedImage(builder.getAtlasWidth(), builder.getAtlasHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
 
         if (builder.fractionalMetrics() != null)
@@ -704,14 +709,14 @@ public class LwjglEngine implements Engine {
         ImageIO.write(bufferedImage, "png", pngOutputStream);
         byte[] pngDataBytes = pngOutputStream.toByteArray();
 
-        if (System.getProperty(D2D2SystemProperties.BITMAPFONT_SAVEBMF) != null) {
+        if (System.getProperty(SystemProperties.D2D2_BITMAPFONT_SAVEBMF) != null) {
             String assetPath = builder.getTtfAssetPath();
             Path ttfPath = builder.getTtfPath();
 
             String fileName = assetPath != null ?
                 Path.of(assetPath).getFileName().toString() : ttfPath.getFileName().toString();
 
-            String saveToPathString = System.getProperty(D2D2SystemProperties.BITMAPFONT_SAVEBMF);
+            String saveToPathString = System.getProperty(SystemProperties.D2D2_BITMAPFONT_SAVEBMF);
 
             Path destinationPath = Files.createDirectories(Path.of(saveToPathString));
 

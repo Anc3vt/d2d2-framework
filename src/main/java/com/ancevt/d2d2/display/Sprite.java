@@ -34,7 +34,7 @@ public class Sprite extends DisplayObject implements ISprite {
     public Sprite() {
         setColor(DEFAULT_COLOR);
         setRepeat(1, 1);
-        setName("_" + getClass().getSimpleName() + displayObjectId());
+        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
     public Sprite(String assetPathToImage) {
