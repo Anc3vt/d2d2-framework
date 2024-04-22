@@ -23,9 +23,10 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
 import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.engine.VideoModeControl;
+import com.ancevt.d2d2.engine.MonitorManager;
 import com.ancevt.d2d2.engine.lwjgl.LwjglTextureEngine;
 import com.ancevt.d2d2.event.LifecycleEvent;
+import com.ancevt.d2d2.exception.NotImplementedException;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,13 +55,13 @@ public class ServerSideEngine implements Engine {
     }
 
     @Override
-    public VideoModeControl getVideoModeControl() {
-        throw new RuntimeException("No video mode control in NoRenderBackend");
+    public void focusWindow() {
+
     }
 
     @Override
-    public void focusWindow() {
-
+    public MonitorManager getMonitorManager() {
+        throw new NotImplementedException("No monitors in no-render engine");
     }
 
     @Override

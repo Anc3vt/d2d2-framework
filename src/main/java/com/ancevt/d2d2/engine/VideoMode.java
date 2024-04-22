@@ -18,27 +18,19 @@
 package com.ancevt.d2d2.engine;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Data
 @Builder
+@Getter
 @RequiredArgsConstructor
 public class VideoMode {
     private final int width;
     private final int height;
     private final int refreshRate;
 
-    public String getResolution() {
-        return width + "x" + height;
-    }
-
     @Override
     public String toString() {
-        return "VideoMode{" +
-                "width=" + width +
-                ", height=" + height +
-                ", refreshRate=" + refreshRate +
-                '}';
+        return width + "x" + height + ":" + refreshRate;
     }
 }
