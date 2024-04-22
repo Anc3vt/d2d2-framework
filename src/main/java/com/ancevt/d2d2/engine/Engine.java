@@ -87,7 +87,8 @@ public interface Engine {
     void setTimerCheckFrameFrequency(int v);
 
     int getTimerCheckFrameFrequency();
-    VideoModeControl getVideoModeControl();
 
     void focusWindow();
+
+    MonitorManager getMonitorManager();
 }

@@ -25,14 +25,14 @@ import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.FractionalMetrics;
 import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
 import com.ancevt.d2d2.engine.Engine;
+import com.ancevt.d2d2.engine.MonitorManager;
 import com.ancevt.d2d2.engine.VideoMode;
-import com.ancevt.d2d2.engine.VideoModeControl;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.time.Timer;
 import com.ancevt.d2d2.lifecycle.SystemProperties;
+import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -144,7 +144,8 @@ public class LwjglEngine implements Engine {
     private int tick;
     private int frameCounter;
     private long time;
-    private final VideoModeControl videoModeControl = new LwjglVideoModeControl();
+
+    private final MonitorManager monitorManager = new LwjglMonitorManager();
 
     @Getter
     @Setter
@@ -158,13 +159,13 @@ public class LwjglEngine implements Engine {
     }
 
     @Override
-    public VideoModeControl getVideoModeControl() {
-        return videoModeControl;
+    public void focusWindow() {
+        GLFW.glfwFocusWindow(windowId);
     }
 
     @Override
-    public void focusWindow() {
-        GLFW.glfwFocusWindow(windowId);
+    public MonitorManager getMonitorManager() {
+        return monitorManager;
     }
 
     @Override
