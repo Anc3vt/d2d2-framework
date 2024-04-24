@@ -18,10 +18,46 @@
 package com.ancevt.d2d2.display;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface IContainer extends IDisplayObject {
+
+    static Optional<IDisplayObject> findDisplayObjectById(IContainer fromRoot, int id) {
+        return listDisplayObjects(fromRoot, new ArrayList<>())
+            .stream()
+            .filter(o -> o.getDisplayObjectId() == id)
+            .findAny();
+    }
+
+    static Optional<IDisplayObject> findDisplayObjectByName(IContainer fromRoot, String name) {
+        return listDisplayObjects(fromRoot, new ArrayList<>())
+            .stream()
+            .filter(o -> Objects.equals(o.getName(), name))
+            .findFirst();
+    }
+
+    static List<IDisplayObject> listDisplayObjects(IDisplayObject o, List<IDisplayObject> list) {
+        list.add(o);
+
+        if (o instanceof IContainer c) {
+            c.childrenStream().forEach(child -> listDisplayObjects(child, list));
+        }
+
+        return list;
+    }
+
+    default Optional<IDisplayObject> findDisplayObjectById(int id) {
+        return findDisplayObjectById(this, id);
+    }
+
+    default Optional<IDisplayObject> findDisplayObjectByName(String name) {
+        return findDisplayObjectByName(this, name);
+    }
 
     void add(IDisplayObject child);
 
@@ -30,6 +66,8 @@ public interface IContainer extends IDisplayObject {
     void add(IDisplayObject child, float x, float y);
 
     void add(IDisplayObject child, int index, float x, float y);
+
+    void add(IDisplayObject child, Container.PlaceBy placeBy);
 
     default void addAll(Collection<IDisplayObject> children) {
         children.forEach(this::add);

@@ -37,9 +37,14 @@ public class Container extends DisplayObject implements IContainer {
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
-    public Container(IDisplayObject firstChild) {
+    public Container(IDisplayObject wrappingDisplayObject) {
         this();
-        add(firstChild);
+        add(wrappingDisplayObject);
+    }
+
+    public Container(IDisplayObject wrappingDisplayObject, PlaceBy placeBy) {
+        this(wrappingDisplayObject);
+        placeBy(wrappingDisplayObject, placeBy);
     }
 
     @Override
@@ -86,6 +91,29 @@ public class Container extends DisplayObject implements IContainer {
         children.add(index, child);
 
         Stage.dispatchAddToStage(child);
+    }
+
+    @Override
+    public void add(IDisplayObject child, PlaceBy placeBy) {
+        add(child);
+        placeBy(child, placeBy);
+    }
+
+    private void placeBy(IDisplayObject displayObject, PlaceBy placeBy) {
+        float w = displayObject.getWidth();
+        float h = displayObject.getHeight();
+
+        switch (placeBy) {
+            case TOP_LEFT -> add(displayObject, -w, -h);
+            case TOP -> add(displayObject, -w / 2, -h);
+            case TOP_RIGHT -> add(displayObject, 0f, -h);
+            case LEFT -> add(displayObject, -w, -h / 2);
+            case CENTER -> add(displayObject, -w / 2, -h / 2);
+            case RIGHT -> add(displayObject, 0f, -h / 2);
+            case BOTTOM_LEFT -> add(displayObject, -w, 0f);
+            case BOTTOM -> add(displayObject, -w / 2, 0f);
+            case BOTTOM_RIGHT -> add(displayObject, 0f, 0f);
+        }
     }
 
     @Override
@@ -174,6 +202,18 @@ public class Container extends DisplayObject implements IContainer {
         return "Container{" +
             getName() +
             '}';
+    }
+
+    public enum PlaceBy {
+        TOP_LEFT,
+        TOP,
+        TOP_RIGHT,
+        LEFT,
+        CENTER,
+        RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM,
+        BOTTOM_RIGHT
     }
 
 }
