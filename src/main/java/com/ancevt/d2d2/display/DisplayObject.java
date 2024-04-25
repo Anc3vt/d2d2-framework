@@ -284,4 +284,12 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
     public void toAlpha(float value) {
         alpha *= value;
     }
+
+    @Override
+    public String toString() {
+        String sb = getClass().getSimpleName() + "{" + "displayObjectId=" + displayObjectId +
+            ", name='" + name + '\'' +
+            '}';
+        return sb;
+    }
 }

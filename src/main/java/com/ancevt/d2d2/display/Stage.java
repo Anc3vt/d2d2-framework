@@ -59,7 +59,7 @@ public class Stage extends Container {
 
     @Override
     public String toString() {
-        return "Stage{" +
+        return getClass().getSimpleName() + "{" +
             "name=" + getName() +
             ", width=" + width +
             ", height=" + height +
