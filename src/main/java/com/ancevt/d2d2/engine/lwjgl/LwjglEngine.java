@@ -24,8 +24,8 @@ import com.ancevt.d2d2.display.interactive.InteractiveManager;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.FractionalMetrics;
 import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
+import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.engine.MonitorManager;
 import com.ancevt.d2d2.engine.VideoMode;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
@@ -71,10 +71,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
-import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_HIDDEN;
-import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
-import static org.lwjgl.glfw.GLFW.GLFW_DECORATED;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_FLOATING;
 import static org.lwjgl.glfw.GLFW.GLFW_MOD_ALT;
@@ -88,20 +84,16 @@ import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
-import static org.lwjgl.glfw.GLFW.glfwHideWindow;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSetCharCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback;
-import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
@@ -109,19 +101,17 @@ import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-// TODO: rewrite with VBO abd refactor
+// TODO: rewrite with VBO and refactor
 @Slf4j
 public class LwjglEngine implements Engine {
 
     private static final String DEMO_TEXTURE_DATA_INF_FILE = "d2d2-core-demo-texture-data.inf";
 
     private LwjglRenderer renderer;
-    long windowId;
     private boolean mouseVisible;
     private int width;
     private int height;
     private String title;
-    private boolean visible;
     private int mouseX;
     private int mouseY;
     private boolean isDown;
@@ -141,11 +131,8 @@ public class LwjglEngine implements Engine {
     private boolean control;
     private boolean shift;
     private boolean alt;
-    private int tick;
-    private int frameCounter;
-    private long time;
 
-    private final MonitorManager monitorManager = new LwjglMonitorManager();
+    private final LwjglDisplayManager displayManager = new LwjglDisplayManager();
 
     @Getter
     @Setter
@@ -156,16 +143,6 @@ public class LwjglEngine implements Engine {
         this.height = height;
         this.title = title;
         D2D2.textureManager().setTextureEngine(new LwjglTextureEngine());
-    }
-
-    @Override
-    public void focusWindow() {
-        GLFW.glfwFocusWindow(windowId);
-    }
-
-    @Override
-    public MonitorManager getMonitorManager() {
-        return monitorManager;
     }
 
     @Override
@@ -187,35 +164,20 @@ public class LwjglEngine implements Engine {
         alive = false;
     }
 
-    @Override
-    public void setMouseVisible(boolean mouseVisible) {
-        this.mouseVisible = mouseVisible;
-        glfwSetInputMode(windowId, GLFW_CURSOR, mouseVisible ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_HIDDEN);
-    }
-
-    @Override
-    public boolean isMouseVisible() {
-        return mouseVisible;
-    }
 
     @Override
     public void create() {
         stage = new Stage();
         stage.onResize(width, height);
         renderer = new LwjglRenderer(stage, this);
-        ((LwjglRenderer) renderer).setLWJGLTextureEngine((LwjglTextureEngine) D2D2.textureManager().getTextureEngine());
-        windowId = createWindow();
-        setVisible(true);
-    }
-
-    @Override
-    public long getWindowId() {
-        return windowId;
+        renderer.setLWJGLTextureEngine((LwjglTextureEngine) D2D2.textureManager().getTextureEngine());
+        displayManager.windowId = createWindow();
+        displayManager.setVisible(true);
     }
 
     @Override
     public void setSmoothMode(boolean value) {
-        ((LwjglRenderer) renderer).smoothMode = value;
+        renderer.smoothMode = value;
 
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -252,54 +214,10 @@ public class LwjglEngine implements Engine {
     }
 
     @Override
-    public void setWindowSize(int width, int height) {
-        this.width = width;
-        this.height = height;
-
-        glfwSetWindowSize(windowId, width, height);
-    }
-
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
-    }
-
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
     public Stage getStage() {
         return stage;
     }
 
-    @Override
-    public void setVisible(boolean visible) {
-        if (this.visible == visible) return;
-
-        this.visible = visible;
-        if (visible) {
-            glfwShowWindow(windowId);
-        } else {
-            glfwHideWindow(windowId);
-        }
-    }
-
-    @Override
-    public boolean isVisible() {
-        return visible;
-    }
 
     @Override
     public IRenderer getRenderer() {
@@ -324,15 +242,6 @@ public class LwjglEngine implements Engine {
             throw new RuntimeException("Failed to create the GLFW window");
 
         monitor = glfwGetPrimaryMonitor();
-
-        /* TODO: takme care of linux any other way
-        glfwSetWindowCloseCallback(windowId, window -> {
-            if (OSDetector.isUnix()) {
-                GLFWUtils.linuxCare(monitor, previousVideoMode);
-            }
-        });
-
-         */
 
         glfwSetWindowSizeCallback(windowId, new GLFWWindowSizeCallback() {
             @Override
@@ -496,16 +405,6 @@ public class LwjglEngine implements Engine {
         return windowId;
     }
 
-    @Override
-    public void setBorderless(boolean borderless) {
-        this.borderless = borderless;
-        glfwWindowHint(GLFW_DECORATED, borderless ? GLFW_FALSE : GLFW_TRUE);
-    }
-
-    @Override
-    public boolean isBorderless() {
-        return borderless;
-    }
 
     @Override
     public void putToClipboard(String string) {
@@ -549,6 +448,8 @@ public class LwjglEngine implements Engine {
 
     private void startRenderLoop() {
 
+        long windowId = displayManager.getWindowId();
+
         while (!glfwWindowShouldClose(windowId) && alive) {
             glfwPollEvents();
             renderer.renderFrame();
@@ -574,23 +475,6 @@ public class LwjglEngine implements Engine {
         }
     }
 
-
-    @Override
-    public void setWindowXY(int x, int y) {
-        windowX = x;
-        windowY = y;
-        glfwSetWindowPos(windowId, x, y);
-    }
-
-    @Override
-    public int getWindowX() {
-        return windowX;
-    }
-
-    @Override
-    public int getWindowY() {
-        return windowY;
-    }
 
     @SneakyThrows
     @Override
@@ -733,6 +617,11 @@ public class LwjglEngine implements Engine {
             new ByteArrayInputStream(pngDataBytes),
             builder.getName()
         );
+    }
+
+    @Override
+    public DisplayManager getDisplayManager() {
+        return displayManager;
     }
 
     private static class CharInfo {

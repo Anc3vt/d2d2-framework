@@ -22,8 +22,8 @@ import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
+import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.engine.MonitorManager;
 import com.ancevt.d2d2.engine.lwjgl.LwjglTextureEngine;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.exception.NotImplementedException;
@@ -51,16 +51,11 @@ public class ServerSideEngine implements Engine {
 
     public ServerSideEngine(int width, int height) {
         D2D2.textureManager().setTextureEngine(new LwjglTextureEngine());
-        setWindowSize(width, height);
+        stage.setSize(width, height);
     }
 
     @Override
-    public void focusWindow() {
-
-    }
-
-    @Override
-    public MonitorManager getMonitorManager() {
+    public DisplayManager getDisplayManager() {
         throw new NotImplementedException("No monitors in no-render engine");
     }
 
@@ -90,14 +85,8 @@ public class ServerSideEngine implements Engine {
     }
 
     @Override
-    public long getWindowId() {
-        return 0;
-    }
-
-    @Override
     public void create() {
         stage = new Stage();
-        stage.onResize(width, height);
         renderer = new RendererStub(stage);
     }
 
@@ -118,38 +107,8 @@ public class ServerSideEngine implements Engine {
     }
 
     @Override
-    public void setWindowSize(int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
-
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
-    }
-
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
     public Stage getStage() {
         return stage;
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
     }
 
     @Override
@@ -158,23 +117,8 @@ public class ServerSideEngine implements Engine {
     }
 
     @Override
-    public boolean isVisible() {
-        return false;
-    }
-
-    @Override
     public void stop() {
         alive = false;
-    }
-
-    @Override
-    public void setMouseVisible(boolean mouseVisible) {
-
-    }
-
-    @Override
-    public boolean isMouseVisible() {
-        return false;
     }
 
     @Override
@@ -215,33 +159,11 @@ public class ServerSideEngine implements Engine {
         }
     }
 
-    @Override
-    public void setWindowXY(int x, int y) {
-
-    }
-
-    @Override
-    public int getWindowX() {
-        return 0;
-    }
-
-    @Override
-    public int getWindowY() {
-        return 0;
-    }
 
     @Override
     public BitmapFont generateBitmapFont(TtfBitmapFontBuilder ttfBitmapFontBuilder) {
         return D2D2.bitmapFontManager().getDefaultBitmapFont();
     }
 
-    @Override
-    public void setBorderless(boolean borderless) {
 
-    }
-
-    @Override
-    public boolean isBorderless() {
-        return false;
-    }
 }
