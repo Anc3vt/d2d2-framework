@@ -199,7 +199,7 @@ public class Container extends DisplayObject implements IContainer {
 
     @Override
     public String toString() {
-        return "Container{" +
+        return getClass().getSimpleName() + "{" +
             getName() +
             '}';
     }

@@ -20,25 +20,27 @@ package com.ancevt.d2d2.display;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
+import lombok.Getter;
+import lombok.Setter;
 
 
 public class AnimatedSprite extends Sprite implements IAnimated {
 
-    @lombok.Getter
+    @Getter
     private Texture[] frameTextures;
 
-    @lombok.Getter
+    @Getter
     private boolean playing;
-    @lombok.Getter
-    @lombok.Setter
+    @Getter
+    @Setter
     private boolean loop;
-    @lombok.Getter
-    @lombok.Setter
+    @Getter
+    @Setter
     private int slowing;
     private int slowingCounter;
     private int currentFrameIndex;
-    @lombok.Getter
-    @lombok.Setter
+    @Getter
+    @Setter
     private boolean backward;
 
     public AnimatedSprite() {
@@ -71,7 +73,8 @@ public class AnimatedSprite extends Sprite implements IAnimated {
         slowingCounter++;
         if (slowingCounter >= slowing) {
             slowingCounter = 0;
-            if(backward) prevFrame(); else nextFrame();
+            if (backward) prevFrame();
+            else nextFrame();
         }
     }
 
@@ -85,7 +88,7 @@ public class AnimatedSprite extends Sprite implements IAnimated {
     public void prevFrame() {
         currentFrameIndex--;
         if (currentFrameIndex < 0) {
-            if(loop) {
+            if (loop) {
                 currentFrameIndex = getFrameCount() - 1;
             } else {
                 currentFrameIndex = 0;
@@ -143,7 +146,7 @@ public class AnimatedSprite extends Sprite implements IAnimated {
     }
 
     @Override
-    public void setFrameSprites(ISprite  [] sprites, boolean cloneEach) {
+    public void setFrameSprites(ISprite[] sprites, boolean cloneEach) {
         Texture[] textures = new Texture[sprites.length];
         for (int i = 0; i < sprites.length; i++) {
             textures[i] = sprites[i].getTexture();

@@ -233,7 +233,7 @@ public class AnimatedContainer extends Container implements IAnimated {
 
     @Override
     public String toString() {
-        return "FramedContainer{" +
+        return getClass().getSimpleName() + "{" +
                 "playing=" + playing +
                 ", loop=" + loop +
                 ", slowing=" + slowing +

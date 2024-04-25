@@ -27,15 +27,15 @@ import java.util.stream.Stream;
 
 public interface IContainer extends IDisplayObject {
 
-    static Optional<IDisplayObject> findDisplayObjectById(IContainer fromRoot, int id) {
-        return listDisplayObjects(fromRoot, new ArrayList<>())
+    static <T extends IDisplayObject> Optional<T> findDisplayObjectById(IContainer fromRoot, int id) {
+        return (Optional<T>) listDisplayObjects(fromRoot, new ArrayList<>())
             .stream()
             .filter(o -> o.getDisplayObjectId() == id)
             .findAny();
     }
 
-    static Optional<IDisplayObject> findDisplayObjectByName(IContainer fromRoot, String name) {
-        return listDisplayObjects(fromRoot, new ArrayList<>())
+    static <T extends IDisplayObject> Optional<T> findDisplayObjectByName(IContainer fromRoot, String name) {
+        return (Optional<T>) listDisplayObjects(fromRoot, new ArrayList<>())
             .stream()
             .filter(o -> Objects.equals(o.getName(), name))
             .findFirst();
@@ -51,11 +51,11 @@ public interface IContainer extends IDisplayObject {
         return list;
     }
 
-    default Optional<IDisplayObject> findDisplayObjectById(int id) {
+    default <T extends IDisplayObject> Optional<T> findDisplayObjectById(int id) {
         return findDisplayObjectById(this, id);
     }
 
-    default Optional<IDisplayObject> findDisplayObjectByName(String name) {
+    default <T extends IDisplayObject> Optional<T> findDisplayObjectByName(String name) {
         return findDisplayObjectByName(this, name);
     }
 
