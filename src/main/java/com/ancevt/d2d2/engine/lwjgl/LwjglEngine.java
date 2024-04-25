@@ -24,9 +24,7 @@ import com.ancevt.d2d2.display.interactive.InteractiveManager;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.FractionalMetrics;
 import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
-import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.engine.VideoMode;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -106,42 +104,32 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class LwjglEngine implements Engine {
 
     private static final String DEMO_TEXTURE_DATA_INF_FILE = "d2d2-core-demo-texture-data.inf";
-
     private LwjglRenderer renderer;
-    private boolean mouseVisible;
-    private int width;
-    private int height;
-    private String title;
+    private final int initialWindowWidth;
+    private final int initialWindowHeight;
+    private final String initialWindowTitle;
     private int mouseX;
     private int mouseY;
     private boolean isDown;
     private Stage stage;
-    private boolean fullscreen;
-    private int windowX;
-    private int windowY;
-    private int videoModeWidth;
-    private int videoModeHeight;
-    private long monitor;
-    private VideoMode previousVideoMode;
-    private boolean alive;
-    private boolean borderless;
+    private boolean running;
     private int frameRate = 60;
-    private int fps = frameRate;
     private boolean alwaysOnTop;
     private boolean control;
     private boolean shift;
     private boolean alt;
 
+    @Getter
     private final LwjglDisplayManager displayManager = new LwjglDisplayManager();
 
     @Getter
     @Setter
     private int timerCheckFrameFrequency = 1;
 
-    public LwjglEngine(int width, int height, String title) {
-        this.width = width;
-        this.height = height;
-        this.title = title;
+    public LwjglEngine(int initialWindowWidth, int initialWindowHeight, String initialWindowTitle) {
+        this.initialWindowWidth = initialWindowWidth;
+        this.initialWindowHeight = initialWindowHeight;
+        this.initialWindowTitle = initialWindowTitle;
         D2D2.textureManager().setTextureEngine(new LwjglTextureEngine());
     }
 
@@ -160,15 +148,15 @@ public class LwjglEngine implements Engine {
 
     @Override
     public void stop() {
-        if (!alive) return;
-        alive = false;
+        if (!running) return;
+        running = false;
     }
 
 
     @Override
     public void create() {
         stage = new Stage();
-        stage.onResize(width, height);
+        stage.onResize(initialWindowWidth, initialWindowHeight);
         renderer = new LwjglRenderer(stage, this);
         renderer.setLWJGLTextureEngine((LwjglTextureEngine) D2D2.textureManager().getTextureEngine());
         displayManager.windowId = createWindow();
@@ -199,7 +187,7 @@ public class LwjglEngine implements Engine {
 
     @Override
     public void start() {
-        alive = true;
+        running = true;
         stage.dispatchEvent(
             LifecycleEvent.builder()
                 .type(LifecycleEvent.START_MAIN_LOOP)
@@ -218,7 +206,6 @@ public class LwjglEngine implements Engine {
         return stage;
     }
 
-
     @Override
     public IRenderer getRenderer() {
         return renderer;
@@ -236,12 +223,10 @@ public class LwjglEngine implements Engine {
             glfwWindowHint(GLFW_FLOATING, 1);
         }
 
-        long windowId = glfwCreateWindow(width, height, title, NULL, NULL);
+        long windowId = glfwCreateWindow(initialWindowWidth, initialWindowHeight, initialWindowTitle, NULL, NULL);
 
         if (windowId == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
-
-        monitor = glfwGetPrimaryMonitor();
 
         glfwSetWindowSizeCallback(windowId, new GLFWWindowSizeCallback() {
             @Override
@@ -374,12 +359,9 @@ public class LwjglEngine implements Engine {
 
         glfwSetWindowPos(
             windowId,
-            windowX = (videoMode.width() - width) / 2,
-            windowY = (videoMode.height() - height) / 2
+            (videoMode.width() - initialWindowWidth) / 2,
+            (videoMode.height() - initialWindowHeight) / 2
         );
-
-        videoModeWidth = videoMode.width();
-        videoModeHeight = videoMode.height();
 
         glfwMakeContextCurrent(windowId);
         GL.createCapabilities();
@@ -390,17 +372,11 @@ public class LwjglEngine implements Engine {
         D2D2.textureManager().loadTextureDataInfo(DEMO_TEXTURE_DATA_INF_FILE);
 
         renderer.init(windowId);
-        renderer.reshape(width, height);
+        renderer.reshape(initialWindowWidth, initialWindowHeight);
 
         glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
 
         setSmoothMode(false);
-
-        previousVideoMode = VideoMode.builder()
-            .width(videoModeWidth)
-            .height(videoModeHeight)
-            .refreshRate(videoMode.refreshRate())
-            .build();
 
         return windowId;
     }
@@ -450,7 +426,7 @@ public class LwjglEngine implements Engine {
 
         long windowId = displayManager.getWindowId();
 
-        while (!glfwWindowShouldClose(windowId) && alive) {
+        while (!glfwWindowShouldClose(windowId) && running) {
             glfwPollEvents();
             renderer.renderFrame();
             glfwSwapBuffers(windowId);
@@ -617,11 +593,6 @@ public class LwjglEngine implements Engine {
             new ByteArrayInputStream(pngDataBytes),
             builder.getName()
         );
-    }
-
-    @Override
-    public DisplayManager getDisplayManager() {
-        return displayManager;
     }
 
     private static class CharInfo {
