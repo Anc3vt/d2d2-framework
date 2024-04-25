@@ -1,7 +1,7 @@
 package com.ancevt.d2d2.engine.lwjgl;
 
-import com.ancevt.d2d2.engine.Monitor;
 import com.ancevt.d2d2.engine.DisplayManager;
+import com.ancevt.d2d2.engine.Monitor;
 import com.ancevt.d2d2.engine.WindowState;
 import com.ancevt.d2d2.exception.MonitorException;
 import org.lwjgl.PointerBuffer;
@@ -26,6 +26,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowMonitor;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSize;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowTitle;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.system.MemoryUtil.NULL;
@@ -37,7 +38,7 @@ public class LwjglDisplayManager implements DisplayManager {
     private boolean borderless;
     long windowId;
     private boolean visible;
-
+    private String windowTitle;
 
     @Override
     public List<Monitor> getMonitors() {
@@ -72,13 +73,14 @@ public class LwjglDisplayManager implements DisplayManager {
     }
 
     @Override
-    public void setTitle(String title) {
-
+    public void setTitle(String windowTitle) {
+        this.windowTitle = windowTitle;
+        glfwSetWindowTitle(getWindowId(), windowTitle);
     }
 
     @Override
     public String getTitle() {
-        return null;
+        return windowTitle;
     }
 
     void saveWindowState() {
@@ -90,7 +92,6 @@ public class LwjglDisplayManager implements DisplayManager {
     @Override
     public void restoreWindowedMode() {
         if (savedWindowState != null) {
-            System.out.println("savedWindowState != null");
             glfwSetWindowMonitor(
                 getWindowId(),
                 NULL,

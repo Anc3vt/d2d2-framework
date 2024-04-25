@@ -48,12 +48,15 @@ public class Stage extends Container {
     }
 
     public void setSize(float width, float height) {
-        D2D2.engine().getDisplayManager().setWindowSize((int) width, (int) height);
+        D2D2.displayManager().setWindowSize((int) width, (int) height);
     }
 
     public void onResize(int width, int height) {
         this.width = width;
         this.height = height;
+
+        System.out.println(width + "x" + height);
+
         dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
     }
 

@@ -21,11 +21,12 @@ import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.texture.TextureManager;
+import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.lifecycle.D2D2Main;
 import com.ancevt.d2d2.input.Mouse;
+import com.ancevt.d2d2.lifecycle.D2D2Main;
 import com.ancevt.d2d2.lifecycle.SystemProperties;
 import com.ancevt.util.args.Args;
 import lombok.AccessLevel;
@@ -87,9 +88,11 @@ public final class D2D2 {
 
     public static Engine createEngine(String engineClassName, int width, int height, String titleText) {
         try {
-            return (Engine) Class.forName(engineClassName)
+            Engine engine = (Engine) Class.forName(engineClassName)
                 .getConstructor(int.class, int.class, String.class)
                 .newInstance(width, height, titleText);
+
+            return engine;
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException(e);
         }
@@ -160,4 +163,9 @@ public final class D2D2 {
     public static BitmapFontManager bitmapFontManager() {
         return bitmapFontManager;
     }
+
+    public static DisplayManager displayManager() {
+        return engine.getDisplayManager();
+    }
+
 }
