@@ -148,7 +148,7 @@ public class LwjglRenderer implements IRenderer {
 
         textureEngine.unloadTextureAtlases();
 
-        GLFW.glfwGetCursorPos(lwjglMediaEngine.windowId, mouseX, mouseY);
+        GLFW.glfwGetCursorPos(lwjglMediaEngine.getDisplayManager().getWindowId(), mouseX, mouseY);
         Mouse.setXY((int) mouseX[0], (int) mouseY[0]);
     }
 

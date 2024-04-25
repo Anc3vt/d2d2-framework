@@ -24,6 +24,8 @@ import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
 
 public interface Engine {
 
+    Stage getStage();
+
     void setAlwaysOnTop(boolean b);
 
     boolean isAlwaysOnTop();
@@ -34,35 +36,13 @@ public interface Engine {
 
     int getActualFps();
 
-    long getWindowId();
-
     void create();
 
     void start();
 
-    void setWindowSize(int width, int height);
-
-    int getWidth();
-
-    int getHeight();
-
-    void setTitle(String title);
-
-    String getTitle();
-
-    Stage getStage();
-
-    void setVisible(boolean visible);
-
-    boolean isVisible();
-
     IRenderer getRenderer();
 
     void stop();
-
-    void setMouseVisible(boolean mouseVisible);
-
-    boolean isMouseVisible();
 
     void putToClipboard(String string);
 
@@ -72,23 +52,11 @@ public interface Engine {
 
     default boolean isSmoothMode() {return false;}
 
-    void setWindowXY(int x, int y);
-
-    int getWindowX();
-
-    int getWindowY();
-
     BitmapFont generateBitmapFont(TtfBitmapFontBuilder ttfBitmapFontBuilder);
-
-    void setBorderless(boolean borderless);
-
-    boolean isBorderless();
 
     void setTimerCheckFrameFrequency(int v);
 
     int getTimerCheckFrameFrequency();
 
-    void focusWindow();
-
-    MonitorManager getMonitorManager();
+    DisplayManager getDisplayManager();
 }
