@@ -24,9 +24,9 @@ import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 
 
-public class BitmapTextDrawHelper {
+class BitmapTextDrawHelper {
 
-    public static void draw(BitmapText bitmapText,
+    static void draw(BitmapText bitmapText,
                             float alpha,
                             float scaleX,
                             float scaleY,
@@ -152,7 +152,7 @@ public class BitmapTextDrawHelper {
 
 
     @FunctionalInterface
-    public interface DrawCharFunction {
+    interface DrawCharFunction {
 
         void drawChar(
             TextureAtlas atlas,
@@ -170,7 +170,7 @@ public class BitmapTextDrawHelper {
     }
 
     @FunctionalInterface
-    public interface ApplyColorFunction {
+    interface ApplyColorFunction {
         void applyColor(float r, float g, float b, float alpha);
     }
 }
