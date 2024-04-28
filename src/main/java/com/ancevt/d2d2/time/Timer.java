@@ -42,17 +42,21 @@ public class Timer {
 
     private long startTime = System.currentTimeMillis();
 
+    private boolean alive;
+
     public Timer(Consumer<Timer> func, long delay) {
         this.func = func;
         this.delay = delay;
     }
 
     public void start() {
+        alive = true;
         startTime = System.currentTimeMillis();
         timers.add(this);
     }
 
     public void stop() {
+        alive = false;
         startTime = 0;
         timersToRemove.add(this);
     }
@@ -84,7 +88,10 @@ public class Timer {
             long delay = timer.delay;
             long currentTime = System.currentTimeMillis();
             if (currentTime - timer.startTime >= delay) {
-                timer.func.accept(timer);
+
+                if (timer.alive) {
+                    timer.func.accept(timer);
+                }
 
                 if (timer.isLoop()) {
                     timer.startTime = currentTime;

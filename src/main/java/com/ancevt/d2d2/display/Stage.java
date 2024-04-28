@@ -54,9 +54,6 @@ public class Stage extends Container {
     public void onResize(int width, int height) {
         this.width = width;
         this.height = height;
-
-        System.out.println(width + "x" + height);
-
         dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
     }
 
