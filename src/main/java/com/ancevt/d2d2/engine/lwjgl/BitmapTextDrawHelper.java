@@ -53,7 +53,9 @@ class BitmapTextDrawHelper {
 
         String text = bitmapText.getText();
 
-        if (bitmapText.isMulticolorEnabled()) {
+        boolean multiline = bitmapText.isMultiline();
+
+        if (bitmapText.isMulticolor()) {
 
             BitmapText.ColorTextData colorTextData = bitmapText.getColorTextData();
 
@@ -80,7 +82,7 @@ class BitmapTextDrawHelper {
                 float charWidth = charInfo.width();
                 float charHeight = charInfo.height();
 
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5)) {
+                if (multiline && (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5))) {
                     drawX = 0;
                     drawY += (charHeight + lineSpacing) * scaleY;
 
@@ -120,7 +122,7 @@ class BitmapTextDrawHelper {
                 float charWidth = charInfo.width();
                 float charHeight = charInfo.height();
 
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5)) {
+                if (multiline && (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5))) {
                     drawX = 0;
                     drawY += (charHeight + lineSpacing) * scaleY;
 
@@ -149,7 +151,6 @@ class BitmapTextDrawHelper {
         }
 
     }
-
 
     @FunctionalInterface
     interface DrawCharFunction {

@@ -69,6 +69,7 @@ public class Timer {
         Timer timer = new Timer(func, delay);
         timer.setLoop(true);
         timers.add(timer);
+        timer.start();
         return timer;
     }
 
@@ -76,6 +77,7 @@ public class Timer {
         Timer timer = new Timer(func, delay);
         timer.setLoop(false);
         timers.add(timer);
+        timer.start();
         return timer;
     }
 
@@ -88,7 +90,6 @@ public class Timer {
             long delay = timer.delay;
             long currentTime = System.currentTimeMillis();
             if (currentTime - timer.startTime >= delay) {
-
                 if (timer.alive) {
                     timer.func.accept(timer);
                 }

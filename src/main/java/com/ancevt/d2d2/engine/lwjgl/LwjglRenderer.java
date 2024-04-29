@@ -19,9 +19,9 @@ package com.ancevt.d2d2.engine.lwjgl;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.IAnimated;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.display.IAnimated;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.ISprite;
 import com.ancevt.d2d2.display.Stage;
@@ -402,8 +402,8 @@ public class LwjglRenderer implements IRenderer {
         double textureBleedingFix,
         double vertexBleedingFix) {
 
-        //scX = nextHalf(scX);
-        scY = nextHalf(scY);
+        //scX = nextHalf(scX) ;
+        scY = nextHalf(scY) ;
 
         float charWidth = charInfo.width();
         float charHeight = charInfo.height();
@@ -416,17 +416,20 @@ public class LwjglRenderer implements IRenderer {
         float cw = charWidth / textureAtlasWidth;
         float ch = -charHeight / textureAtlasHeight;
 
-        GL11.glTexCoord2d(cx, -cy);
-        GL11.glVertex2d(x - vertexBleedingFix, y + vertexBleedingFix);
+        double tf = textureBleedingFix;
+        double vf = vertexBleedingFix;
 
-        GL11.glTexCoord2d(cx + cw, -cy);
-        GL11.glVertex2d(charWidth * scX + x + vertexBleedingFix, y + vertexBleedingFix);
+        GL11.glTexCoord2d(cx - tf, -cy + tf);
+        GL11.glVertex2d(x - vf, y + vf);
 
-        GL11.glTexCoord2d(cx + cw, -cy + ch);
-        GL11.glVertex2d(charWidth * scX + x + vertexBleedingFix, charHeight * -scY + y - vertexBleedingFix);
+        GL11.glTexCoord2d(cx + cw + tf, -cy + tf);
+        GL11.glVertex2d(charWidth * scX + x + vf, y + vf);
 
-        GL11.glTexCoord2d(cx, -cy + ch);
-        GL11.glVertex2d(x - vertexBleedingFix, charHeight * -scY + y - vertexBleedingFix);
+        GL11.glTexCoord2d(cx + cw + tf, -cy + ch - tf);
+        GL11.glVertex2d(charWidth * scX + x + vf, charHeight * -scY + y - vf);
+
+        GL11.glTexCoord2d(cx - tf, -cy + ch - tf);
+        GL11.glVertex2d(x - vf, charHeight * -scY + y - vf);
     }
 
     public void setLWJGLTextureEngine(LwjglTextureEngine textureEngine) {

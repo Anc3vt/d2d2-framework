@@ -47,7 +47,7 @@ public class DebugLabel extends BitmapText {
         this.target = target;
         this.updateRate = updateRate;
 
-        setMulticolorEnabled(true);
+        setMulticolor(true);
 
         target.addEventListener(this, Event.ENTER_FRAME, event -> {
             tick++;
