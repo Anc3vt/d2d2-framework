@@ -29,8 +29,8 @@ public class TtfBitmapFontBuilder {
     private static final int DEFAULT_ATLAS_WIDTH = 512;
     private static final int DEFAULT_ATLAS_HEIGHT = 512;
     private static final int DEFAULT_FONT_SIZE = 12;
-    private static final int DEFAULT_SPACING_X = 0;
-    private static final int DEFAULT_SPACING_Y = 0;
+    private static final int DEFAULT_SPACING_X = 2;
+    private static final int DEFAULT_SPACING_Y = 2;
 
     @Getter
     private int atlasWidth = DEFAULT_ATLAS_WIDTH;
@@ -66,9 +66,9 @@ public class TtfBitmapFontBuilder {
     private boolean italic;
 
     @Getter
-    private int offsetX;
+    private int offsetX = -1;
     @Getter
-    private int offsetY;
+    private int offsetY = -1;
     @Getter
     private String name;
 

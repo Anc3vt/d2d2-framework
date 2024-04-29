@@ -304,7 +304,11 @@ public class LwjglTextureEngine implements ITextureEngine {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
 
-        BitmapTextDrawHelper.draw(bitmapText, bitmapText.getAlpha(), bitmapText.getScaleX(), bitmapText.getScaleY(),
+        BitmapTextDrawHelper.draw(
+            bitmapText,
+            bitmapText.getAlpha(),
+            bitmapText.getScaleX(),
+            bitmapText.getScaleY(),
             (atlas, c, letter, drawX, drawY, textureAtlasWidth, textureAtlasHeight, charInfo, scX, scY, textureBleedingFix, vertexBleedingFix) -> {
 
                 if (c != '\n') {

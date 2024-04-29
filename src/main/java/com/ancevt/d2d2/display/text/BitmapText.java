@@ -39,8 +39,6 @@ public class BitmapText extends DisplayObject implements IColored {
     protected static final float DEFAULT_HEIGHT = 128f;
     protected static final float DEFAULT_MAX_WIDTH = 1024f;
     protected static final float DEFAULT_MAX_HEIGHT = 512f;
-
-
     protected static final Color DEFAULT_COLOR = Color.WHITE;
 
     private String text;
@@ -67,13 +65,15 @@ public class BitmapText extends DisplayObject implements IColored {
     @Setter
     private double vertexBleedingFix = 0.0;
     @Getter
-    private boolean multicolorEnabled;
+    private boolean multicolor;
     @Getter
     private ColorTextData colorTextData;
     @Getter
     private boolean autosize;
-
     private boolean cacheAsSprite;
+
+    @Getter
+    private boolean multiline;
     private Sprite sprite;
 
     public BitmapText(final BitmapFont bitmapFont, float width, float height, String text) {
@@ -111,7 +111,7 @@ public class BitmapText extends DisplayObject implements IColored {
         bitmapText.setText(getText());
         bitmapText.setSize(getWidth(), getHeight());
         bitmapText.setAlpha(getAlpha());
-        bitmapText.setMulticolorEnabled(isMulticolorEnabled());
+        bitmapText.setMulticolor(isMulticolor());
         bitmapText.setBitmapFont(getBitmapFont());
         bitmapText.setVertexBleedingFix(getVertexBleedingFix());
         bitmapText.setTextureBleedingFix(getTextureBleedingFix());
@@ -122,6 +122,7 @@ public class BitmapText extends DisplayObject implements IColored {
         bitmapText.setRotation(getRotation());
         bitmapText.setVisible(isVisible());
         bitmapText.setAutosize(isAutosize());
+        bitmapText.setMultiline(isMultiline());
         bitmapText.setCacheAsSprite(isCacheAsSprite());
         bitmapText.setScale(getScaleX(), getScaleY());
         return bitmapText;
@@ -240,23 +241,10 @@ public class BitmapText extends DisplayObject implements IColored {
         return countHeight + font.getZeroCharHeight();
     }
 
-
-//    public float getTextHeight() {
-//        if (getText() == null) return 0;
-//
-//        final char[] chars = getPlainText().toCharArray();
-//        int result = 0;
-//
-//        final BitmapFont font = getBitmapFont();
-//
-//        for (final char c : chars) {
-//            if (c == '\n' || (result < getMaxHeight())) {
-//                result += (int) (font.getZeroCharHeight() + getLineSpacing());
-//            }
-//        }
-//
-//        return result + font.getZeroCharHeight();
-//    }
+    public void setMultiline(boolean multiline) {
+        this.multiline = multiline;
+        updateCachedSprite();
+    }
 
     public Sprite toSprite() {
         Sprite result = new Sprite(D2D2.textureManager().bitmapTextToTextureAtlas(this).createTexture());
@@ -270,7 +258,7 @@ public class BitmapText extends DisplayObject implements IColored {
     @Override
     public void setColor(Color color) {
         this.color = color;
-        if (multicolorEnabled) {
+        if (multicolor) {
             colorTextData = new ColorTextData(getText(), color);
         }
         updateCachedSprite();
@@ -288,7 +276,7 @@ public class BitmapText extends DisplayObject implements IColored {
 
     public void setText(String text) {
         this.text = text;
-        if (multicolorEnabled) {
+        if (multicolor) {
             colorTextData = new ColorTextData(getText(), getColor());
         }
         if (autosize) {
@@ -299,7 +287,7 @@ public class BitmapText extends DisplayObject implements IColored {
     }
 
     public String getPlainText() {
-        if (!multicolorEnabled) return text;
+        if (!multicolor) return text;
 
         return getColorTextData().getPlainText();
     }
@@ -384,10 +372,10 @@ public class BitmapText extends DisplayObject implements IColored {
         updateCachedSprite();
     }
 
-    public void setMulticolorEnabled(boolean multicolorEnabled) {
-        if (multicolorEnabled == isMulticolorEnabled()) return;
-        this.multicolorEnabled = multicolorEnabled;
-        if (multicolorEnabled) {
+    public void setMulticolor(boolean multicolor) {
+        if (multicolor == isMulticolor()) return;
+        this.multicolor = multicolor;
+        if (multicolor) {
             colorTextData = new ColorTextData(getText(), getColor());
         } else {
             colorTextData = null;

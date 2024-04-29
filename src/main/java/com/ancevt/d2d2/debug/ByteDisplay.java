@@ -71,7 +71,7 @@ public class ByteDisplay extends InteractiveContainer {
 
         bitmapText = new BitmapText();
         bitmapText.setText("#<FFFF00>ready");
-        bitmapText.setMulticolorEnabled(true);
+        bitmapText.setMulticolor(true);
         bitmapText.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         add(bitmapText, PADDING, 2);
 
