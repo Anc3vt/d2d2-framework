@@ -21,6 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.IColored;
+import com.ancevt.d2d2.display.IResizable;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.event.Event;
 import lombok.Getter;
@@ -31,7 +32,7 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class BitmapText extends DisplayObject implements IColored {
+public class BitmapText extends DisplayObject implements IColored, IResizable {
 
     protected static final String DEFAULT_TEXT = "";
 
@@ -73,7 +74,7 @@ public class BitmapText extends DisplayObject implements IColored {
     private boolean cacheAsSprite;
 
     @Getter
-    private boolean multiline;
+    private boolean multiline = true;
     private Sprite sprite;
 
     public BitmapText(final BitmapFont bitmapFont, float width, float height, String text) {
@@ -188,59 +189,6 @@ public class BitmapText extends DisplayObject implements IColored {
         return bitmapFont.computeTextWidth(text, getSpacing());
     }
 
-    public float getTextWidth() {
-        if (isEmpty()) return 0;
-
-        final char[] chars = getPlainText().toCharArray();
-        int countWidth = 0;
-
-        final BitmapFont font = getBitmapFont();
-
-        int max = 0;
-
-        for (final char c : chars) {
-            if (c == '\n' || (getWidth() > 0 && countWidth > getMaxWidth())) countWidth = 0;
-
-            BitmapCharInfo info = font.getCharInfo(c);
-            if (info == null) continue;
-
-            countWidth += (int) (info.width() + getSpacing());
-
-            if (countWidth > max) max = countWidth;
-        }
-
-        return (int) (max - getSpacing());
-    }
-
-    public float getTextHeight() {
-        if (isEmpty()) return 0;
-
-        final char[] chars = getPlainText().toCharArray();
-        int countWidth = 0;
-
-        final BitmapFont font = getBitmapFont();
-
-        int max = 0;
-
-        int countHeight = 0;
-
-        for (final char c : chars) {
-            if (c == '\n' || (getWidth() > 0 && countWidth > getMaxWidth())) {
-                countHeight += (int) (font.getZeroCharHeight() + getLineSpacing());
-                countWidth = 0;
-            }
-
-            BitmapCharInfo info = font.getCharInfo(c);
-            if (info == null) continue;
-
-            countWidth += (int) (info.width() + getSpacing());
-
-            if (countWidth > max) max = countWidth;
-        }
-
-        return countHeight + font.getZeroCharHeight();
-    }
-
     public void setMultiline(boolean multiline) {
         this.multiline = multiline;
         updateCachedSprite();
@@ -327,16 +275,85 @@ public class BitmapText extends DisplayObject implements IColored {
         return spacing;
     }
 
+    public float getTextWidth() {
+        if (isEmpty()) return 0;
+
+        final char[] chars = getPlainText().toCharArray();
+        float w = 0;
+
+        final BitmapFont font = getBitmapFont();
+
+        float max = 0;
+
+        for (final char c : chars) {
+            if (c == '\n' || (width > 0 && w > getMaxWidth())) {
+                if (!isMultiline()) return w;
+                w = 0;
+            }
+
+            BitmapCharInfo info = font.getCharInfo(c);
+            if (info == null) continue;
+
+            w += (int) (info.width() + getSpacing());
+
+            if (w > max) max = w;
+        }
+
+        return max - getSpacing();
+    }
+
+    public float getTextHeight() {
+        if (isEmpty()) return 0;
+
+        final char[] chars = getPlainText().toCharArray();
+        float w = 0;
+
+        final BitmapFont font = getBitmapFont();
+
+        float max = 0;
+
+        float h = 0;
+
+        for (final char c : chars) {
+            if (c == '\n' || (width > 0 && w > getMaxWidth())) {
+                h += (int) (font.getZeroCharHeight() + getLineSpacing());
+                w = 0;
+            }
+
+            BitmapCharInfo info = font.getCharInfo(c);
+            if (info == null) continue;
+
+            w += info.width() + getSpacing();
+
+            if (w > max) max = w;
+        }
+
+        return h + font.getZeroCharHeight();
+    }
+
     @Override
     public float getWidth() {
+        if (isAutosize()) {
+            return getTextWidth();
+        }
+
         return width;
     }
 
     @Override
     public float getHeight() {
+        if (!isMultiline()) {
+            return bitmapFont.getZeroCharHeight();
+        }
+
+        if (isAutosize()) {
+            return getTextHeight();
+        }
+
         return height;
     }
 
+    @Override
     public void setWidth(float value) {
         width = value;
 
@@ -347,6 +364,7 @@ public class BitmapText extends DisplayObject implements IColored {
         updateCachedSprite();
     }
 
+    @Override
     public void setHeight(float value) {
         height = value;
 
@@ -357,6 +375,7 @@ public class BitmapText extends DisplayObject implements IColored {
         updateCachedSprite();
     }
 
+    @Override
     public void setSize(float width, float height) {
         this.width = width;
         this.height = height;
