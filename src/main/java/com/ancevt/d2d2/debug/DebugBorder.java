@@ -24,11 +24,11 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.display.Resizable;
+import com.ancevt.d2d2.display.IResizable;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 
-public class DebugBorder extends Container implements Resizable, IColored, IDisposable {
+public class DebugBorder extends Container implements IResizable, IColored, IDisposable {
 
     private final BorderedRect borderedRect;
     private final IDisplayObject displayObject;

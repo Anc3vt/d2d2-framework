@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.display;
 
-public interface Resizable extends IDisplayObject {
+public interface IResizable extends IDisplayObject {
     void setSize(float width, float height);
 
     void setWidth(float value);

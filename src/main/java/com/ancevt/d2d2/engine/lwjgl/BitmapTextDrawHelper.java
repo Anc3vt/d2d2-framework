@@ -27,11 +27,11 @@ import com.ancevt.d2d2.display.texture.TextureAtlas;
 class BitmapTextDrawHelper {
 
     static void draw(BitmapText bitmapText,
-                            float alpha,
-                            float scaleX,
-                            float scaleY,
-                            DrawCharFunction drawCharFunction,
-                            ApplyColorFunction applyColorFunction) {
+                     float alpha,
+                     float scaleX,
+                     float scaleY,
+                     DrawCharFunction drawCharFunction,
+                     ApplyColorFunction applyColorFunction) {
 
         BitmapFont bitmapFont = bitmapText.getBitmapFont();
         TextureAtlas textureAtlas = bitmapFont.getTextureAtlas();
@@ -42,7 +42,7 @@ class BitmapTextDrawHelper {
         float lineSpacing = bitmapText.getLineSpacing();
         float spacing = bitmapText.getSpacing();
 
-        float boundWidth = bitmapText.getWidth() * scaleX + bitmapFont.getCharInfo('0').width() * 5;
+        float boundWidth = bitmapText.getWidth() * scaleX;
         float boundHeight = bitmapText.getHeight() * scaleY;
 
         float drawX = 0;
@@ -52,8 +52,6 @@ class BitmapTextDrawHelper {
         double vertexBleedingFix = bitmapText.getVertexBleedingFix();
 
         String text = bitmapText.getText();
-
-        boolean multiline = bitmapText.isMultiline();
 
         if (bitmapText.isMulticolor()) {
 
@@ -82,7 +80,7 @@ class BitmapTextDrawHelper {
                 float charWidth = charInfo.width();
                 float charHeight = charInfo.height();
 
-                if (multiline && (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5))) {
+                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - (float) bitmapFont.getZeroCharWidth() / 2)) {
                     drawX = 0;
                     drawY += (charHeight + lineSpacing) * scaleY;
 
@@ -122,7 +120,7 @@ class BitmapTextDrawHelper {
                 float charWidth = charInfo.width();
                 float charHeight = charInfo.height();
 
-                if (multiline && (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - charWidth * 5))) {
+                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - (float) bitmapFont.getZeroCharWidth() / 2)) {
                     drawX = 0;
                     drawY += (charHeight + lineSpacing) * scaleY;
 
@@ -163,7 +161,7 @@ class BitmapTextDrawHelper {
             float y,
             int textureAtlasWidth,
             int textureAtlasHeight,
-             BitmapCharInfo charInfo,
+            BitmapCharInfo charInfo,
             float scX,
             float scY,
             double textureBleedingFix,
