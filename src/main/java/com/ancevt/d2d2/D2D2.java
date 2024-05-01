@@ -41,7 +41,7 @@ import static com.ancevt.commons.string.ConvertableString.convert;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class D2D2 {
-    private static final String PROPERTIES_FILENAME = "d2d2.properties";
+    private static final String PROPERTIES_FILENAME = "application.properties";
     private static final TextureManager textureManager = new TextureManager();
     private static BitmapFontManager bitmapFontManager;
     @Getter
