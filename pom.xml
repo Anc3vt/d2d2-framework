@@ -6,12 +6,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ancevt.d2d2</groupId>
-    <artifactId>d2d2-core</artifactId>
+    <artifactId>d2d2-framework</artifactId>
     <version>0.1.6.2-SNAPSHOT</version>
 
-    <name>D2D2 Core</name>
+    <name>D2D2 Framework</name>
 
-    <url>https://github.com/Anc3vt/d2d2-core</url>
+    <url>https://github.com/Anc3vt/d2d2-framework</url>
 
     <licenses>
         <license>

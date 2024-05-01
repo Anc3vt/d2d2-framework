@@ -219,7 +219,7 @@ public class LwjglEngine implements Engine {
 
         glfwDefaultWindowHints();
 
-        if (Objects.equals(System.getProperty(SystemProperties.GLFWHINT_ALWAYSONTOP), "true")) {
+        if (Objects.equals(System.getProperty(SystemProperties.GLFW_HINT_ALWAYSONTOP), "true")) {
             glfwWindowHint(GLFW_FLOATING, 1);
         }
 
@@ -227,6 +227,8 @@ public class LwjglEngine implements Engine {
 
         if (windowId == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
+
+        WindowIconLoader.loadIcons(windowId);
 
         glfwSetWindowSizeCallback(windowId, new GLFWWindowSizeCallback() {
             @Override

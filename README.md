@@ -94,7 +94,7 @@ And in the `<dependencies>` section:
 
 > See samples source code at https://github.com/Anc3vt/d2d2-samples
 
-After adding the necessary dependency (d2d2-core) to your project, it is necessary to add a configuration file `d2d2.properties` to the resources with the following contents::
+After adding the necessary dependency (d2d2-core) to your project, it is necessary to add a configuration file `application.properties` to the resources with the following contents::
 
 ```properties
 d2d2.engine=com.ancevt.d2d2.engine.lwjgl.LwjglEngine
