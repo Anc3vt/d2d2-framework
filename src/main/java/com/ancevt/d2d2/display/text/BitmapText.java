@@ -75,6 +75,9 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
 
     @Getter
     private boolean multiline = true;
+
+    @Getter
+    private boolean wordWrap = true;
     private Sprite sprite;
 
     public BitmapText(final BitmapFont bitmapFont, float width, float height, String text) {
@@ -124,6 +127,7 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
         bitmapText.setVisible(isVisible());
         bitmapText.setAutosize(isAutosize());
         bitmapText.setMultiline(isMultiline());
+        bitmapText.setWordWrap(isWordWrap());
         bitmapText.setCacheAsSprite(isCacheAsSprite());
         bitmapText.setScale(getScaleX(), getScaleY());
         return bitmapText;
@@ -337,6 +341,8 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
             return getTextWidth();
         }
 
+        if (width > maxWidth) return maxWidth;
+
         return width;
     }
 
@@ -349,6 +355,8 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
         if (isAutosize()) {
             return getTextHeight();
         }
+
+        if (height > maxHeight) return maxHeight;
 
         return height;
     }
@@ -388,6 +396,11 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
             this.height = maxHeight;
         }
 
+        updateCachedSprite();
+    }
+
+    public void setWordWrap(boolean wordWrap) {
+        this.wordWrap = wordWrap;
         updateCachedSprite();
     }
 

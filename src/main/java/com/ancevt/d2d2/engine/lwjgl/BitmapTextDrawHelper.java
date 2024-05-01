@@ -51,7 +51,11 @@ class BitmapTextDrawHelper {
         double textureBleedingFix = bitmapText.getTextureBleedingFix();
         double vertexBleedingFix = bitmapText.getVertexBleedingFix();
 
+        boolean wordWrap = bitmapText.isWordWrap();
+
         String text = bitmapText.getText();
+
+        float nextWordWidth;
 
         if (bitmapText.isMulticolor()) {
 
@@ -59,12 +63,6 @@ class BitmapTextDrawHelper {
 
             for (int i = 0; i < colorTextData.length(); i++) {
                 BitmapText.ColorTextData.Letter letter = colorTextData.getColoredLetter(i);
-
-                char c = letter.getCharacter();
-
-                BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
-
-                if (charInfo == null) continue;
 
                 Color letterColor = letter.getColor();
 
@@ -77,17 +75,39 @@ class BitmapTextDrawHelper {
                     );
                 }
 
+                char c = letter.getCharacter();
+
+                if (wordWrap && isSpecialCharacter(c)) {
+                    nextWordWidth = getNextWordWidth(bitmapText, i, scaleX);
+                } else {
+                    nextWordWidth = 0f;
+                }
+
+                BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
+
+                if (charInfo == null) continue;
+
                 float charWidth = charInfo.width();
                 float charHeight = charInfo.height();
 
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - (float) bitmapFont.getZeroCharWidth() / 2)) {
+                if (c == '\n' || wordWrap && (boundWidth != 0 && drawX >= boundWidth - nextWordWidth - charWidth / 1.5f * scaleX)) {
                     drawX = 0;
                     drawY += (charHeight + lineSpacing) * scaleY;
 
                     if (boundHeight != 0 && drawY > boundHeight - charHeight) {
                         break;
                     }
+
+                    if (nextWordWidth > 0) {
+                        continue;
+                    }
                 }
+
+                if (!wordWrap && drawX >= boundWidth - charWidth / 1.5f) {
+                    continue;
+                }
+
+
 
                 drawCharFunction.drawChar(
                     textureAtlas,
@@ -108,25 +128,39 @@ class BitmapTextDrawHelper {
             }
 
         } else {
+
+
             for (int i = 0; i < text.length(); i++) {
                 char c = text.charAt(i);
 
+                if (wordWrap && isSpecialCharacter(c)) {
+                    nextWordWidth = getNextWordWidth(bitmapText, i, scaleX);
+                } else {
+                    nextWordWidth = 0f;
+                }
+
                 BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
 
-                if (charInfo == null) {
-                    continue;
-                }
+                if (charInfo == null) continue;
 
                 float charWidth = charInfo.width();
                 float charHeight = charInfo.height();
 
-                if (c == '\n' || (boundWidth != 0 && drawX >= boundWidth - (float) bitmapFont.getZeroCharWidth() / 2)) {
+                if (c == '\n' || wordWrap && (boundWidth != 0 && drawX >= boundWidth - nextWordWidth - charWidth / 1.5f * scaleX)) {
                     drawX = 0;
                     drawY += (charHeight + lineSpacing) * scaleY;
 
                     if (boundHeight != 0 && drawY > boundHeight - charHeight) {
                         break;
                     }
+
+                    if (nextWordWidth > 0) {
+                        continue;
+                    }
+                }
+
+                if (!wordWrap && drawX >= boundWidth - charWidth / 1.5f) {
+                    continue;
                 }
 
                 drawCharFunction.drawChar(
@@ -148,6 +182,78 @@ class BitmapTextDrawHelper {
             }
         }
 
+    }
+
+    private enum Completion {
+        NORMAL,
+        CONTINUE,
+        BREAK
+    }
+
+    private static Completion handleTextPlacing(BitmapText bitmapText,
+                                                char c,
+                                                float boundWidth,
+                                                float boundHeaight,
+                                                float charWidth,
+                                                float scaleX,
+                                                float scaleY) {return null;}
+
+    private static float getNextWordWidth(BitmapText bitmapText, int charIndex, float scaleX) {
+        String nextWord = getNextWord(bitmapText.getPlainText(), charIndex);
+        if (nextWord.length() > 0) {
+            char firstChar = nextWord.charAt(0);
+            if (!Character.isLetterOrDigit(firstChar) && firstChar != '_') return 0f;
+        }
+        return meterStringWidth(bitmapText, nextWord) * scaleX;
+    }
+
+    public static String getNextWord(String text, int charIndexFrom) {
+        StringBuilder word = new StringBuilder();
+        boolean inWord = false;
+
+        // Начинаем поиск слова с указанного индекса
+        for (int i = charIndexFrom; i < text.length(); i++) {
+            char ch = text.charAt(i);
+
+            // Проверяем, является ли текущий символ допустимым для слова
+            if (isWordCharacter(ch)) {
+                word.append(ch);
+                inWord = true;
+            } else {
+                // Если уже начали собирать слово и текущий символ не подходит, завершаем сбор слова
+                if (inWord) {
+                    break;
+                }
+                // Если еще не начали собирать слово, продолжаем пропускать символы
+                continue;
+            }
+        }
+
+        return word.toString();
+    }
+
+    // Метод для проверки символа на принадлежность к допустимым символам слова
+    private static boolean isWordCharacter(char ch) {
+        return Character.isLetterOrDigit(ch) ||
+            ch == '!' || ch == '_' || ch == '.' ||
+            ch == ':' || ch == ';' || ch == ',';
+    }
+
+    private static float meterStringWidth(BitmapText bitmapText, String string) {
+        float result = 0f;
+
+        BitmapFont font = bitmapText.getBitmapFont();
+
+        for (char c : string.toCharArray()) {
+            BitmapCharInfo charInfo = font.getCharInfo(c);
+            result += charInfo.width() + bitmapText.getSpacing();
+        }
+
+        return result;
+    }
+
+    private static boolean isSpecialCharacter(char ch) {
+        return !Character.isLetterOrDigit(ch) && ch != '_';
     }
 
     @FunctionalInterface
