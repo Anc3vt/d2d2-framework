@@ -56,8 +56,8 @@ public class Texture {
 
     @Override
     public String toString() {
-        return "Texture{" +
-            "textureAtlas=" + textureAtlas +
+        return getClass().getSimpleName() + "{" +
+            "atlas=" + textureAtlas +
             ", x=" + x +
             ", y=" + y +
             ", width=" + width +

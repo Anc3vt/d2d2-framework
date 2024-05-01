@@ -17,13 +17,15 @@
  */
 package com.ancevt.d2d2.display.texture;
 
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.common.IDisposable;
 import com.ancevt.util.args.Args;
 
 import java.util.StringTokenizer;
 
 import static java.lang.Integer.parseInt;
 
-public class TextureAtlas {
+public class TextureAtlas implements IDisposable {
 
     private final int id;
 
@@ -184,12 +186,13 @@ public class TextureAtlas {
         return height;
     }
 
-    void setDisposed(boolean disposed) {
-        this.disposed = disposed;
+    @Override
+    public void dispose() {
+        D2D2.textureManager().unloadTextureAtlas(this);
     }
 
     public boolean isDisposed() {
-        return disposed;
+        return !D2D2.textureManager().containsTextureAtlas(this);
     }
 
     @Override

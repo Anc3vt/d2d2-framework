@@ -36,8 +36,8 @@ class BitmapTextDrawHelper {
         BitmapFont bitmapFont = bitmapText.getBitmapFont();
         TextureAtlas textureAtlas = bitmapFont.getTextureAtlas();
 
-        int textureWidth = textureAtlas.getWidth();
-        int textureHeight = textureAtlas.getHeight();
+        int textureAtlasWidth = textureAtlas.getWidth();
+        int textureAtlasHeight = textureAtlas.getHeight();
 
         float lineSpacing = bitmapText.getLineSpacing();
         float spacing = bitmapText.getSpacing();
@@ -52,17 +52,19 @@ class BitmapTextDrawHelper {
         double vertexBleedingFix = bitmapText.getVertexBleedingFix();
 
         boolean wordWrap = bitmapText.isWordWrap();
+        boolean multicolor = bitmapText.isMulticolor();
 
         String text = bitmapText.getText();
 
         float nextWordWidth;
 
-        if (bitmapText.isMulticolor()) {
+        BitmapText.ColorTextData colorTextData = multicolor ? bitmapText.getColorTextData() : null;
 
-            BitmapText.ColorTextData colorTextData = bitmapText.getColorTextData();
+        for (int i = 0; multicolor ? i < colorTextData.length() : i < text.length(); i++) {
+            BitmapText.ColorTextData.Letter letter = null;
 
-            for (int i = 0; i < colorTextData.length(); i++) {
-                BitmapText.ColorTextData.Letter letter = colorTextData.getColoredLetter(i);
+            if (multicolor) {
+                letter = colorTextData.getColoredLetter(i);
 
                 Color letterColor = letter.getColor();
 
@@ -74,129 +76,60 @@ class BitmapTextDrawHelper {
                         alpha
                     );
                 }
-
-                char c = letter.getCharacter();
-
-                if (wordWrap && isSpecialCharacter(c)) {
-                    nextWordWidth = getNextWordWidth(bitmapText, i, scaleX);
-                } else {
-                    nextWordWidth = 0f;
-                }
-
-                BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
-
-                if (charInfo == null) continue;
-
-                float charWidth = charInfo.width();
-                float charHeight = charInfo.height();
-
-                if (c == '\n' || wordWrap && (boundWidth != 0 && drawX >= boundWidth - nextWordWidth - charWidth / 1.5f * scaleX)) {
-                    drawX = 0;
-                    drawY += (charHeight + lineSpacing) * scaleY;
-
-                    if (boundHeight != 0 && drawY > boundHeight - charHeight) {
-                        break;
-                    }
-
-                    if (nextWordWidth > 0) {
-                        continue;
-                    }
-                }
-
-                if (!wordWrap && drawX >= boundWidth - charWidth / 1.5f) {
-                    continue;
-                }
-
-
-
-                drawCharFunction.drawChar(
-                    textureAtlas,
-                    c,
-                    letter,
-                    drawX,
-                    (drawY + scaleY * charHeight),
-                    textureWidth,
-                    textureHeight,
-                    charInfo,
-                    scaleX,
-                    scaleY,
-                    textureBleedingFix,
-                    vertexBleedingFix
-                );
-
-                drawX += (charWidth + (c != '\n' ? spacing : 0)) * scaleX;
             }
 
-        } else {
+            char c = multicolor ? letter.getCharacter() : text.charAt(i);
 
+            if (wordWrap && isSpecialCharacter(c)) {
+                nextWordWidth = getNextWordWidth(bitmapText, i, scaleX);
+            } else {
+                nextWordWidth = 0f;
+            }
 
-            for (int i = 0; i < text.length(); i++) {
-                char c = text.charAt(i);
+            BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
 
-                if (wordWrap && isSpecialCharacter(c)) {
-                    nextWordWidth = getNextWordWidth(bitmapText, i, scaleX);
-                } else {
-                    nextWordWidth = 0f;
+            if (charInfo == null) continue;
+
+            float charWidth = charInfo.width();
+            float charHeight = charInfo.height();
+
+            if (c == '\n' || wordWrap && (boundWidth != 0 && drawX >= boundWidth - nextWordWidth - charWidth / 1.5f * scaleX)) {
+                drawX = 0;
+                drawY += (charHeight + lineSpacing) * scaleY;
+
+                if (boundHeight != 0 && drawY > boundHeight - charHeight) {
+                    break;
                 }
 
-                BitmapCharInfo charInfo = bitmapFont.getCharInfo(c);
-
-                if (charInfo == null) continue;
-
-                float charWidth = charInfo.width();
-                float charHeight = charInfo.height();
-
-                if (c == '\n' || wordWrap && (boundWidth != 0 && drawX >= boundWidth - nextWordWidth - charWidth / 1.5f * scaleX)) {
-                    drawX = 0;
-                    drawY += (charHeight + lineSpacing) * scaleY;
-
-                    if (boundHeight != 0 && drawY > boundHeight - charHeight) {
-                        break;
-                    }
-
-                    if (nextWordWidth > 0) {
-                        continue;
-                    }
-                }
-
-                if (!wordWrap && drawX >= boundWidth - charWidth / 1.5f) {
+                if (nextWordWidth > 0) {
                     continue;
                 }
-
-                drawCharFunction.drawChar(
-                    textureAtlas,
-                    c,
-                    null,
-                    drawX,
-                    (drawY + scaleY * charHeight),
-                    textureWidth,
-                    textureHeight,
-                    charInfo,
-                    scaleX,
-                    scaleY,
-                    textureBleedingFix,
-                    vertexBleedingFix
-                );
-
-                drawX += (charWidth + (c != '\n' ? spacing : 0)) * scaleX;
             }
+
+            if (!wordWrap && drawX >= boundWidth - charWidth / 1.5f) {
+                continue;
+            }
+
+            drawCharFunction.drawChar(
+                textureAtlas,
+                c,
+                letter, // null if not multicolor
+                drawX,
+                (drawY + scaleY * charHeight),
+                textureAtlasWidth,
+                textureAtlasHeight,
+                charInfo,
+                scaleX,
+                scaleY,
+                textureBleedingFix,
+                vertexBleedingFix
+            );
+
+            drawX += (charWidth + (c != '\n' ? spacing : 0)) * scaleX;
         }
 
-    }
 
-    private enum Completion {
-        NORMAL,
-        CONTINUE,
-        BREAK
     }
-
-    private static Completion handleTextPlacing(BitmapText bitmapText,
-                                                char c,
-                                                float boundWidth,
-                                                float boundHeaight,
-                                                float charWidth,
-                                                float scaleX,
-                                                float scaleY) {return null;}
 
     private static float getNextWordWidth(BitmapText bitmapText, int charIndex, float scaleX) {
         String nextWord = getNextWord(bitmapText.getPlainText(), charIndex);
