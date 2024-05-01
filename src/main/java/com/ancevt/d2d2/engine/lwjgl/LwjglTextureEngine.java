@@ -70,7 +70,7 @@ public class LwjglTextureEngine implements ITextureEngine {
     }
 
     @Override
-    public boolean bind( TextureAtlas textureAtlas) {
+    public boolean bind(TextureAtlas textureAtlas) {
         if (mapping.ids().containsKey(textureAtlas.getId())) {
             glBindTexture(GL_TEXTURE_2D, mapping.ids().get(textureAtlas.getId()));
             return true;
@@ -110,7 +110,7 @@ public class LwjglTextureEngine implements ITextureEngine {
     }
 
     @Override
-    public TextureAtlas createTextureAtlas(int width, int height, TextureCell  [] cells) {
+    public TextureAtlas createTextureAtlas(int width, int height, TextureCell[] cells) {
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         final Graphics2D g = (Graphics2D) image.getGraphics();
 
@@ -151,7 +151,7 @@ public class LwjglTextureEngine implements ITextureEngine {
         return textureAtlas;
     }
 
-    public TextureAtlas createTextureAtlasFromBufferedImage( BufferedImage image) {
+    public TextureAtlas createTextureAtlasFromBufferedImage(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
 
@@ -177,7 +177,7 @@ public class LwjglTextureEngine implements ITextureEngine {
         return textureAtlas;
     }
 
-    private  TextureAtlas createTextureAtlasFromByteBuffer(ByteBuffer byteBuffer, int width, int height) {
+    private TextureAtlas createTextureAtlasFromByteBuffer(ByteBuffer byteBuffer, int width, int height) {
         TextureAtlas textureAtlas = new TextureAtlas(++textureAtlasIdCounter, width, height);
         loadQueue.putLoad(new TextureLoadQueue.LoadTask(textureAtlas, width, height, byteBuffer));
         return textureAtlas;
@@ -211,7 +211,7 @@ public class LwjglTextureEngine implements ITextureEngine {
         }
     }
 
-    private void drawCell( Graphics2D g, final  TextureCell cell) {
+    private void drawCell(Graphics2D g, final TextureCell cell) {
         int x = cell.getX();
         int y = cell.getY();
         float repeatX = cell.getRepeatX();
@@ -277,7 +277,7 @@ public class LwjglTextureEngine implements ITextureEngine {
     }
 
     @Override
-    public void unloadTextureAtlas( TextureAtlas textureAtlas) {
+    public void unloadTextureAtlas(TextureAtlas textureAtlas) {
         mapping.images().remove(textureAtlas.getId());
         // TODO: repair creating new textures after unloading
         if (textureAtlas.isDisposed()) {
@@ -298,7 +298,7 @@ public class LwjglTextureEngine implements ITextureEngine {
     }
 
     @Override
-    public TextureAtlas bitmapTextToTextureAtlas( BitmapText bitmapText) {
+    public TextureAtlas bitmapTextToTextureAtlas(BitmapText bitmapText) {
         int width = (int) bitmapText.getWidth();
         int height = (int) bitmapText.getHeight();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -315,25 +315,34 @@ public class LwjglTextureEngine implements ITextureEngine {
                     int charX = charInfo.x();
                     int charY = charInfo.y();
 
-                    if (charY >= 0) {
+                    int offsetX = 0;
+                    int offsetY = 0;
 
-                        BufferedImage charImage = textureRegionToImage(
-                            atlas, charX, charY, charInfo.width(), charInfo.height()
-                        );
-
-                        charImage = copyImage(charImage);
-
-                        Color letterColor = letter == null ? bitmapText.getColor() : letter.getColor();
-
-                        applyColorFilter(
-                            charImage,
-                            letterColor.getR(),
-                            letterColor.getG(),
-                            letterColor.getB()
-                        );
-
-                        g.drawImage(charImage, (int)drawX, (int)drawY - charInfo.height(), null);
+                    if(charX < 0) {
+                        offsetX = -charX;
+                        charX = 0;
                     }
+                    if(charY < 0) {
+                        offsetY = -charY;
+                        charY = 0;
+                    }
+
+                    BufferedImage charImage = textureRegionToImage(
+                        atlas, charX, charY, charInfo.width(), charInfo.height()
+                    );
+
+                    charImage = copyImage(charImage);
+
+                    Color letterColor = letter == null ? bitmapText.getColor() : letter.getColor();
+
+                    applyColorFilter(
+                        charImage,
+                        letterColor.getR(),
+                        letterColor.getG(),
+                        letterColor.getB()
+                    );
+
+                    g.drawImage(charImage, (int) drawX + offsetX, (int) drawY - charInfo.height() + offsetY, null);
                 }
 
             },
@@ -371,7 +380,7 @@ public class LwjglTextureEngine implements ITextureEngine {
         }
     }
 
-    private BufferedImage textureRegionToImage( TextureAtlas textureAtlas, int x, int y, int width, int height) {
+    private BufferedImage textureRegionToImage(TextureAtlas textureAtlas, int x, int y, int width, int height) {
         BufferedImage bufferedImage = mapping.images().get(textureAtlas.getId());
 
 //        try {
@@ -383,7 +392,7 @@ public class LwjglTextureEngine implements ITextureEngine {
         return bufferedImage.getSubimage(x, y, width, height);
     }
 
-    private BufferedImage textureRegionToImage( Texture texture) {
+    private BufferedImage textureRegionToImage(Texture texture) {
         return textureRegionToImage(
             texture.getTextureAtlas(),
             texture.x(),

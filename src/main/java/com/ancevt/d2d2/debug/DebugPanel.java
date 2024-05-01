@@ -179,6 +179,9 @@ public class DebugPanel extends Container {
 
             bitmapText.setSize(bg.getWidth(), bg.getHeight());
             interactiveButton.setSize(bg.getWidth(), bg.getHeight());
+
+            dispatchEvent(Event.builder().type(Event.RESIZE).build());
+
             return;
         }
 

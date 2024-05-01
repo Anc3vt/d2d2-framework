@@ -74,7 +74,6 @@ public class TextureManager {
             }
         }
 
-        textureAtlas.setDisposed(true);
     }
 
     public void clear() {
@@ -115,5 +114,9 @@ public class TextureManager {
         } catch (IOException e) {
             throw new TextureException(e);
         }
+    }
+
+    public boolean containsTextureAtlas(TextureAtlas textureAtlas) {
+        return textureAtlases.contains(textureAtlas);
     }
 }

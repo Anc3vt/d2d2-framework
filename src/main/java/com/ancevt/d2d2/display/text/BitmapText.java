@@ -38,8 +38,6 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
 
     protected static final float DEFAULT_WIDTH = 256f;
     protected static final float DEFAULT_HEIGHT = 128f;
-    protected static final float DEFAULT_MAX_WIDTH = 1024f;
-    protected static final float DEFAULT_MAX_HEIGHT = 512f;
     protected static final Color DEFAULT_COLOR = Color.WHITE;
 
     private String text;
@@ -54,10 +52,10 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
     private float height;
 
     @Getter
-    private float maxWidth = DEFAULT_MAX_WIDTH;
+    private float maxWidth = 1024f;
 
     @Getter
-    private float maxHeight = DEFAULT_MAX_HEIGHT;
+    private float maxHeight = 512f;
 
     @Getter
     @Setter
