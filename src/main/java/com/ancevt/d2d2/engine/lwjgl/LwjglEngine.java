@@ -23,7 +23,7 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.interactive.InteractiveManager;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.FractionalMetrics;
-import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
+import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
@@ -35,7 +35,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
@@ -218,6 +217,7 @@ public class LwjglEngine implements Engine {
             throw new IllegalStateException("Unable to initialize GLFW");
 
         glfwDefaultWindowHints();
+        //glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
 
         if (Objects.equals(System.getProperty(SystemProperties.GLFW_HINT_ALWAYSONTOP), "true")) {
             glfwWindowHint(GLFW_FLOATING, 1);
@@ -376,7 +376,7 @@ public class LwjglEngine implements Engine {
         renderer.init(windowId);
         renderer.reshape(initialWindowWidth, initialWindowHeight);
 
-        glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
+
 
         setSmoothMode(false);
 
@@ -456,12 +456,12 @@ public class LwjglEngine implements Engine {
 
     @SneakyThrows
     @Override
-    public BitmapFont generateBitmapFont(TtfBitmapFontBuilder builder) {
+    public BitmapFont generateBitmapFont(TrueTypeBitmapFontBuilder builder) {
 
         final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-        InputStream inputStream = builder.getTtfInputStream() != null ?
-            builder.getTtfInputStream() : new FileInputStream(builder.getTtfPath().toFile());
+        InputStream inputStream = builder.getInputStream() != null ?
+            builder.getInputStream() : new FileInputStream(builder.getFilePath().toFile());
 
         Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
         String fontName = font.getName();
@@ -573,8 +573,8 @@ public class LwjglEngine implements Engine {
         byte[] pngDataBytes = pngOutputStream.toByteArray();
 
         if (System.getProperty(SystemProperties.D2D2_BITMAPFONT_SAVEBMF) != null) {
-            String assetPath = builder.getTtfAssetPath();
-            Path ttfPath = builder.getTtfPath();
+            String assetPath = builder.getAssetPath();
+            Path ttfPath = builder.getFilePath();
 
             String fileName = assetPath != null ?
                 Path.of(assetPath).getFileName().toString() : ttfPath.getFileName().toString();

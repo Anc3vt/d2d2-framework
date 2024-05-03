@@ -204,8 +204,10 @@ public class LwjglRenderer implements IRenderer {
 
         float a = displayObject.getAlpha() * toAlpha;
 
-        x = round(x);
-        y = round(y);
+        if (displayObject.isIntegerPixelAlignmentEnabled()) {
+            x = round(x);
+            y = round(y);
+        }
 
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, 0);
@@ -403,7 +405,7 @@ public class LwjglRenderer implements IRenderer {
         double vertexBleedingFix) {
 
         //scX = nextHalf(scX) ;
-        scY = nextHalf(scY) ;
+        scY = nextHalf(scY);
 
         float charWidth = charInfo.width();
         float charHeight = charInfo.height();

@@ -21,7 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
+import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.lwjgl.LwjglTextureEngine;
@@ -161,7 +161,7 @@ public class ServerSideEngine implements Engine {
 
 
     @Override
-    public BitmapFont generateBitmapFont(TtfBitmapFontBuilder ttfBitmapFontBuilder) {
+    public BitmapFont generateBitmapFont(TrueTypeBitmapFontBuilder trueTypeBitmapFontBuilder) {
         return D2D2.bitmapFontManager().getDefaultBitmapFont();
     }
 

@@ -22,29 +22,21 @@ import com.ancevt.d2d2.event.EventDispatcher;
 public abstract class DisplayObject extends EventDispatcher implements IDisplayObject {
 
     private static int displayObjectIdCounter;
-
     private final int displayObjectId;
     private String name;
     private Container parent;
-
-    private float alpha;
-
     private float x;
     private float y;
-
-    private float scaleX;
-    private float scaleY;
-
+    private float scaleX = 1.0f;
+    private float scaleY = 1.0f;
+    private float alpha = 1.0f;
     private float rotation;
-
-    private boolean visible;
+    private boolean visible = true;
     private int zOrderIndex;
+    private boolean integerPixelAlignmentEnabled = true;
 
     protected DisplayObject() {
         displayObjectId = displayObjectIdCounter++;
-        visible = true;
-        scaleX = scaleY = 1.0f;
-        alpha = 1.0f;
         name = "_" + getClass().getSimpleName() + getDisplayObjectId();
     }
 
@@ -210,12 +202,12 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
 
     @Override
     public float getWidth() {
-        return 0;
+        return 0f;
     }
 
     @Override
     public float getHeight() {
-        return 0;
+        return 0f;
     }
 
     @Override
@@ -286,10 +278,17 @@ public abstract class DisplayObject extends EventDispatcher implements IDisplayO
     }
 
     @Override
+    public void setIntegerPixelAlignmentEnabled(boolean value) {
+        this.integerPixelAlignmentEnabled = value;
+    }
+
+    @Override
+    public boolean isIntegerPixelAlignmentEnabled() {
+        return integerPixelAlignmentEnabled;
+    }
+
+    @Override
     public String toString() {
-        String sb = getClass().getSimpleName() + "{" + "displayObjectId=" + displayObjectId +
-            ", name='" + name + '\'' +
-            '}';
-        return sb;
+        return getClass().getSimpleName() + "{" + "displayObjectId=" + displayObjectId + ", name='" + name + "'}";
     }
 }

@@ -19,29 +19,7 @@ package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.event.IEventDispatcher;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.ancevt.d2d2.display.Maps.extraMap;
-
 public interface IDisplayObject extends IEventDispatcher {
-
-    default void setExtra(Map<String, Object> extra) {
-        extraMap.put(this, extra);
-    }
-
-    default Map<String, Object> getExtra() {
-        return extraMap.computeIfAbsent(this, o -> new HashMap<>());
-    }
-
-    default <T> IDisplayObject putExtra(String key, T object) {
-        getExtra().put(key, object);
-        return this;
-    }
-
-    default <T> T getExtra(String key) {
-        return (T) getExtra().get(key);
-    }
 
     default void centerX() {
         if (hasParent()) {
@@ -86,9 +64,13 @@ public interface IDisplayObject extends IEventDispatcher {
 
     void setX(float value);
 
-    float getX();
-
     void setY(float value);
+
+    default void setXY(IDisplayObject displayObject) {
+        setXY(displayObject.getX(), displayObject.getY());
+    }
+
+    float getX();
 
     float getY();
 
@@ -162,7 +144,12 @@ public interface IDisplayObject extends IEventDispatcher {
 
     void removeFromParent();
 
+    void setIntegerPixelAlignmentEnabled(boolean value);
+
+    boolean isIntegerPixelAlignmentEnabled();
+
     String toString();
+
 
     default void onExitFrame() {}
 
