@@ -20,7 +20,7 @@ package com.ancevt.d2d2.engine;
 import com.ancevt.d2d2.display.IRenderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
+import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
 
 public interface Engine {
 
@@ -52,7 +52,7 @@ public interface Engine {
 
     default boolean isSmoothMode() {return false;}
 
-    BitmapFont generateBitmapFont(TtfBitmapFontBuilder ttfBitmapFontBuilder);
+    BitmapFont generateBitmapFont(TrueTypeBitmapFontBuilder trueTypeBitmapFontBuilder);
 
     void setTimerCheckFrameFrequency(int v);
 

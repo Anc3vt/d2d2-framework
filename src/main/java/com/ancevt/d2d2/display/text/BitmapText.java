@@ -68,7 +68,7 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
     @Getter
     private ColorTextData colorTextData;
     @Getter
-    private boolean autosize = true;
+    private boolean autosize;
     private boolean cacheAsSprite;
 
     @Getter

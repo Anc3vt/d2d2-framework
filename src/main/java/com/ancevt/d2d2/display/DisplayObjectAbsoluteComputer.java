@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.display;
 
 
-class DisplayObjectAbsoluteComputer {
+final class DisplayObjectAbsoluteComputer {
 
     private DisplayObjectAbsoluteComputer() {}
 

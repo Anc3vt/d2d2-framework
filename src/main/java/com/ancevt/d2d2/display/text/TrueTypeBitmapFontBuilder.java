@@ -24,7 +24,7 @@ import lombok.Getter;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-public class TtfBitmapFontBuilder {
+public class TrueTypeBitmapFontBuilder {
 
     private static final int DEFAULT_ATLAS_WIDTH = 512;
     private static final int DEFAULT_ATLAS_HEIGHT = 512;
@@ -37,9 +37,11 @@ public class TtfBitmapFontBuilder {
     @Getter
     private int atlasHeight = DEFAULT_ATLAS_HEIGHT;
     @Getter
-    private InputStream ttfInputStream;
+    private InputStream inputStream;
     @Getter
-    private Path ttfPath;
+    private Path filePath;
+    @Getter
+    private String assetPath;
     @Getter
     private int fontSize = DEFAULT_FONT_SIZE;
     @Getter
@@ -77,100 +79,97 @@ public class TtfBitmapFontBuilder {
     private String charSourceString = " !\"#$%&'()*+,-./\\0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]_{}АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя?^~`ҐґЇїЎў¡¿ÑñÁÉÍÓÚÜáéíóúüßäÄöÖüÜçÇğĞıİşŞøæÆåÅøØæÆęĘłŁńŃśŚźŹżŻđĐďĎťŤŕŔůŮôÔâÂêÊûÛîÎôÔŷŶŵŴŝŜĉĈĥĤẅẄỳỲỵỴẉẈỹỸỷỶỻỺṃṂṗṖṙṘṣṢṭṬỡỠẃẂẁẀẘẘễỄẽẼỹỸỵỴḿḾṫṪȯȮḟḞġĠṅṄṇṆñÑóÓúÚìÌèÈàÀâÂêÊûÛîÎôÔäÄëËïÏöÖüÜçÇøØåÅæÆãÃõÕāĀēĒīĪōŌūŪǎǍěĚǐǏǒǑǔǕǖǗǘǙǚǛǜǺǻǼǽɛƐɔƆɪɨɒƝƉɖɗƐɛʒƷʃƨƱƲɣƔʔʡʕʢəƏʌʊʋʁʀŋɲɳɴɤƷƸɚɝɨɩɾɽʙʜɦɧɥʎʟʤʦʧʨɟʎɧʂʈʐɖɳɱɫɬɮɲɳɴɸɹɻɰɯɸɡɣɢɠʖɥɦɧɨɪɨɭɬɮɫɬɱɯɰɲɳɵɶɷɸɹɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮʯʰʱʲʳʴʵʶʷʸʹʺʻʼʽʾʿˀˁ˂˃˄˅ˆˇˈˉˊˋˌˍˎˏːˑ˒˓˔˕˖˗˘˙˚˛˜˝˞˟ˠˡˢˣˤ˥˦˧˨˩˪˫ˬ˭ˮ" +
         "⎗⎘⎙⎚⎛⎜⎝⎞⎟⎠⎡⎢⎣⎤⎥⎦⎧⎨⎩⎪⎬⎭┌┍┎┏┐┑┒┓└┕┖┗┘┙┚┛├┝┞┟┠┡┢┣┤┥┦┧┨┩┪┫┬┭┮┯┰┱┲┳┴┵┶┷┸┹┺┻┼┽┾┿╀╁╂╃╄╅╆╇╈╉╊╋╌╍╎╏═║╒╓╔╕╖╗╘╙╚╛╜╝╞╟╠╡╢╣╤╥╦╧╨╩╪╫╬▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟▲△▴▵▶▷▸►▹▻▼▽▾▿◀◁◂◃◄◅◆◇◈◉◊○◌◍◎●◐◑◒◓◔◕◖◗◘◙◚◛◜◝◞◟◠◡◢◣◤◥◦◧◨◩◪◫◬◭◮◯◰◱◲◳◴◵◶◷◸◹◺◻◼◽◾◿";
 
-    @Getter
-    private String ttfAssetPath;
 
-
-    public TtfBitmapFontBuilder charSourceString(String charSourceString) {
+    public TrueTypeBitmapFontBuilder charSourceString(String charSourceString) {
         this.charSourceString = charSourceString;
         return this;
     }
 
-    public TtfBitmapFontBuilder name(String name) {
+    public TrueTypeBitmapFontBuilder name(String name) {
         this.name = name;
         return this;
     }
 
-    public TtfBitmapFontBuilder bold(boolean bold) {
+    public TrueTypeBitmapFontBuilder bold(boolean bold) {
         this.bold = bold;
         return this;
     }
 
-    public TtfBitmapFontBuilder offsetX(int offsetX) {
+    public TrueTypeBitmapFontBuilder offsetX(int offsetX) {
         this.offsetX = offsetX;
         return this;
     }
 
-    public TtfBitmapFontBuilder offsetY(int offsetY) {
+    public TrueTypeBitmapFontBuilder offsetY(int offsetY) {
         this.offsetY = offsetY;
         return this;
     }
 
-    public TtfBitmapFontBuilder ttfPath(String ttfPath) {
-        return ttfPath(Path.of(ttfPath));
+    public TrueTypeBitmapFontBuilder filePath(String filePath) {
+        return filePath(Path.of(filePath));
     }
 
-    public TtfBitmapFontBuilder ttfPath(Path ttfPath) {
-        this.ttfPath = ttfPath;
+    public TrueTypeBitmapFontBuilder filePath(Path filePath) {
+        this.filePath = filePath;
         return this;
     }
 
-    public TtfBitmapFontBuilder atlasWidth(int atlasWidth) {
+    public TrueTypeBitmapFontBuilder atlasWidth(int atlasWidth) {
         this.atlasWidth = atlasWidth;
         return this;
     }
 
-    public TtfBitmapFontBuilder atlasHeight(int atlasHeight) {
+    public TrueTypeBitmapFontBuilder atlasHeight(int atlasHeight) {
         this.atlasHeight = atlasHeight;
         return this;
     }
 
-    public TtfBitmapFontBuilder ttfAssetPath(String assetPath) {
-        this.ttfAssetPath = assetPath;
-        return ttfInputStream(Assets.getAssetAsStream(assetPath));
+    public TrueTypeBitmapFontBuilder assetPath(String assetPath) {
+        this.assetPath = assetPath;
+        return inputStream(Assets.getAssetAsStream(assetPath));
     }
 
-    public TtfBitmapFontBuilder ttfInputStream(InputStream ttfInputStream) {
-        this.ttfInputStream = ttfInputStream;
+    public TrueTypeBitmapFontBuilder inputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
         return this;
     }
 
-    public TtfBitmapFontBuilder fontSize(int fontSize) {
+    public TrueTypeBitmapFontBuilder fontSize(int fontSize) {
         this.fontSize = fontSize;
         return this;
     }
 
-    public TtfBitmapFontBuilder textAntialias(boolean textAntialiasOn) {
+    public TrueTypeBitmapFontBuilder textAntialias(boolean textAntialiasOn) {
         this.textAntialiasOn = textAntialiasOn;
         return this;
     }
 
-    public TtfBitmapFontBuilder withHintTextAntialiasGasp() {
+    public TrueTypeBitmapFontBuilder withHintTextAntialiasGasp() {
         this.textAntialiasGasp = true;
         return this;
     }
 
-    public TtfBitmapFontBuilder withHintTextAntialiasLcdHrgb() {
+    public TrueTypeBitmapFontBuilder withHintTextAntialiasLcdHrgb() {
         this.textAntialiasLcdHrgb = true;
         return this;
     }
 
-    public TtfBitmapFontBuilder withHintTextAntialiasLcdHbgr() {
+    public TrueTypeBitmapFontBuilder withHintTextAntialiasLcdHbgr() {
         this.textAntialiasLcdHbgr = true;
         return this;
     }
 
-    public TtfBitmapFontBuilder withHintTextAntialiasLcdVrgb() {
+    public TrueTypeBitmapFontBuilder withHintTextAntialiasLcdVrgb() {
         this.textAntialiasLcdVrgb = true;
         return this;
     }
 
-    public TtfBitmapFontBuilder withHintTextAntialiasLcdVbgr() {
+    public TrueTypeBitmapFontBuilder withHintTextAntialiasLcdVbgr() {
         this.textAntialiasLcdVbgr = true;
         return this;
     }
 
-    public TtfBitmapFontBuilder fractionalMetrics(FractionalMetrics fractionalMetrics) {
+    public TrueTypeBitmapFontBuilder fractionalMetrics(FractionalMetrics fractionalMetrics) {
         this.fractionalMetrics = fractionalMetrics;
         return this;
     }
@@ -179,27 +178,26 @@ public class TtfBitmapFontBuilder {
         return fractionalMetrics;
     }
 
-    public TtfBitmapFontBuilder spacingX(int spacingX) {
+    public TrueTypeBitmapFontBuilder spacingX(int spacingX) {
         this.spacingX = spacingX;
         return this;
     }
 
-    public TtfBitmapFontBuilder spacingY(int spacingY) {
+    public TrueTypeBitmapFontBuilder spacingY(int spacingY) {
         this.spacingY = spacingY;
         return this;
     }
 
     public BitmapFont build() {
-        if (ttfPath == null && ttfInputStream == null && ttfAssetPath == null) {
-            throw new IllegalStateException("ttfPath == null && ttfInputStream == null && ttfAssetPath == null");
+        if (filePath == null && assetPath == null && inputStream == null) {
+            throw new IllegalStateException("filePath == null &&  assetPath == null && inputStream == null");
         }
 
         if (name == null) {
-            if(ttfAssetPath != null) {
-                name = ttfAssetPath;
-            } else
-            if (ttfPath != null) {
-                name = ttfPath.toString();
+            if (assetPath != null) {
+                name = assetPath;
+            } else if (filePath != null) {
+                name = filePath.toString();
             }
         }
 
