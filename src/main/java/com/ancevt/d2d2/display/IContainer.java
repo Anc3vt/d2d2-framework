@@ -67,7 +67,7 @@ public interface IContainer extends IDisplayObject {
 
     void add(IDisplayObject child, int index, float x, float y);
 
-    void add(IDisplayObject child, Container.PlaceBy placeBy);
+    void add(IDisplayObject child, PlaceBy placeBy);
 
     default void addAll(Collection<IDisplayObject> children) {
         children.forEach(this::add);

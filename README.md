@@ -19,7 +19,11 @@ The goal of D2D2 is to create an easy-to-use framework for rapid development of 
     - [TextureManager](#texturemanager)
     - [BitmapText](#bitmaptext)
     - [Container](#container)
-    - [Event dispatching & listening](#event-dispatching--listening)
+    - [Events](#events)
+      - [Standard event types](#standard-event-types)
+        - [Base events](#base-events)
+        - [Interactive events](#interactive-events)
+        - [Application lifecycle events](#application-lifecycle-events)
     - [Interactive display objects](#interactive-display-objects)
     - [Animated display objects & loading multiple textures in a row](#animated-display-objects--loading-multiple-textures-in-a-row)
 - [Some demo videos](#some-demo-videos)
@@ -31,7 +35,7 @@ The goal of D2D2 is to create an easy-to-use framework for rapid development of 
 D2D2 provides the ability to develop multiplayer games using the same code for both the client and the server. Developers can operate with the same objects (`Stage`, `IDisplayObject`, `IContainer`, event model, etc.), a unified hierarchy of nested display containers, on both sides of the application. The difference lies only in the use of different _engines_ and control code, which can also be written in D2D2. In the current release of D2D2, there are two implementations of the `Engine` interface: `LwjglEngine` for the client side and `ServerSideEngine` for the server side (in practice, this is just a replacement of the value of the `d2d2.engine` property in the configuration properties file).
 
 
-![Same classes diagram](https://raw.githubusercontent.com/Anc3vt/d2d2-core/c61a938b76bd2e3e2ea40d9eaefc111c726f7cfa/img/sameclasses.png)
+![Same classes diagram](https://raw.githubusercontent.com/Anc3vt/d2d2-core/7f705d882df0ce7c14a2b6a1949d174705ebccf4/img/sameclasses.png)
 
 ## Server-side (no-render) engine
 
@@ -258,15 +262,15 @@ It will look like this:
 
 ![BitmapText1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/bitmapText1.png)
 
-### BitmapText with the TrueType font, using `TtfBitmapFontBuilder`
+### BitmapText with the TrueType font, using `TrueTypeBitmapFontBuilder`
 
 ```java
 public void onCreate(Stage stage) {
-    BitmapFont bitmapFont = new TtfBitmapFontBuilder()
-        .fontSize(24)
-        .ttfAssetPath("d2d2ttf/FreeSansBold.ttf")
-        .textAntialias(true)
-        .build();
+    BitmapFont bitmapFont = new TrueTypeBitmapFontBuilder()
+      .fontSize(24)
+      .assetPath("d2d2ttf/FreeSansBold.ttf")
+      .textAntialias(true)
+      .build();
 
     BitmapText bitmapText2 = new BitmapText(bitmapFont);
     bitmapText2.setText("bitmapText2: Using TtfBitmapFontBuilder generated bitmap font");
@@ -285,11 +289,11 @@ It will look like this:
 
 ```java
 public void onCreate(Stage stage) {
-    BitmapFont bitmapFont = new TtfBitmapFontBuilder()
-        .fontSize(24)
-        .ttfAssetPath("d2d2ttf/FreeSansBold.ttf")
-        .textAntialias(true)
-        .build();
+    BitmapFont bitmapFont = new TrueTypeBitmapFontBuilder()
+      .fontSize(24)
+      .assetPath("d2d2ttf/FreeSansBold.ttf")
+      .textAntialias(true)
+      .build();
 
     BitmapText bitmapText3 = new BitmapText(bitmapFont);
     // Enable multicolor
@@ -351,7 +355,7 @@ Here's how it will look when the application is launched:
 
 You can retrieve all display objects parent container using their `getParent()` method. If a display object is not added to any container, the method will return `null`, so it's a good practice to check for the presence of a parent container using the `hasParent()` method. In turn, containers have methods such as `getNumChildren()`, `getChild(int index)`, and `childrenStream()` as a stream. Check out other useful methods in the `IContainer` interface in the documentation and source code.
 
-## Event dispatching & listening
+## Events
 
 In D2D2, an event model similar to that in JavaScript and ActionScript is implemented. Methods such as `addEventListener`, `removeEventListener`, and `dispatchEvent` are used.
 
@@ -417,7 +421,9 @@ public void onCreate(Stage stage) {
 
     Sprite sprite = new Sprite("flower.png");
 
-    container.add(sprite, -sprite.getWidth() / 2, -sprite.getHeight() / 2);
+    container.add(sprite, PlaceBy.CENTER);
+    // it will be the same as:
+    // container.add(sprite, -sprite.getWidth() / 2, -sprite.getHeight() / 2);
 
     container.addEventListener(Event.LOOP_UPDATE, event -> {
         container.rotate(-5);
@@ -440,6 +446,51 @@ Unlike JavaScript and ActionScript, D2D2 adds the ability to remove all listener
 - `removeEventListener(Object key, String type);`
 - `removeAllEventListeners();`
 - `removeAllEventListeners(String type);`
+
+### Standard event types:
+
+
+#### Base events:
+Dispatched by any objects implementing the `IEventDispatcher` interface.
+
+| Type | Description |
+|------|-------------|
+| `Event.LOOP_UPDATE`       | Occurs every frame regardless of current FPS. Allows for smooth handling of display object logic, ensuring frame skip during high CPU and GPU load.
+| `Event.ENTER_FRAME`       | Occurs before every single frame rendering.
+| `Event.EXIT_FRAME`        | Occurs after every single frame rendering.
+| `Event.ADD`               | Occurs when a display object is added to a parent container.
+| `Event.REMOVE`            | Occurs when a display object is removed from its parent container.
+| `Event.ADD_TO_STAGE`      |Occurs when a display object is added to the stage or to a container already added to the stage, or when one of its parent containers is added to the stage or removed from the stage. In other words, this occurs when a display object is added to the screen in any way.
+| `Event.REMOVE_FROM_STAGE` | Occurs when a display object is removed from the stage or when one of its parent containers is removed from the stage. In other words, this occurs when a display object is removed from the screen in any way.
+| `Event.COMPLETE`          | Occurs when something (like an `IAnimated` object) completes its action, such as reaching the end of an animation sequence.
+| `Event.RESIZE`            | Occurs when a resizeble display object is resized, for example, when the stage is resized.
+| `Event.CHANGE`            | Generic event for any simple actions.
+#### Interactive events:
+Dispatched by `Interactive` objects and by the `Stage`:
+
+|Type|Description|
+|-|-|
+|`InteractiveEvent.DOWN`	      | Occurs when a mouse button is pressed or a touch is initiated on an interactive object.
+|`InteractiveEvent.UP`	      | Occurs when a mouse button is released or a touch is ended on an interactive object.
+|`InteractiveEvent.DRAG`	      | Occurs during the dragging of an interactive object (e.g., by mouse or touch).
+|`InteractiveEvent.HOVER`	      | Occurs when the mouse pointer hovers over an interactive object.
+|`InteractiveEvent.OUT`	      | Occurs when the mouse pointer moves out of an interactive object after hovering over it.
+|`InteractiveEvent.WHEEL`	      | Occurs when the mouse wheel is scrolled over an interactive object.
+|`InteractiveEvent.MOVE`	      | Occurs when the mouse pointer moves over an interactive object without pressing any mouse button.
+|`InteractiveEvent.FOCUS_IN`	  | Occurs when focus is set on an interactive object (e.g., through a click or hover).
+|`InteractiveEvent.FOCUS_OUT`	  | Occurs when focus is lost by an interactive object (e.g., when another object gains focus).
+|`InteractiveEvent.KEY_DOWN`	  | Occurs when a keyboard key is pressed while an interactive object has input focus.
+|`InteractiveEvent.KEY_REPEAT`| 	Occurs when a keyboard key is held down with input focus on an interactive object.
+|`InteractiveEvent.KEY_UP`	  | Occurs when a keyboard key is released while an interactive object has input focus.
+|`InteractiveEvent.KEY_TYPE`	  | Occurs when text is entered via keyboard input on an interactive object with input focus.
+#### Application lifecycle events:
+Dispatched by the `Stage`:
+
+|Type|	Description|
+|-|-
+|`LifecycleEvent.START_MAIN_LOOP`|	Occurs when the main loop of the application or game is started, typically at the beginning of execution.
+|`LifecycleEvent.EXIT_MAIN_LOOP`|	Occurs when the main loop of the application or game is exited or terminated, typically at the end of execution or upon quitting the application/game.
+
 
 ## Interactive display objects
 
@@ -504,8 +555,6 @@ It will look like this (animated GIF):
 ![Interactive](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/InteractiveDemo.gif)
 
 For the `Stage`, user interaction events are also implemented.
-
-> **NOTE:** Unlike the `Interactive` interface, which dispatches `InteractiveEvent`, the `Stage` dispatches `InputEvent`. It's important to consider this difference to avoid encountering "nothing-happens" errors.
 
 ## Animated display objects & loading multiple textures in a row
 

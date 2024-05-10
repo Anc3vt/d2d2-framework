@@ -25,7 +25,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class LifecycleEvent extends Event {
-
     public static final String START_MAIN_LOOP = "startMainLoop";
-    public static final String EXIT_MAIN_LOOP = "exitMainLoop";
+    public static final String EXIT_MAIN_LOOP  = "exitMainLoop";
 }

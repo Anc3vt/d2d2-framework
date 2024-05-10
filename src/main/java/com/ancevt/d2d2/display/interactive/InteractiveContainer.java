@@ -24,9 +24,8 @@ import com.ancevt.d2d2.exception.InteractiveException;
 
 public class InteractiveContainer extends Container implements Interactive {
 
-    private static final float DEFAULT_WIDTH = 1;
-    private static final float DEFAULT_HEIGHT = 1;
-
+    private static final float DEFAULT_WIDTH = 1f;
+    private static final float DEFAULT_HEIGHT = 1f;
     protected final InteractiveArea interactiveArea;
     private boolean enabled;
     private boolean dragging;
@@ -47,10 +46,10 @@ public class InteractiveContainer extends Container implements Interactive {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    public InteractiveContainer(IDisplayObject firstChild) {
+    public InteractiveContainer(IDisplayObject wrappingDisplayObject) {
         this();
-        add(firstChild);
-        setSize(firstChild.getWidth(), firstChild.getHeight());
+        add(wrappingDisplayObject);
+        setSize(wrappingDisplayObject.getWidth(), wrappingDisplayObject.getHeight());
     }
 
     @Override
@@ -193,20 +192,5 @@ public class InteractiveContainer extends Container implements Interactive {
         return disposed;
     }
 
-    public static InteractiveContainer createInteractiveContainer(float width, float height) {
-        return new InteractiveContainer(width, height);
-    }
 
-    public static InteractiveContainer createInteractiveContainer() {
-        return new InteractiveContainer();
-    }
-
-    public static InteractiveContainer createInteractiveContainer(IDisplayObject childDisplayObject) {
-        InteractiveContainer interactiveContainer = new InteractiveContainer(
-            childDisplayObject.getWidth(),
-            childDisplayObject.getHeight()
-        );
-        interactiveContainer.add(childDisplayObject);
-        return interactiveContainer;
-    }
 }

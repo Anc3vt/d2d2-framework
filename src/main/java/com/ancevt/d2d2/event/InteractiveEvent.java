@@ -27,19 +27,19 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class InteractiveEvent extends Event {
 
-    public static final String DOWN  = "interactiveDown";
-    public static final String UP    = "interactiveUp";
-    public static final String DRAG  = "interactiveDrag";
-    public static final String HOVER = "interactiveHover";
-    public static final String OUT   = "interactiveOut";
-    public static final String WHEEL = "interactiveWheel";
-    public static final String MOVE = "interactiveMove";
-    public static final String FOCUS_IN = "interactiveFocusIn";
-    public static final String FOCUS_OUT = "interactiveFocusOut";
-    public static final String KEY_DOWN = "interactiveKeyDown";
+    public static final String DOWN       = "interactiveDown";
+    public static final String UP         = "interactiveUp";
+    public static final String DRAG       = "interactiveDrag";
+    public static final String HOVER      = "interactiveHover";
+    public static final String OUT        = "interactiveOut";
+    public static final String WHEEL      = "interactiveWheel";
+    public static final String MOVE       = "interactiveMove";
+    public static final String FOCUS_IN   = "interactiveFocusIn";
+    public static final String FOCUS_OUT  = "interactiveFocusOut";
+    public static final String KEY_DOWN   = "interactiveKeyDown";
     public static final String KEY_REPEAT = "interactiveKeyRepeat";
-    public static final String KEY_UP = "interactiveKeyUp";
-    public static final String KEY_TYPE = "interactiveKeyType";
+    public static final String KEY_UP     = "interactiveKeyUp";
+    public static final String KEY_TYPE   = "interactiveKeyType";
 
     private final int x;
     private final int y;

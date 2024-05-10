@@ -27,8 +27,8 @@ import java.util.stream.Stream;
 
 public class Container extends DisplayObject implements IContainer {
 
-    static final int MAX_X = 1048576;
-    static final int MAX_Y = 1048576;
+    static final float MAX_X = Float.MAX_VALUE;
+    static final float MAX_Y = Float.MAX_VALUE;
 
     final List<IDisplayObject> children;
 
@@ -202,18 +202,6 @@ public class Container extends DisplayObject implements IContainer {
         return getClass().getSimpleName() + "{" +
             getName() +
             '}';
-    }
-
-    public enum PlaceBy {
-        TOP_LEFT,
-        TOP,
-        TOP_RIGHT,
-        LEFT,
-        CENTER,
-        RIGHT,
-        BOTTOM_LEFT,
-        BOTTOM,
-        BOTTOM_RIGHT
     }
 
 }
