@@ -15,16 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.media;
+package com.ancevt.d2d2.sound;
 
 import com.ancevt.d2d2.asset.Assets;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public interface Media {
-
-    Map<String, Media> medias = new HashMap<>();
+public interface Sound {
 
     void play();
 
@@ -32,7 +27,7 @@ public interface Media {
 
     void stop();
 
-    void setVolume(float vaolume);
+    void setVolume(float volume);
 
     float getVolume();
 
@@ -40,22 +35,26 @@ public interface Media {
 
     float getPan();
 
-    static Media lookupSound(String path) {
-        Media media = medias.get(path);
-        if (media == null) {
-            media = new BlockingSound(path);
-            medias.put(path, media);
+    static Sound lookupSound(String path) {
+        Sound sound = SoundCache.medias.get(path);
+        if (sound == null) {
+            sound = new SampledSound(path);
+            SoundCache.medias.put(path, sound);
         }
-        return media;
+        return sound;
     }
 
-    static Media lookupSoundAsset(String path) {
-        Media media = medias.get(':' + path);
-        if (media == null) {
-            media = new BlockingSound(Assets.getAssetAsStream(path));
-            medias.put(':' + path, media);
+    static Sound lookupSoundAsset(String path) {
+        Sound sound = SoundCache.medias.get(':' + path);
+        if (sound == null) {
+            sound = new SampledSound(Assets.getAssetAsStream(path));
+            SoundCache.medias.put(':' + path, sound);
         }
-        return media;
+        return sound;
+    }
+
+    static void clearCache() {
+        SoundCache.medias.clear();
     }
 
 }

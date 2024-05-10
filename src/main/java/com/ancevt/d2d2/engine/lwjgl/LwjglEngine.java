@@ -25,7 +25,7 @@ import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.FractionalMetrics;
 import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
 import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.Mouse;
@@ -241,8 +241,8 @@ public class LwjglEngine implements Engine {
         glfwSetScrollCallback(windowId, new GLFWScrollCallback() {
             @Override
             public void invoke(long win, double dx, double dy) {
-                stage.dispatchEvent(InputEvent.builder()
-                    .type(InputEvent.MOUSE_WHEEL)
+                stage.dispatchEvent(InteractiveEvent.builder()
+                    .type(InteractiveEvent.WHEEL)
                     .x(Mouse.getX())
                     .y(Mouse.getY())
                     .delta((int) dy)
@@ -258,8 +258,8 @@ public class LwjglEngine implements Engine {
             public void invoke(long window, int mouseButton, int action, int mods) {
                 isDown = action == 1;
 
-                stage.dispatchEvent(InputEvent.builder()
-                    .type(action == 1 ? InputEvent.MOUSE_DOWN : InputEvent.MOUSE_UP)
+                stage.dispatchEvent(InteractiveEvent.builder()
+                    .type(action == 1 ? InteractiveEvent.DOWN : InteractiveEvent.UP)
                     .x(Mouse.getX())
                     .y(Mouse.getY())
                     .drag(isDown)
@@ -276,11 +276,10 @@ public class LwjglEngine implements Engine {
                 mouseX = (int) x;
                 mouseY = (int) y;
 
-                //Mouse.setXY(getTransformedX(mouseX), getTransformedY(mouseY));
                 Mouse.setXY(mouseX, mouseY);
 
-                stage.dispatchEvent(InputEvent.builder()
-                    .type(InputEvent.MOUSE_MOVE)
+                stage.dispatchEvent(InteractiveEvent.builder()
+                    .type(InteractiveEvent.MOVE)
                     .x(Mouse.getX())
                     .y(Mouse.getY())
                     .drag(isDown)
@@ -291,8 +290,8 @@ public class LwjglEngine implements Engine {
         });
 
         glfwSetCharCallback(windowId, (window, codepoint) -> {
-            stage.dispatchEvent(InputEvent.builder()
-                .type(InputEvent.KEY_TYPE)
+            stage.dispatchEvent(InteractiveEvent.builder()
+                .type(InteractiveEvent.KEY_TYPE)
                 .x(Mouse.getX())
                 .y(Mouse.getY())
                 .alt(alt)
@@ -312,11 +311,11 @@ public class LwjglEngine implements Engine {
                     if (key == KeyCode.LEFT_CONTROL || key == KeyCode.RIGHT_CONTROL) control = true;
                     if (key == KeyCode.LEFT_ALT || key == KeyCode.RIGHT_ALT) alt = true;
 
-                    stage.dispatchEvent(InputEvent.builder()
-                        .type(InputEvent.KEY_DOWN)
+                    stage.dispatchEvent(InteractiveEvent.builder()
+                        .type(InteractiveEvent.KEY_DOWN)
                         .x(Mouse.getX())
                         .y(Mouse.getY())
-                        .keyChar((char) key)
+                        .character((char) key)
                         .keyCode(key)
                         .drag(isDown)
                         .shift((mods & GLFW_MOD_SHIFT) != 0)
@@ -325,12 +324,12 @@ public class LwjglEngine implements Engine {
                         .build());
                 }
 
-                case GLFW_REPEAT -> stage.dispatchEvent(InputEvent.builder()
-                    .type(InputEvent.KEY_REPEAT)
+                case GLFW_REPEAT -> stage.dispatchEvent(InteractiveEvent.builder()
+                    .type(InteractiveEvent.KEY_REPEAT)
                     .x(Mouse.getX())
                     .y(Mouse.getY())
                     .keyCode(key)
-                    .keyChar((char) key)
+                    .character((char) key)
                     .drag(isDown)
                     .shift((mods & GLFW_MOD_SHIFT) != 0)
                     .control((mods & GLFW_MOD_CONTROL) != 0)
@@ -342,12 +341,12 @@ public class LwjglEngine implements Engine {
                     if (key == KeyCode.LEFT_CONTROL || key == KeyCode.RIGHT_CONTROL) control = false;
                     if (key == KeyCode.LEFT_ALT || key == KeyCode.RIGHT_ALT) alt = false;
 
-                    stage.dispatchEvent(InputEvent.builder()
-                        .type(InputEvent.KEY_UP)
+                    stage.dispatchEvent(InteractiveEvent.builder()
+                        .type(InteractiveEvent.KEY_UP)
                         .x(Mouse.getX())
                         .y(Mouse.getY())
                         .keyCode(key)
-                        .keyChar((char) key)
+                        .character((char) key)
                         .drag(isDown)
                         .shift((mods & GLFW_MOD_SHIFT) != 0)
                         .control((mods & GLFW_MOD_CONTROL) != 0)
@@ -375,8 +374,6 @@ public class LwjglEngine implements Engine {
 
         renderer.init(windowId);
         renderer.reshape(initialWindowWidth, initialWindowHeight);
-
-
 
         setSmoothMode(false);
 

@@ -28,7 +28,6 @@ import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
@@ -132,19 +131,19 @@ public class DebugPanel extends Container {
 
     private void this_addToStage(Event event) {
         removeEventListener(this, Event.ADD_TO_STAGE);
-        D2D2.stage().addEventListener(InputEvent.KEY_DOWN, this::root_keyDown);
-        D2D2.stage().addEventListener(InputEvent.KEY_UP, this::root_keyUp);
+        D2D2.stage().addEventListener(InteractiveEvent.KEY_DOWN, this::root_keyDown);
+        D2D2.stage().addEventListener(InteractiveEvent.KEY_UP, this::root_keyUp);
     }
 
     private void root_keyDown(Event event) {
-        var e = (InputEvent) event;
+        var e = (InteractiveEvent) event;
         if (KeyCode.isShift(e.getKeyCode())) {
             shiftDown = true;
         }
     }
 
     private void root_keyUp(Event event) {
-        var e = (InputEvent) event;
+        var e = (InteractiveEvent) event;
         if (KeyCode.isShift(e.getKeyCode())) {
             shiftDown = false;
         }
