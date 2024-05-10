@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.engine.serverside;
+package com.ancevt.d2d2.engine.norender;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.IRenderer;
@@ -24,17 +24,16 @@ import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.engine.lwjgl.LwjglTextureEngine;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.exception.NotImplementedException;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ServerSideEngine implements Engine {
+public class NoRenderEngine implements Engine {
 
-    private int width;
-    private int height;
+    private final int initialWidth;
+    private final int initialHeight;
     private Stage stage;
     private String title;
     private IRenderer renderer;
@@ -49,9 +48,11 @@ public class ServerSideEngine implements Engine {
     @Setter
     private int timerCheckFrameFrequency = 100;
 
-    public ServerSideEngine(int width, int height) {
-        D2D2.textureManager().setTextureEngine(new LwjglTextureEngine());
-        stage.setSize(width, height);
+    public NoRenderEngine(int initialWidth, int initialHeight, String title) {
+        this.initialWidth = initialWidth;
+        this.initialHeight = initialHeight;
+        D2D2.textureManager().setTextureEngine(new NoRenderTextureEngine());
+
     }
 
     @Override
@@ -87,6 +88,7 @@ public class ServerSideEngine implements Engine {
     @Override
     public void create() {
         stage = new Stage();
+        stage.setSize(initialWidth, initialHeight);
         renderer = new RendererStub(stage);
     }
 

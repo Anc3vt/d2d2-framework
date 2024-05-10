@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.engine.serverside;
+package com.ancevt.d2d2.engine.norender;
 
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;

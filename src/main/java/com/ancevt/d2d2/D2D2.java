@@ -23,7 +23,7 @@ import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.texture.TextureManager;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
+import com.ancevt.d2d2.engine.norender.NoRenderEngine;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Main;
@@ -58,7 +58,7 @@ public final class D2D2 {
         addCliArgsToSystemProperties(args);
 
         Properties p = System.getProperties();
-        String engineClassName = p.getProperty(SystemProperties.D2D2_ENGINE, LwjglEngine.class.getName());
+        String engineClassName = p.getProperty(SystemProperties.D2D2_ENGINE, NoRenderEngine.class.getName());
         String titleText = p.getProperty(SystemProperties.D2D2_WINDOW_TITLE, "D2D2 Application");
         int width = convert(p.getProperty(SystemProperties.D2D2_WINDOW_WIDTH, "800")).toInt();
         int height = convert(p.getProperty(SystemProperties.D2D2_WINDOW_HEIGHT, "600")).toInt();
