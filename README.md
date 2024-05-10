@@ -32,14 +32,14 @@ The goal of D2D2 is to create an easy-to-use framework for rapid development of 
 
 # Benefits and features
 
-D2D2 provides the ability to develop multiplayer games using the same code for both the client and the server. Developers can operate with the same objects (`Stage`, `IDisplayObject`, `IContainer`, event model, etc.), a unified hierarchy of nested display containers, on both sides of the application. The difference lies only in the use of different _engines_ and control code, which can also be written in D2D2. In the current release of D2D2, there are two implementations of the `Engine` interface: `LwjglEngine` for the client side and `ServerSideEngine` for the server side (in practice, this is just a replacement of the value of the `d2d2.engine` property in the configuration properties file).
+D2D2 provides the ability to develop multiplayer games using the same code for both the client and the server. Developers can operate with the same objects (`Stage`, `IDisplayObject`, `IContainer`, event model, etc.), a unified hierarchy of nested display containers, on both sides of the application. The difference lies only in the use of different _engines_ and control code, which can also be written in D2D2. In the current release of D2D2, there are two implementations of the `Engine` interface: `LwjglEngine` for the client side and `NoRenderEngine` for the server side (in practice, this is just a replacement of the value of the `d2d2.engine` property in the configuration properties file).
 
 
 ![Same classes diagram](https://raw.githubusercontent.com/Anc3vt/d2d2-core/7f705d882df0ce7c14a2b6a1949d174705ebccf4/img/sameclasses.png)
 
 ## Server-side (no-render) engine
 
-D2D2 allows for representing game objects in a unified way on both sides, ensuring convenience and consistency in the development and support of game mechanics. The difference between the client and server sides is that, `ServerSideEngine` does not visualize objects, does not play sounds, and does not wait for user input from devices (like keyboard, mouse, etc.). However, the event model and the global event loop will be processed in the same way. This significantly simplifies synchronization between clients and the server, as game logic and data models, such as game objects, remain consistent on both sides.
+D2D2 allows for representing game objects in a unified way on both sides, ensuring convenience and consistency in the development and support of game mechanics. The difference between the client and server sides is that, `NoRenderEngine` does not visualize objects, does not play sounds, and does not wait for user input from devices (like keyboard, mouse, etc.). However, the event model and the global event loop will be processed in the same way. This significantly simplifies synchronization between clients and the server, as game logic and data models, such as game objects, remain consistent on both sides.
 
 Additionally, you can develop and test your game mechanics with visualization on your computer using the client engine, and be confident that they will have the same properties and behavior on the server side.
 
@@ -87,7 +87,7 @@ And in the `<dependencies>` section:
 
 <dependency>
     <groupId>com.ancevt.d2d2</groupId>
-    <artifactId>d2d2-core</artifactId>
+    <artifactId>d2d2-framework</artifactId>
     <version>0.1.6.2</version>
 </dependency>
 
@@ -113,7 +113,7 @@ d2d2.window.height=600
 d2d2.window.title=Window title
 ```
 
-- `d2d2.engine` determines which _engine_ implementation should be used for graphics and input processing. Currently, in the standard D2D2 distribution, there are two _engine_ implementations: `LwjglEngine`, which uses the LWJGL2 library for rendering on the client side, and `ServerSideEngine`, which does not render anything but can be useful for implementing the server-side of D2D2 applications.
+- `d2d2.engine` determines which _engine_ implementation should be used for graphics and input processing. Currently, in the standard D2D2 distribution, there are two _engine_ implementations: `LwjglEngine`, which uses the LWJGL2 library for rendering on the client side, and `NoRenderEngine`, which does not render anything but can be useful for implementing the server-side of D2D2 applications.
 - `d2d2.window.title` specifies the title of the application window.
 - `d2d2.window.width` and `d2d2.window.height` determine the initial dimensions of the application window.
 - `d2d2.window.title` defines the title of the application window.
