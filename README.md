@@ -88,7 +88,13 @@ And in the `<dependencies>` section:
 <dependency>
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-core</artifactId>
-    <version>0.1.6.1-beta</version>
+    <version>0.1.6.2</version>
+</dependency>
+
+<dependency>
+    <groupId>com.ancevt.d2d2</groupId>
+    <artifactId>d2d2-lwjgl-opengl</artifactId>
+    <version>0.1.6.2</version>
 </dependency>
 ```
 
