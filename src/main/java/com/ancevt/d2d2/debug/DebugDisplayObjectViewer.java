@@ -26,7 +26,7 @@ import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import lombok.Builder;
 import lombok.Getter;
@@ -159,12 +159,12 @@ public class DebugDisplayObjectViewer {
 
         Stage s = D2D2.stage();
 
-        s.removeEventListener(this, InputEvent.KEY_DOWN);
-        s.removeEventListener(this, InputEvent.KEY_UP);
+        s.removeEventListener(this, InteractiveEvent.KEY_DOWN);
+        s.removeEventListener(this, InteractiveEvent.KEY_UP);
 
         if (b) {
-            s.addEventListener(this, InputEvent.KEY_DOWN, event -> {
-                InputEvent e = event.casted();
+            s.addEventListener(this, InteractiveEvent.KEY_DOWN, event -> {
+                InteractiveEvent e = event.casted();
                 if (e.isShift() && e.isControl()) {
                     switch (e.getKeyCode()) {
                         case KeyCode.F1 -> {
@@ -174,8 +174,8 @@ public class DebugDisplayObjectViewer {
                 }
             });
 
-            s.addEventListener(this, InputEvent.KEY_UP, event -> {
-                InputEvent e = event.casted();
+            s.addEventListener(this, InteractiveEvent.KEY_UP, event -> {
+                InteractiveEvent e = event.casted();
                 switch (e.getKeyCode()) {
                     case KeyCode.F1 -> {
                         clear();

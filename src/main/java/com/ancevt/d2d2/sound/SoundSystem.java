@@ -15,12 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.lifecycle;
+package com.ancevt.d2d2.sound;
 
-import com.ancevt.d2d2.display.Stage;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface D2D2Main {
-    void onCreate(Stage stage);
+public class SoundSystem {
 
-    default void onDispose() {}
+    @Getter
+    @Setter
+    private static boolean enabled = true;
+
 }

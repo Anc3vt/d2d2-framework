@@ -15,9 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.media;
-
-import lombok.SneakyThrows;
+package com.ancevt.d2d2.sound;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -35,24 +33,27 @@ import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
 
-public class BlockingSound implements Media {
+public class SampledSound implements Sound {
     private final ByteArrayOutputStream byteArrayOutputStream;
     private boolean playing;
-
     private float volume = 1f;
     private float pan = 0f;
 
-    @SneakyThrows
-    public BlockingSound(InputStream inputStream) {
+    public SampledSound(InputStream inputStream) {
         byteArrayOutputStream = new ByteArrayOutputStream();
-        byteArrayOutputStream.write(inputStream.readAllBytes());
+        try {
+            byteArrayOutputStream.write(inputStream.readAllBytes());
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
-    @SneakyThrows
-    public BlockingSound(String path) {
+    public SampledSound(String path) {
         byteArrayOutputStream = new ByteArrayOutputStream();
         try (FileInputStream is = new FileInputStream(path)) {
             byteArrayOutputStream.write(is.readAllBytes());
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
         }
     }
 
@@ -150,4 +151,3 @@ public class BlockingSound implements Media {
     }
 
 }
-

@@ -15,17 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.media;
+package com.ancevt.d2d2.sound;
 
-public class SoundSystem {
+import java.util.HashMap;
+import java.util.Map;
 
-    private static boolean enabled = true;
+class SoundCache {
 
-    public static void setEnabled(boolean value) {
-        enabled = value;
-    }
-
-    public static boolean isEnabled() {
-        return enabled;
-    }
+    static Map<String, Sound> medias = new HashMap<>();
 }

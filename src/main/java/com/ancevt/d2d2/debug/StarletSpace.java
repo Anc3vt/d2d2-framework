@@ -22,7 +22,7 @@ import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -63,8 +63,8 @@ public class StarletSpace extends Container {
         stage.addEventListener(Event.RESIZE, event -> {
             d2d2Title.setXY((stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
         });
-        stage.addEventListener(InputEvent.MOUSE_MOVE, event -> {
-            var e = (InputEvent) event;
+        stage.addEventListener(InteractiveEvent.MOVE, event -> {
+            var e = (InteractiveEvent) event;
             float center = stage.getWidth() / 2;
             starletSpace.velocityX = center - e.getX();
         });

@@ -33,6 +33,7 @@ public class InteractiveEvent extends Event {
     public static final String HOVER = "interactiveHover";
     public static final String OUT   = "interactiveOut";
     public static final String WHEEL = "interactiveWheel";
+    public static final String MOVE = "interactiveMove";
     public static final String FOCUS_IN = "interactiveFocusIn";
     public static final String FOCUS_OUT = "interactiveFocusOut";
     public static final String KEY_DOWN = "interactiveKeyDown";
@@ -55,4 +56,6 @@ public class InteractiveEvent extends Event {
     private final String keyType;
     private final boolean byMouseDown;
     private final int delta;
+    private final boolean drag;
+    private final int codepoint;
 }
