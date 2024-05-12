@@ -15,16 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.display;
+package com.ancevt.d2d2.lifecycle;
 
-public enum PlaceBy {
-    TOP_LEFT,
-    TOP,
-    TOP_RIGHT,
-    LEFT,
-    CENTER,
-    RIGHT,
-    BOTTOM_LEFT,
-    BOTTOM,
-    BOTTOM_RIGHT
+import com.ancevt.d2d2.display.Stage;
+
+public interface D2D2Application {
+    void onCreate(Stage stage);
+
+    default void onDispose() {}
 }

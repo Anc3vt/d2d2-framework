@@ -26,7 +26,7 @@ import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.norender.NoRenderEngine;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.lifecycle.D2D2Main;
+import com.ancevt.d2d2.lifecycle.D2D2Application;
 import com.ancevt.d2d2.lifecycle.SystemProperties;
 import com.ancevt.util.args.Args;
 import lombok.AccessLevel;
@@ -51,7 +51,7 @@ public final class D2D2 {
     @Getter
     private static Args args;
 
-    public static void init(Class<? extends D2D2Main> d2d2EntryPointClass, String[] args) {
+    public static void init(Class<? extends D2D2Application> d2d2EntryPointClass, String[] args) {
         D2D2.args = Args.of(args);
 
         readPropertyFileIfExist();
@@ -65,7 +65,7 @@ public final class D2D2 {
         Engine engine = createEngine(engineClassName, width, height, titleText);
 
         Stage stage = D2D2.createStage(engine);
-        D2D2Main entryPoint = createMain(d2d2EntryPointClass);
+        D2D2Application entryPoint = createMain(d2d2EntryPointClass);
         entryPoint.onCreate(stage);
         D2D2.loop();
         entryPoint.onDispose();
@@ -78,7 +78,7 @@ public final class D2D2 {
         return engine.getStage();
     }
 
-    public static D2D2Main createMain(Class<? extends D2D2Main> clazz) {
+    public static D2D2Application createMain(Class<? extends D2D2Application> clazz) {
         try {
             return clazz.getConstructor().newInstance();
         } catch (ReflectiveOperationException e) {

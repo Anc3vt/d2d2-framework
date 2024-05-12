@@ -17,10 +17,5 @@
  */
 package com.ancevt.d2d2.lifecycle;
 
-import com.ancevt.d2d2.display.Stage;
-
-public interface D2D2Main {
-    void onCreate(Stage stage);
-
-    default void onDispose() {}
+public abstract class D2D2Main implements D2D2Application {
 }

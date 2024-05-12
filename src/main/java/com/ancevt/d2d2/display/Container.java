@@ -49,6 +49,10 @@ public class Container extends DisplayObject implements IContainer {
 
     @Override
     public void add(IDisplayObject child) {
+        if (child.hasParent() && child.getParent() != this) {
+            child.removeFromParent();
+        }
+
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
 
@@ -60,6 +64,10 @@ public class Container extends DisplayObject implements IContainer {
 
     @Override
     public void add(IDisplayObject child, int index) {
+        if (child.hasParent() && child.getParent() != this) {
+            child.removeFromParent();
+        }
+
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
 
@@ -71,6 +79,10 @@ public class Container extends DisplayObject implements IContainer {
 
     @Override
     public void add(IDisplayObject child, float x, float y) {
+        if (child.hasParent() && child.getParent() != this) {
+            child.removeFromParent();
+        }
+
         child.setXY(x, y);
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
@@ -83,6 +95,10 @@ public class Container extends DisplayObject implements IContainer {
 
     @Override
     public void add(IDisplayObject child, int index, float x, float y) {
+        if (child.hasParent() && child.getParent() != this) {
+            child.removeFromParent();
+        }
+
         child.setXY(x, y);
         ((DisplayObject) child).setParent(this);
         child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
@@ -95,6 +111,10 @@ public class Container extends DisplayObject implements IContainer {
 
     @Override
     public void add(IDisplayObject child, PlaceBy placeBy) {
+        if (child.hasParent() && child.getParent() != this) {
+            child.removeFromParent();
+        }
+
         add(child);
         placeBy(child, placeBy);
     }
