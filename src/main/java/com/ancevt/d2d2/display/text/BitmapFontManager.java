@@ -80,6 +80,11 @@ public class BitmapFontManager {
 
                 StringTokenizer stringTokenizer = new StringTokenizer(line);
                 char c = line.charAt(0) == ' ' ? ' ' : stringTokenizer.nextToken().charAt(0);
+
+                if ((int) c == 8) {
+                    continue;
+                }
+
                 charInfos[c] = new BitmapCharInfo(
                     c,
                     parseInt(stringTokenizer.nextToken()),

@@ -66,7 +66,7 @@ public interface IDisplayObject extends IEventDispatcher {
 
     void setY(float value);
 
-    default void setXY(IDisplayObject displayObject) {
+    default void setXYAs(IDisplayObject displayObject) {
         setXY(displayObject.getX(), displayObject.getY());
     }
 
