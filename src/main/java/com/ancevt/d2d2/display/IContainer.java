@@ -45,7 +45,7 @@ public interface IContainer extends IDisplayObject {
         list.add(o);
 
         if (o instanceof IContainer c) {
-            c.childrenStream().forEach(child -> listDisplayObjects(child, list));
+            c.children().forEach(child -> listDisplayObjects(child, list));
         }
 
         return list;
@@ -77,7 +77,7 @@ public interface IContainer extends IDisplayObject {
         children.forEach(this::remove);
     }
 
-    Stream<IDisplayObject> childrenStream();
+    Stream<IDisplayObject> children();
 
     void remove(IDisplayObject child);
 
