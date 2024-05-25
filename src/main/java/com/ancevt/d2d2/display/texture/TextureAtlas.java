@@ -32,8 +32,6 @@ public class TextureAtlas implements IDisposable {
     private int width;
     private int height;
 
-    private boolean disposed;
-
     private TextureAtlas(int id) {
         this.id = id;
     }
@@ -201,7 +199,7 @@ public class TextureAtlas implements IDisposable {
             "id=" + id +
             ", width=" + width +
             ", height=" + height +
-            ", disposed=" + disposed +
+            ", disposed=" + isDisposed() +
             '}';
     }
 

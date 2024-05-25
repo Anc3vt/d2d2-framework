@@ -145,7 +145,7 @@ public class Container extends DisplayObject implements IContainer {
     }
 
     @Override
-    public Stream<IDisplayObject> childrenStream() {
+    public Stream<IDisplayObject> children() {
         return children.stream();
     }
 

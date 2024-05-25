@@ -119,4 +119,8 @@ public class TextureManager {
     public boolean containsTextureAtlas(TextureAtlas textureAtlas) {
         return textureAtlases.contains(textureAtlas);
     }
+
+    public void addTextureAtlas(TextureAtlas textureAtlas) {
+        textureAtlases.add(textureAtlas);
+    }
 }
