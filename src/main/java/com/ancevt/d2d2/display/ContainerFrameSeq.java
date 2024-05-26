@@ -21,7 +21,7 @@ import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 
-public class AnimatedContainer extends Container implements IAnimated {
+public class ContainerFrameSeq extends Container implements IFrameSeq {
 
     private ISprite[] frames;
 
@@ -33,22 +33,22 @@ public class AnimatedContainer extends Container implements IAnimated {
     private ISprite currentSprite;
     private boolean backward;
 
-    public AnimatedContainer(ISprite[] frameSprites, boolean cloneEach) {
+    public ContainerFrameSeq(ISprite[] frameSprites, boolean cloneEach) {
         this();
         setFrameSprites(frameSprites, cloneEach);
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
-    public AnimatedContainer(ISprite[] frameSprites) {
+    public ContainerFrameSeq(ISprite[] frameSprites) {
         this(frameSprites, false);
     }
 
-    public AnimatedContainer(Texture[] textures) {
+    public ContainerFrameSeq(Texture[] textures) {
         this();
         setFrameTextures(textures);
     }
 
-    public AnimatedContainer() {
+    public ContainerFrameSeq() {
         frames = new ISprite[0];
         slowingCounter = 0;
         setLoop(false);
