@@ -23,8 +23,7 @@ import com.ancevt.d2d2.event.EventPool;
 import lombok.Getter;
 import lombok.Setter;
 
-
-public class AnimatedSprite extends Sprite implements IAnimated {
+public class SpriteFrameSeq extends Sprite implements IFrameSeq {
 
     @Getter
     private Texture[] frameTextures;
@@ -43,7 +42,7 @@ public class AnimatedSprite extends Sprite implements IAnimated {
     @Setter
     private boolean backward;
 
-    public AnimatedSprite() {
+    public SpriteFrameSeq() {
         frameTextures = new Texture[0];
         slowingCounter = 0;
         setLoop(false);
@@ -52,16 +51,16 @@ public class AnimatedSprite extends Sprite implements IAnimated {
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
-    public AnimatedSprite(ISprite[] frameSprites, boolean cloneEach) {
+    public SpriteFrameSeq(ISprite[] frameSprites, boolean cloneEach) {
         this();
         setFrameSprites(frameSprites, cloneEach);
     }
 
-    public AnimatedSprite(ISprite[] frameSprites) {
+    public SpriteFrameSeq(ISprite[] frameSprites) {
         this(frameSprites, false);
     }
 
-    public AnimatedSprite(Texture[] textures) {
+    public SpriteFrameSeq(Texture[] textures) {
         this();
         setFrameTextures(textures);
     }
