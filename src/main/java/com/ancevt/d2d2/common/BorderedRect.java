@@ -19,6 +19,7 @@ package com.ancevt.d2d2.common;
 
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 
 public class BorderedRect extends Container {
 	private static final Color DEFAULT_FILL_COLOR = Color.WHITE;
@@ -27,11 +28,11 @@ public class BorderedRect extends Container {
 	private static final float DEFAULT_WIDTH = 16;
 	private static final float DEFAULT_HEIGHT = 16;
 
-	private final PlainRect borderLeft;
-	private final PlainRect borderRight;
-	private final PlainRect borderTop;
-	private final PlainRect borderBottom;
-	private final PlainRect fillRect;
+	private final RectangleShape borderLeft;
+	private final RectangleShape borderRight;
+	private final RectangleShape borderTop;
+	private final RectangleShape borderBottom;
+	private final RectangleShape fillRect;
 	
 	private float borderWidth = 1;
 	
@@ -56,11 +57,11 @@ public class BorderedRect extends Container {
 	}
 
 	public BorderedRect(float width, float height, Color fillColor, Color borderColor) {
-		borderLeft = new PlainRect();
-		borderRight = new PlainRect();
-		borderTop = new PlainRect();
-		borderBottom = new PlainRect();
-		fillRect = new PlainRect();
+		borderLeft   = new RectangleShape();
+		borderRight  = new RectangleShape();
+		borderTop    = new RectangleShape();
+		borderBottom = new RectangleShape();
+		fillRect     = new RectangleShape();
 
 		borderLeft.setSize(1, 1);
 		borderRight.setSize(1, 1);

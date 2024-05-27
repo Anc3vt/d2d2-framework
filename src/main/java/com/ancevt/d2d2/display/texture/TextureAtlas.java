@@ -28,20 +28,15 @@ import static java.lang.Integer.parseInt;
 public class TextureAtlas implements IDisposable {
 
     private final int id;
-
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     private TextureAtlas(int id) {
-        this.id = id;
+        this(id, 0, 0);
     }
 
     public TextureAtlas(int id, int width, int height) {
-        this(id);
-        setUp(width, height);
-    }
-
-    final void setUp(int width, int height) {
+        this.id = id;
         this.width = width;
         this.height = height;
     }

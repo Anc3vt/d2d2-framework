@@ -21,7 +21,7 @@ import com.ancevt.commons.hash.MD5;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.BorderedRect;
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IContainer;
@@ -58,7 +58,7 @@ public class DebugPanel extends Container {
 
     private final BitmapText bitmapText;
     private final String systemPropertyName;
-    private final PlainRect bg;
+    private final RectangleShape bg;
     private final InteractiveContainer interactiveButton;
     private int oldX;
     private int oldY;
@@ -80,7 +80,7 @@ public class DebugPanel extends Container {
         buttonList = new ArrayList<>();
         buttonMap = new HashMap<>();
 
-        bg = new PlainRect(width, height, Color.BLACK);
+        bg = new RectangleShape(width, height, Color.BLACK);
         bg.setAlpha(0.75f);
         add(bg);
 
