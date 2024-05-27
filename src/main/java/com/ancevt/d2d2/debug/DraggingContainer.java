@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.interactive.InteractiveContainer;
@@ -40,10 +40,10 @@ public class DraggingContainer extends InteractiveContainer {
     private int oldY;
 
     @Getter
-    private final PlainRect background;
+    private final RectangleShape background;
 
     public DraggingContainer() {
-        background = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
+        background = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
         add(background);
 
         addEventListener(this, InteractiveEvent.DOWN, this::mouseDown);

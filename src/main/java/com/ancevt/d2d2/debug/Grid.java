@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IColored;
@@ -108,7 +108,7 @@ public class Grid extends Container implements IColored {
     }
 
     @Getter
-    private static class Line extends PlainRect {
+    private static class Line extends RectangleShape {
 
         public static final byte HORIZONTAL = 0x00;
         public static final byte VERTICAL = 0x01;

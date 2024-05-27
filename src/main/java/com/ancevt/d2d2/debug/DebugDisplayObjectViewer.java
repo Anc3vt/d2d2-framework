@@ -19,7 +19,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.BorderedRect;
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
@@ -97,10 +97,10 @@ public class DebugDisplayObjectViewer {
     }
 
     public void show() {
-        PlainRect plainRect = new PlainRect(D2D2.stage().getWidth(), D2D2.stage().getHeight(), Color.BLACK);
-        plainRect.setAlpha(0.5f);
-        D2D2.stage().add(plainRect);
-        displayObjects.add(plainRect);
+        RectangleShape rectangleShape = new RectangleShape(D2D2.stage().getWidth(), D2D2.stage().getHeight(), Color.BLACK);
+        rectangleShape.setAlpha(0.5f);
+        D2D2.stage().add(rectangleShape);
+        displayObjects.add(rectangleShape);
 
         show(getTargetContainer(), -1);
     }
