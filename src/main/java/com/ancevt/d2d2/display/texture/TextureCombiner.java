@@ -19,7 +19,6 @@ package com.ancevt.d2d2.display.texture;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.text.BitmapText;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -161,43 +160,4 @@ public class TextureCombiner {
             createTextureAtlas(width, height, cells.toArray(new TextureCell[]{}));
     }
 
-    public static TextureAtlas bitmapTextToTextureAtlas(final BitmapText bitmapText) {
-        return D2D2.textureManager().bitmapTextToTextureAtlas(bitmapText);
-    }
-
-    public static Texture bitmapTextToTexture(final BitmapText bitmapText) {
-        final TextureAtlas textureAtlas = bitmapTextToTextureAtlas(bitmapText);
-        if (textureAtlas != null) {
-            return textureAtlas.createTexture();
-        }
-        return null;
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

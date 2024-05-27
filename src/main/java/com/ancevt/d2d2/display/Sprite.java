@@ -28,8 +28,8 @@ public class Sprite extends DisplayObject implements ISprite {
     private float repeatY;
     private Color color;
     private Texture texture;
-    private double vertexBleedingFix = 0.05d;
-    private double textureBleedingFix = 0.00005d;
+    private double vertexBleedingFix = 0d;
+    private double textureBleedingFix = 0d;
 
     public Sprite() {
         setColor(DEFAULT_COLOR);
