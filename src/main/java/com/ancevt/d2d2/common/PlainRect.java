@@ -40,6 +40,8 @@ public class PlainRect extends Sprite {
 	
 	public PlainRect() {
 		super(get1x1Texture());
+		setTextureBleedingFix(0);
+		setVertexBleedingFix(0);
 	}
 	
 	public PlainRect(float width, float height) {
