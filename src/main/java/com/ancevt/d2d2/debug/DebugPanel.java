@@ -20,11 +20,11 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.commons.hash.MD5;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.BorderedRect;
+import com.ancevt.d2d2.display.shape.BorderedRectangle;
 import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.SimpleContainer;
 import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
@@ -50,7 +50,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 @Slf4j
-public class DebugPanel extends Container {
+public class DebugPanel extends SimpleContainer {
 
     private static final Map<String, DebugPanel> debugPanels = new HashMap<>();
     private static boolean enabled;
@@ -82,13 +82,13 @@ public class DebugPanel extends Container {
 
         bg = new RectangleShape(width, height, Color.BLACK);
         bg.setAlpha(0.75f);
-        add(bg);
+        addChild(bg);
 
         bitmapText = new BitmapText();
         //text.setBitmapFont(BitmapFont.loadBitmapFont("open-sans/OpenSans-14-Regular"));
         bitmapText.setColor(Color.WHITE);
         bitmapText.setSize(width, height);
-        add(bitmapText, 1, 1);
+        addChild(bitmapText, 1, 1);
 
         interactiveButton = new InteractiveContainer(width, height);
         interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
@@ -96,7 +96,7 @@ public class DebugPanel extends Container {
 
         addEventListener(this, Event.ADD_TO_STAGE, this::this_addToStage);
 
-        add(interactiveButton);
+        addChild(interactiveButton);
 
         load();
 
@@ -157,9 +157,9 @@ public class DebugPanel extends Container {
         oldX = (int) (e.getX() + getX());
         oldY = (int) (e.getY() + getY());
 
-        IContainer parent = getParent();
-        parent.remove(this);
-        parent.add(this);
+        Container parent = getParent();
+        parent.removeChild(this);
+        parent.addChild(this);
 
         dispatchEvent(event);
     }
@@ -313,7 +313,7 @@ public class DebugPanel extends Container {
         if (!buttonMap.containsKey(text)) {
             Button button = new Button(text);
             button.pressFunction = onPress;
-            add(button, buttonList.size() * (Button.DEFAULT_WIDTH + 1), -Button.DEFAULT_HEIGHT);
+            addChild(button, buttonList.size() * (Button.DEFAULT_WIDTH + 1), -Button.DEFAULT_HEIGHT);
             buttonList.add(button);
             buttonMap.put(text, button);
         }
@@ -340,7 +340,7 @@ public class DebugPanel extends Container {
                 debugPanel = new DebugPanel(propertyName);
             }
 
-            D2D2.stage().add(debugPanel);
+            D2D2.stage().addChild(debugPanel);
             if (propertyName != null) {
                 System.setProperty(propertyName, String.valueOf(value));
             }
@@ -357,7 +357,7 @@ public class DebugPanel extends Container {
         System.setProperty(key, String.valueOf(value));
     }
 
-    public static class Button extends BorderedRect {
+    public static class Button extends BorderedRectangle {
 
         private static final float DEFAULT_WIDTH = 50f;
         private static final float DEFAULT_HEIGHT = 12f;
@@ -372,8 +372,8 @@ public class DebugPanel extends Container {
             interactiveButton = new InteractiveContainer(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             BitmapText bitmapText = new BitmapText(String.valueOf(text));
 
-            add(interactiveButton);
-            add(bitmapText, 2, -2);
+            addChild(interactiveButton);
+            addChild(bitmapText, 2, -2);
 
             interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
         }

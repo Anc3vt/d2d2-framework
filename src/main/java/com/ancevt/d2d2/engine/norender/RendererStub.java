@@ -17,15 +17,15 @@
  */
 package com.ancevt.d2d2.engine.norender;
 
-import com.ancevt.d2d2.display.IContainer;
-import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.display.IRenderer;
+import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.DisplayObject;
+import com.ancevt.d2d2.display.Renderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
-import com.ancevt.d2d2.display.IFrameSeq;
+import com.ancevt.d2d2.display.Playable;
 
-public class RendererStub implements IRenderer {
+public class RendererStub implements Renderer {
 
     private final Stage stage;
     private int zOrderCounter;
@@ -50,21 +50,21 @@ public class RendererStub implements IRenderer {
         renderDisplayObject(stage);
     }
 
-    private void renderDisplayObject(IDisplayObject displayObject) {
+    private void renderDisplayObject(DisplayObject displayObject) {
         if (!displayObject.isVisible()) return;
 
         zOrderCounter++;
         displayObject.setAbsoluteZOrderIndex(zOrderCounter);
 
-        if (displayObject instanceof IContainer) {
-            IContainer container = (IContainer) displayObject;
+        if (displayObject instanceof Container) {
+            Container container = (Container) displayObject;
             for (int i = 0; i < container.getNumChildren(); i++) {
                 renderDisplayObject(container.getChild(i));
             }
         }
 
-        if (displayObject instanceof IFrameSeq) {
-            ((IFrameSeq) displayObject).processFrame();
+        if (displayObject instanceof Playable) {
+            ((Playable) displayObject).processFrame();
         }
 
         displayObject.onExitFrame();

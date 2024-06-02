@@ -25,7 +25,7 @@ The goal of D2D2 is to create an easy-to-use framework for rapid development of 
         - [Interactive events](#interactive-events)
         - [Application lifecycle events](#application-lifecycle-events)
     - [Interactive display objects](#interactive-display-objects)
-    - [Animated display objects & loading multiple textures in a row](#animated-display-objects--loading-multiple-textures-in-a-row)
+    - [Animated display objects & loading multiple textureClips in a row](#animated-display-objects--loading-multiple-textureClips-in-a-row)
 - [Some demo videos](#some-demo-videos)
 - [Contribution](#contribution)
 - [Contact](#contact)
@@ -53,7 +53,7 @@ Additionally, you can develop and test your game mechanics with visualization on
 
 - **User Input Handling:** The framework provides tools for handling user input through input devices, making it easy to create interactive applications.
 
-- **Additional Tools and Utilities:** Additional tools are provided within the framework, including working with textures, sound, and other features.
+- **Additional Tools and Utilities:** Additional tools are provided within the framework, including working with textureClips, sound, and other features.
 
 # Dependency
 
@@ -184,9 +184,9 @@ Now the stage contains one display object, which is `Sprite`.
 
 ## TextureManager
 
-There's a more detailed and flexible way to manage texture resources - `TextureManager`. You can obtain the `TextureManager` by calling the static method `D2D2.textureManager()`. It contains all the loaded texture atlases. Texture atlases allow you to create textures from source resource files where images are combined.
+There's a more detailed and flexible way to manage textureClip resources - `TextureManager`. You can obtain the `TextureManager` by calling the static method `D2D2.textureManager()`. It contains all the loaded textureClip atlases. Texture atlases allow you to create textureClips from source resource files where images are combined.
 
-This way, you can store multiple images in a single PNG file, extracting the textures we need from it based on specified coordinates on the atlas.
+This way, you can store multiple images in a single PNG file, extracting the textureClips we need from it based on specified coordinates on the atlas.
 
 For example, in the `../assets/` directory of our project, there's a source resource file `d2d2-samples-tileset.png`, which looks like this:
 
@@ -198,14 +198,14 @@ Suppose we need a sprite that will display only the large letter 'D' from this a
 
 @Override
 public void onCreate(Stage stage) {
-    // Get the texture manager from D2D2
+    // Get the textureClip manager from D2D2
     TextureManager textureManager = D2D2.textureManager();
-    // Load the texture atlas from src/main/resources/assets/
+    // Load the textureClip atlas from src/main/resources/assets/
     TextureAtlas textureAtlas = textureManager.loadTextureAtlas("d2d2-samples-tileset.png");
-    // Create a texture from the atlas with the specified coordinates and dimensions
-    Texture texture = textureAtlas.createTexture(256, 0, 144, 128);
-    // Create a sprite using the created texture
-    Sprite sprite = new Sprite(texture);
+    // Create a textureClip from the atlas with the specified coordinates and dimensions
+    Texture textureClip = textureAtlas.createTexture(256, 0, 144, 128);
+    // Create a sprite using the created textureClip
+    Sprite sprite = new Sprite(textureClip);
 
     // Add the sprite to the stage
     stage.add(sprite);
@@ -218,15 +218,15 @@ Running example looks like this:
 
 ![TextureManager1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/TextureManagerDemo.png)
 
-In the example above, pay attention to the method call `textureAtlas.createTexture(256, 0, 144, 128)`, where the coordinates of the required texture on the texture atlas and its size in pixels are passed.
+In the example above, pay attention to the method call `textureAtlas.createTexture(256, 0, 144, 128)`, where the coordinates of the required textureClip on the textureClip atlas and its size in pixels are passed.
 
-`256,0` - are the coordinates of the top-left corner of the texture on the atlas, and `144,128` - is the size of the texture.
+`256,0` - are the coordinates of the top-left corner of the textureClip on the atlas, and `144,128` - is the size of the textureClip.
 
 > **NOTE:** The image has been scaled for convenience in the diagram.
 
 ![TextureManager2](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/textureManagerScheme.png)
 
-To ensure optimal use of video memory and texture performance, it's advisable to make the dimensions of textures on the atlas power-of-two multiples. Instead of using multiples of 8, 16, 32, etc., which are suitable for specific architectures, a good practice is to choose sizes that are multiples of 2.
+To ensure optimal use of video memory and textureClip performance, it's advisable to make the dimensions of textureClips on the atlas power-of-two multiples. Instead of using multiples of 8, 16, 32, etc., which are suitable for specific architectures, a good practice is to choose sizes that are multiples of 2.
 
 Here are some commonly used sizes that meet this requirement:
 
@@ -240,11 +240,11 @@ Here are some commonly used sizes that meet this requirement:
     256x256
     and so on
 
-Use these sizes to create texture atlases. For example, if you want to create a texture atlas with dimensions of 256x256 pixels, you can place 16 textures of size 64x64 pixels on it, or 64 textures of size 32x32 pixels, and so on.
+Use these sizes to create textureClip atlases. For example, if you want to create a textureClip atlas with dimensions of 256x256 pixels, you can place 16 textureClips of size 64x64 pixels on it, or 64 textureClips of size 32x32 pixels, and so on.
 
 This approach ensures efficient use of video memory and reduces GPU load.
 
-The procedure for unloading texture atlases is the reverse of loading: `D2D2.textureManager().unloadTextureAtlas(textureAtlas)`.
+The procedure for unloading textureClip atlases is the reverse of loading: `D2D2.textureManager().unloadTextureAtlas(textureAtlas)`.
 
 ## BitmapText
 
@@ -327,10 +327,10 @@ Initially, all empty containers are invisible to the user. Therefore, in the exa
 ```java
 @Override
 public void onCreate(Stage stage) {
-  BorderedRect borderedRect = new BorderedRect(500, 500, Color.NO_COLOR, Color.DARK_GRAY);
+  BorderedRect borderedRectangle = new BorderedRect(500, 500, Color.NO_COLOR, Color.DARK_GRAY);
 
   // Create a container with an instant placement of the frame into it
-  Container container = new Container(borderedRect);
+  Container container = new Container(borderedRectangle);
 
   // Create two sprites
   Sprite sprite1 = new Sprite("flower.png");
@@ -562,7 +562,7 @@ It will look like this (animated GIF):
 
 For the `Stage`, user interaction events are also implemented.
 
-## Animated display objects & loading multiple textures in a row
+## Animated display objects & loading multiple textureClips in a row
 
 `IAnimated` is an interface that defines common functionality for all animated frame-based display objects. In the current version of D2D2, there are two such display objects implemented: `AnimatedSprite` and `AnimatedContainer`. As you might guess, one extends `Sprite`, and the other extends `Container`.
 
@@ -576,13 +576,13 @@ public void onCreate(Stage stage) {
     // Create some funny background elements
     createSomeBackground();
 
-    // Load the texture atlas and create textures
-    Texture[] textures = D2D2.textureManager()
+    // Load the textureClip atlas and create textureClips
+    Texture[] textureClips = D2D2.textureManager()
         .loadTextureAtlas("d2d2-samples-tileset.png")
         .createTexturesHor(256, 128, 48, 48, 4);
     
     // Create an animated sprite
-    IAnimated anim = new AnimatedSprite(textures);
+    IAnimated anim = new AnimatedSprite(textureClips);
 
     // Set the scale of the sprite
     anim.setScale(8, 8);
@@ -605,12 +605,12 @@ It will look like this (animated GIF):
 
 ![Animated](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/AnimatedDemo.gif)
 
-> **NOTE:** Pay attention to the method call `createTexturesHor(256, 128, 48, 48, 4)`. It creates multiple textures at once, arranged horizontally on the atlas. The first four arguments are the position of the texture on the atlas and its dimensions, and the fifth argument is the number of repetitions to the right, as shown in the diagram:
+> **NOTE:** Pay attention to the method call `createTexturesHor(256, 128, 48, 48, 4)`. It creates multiple textureClips at once, arranged horizontally on the atlas. The first four arguments are the position of the textureClip on the atlas and its dimensions, and the fifth argument is the number of repetitions to the right, as shown in the diagram:
 
 ![AnimatedScheme](https://raw.githubusercontent.com/Anc3vt/d2d2-core/daf86c03433c7fe396c01627676ee6633d77b902/img/animatedScheme.png)
 
 
-To create multiple textures vertically, the `TextureAtlas` also has a method called `createTextureVert`.
+To create multiple textureClips vertically, the `TextureAtlas` also has a method called `createTextureVert`.
 
 
 

@@ -17,10 +17,10 @@
  */
 package com.ancevt.d2d2.display.interactive;
 
-import com.ancevt.d2d2.common.IDisposable;
-import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.common.Disposable;
+import com.ancevt.d2d2.display.DisplayObject;
 
-public interface Interactive extends IDisplayObject, IDisposable {
+public interface Interactive extends DisplayObject, Disposable {
 
     void setPushEventsUp(boolean pushEventUp);
 

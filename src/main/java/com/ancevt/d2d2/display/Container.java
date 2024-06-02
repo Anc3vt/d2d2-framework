@@ -17,211 +17,79 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.EventPool;
-import com.ancevt.d2d2.exception.ContainerException;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
-public class Container extends DisplayObject implements IContainer {
+public interface Container extends DisplayObject {
 
-    static final float MAX_X = Float.MAX_VALUE;
-    static final float MAX_Y = Float.MAX_VALUE;
-
-    final List<IDisplayObject> children;
-
-    public Container() {
-        children = new CopyOnWriteArrayList<>();
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
+    static <T extends DisplayObject> Optional<T> findDisplayObjectById(Container fromRoot, int id) {
+        return (Optional<T>) listDisplayObjects(fromRoot, new ArrayList<>())
+            .stream()
+            .filter(o -> o.getDisplayObjectId() == id)
+            .findAny();
     }
 
-    public Container(IDisplayObject wrappingDisplayObject) {
-        this();
-        add(wrappingDisplayObject);
+    static <T extends DisplayObject> Optional<T> findDisplayObjectByName(Container fromRoot, String name) {
+        return (Optional<T>) listDisplayObjects(fromRoot, new ArrayList<>())
+            .stream()
+            .filter(o -> Objects.equals(o.getName(), name))
+            .findFirst();
     }
 
-    public Container(IDisplayObject wrappingDisplayObject, PlaceBy placeBy) {
-        this(wrappingDisplayObject);
-        placeBy(wrappingDisplayObject, placeBy);
-    }
+    static List<DisplayObject> listDisplayObjects(DisplayObject o, List<DisplayObject> list) {
+        list.add(o);
 
-    @Override
-    public void add(IDisplayObject child) {
-        if (child.hasParent() && child.getParent() != this) {
-            child.removeFromParent();
+        if (o instanceof Container c) {
+            c.children().forEach(child -> listDisplayObjects(child, list));
         }
 
-        ((DisplayObject) child).setParent(this);
-        child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
-
-        children.remove(child);
-        children.add(child);
-
-        Stage.dispatchAddToStage(child);
+        return list;
     }
 
-    @Override
-    public void add(IDisplayObject child, int index) {
-        if (child.hasParent() && child.getParent() != this) {
-            child.removeFromParent();
-        }
-
-        ((DisplayObject) child).setParent(this);
-        child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
-
-        children.remove(child);
-        children.add(index, child);
-
-        Stage.dispatchAddToStage(child);
+    default <T extends DisplayObject> Optional<T> findDisplayObjectById(int id) {
+        return findDisplayObjectById(this, id);
     }
 
-    @Override
-    public void add(IDisplayObject child, float x, float y) {
-        if (child.hasParent() && child.getParent() != this) {
-            child.removeFromParent();
-        }
-
-        child.setXY(x, y);
-        ((DisplayObject) child).setParent(this);
-        child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
-
-        children.remove(child);
-        children.add(child);
-
-        Stage.dispatchAddToStage(child);
+    default <T extends DisplayObject> Optional<T> findDisplayObjectByName(String name) {
+        return findDisplayObjectByName(this, name);
     }
 
-    @Override
-    public void add(IDisplayObject child, int index, float x, float y) {
-        if (child.hasParent() && child.getParent() != this) {
-            child.removeFromParent();
-        }
+    void addChild(DisplayObject child);
 
-        child.setXY(x, y);
-        ((DisplayObject) child).setParent(this);
-        child.dispatchEvent(EventPool.createEvent(Event.ADD, this));
+    void addChild(DisplayObject child, int index);
 
-        children.remove(child);
-        children.add(index, child);
+    void addChild(DisplayObject child, float x, float y);
 
-        Stage.dispatchAddToStage(child);
+    void addChild(DisplayObject child, int index, float x, float y);
+
+    void addChild(DisplayObject child, PlaceBy placeBy);
+
+    default void addChildren(Collection<DisplayObject> children) {
+        children.forEach(this::addChild);
     }
 
-    @Override
-    public void add(IDisplayObject child, PlaceBy placeBy) {
-        if (child.hasParent() && child.getParent() != this) {
-            child.removeFromParent();
-        }
-
-        add(child);
-        placeBy(child, placeBy);
+    default void removeChildren(Collection<DisplayObject> children) {
+        children.forEach(this::removeChild);
     }
 
-    private void placeBy(IDisplayObject displayObject, PlaceBy placeBy) {
-        float w = displayObject.getWidth();
-        float h = displayObject.getHeight();
+    Stream<DisplayObject> children();
 
-        switch (placeBy) {
-            case TOP_LEFT -> add(displayObject, -w, -h);
-            case TOP -> add(displayObject, -w / 2, -h);
-            case TOP_RIGHT -> add(displayObject, 0f, -h);
-            case LEFT -> add(displayObject, -w, -h / 2);
-            case CENTER -> add(displayObject, -w / 2, -h / 2);
-            case RIGHT -> add(displayObject, 0f, -h / 2);
-            case BOTTOM_LEFT -> add(displayObject, -w, 0f);
-            case BOTTOM -> add(displayObject, -w / 2, 0f);
-            case BOTTOM_RIGHT -> add(displayObject, 0f, 0f);
-        }
-    }
+    void removeChild(DisplayObject child);
 
-    @Override
-    public void remove(IDisplayObject child) {
-        Stage.dispatchRemoveFromStage(child);
-        ((DisplayObject) child).setParent(null);
-        child.dispatchEvent(EventPool.createEvent(Event.REMOVE, this));
-        children.remove(child);
-    }
+    int indexOf(DisplayObject child);
 
-    @Override
-    public Stream<IDisplayObject> children() {
-        return children.stream();
-    }
+    int getNumChildren();
 
-    @Override
-    public int indexOf(IDisplayObject child) {
-        return children.indexOf(child);
-    }
+    DisplayObject getChild(int index);
 
-    @Override
-    public int getNumChildren() {
-        return children.size();
-    }
+    DisplayObject getChild(String name);
 
-    @Override
-    public IDisplayObject getChild(int index) {
-        if (index < 0 || index >= children.size())
-            throw new ContainerException("Child index %d out of bounds (0-%d)".formatted(index, children.size() - 1));
+    boolean contains(DisplayObject child);
 
-        return children.get(index);
-    }
-
-    @Override
-    public IDisplayObject getChild(String name) {
-        for (IDisplayObject displayObject : children) {
-            if (displayObject.getName().equals(name)) return displayObject;
-        }
-        throw new ContainerException("No such display object named \"%s\" in container \"%s\"".formatted(name, getName()));
-    }
-
-    @Override
-    public void removeAllChildren() {
-        children.clear();
-    }
-
-    @Override
-    public boolean contains(IDisplayObject child) {
-        return children.contains(child);
-    }
-
-    @Override
-    public float getWidth() {
-        float min = MAX_X;
-        float max = 0;
-
-        for (final IDisplayObject child : children) {
-            float x = child.getX();
-            float xw = x + child.getWidth();
-
-            min = Math.min(x, min);
-            max = Math.max(xw, max);
-        }
-
-        return max - min;
-    }
-
-    @Override
-    public float getHeight() {
-        float min = MAX_Y;
-        float max = 0;
-
-        for (final IDisplayObject child : children) {
-            float y = child.getY();
-            float yh = y + child.getHeight();
-
-            min = Math.min(y, min);
-            max = Math.max(yh, max);
-        }
-
-        return max - min;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" +
-            getName() +
-            '}';
-    }
-
+    void removeAllChildren();
 }

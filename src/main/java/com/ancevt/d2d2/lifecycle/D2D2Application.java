@@ -18,9 +18,10 @@
 package com.ancevt.d2d2.lifecycle;
 
 import com.ancevt.d2d2.display.Stage;
+import lombok.NonNull;
 
 public interface D2D2Application {
-    void onCreate(Stage stage);
+    void onCreate(@NonNull Stage stage);
 
     default void onDispose() {}
 }

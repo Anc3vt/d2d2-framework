@@ -20,16 +20,16 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.SimpleContainer;
+import com.ancevt.d2d2.display.Colored;
 import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.IColored;
-import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.event.Event;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grid extends Container implements IColored {
+public class Grid extends SimpleContainer implements Colored {
 
     public static final int DEFAULT_COLOR = 0xFFFFFF;
 
@@ -94,7 +94,7 @@ public class Grid extends Container implements IColored {
             Line line = new Line(Line.VERTICAL, this);
             line.setColor(color);
             line.setX(x);
-            add(line);
+            addChild(line);
             lines.add(line);
         }
 
@@ -102,7 +102,7 @@ public class Grid extends Container implements IColored {
             Line line = new Line(Line.HORIZONTAL, this);
             line.setColor(color);
             line.setY(y);
-            add(line);
+            addChild(line);
             lines.add(line);
         }
     }
@@ -125,7 +125,7 @@ public class Grid extends Container implements IColored {
         }
 
         private void eachFrame(Event event) {
-            IContainer parent = getParent();
+            Container parent = getParent();
             switch (orientation) {
                 case HORIZONTAL:
                     setScaleY(1.0f / parent.getAbsoluteScaleY());

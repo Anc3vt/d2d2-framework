@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2;
 
-import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.texture.TextureManager;
@@ -42,10 +42,14 @@ import static com.ancevt.commons.string.ConvertableString.convert;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class D2D2 {
     private static final String PROPERTIES_FILENAME = "application.properties";
+
+    @Getter
     private static final TextureManager textureManager = new TextureManager();
+
+    @Getter
     private static BitmapFontManager bitmapFontManager;
     @Getter
-    private static IDisplayObject cursor;
+    private static DisplayObject cursor;
     private static Engine engine;
 
     @Getter
@@ -126,7 +130,7 @@ public final class D2D2 {
         }
     }
 
-    public static void setCursor(IDisplayObject cursor) {
+    public static void setCursor(DisplayObject cursor) {
         if (cursor == D2D2.cursor) return;
 
         if (cursor != null) {
@@ -156,15 +160,7 @@ public final class D2D2 {
         return engine;
     }
 
-    public static TextureManager textureManager() {
-        return textureManager;
-    }
-
-    public static BitmapFontManager bitmapFontManager() {
-        return bitmapFontManager;
-    }
-
-    public static DisplayManager displayManager() {
+    public static DisplayManager getDisplayManager() {
         return engine.getDisplayManager();
     }
 

@@ -19,10 +19,10 @@ package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.IColored;
-import com.ancevt.d2d2.display.IResizable;
-import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.BaseDisplayObject;
+import com.ancevt.d2d2.display.Colored;
+import com.ancevt.d2d2.display.Resizable;
+import com.ancevt.d2d2.display.SimpleSprite;
 import com.ancevt.d2d2.event.Event;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +32,7 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class BitmapText extends DisplayObject implements IColored, IResizable {
+public class BitmapText extends BaseDisplayObject implements Colored, Resizable {
 
     protected static final String DEFAULT_TEXT = "";
 
@@ -76,7 +76,7 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
 
     @Getter
     private boolean wordWrap = true;
-    private Sprite sprite;
+    private SimpleSprite sprite;
 
     public BitmapText(final BitmapFont bitmapFont, float width, float height, String text) {
         setBitmapFont(bitmapFont);
@@ -92,7 +92,7 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
     }
 
     public BitmapText(String text) {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
+        this(D2D2.getBitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
     }
 
     public BitmapText(final BitmapFont bitmapFont) {
@@ -100,11 +100,11 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
     }
 
     public BitmapText(float boundWidth, float boundHeight) {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
+        this(D2D2.getBitmapFontManager().getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
     }
 
     public BitmapText() {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
+        this(D2D2.getBitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
     }
 
     public BitmapText cloneBitmapText() {
@@ -142,7 +142,7 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
         return cacheAsSprite;
     }
 
-    public Sprite cachedSprite() {
+    public SimpleSprite cachedSprite() {
         return sprite;
     }
 
@@ -150,14 +150,14 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
         addEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE, event -> {
             removeEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE);
             if (sprite != null && sprite.getTexture() != null) {
-                D2D2.textureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
+                D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
             }
         });
     }
 
     private void updateCachedSprite() {
         if (sprite != null && sprite.getTexture() != null) {
-            D2D2.textureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
+            D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
         }
 
         if (isCacheAsSprite()) sprite = toSprite();
@@ -196,8 +196,8 @@ public class BitmapText extends DisplayObject implements IColored, IResizable {
         updateCachedSprite();
     }
 
-    public Sprite toSprite() {
-        Sprite result = new Sprite(D2D2.textureManager().bitmapTextToTextureAtlas(this).createTexture());
+    public SimpleSprite toSprite() {
+        SimpleSprite result = new SimpleSprite(D2D2.getTextureManager().bitmapTextToTextureAtlas(this).createTexture());
         result.setXY(getX(), getY());
         result.setScale(getScaleX(), getScaleY());
         result.setRotation(getRotation());

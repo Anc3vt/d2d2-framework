@@ -23,7 +23,7 @@ import com.ancevt.d2d2.event.EventPool;
 import lombok.Getter;
 
 
-public class Stage extends Container {
+public class Stage extends SimpleContainer {
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
 
@@ -48,7 +48,7 @@ public class Stage extends Container {
     }
 
     public void setSize(float width, float height) {
-        D2D2.displayManager().setWindowSize((int) width, (int) height);
+        D2D2.getDisplayManager().setWindowSize((int) width, (int) height);
     }
 
     public void onResize(int width, int height) {
@@ -76,10 +76,10 @@ public class Stage extends Container {
         return height;
     }
 
-    static void dispatchAddToStage(IDisplayObject displayObject) {
+    static void dispatchAddToStage(DisplayObject displayObject) {
         if (displayObject.isOnScreen()) {
             displayObject.dispatchEvent(EventPool.createEvent(Event.ADD_TO_STAGE));
-            if (displayObject instanceof IContainer container) {
+            if (displayObject instanceof Container container) {
                 for (int i = 0; i < container.getNumChildren(); i++) {
                     dispatchAddToStage(container.getChild(i));
                 }
@@ -87,11 +87,11 @@ public class Stage extends Container {
         }
     }
 
-    static void dispatchRemoveFromStage(IDisplayObject displayObject) {
+    static void dispatchRemoveFromStage(DisplayObject displayObject) {
         if (displayObject.isOnScreen()) {
             displayObject.dispatchEvent(EventPool.createEvent(Event.REMOVE_FROM_STAGE));
 
-            if (displayObject instanceof IContainer container) {
+            if (displayObject instanceof Container container) {
                 for (int i = 0; i < container.getNumChildren(); i++) {
                     dispatchRemoveFromStage(container.getChild(i));
                 }

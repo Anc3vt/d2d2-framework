@@ -17,44 +17,28 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 
-public class ContainerFrameSeq extends Container implements IFrameSeq {
+public class PlayableContainer extends SimpleContainer implements Playable {
 
-    private ISprite[] frames;
+    private Sprite[] frames;
 
     private boolean playing;
     private boolean loop;
-    private int slowing;
+    private int slowing = DEFAULT_SLOWING;
     private int slowingCounter;
     private int currentFrameIndex;
-    private ISprite currentSprite;
+    private Sprite currentSprite;
     private boolean backward;
 
-    public ContainerFrameSeq(ISprite[] frameSprites, boolean cloneEach) {
-        this();
-        setFrameSprites(frameSprites, cloneEach);
+    public PlayableContainer() {
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
-    public ContainerFrameSeq(ISprite[] frameSprites) {
-        this(frameSprites, false);
-    }
-
-    public ContainerFrameSeq(Texture[] textures) {
+    public PlayableContainer(Sprite[] frameSprites) {
         this();
-        setFrameTextures(textures);
-    }
-
-    public ContainerFrameSeq() {
-        frames = new ISprite[0];
-        slowingCounter = 0;
-        setLoop(false);
-        stop();
-        setSlowing(DEFAULT_SLOWING);
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
+        setFrameSprites(frameSprites);
     }
 
     @Override
@@ -69,8 +53,7 @@ public class ContainerFrameSeq extends Container implements IFrameSeq {
 
     @Override
     public void processFrame() {
-        if (!playing)
-            return;
+        if (!playing) return;
 
         slowingCounter++;
         if (slowingCounter >= slowing) {
@@ -78,7 +61,6 @@ public class ContainerFrameSeq extends Container implements IFrameSeq {
             if (backward) prevFrame();
             else nextFrame();
         }
-
     }
 
     @Override
@@ -112,7 +94,7 @@ public class ContainerFrameSeq extends Container implements IFrameSeq {
         currentFrameIndex--;
         if (currentFrameIndex < 0) {
             if (loop) {
-                currentFrameIndex = getFrameCount() - 1;
+                currentFrameIndex = getNumFrames() - 1;
             } else {
                 currentFrameIndex = 0;
             }
@@ -146,7 +128,7 @@ public class ContainerFrameSeq extends Container implements IFrameSeq {
 
         currentSprite = frames[currentFrameIndex];
         if (currentSprite != null) {
-            this.add(currentSprite);
+            this.addChild(currentSprite);
         }
     }
 
@@ -155,49 +137,14 @@ public class ContainerFrameSeq extends Container implements IFrameSeq {
         return playing;
     }
 
-    @Override
-    public void setFrameTextures(Texture[] textures) {
-        frames = new ISprite[textures.length];
-        for (int i = 0; i < textures.length; i++) {
-            frames[i] = new Sprite(textures[i]);
-        }
-        if (frames.length > 0) {
-            setFrame(0);
-        }
-    }
-
-    @Override
-    public Texture[] getFrameTextures() {
-        Texture[] textures = new Texture[frames.length];
-        for (int i = 0; i < frames.length; i++) {
-            textures[i] = frames[i].getTexture();
-        }
-        return textures;
-    }
-
-    @Override
-    public void setFrameSprites(ISprite[] sprites, boolean cloneEach) {
-        if (!cloneEach) {
-            frames = sprites;
-        } else {
-            frames = new ISprite[sprites.length];
-            for (int i = 0; i < sprites.length; i++) {
-                ISprite frame = sprites[i].cloneSprite();
-                frames[i] = frame;
-            }
-        }
+    public void setFrameSprites(Sprite[] sprites) {
+        frames = sprites;
         if (sprites.length > 0) {
             setFrame(0);
         }
     }
 
-    @Override
-    public void setFrameSprites(ISprite[] sprites) {
-        setFrameSprites(sprites, false);
-    }
-
-    @Override
-    public ISprite[] getFrameSprites() {
+    public Sprite[] getFrameSprites() {
         return frames;
     }
 
@@ -217,27 +164,17 @@ public class ContainerFrameSeq extends Container implements IFrameSeq {
     }
 
     @Override
-    public int getFrameCount() {
+    public int getNumFrames() {
         return frames.length;
-    }
-
-    public final String getFrameListString() {
-        final StringBuilder sb = new StringBuilder();
-
-        for (ISprite frame : frames) {
-            sb.append(frame).append("\n");
-        }
-
-        return sb.toString();
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
-                "playing=" + playing +
-                ", loop=" + loop +
-                ", slowing=" + slowing +
-                ", frameIndex=" + currentFrameIndex +
-                '}';
+            "playing=" + playing +
+            ", loop=" + loop +
+            ", slowing=" + slowing +
+            ", frameIndex=" + currentFrameIndex +
+            '}';
     }
 }

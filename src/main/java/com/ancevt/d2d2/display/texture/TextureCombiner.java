@@ -43,7 +43,7 @@ public class TextureCombiner {
     }
 
     public final int append(
-        final Texture texture,
+        final TextureClip textureClip,
         final int x,
         final int y,
         final Color color,
@@ -58,7 +58,7 @@ public class TextureCombiner {
         cell.setX(x);
         cell.setY(y);
         cell.setColor(color);
-        cell.setTexture(texture);
+        cell.setTexture(textureClip);
         cell.setScaleX(scaleX);
         cell.setScaleY(scaleY);
         cell.setAlpha(alpha);
@@ -96,7 +96,7 @@ public class TextureCombiner {
     }
 
     public final int append(
-        final Texture texture,
+        final TextureClip textureClip,
         final int x,
         final int y,
         final float scaleX,
@@ -104,7 +104,7 @@ public class TextureCombiner {
         final TextureCell cell = new TextureCell();
         cell.setX(x);
         cell.setY(y);
-        cell.setTexture(texture);
+        cell.setTexture(textureClip);
         cell.setScaleX(scaleX);
         cell.setScaleY(scaleY);
         cell.setId(cellIdCounter++);
@@ -113,7 +113,7 @@ public class TextureCombiner {
     }
 
     public final int append(
-        final Texture texture,
+        final TextureClip textureClip,
         final int x,
         final int y,
         final int repeatX,
@@ -121,7 +121,7 @@ public class TextureCombiner {
         final TextureCell cell = new TextureCell();
         cell.setX(x);
         cell.setY(y);
-        cell.setTexture(texture);
+        cell.setTexture(textureClip);
         cell.setRepeatX(repeatX);
         cell.setRepeatY(repeatY);
         cell.setId(cellIdCounter++);
@@ -131,13 +131,13 @@ public class TextureCombiner {
     }
 
     public final int append(
-        final Texture texture,
+        final TextureClip textureClip,
         final int x,
         final int y) {
         final TextureCell cell = new TextureCell();
         cell.setX(x);
         cell.setY(y);
-        cell.setTexture(texture);
+        cell.setTexture(textureClip);
         cell.setId(cellIdCounter++);
         cells.add(cell);
 
@@ -156,7 +156,7 @@ public class TextureCombiner {
     }
 
     public final TextureAtlas createTextureAtlas() {
-        return D2D2.textureManager().getTextureEngine().
+        return D2D2.getTextureManager().getTextureEngine().
             createTextureAtlas(width, height, cells.toArray(new TextureCell[]{}));
     }
 

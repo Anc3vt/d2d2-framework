@@ -17,52 +17,41 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.display.texture.Texture;
+import com.ancevt.d2d2.display.texture.TextureClip;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import lombok.Getter;
 import lombok.Setter;
 
-public class SpriteFrameSeq extends Sprite implements IFrameSeq {
+public class PlayableSprite extends SimpleSprite implements Playable {
 
     @Getter
-    private Texture[] frameTextures;
+    private TextureClip[] frameTextureClips;
 
     @Getter
     private boolean playing;
+
     @Getter
     @Setter
     private boolean loop;
+
     @Getter
     @Setter
-    private int slowing;
+    private int slowing = DEFAULT_SLOWING;
     private int slowingCounter;
     private int currentFrameIndex;
+
     @Getter
     @Setter
     private boolean backward;
 
-    public SpriteFrameSeq() {
-        frameTextures = new Texture[0];
-        slowingCounter = 0;
-        setLoop(false);
-        stop();
-        setSlowing(DEFAULT_SLOWING);
+    public PlayableSprite(TextureClip[] textureClips) {
+        this();
+        setFrameTextureClips(textureClips);
+    }
+
+    public PlayableSprite() {
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
-    }
-
-    public SpriteFrameSeq(ISprite[] frameSprites, boolean cloneEach) {
-        this();
-        setFrameSprites(frameSprites, cloneEach);
-    }
-
-    public SpriteFrameSeq(ISprite[] frameSprites) {
-        this(frameSprites, false);
-    }
-
-    public SpriteFrameSeq(Texture[] textures) {
-        this();
-        setFrameTextures(textures);
     }
 
     @Override
@@ -88,7 +77,7 @@ public class SpriteFrameSeq extends Sprite implements IFrameSeq {
         currentFrameIndex--;
         if (currentFrameIndex < 0) {
             if (loop) {
-                currentFrameIndex = getFrameCount() - 1;
+                currentFrameIndex = getNumFrames() - 1;
             } else {
                 currentFrameIndex = 0;
             }
@@ -101,7 +90,7 @@ public class SpriteFrameSeq extends Sprite implements IFrameSeq {
         this.currentFrameIndex = frameIndex;
         slowingCounter = 0;
 
-        if (this.currentFrameIndex >= frameTextures.length) {
+        if (this.currentFrameIndex >= frameTextureClips.length) {
             if (loop) {
                 this.currentFrameIndex = 0;
                 dispatchEvent(EventPool.createEvent(Event.COMPLETE));
@@ -122,8 +111,8 @@ public class SpriteFrameSeq extends Sprite implements IFrameSeq {
     }
 
     @Override
-    public int getFrameCount() {
-        return frameTextures.length;
+    public int getNumFrames() {
+        return frameTextureClips.length;
     }
 
     @Override
@@ -136,43 +125,19 @@ public class SpriteFrameSeq extends Sprite implements IFrameSeq {
         playing = false;
     }
 
-    @Override
-    public void setFrameTextures(Texture[] textures) {
-        this.frameTextures = textures;
-        if (textures.length > 0) {
+    public void setFrameTextureClips(TextureClip[] textureClips) {
+        this.frameTextureClips = textureClips;
+        if (textureClips.length > 0) {
             setFrame(0);
         }
     }
 
-    @Override
-    public void setFrameSprites(ISprite[] sprites, boolean cloneEach) {
-        Texture[] textures = new Texture[sprites.length];
-        for (int i = 0; i < sprites.length; i++) {
-            textures[i] = sprites[i].getTexture();
-        }
-        setFrameTextures(textures);
-    }
-
-    @Override
-    public void setFrameSprites(ISprite[] sprites) {
-        setFrameSprites(sprites, false);
-    }
-
-    @Override
-    public ISprite[] getFrameSprites() {
-        ISprite[] sprites = new Sprite[frameTextures.length];
-        for (int i = 0; i < frameTextures.length; i++) {
-            sprites[i] = new Sprite(frameTextures[i]);
-        }
-        return sprites;
-    }
-
     private void drawCurrentFrame() {
-        super.setTexture(frameTextures[currentFrameIndex]);
+        super.setTexture(frameTextureClips[currentFrameIndex]);
     }
 
     @Override
-    public void setTexture(Texture value) {
+    public void setTexture(TextureClip value) {
         throw new IllegalStateException("Unable to set texture directly. Use setFrameTextures([]) instead");
     }
 }

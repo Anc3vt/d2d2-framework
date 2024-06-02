@@ -17,15 +17,10 @@
  */
 package com.ancevt.d2d2.display;
 
-public interface IRepeatable {
-	void setRepeat(float repeatX, float repeatY);
+public interface Resizable extends DisplayObject {
+    void setSize(float width, float height);
 
-	void setRepeatX(float value);
+    void setWidth(float value);
 
-	void setRepeatY(float value);
-
-	float getRepeatX();
-
-	float getRepeatY();
-
+    void setHeight(float value);
 }

@@ -15,11 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.display;
+package com.ancevt.d2d2.common;
 
-public interface IRenderer {
-
-    void init(long windowId);
-    void reshape(int width, int height);
-    void renderFrame();
+public interface Disposable {
+    void dispose();
+    boolean isDisposed();
 }

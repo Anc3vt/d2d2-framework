@@ -18,14 +18,14 @@
 package com.ancevt.d2d2.display.shape;
 
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.IColored;
-import com.ancevt.d2d2.display.IResizable;
+import com.ancevt.d2d2.display.BaseDisplayObject;
+import com.ancevt.d2d2.display.Colored;
+import com.ancevt.d2d2.display.Resizable;
 import com.ancevt.d2d2.event.Event;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class RectangleShape extends DisplayObject implements IShape, IResizable, IColored {
+public class RectangleShape extends BaseDisplayObject implements IShape, Resizable, Colored {
 
     private float width = 100f;
     private float height = 100f;

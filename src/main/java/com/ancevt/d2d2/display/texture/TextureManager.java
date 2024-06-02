@@ -34,7 +34,7 @@ public class TextureManager {
 
     private final Map<String, TextureAtlas> textureAtlasCache;
 
-    private final Map<String, Texture> textures;
+    private final Map<String, TextureClip> textures;
 
     @Getter
     @Setter
@@ -73,7 +73,6 @@ public class TextureManager {
                 break;
             }
         }
-
     }
 
     public void clear() {
@@ -96,12 +95,12 @@ public class TextureManager {
         return textureAtlases.get(index);
     }
 
-    public void addTexture(String key, Texture texture) {
-        textures.put(key, texture);
+    public void addTexture(String key, TextureClip textureClip) {
+        textures.put(key, textureClip);
     }
 
-    public Texture getTexture(String key) {
-        Texture result = textures.get(key);
+    public TextureClip getTexture(String key) {
+        TextureClip result = textures.get(key);
         if (result == null) {
             throw new IllegalArgumentException("No such texture key: " + key);
         }

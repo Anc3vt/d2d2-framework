@@ -22,10 +22,10 @@ final class DisplayObjectAbsoluteComputer {
 
     private DisplayObjectAbsoluteComputer() {}
 
-    static float getAbsoluteX(DisplayObject displayObject) {
+    static float getAbsoluteX(BaseDisplayObject displayObject) {
         float result = displayObject.getX();
 
-        IContainer parent = displayObject.getParent();
+        Container parent = displayObject.getParent();
 
         while (parent != null && !(parent instanceof Stage)) {
             result *= parent.getScaleX();
@@ -36,10 +36,10 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    static float getAbsoluteY(final DisplayObject displayObject) {
+    static float getAbsoluteY(final BaseDisplayObject displayObject) {
         float result = displayObject.getY();
 
-        IContainer parent = displayObject.getParent();
+        Container parent = displayObject.getParent();
 
         while (parent != null && !(parent instanceof Stage)) {
             result *= parent.getScaleY();
@@ -50,10 +50,10 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    static float getAbsoluteScaleX(final DisplayObject displayObject) {
+    static float getAbsoluteScaleX(final BaseDisplayObject displayObject) {
         float result = displayObject.getScaleX();
 
-        IContainer parent = displayObject.getParent();
+        Container parent = displayObject.getParent();
 
         while (parent != null && !(parent instanceof Stage)) {
             result *= parent.getScaleX();
@@ -63,10 +63,10 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    static float getAbsoluteScaleY(final DisplayObject displayObject) {
+    static float getAbsoluteScaleY(final BaseDisplayObject displayObject) {
         float result = displayObject.getScaleY();
 
-        IContainer parent = displayObject.getParent();
+        Container parent = displayObject.getParent();
 
         while (parent != null && !(parent instanceof Stage)) {
             result *= parent.getScaleY();
@@ -76,10 +76,10 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    static float getAbsoluteAlpha(final DisplayObject displayObject) {
+    static float getAbsoluteAlpha(final BaseDisplayObject displayObject) {
         float result = displayObject.getAlpha();
 
-        IContainer parent = displayObject.getParent();
+        Container parent = displayObject.getParent();
 
         while (parent != null && !(parent instanceof Stage)) {
             result *= parent.getAlpha();
@@ -89,10 +89,10 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    static float getAbsoluteRotation(final DisplayObject displayObject) {
+    static float getAbsoluteRotation(final BaseDisplayObject displayObject) {
         float result = displayObject.getRotation();
 
-        IContainer parent = displayObject.getParent();
+        Container parent = displayObject.getParent();
 
         while (parent != null && !(parent instanceof Stage)) {
             result += parent.getRotation();
@@ -102,8 +102,8 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    public static boolean isAbsoluteVisible(DisplayObject displayObject) {
-        IContainer parent = displayObject.getParent();
+    public static boolean isAbsoluteVisible(BaseDisplayObject displayObject) {
+        Container parent = displayObject.getParent();
 
         if (!displayObject.isVisible()) return false;
 

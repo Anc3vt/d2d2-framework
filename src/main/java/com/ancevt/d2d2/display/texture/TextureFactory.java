@@ -25,9 +25,9 @@ import java.util.Objects;
 
 public class TextureFactory {
 
-    private final static Map<String, Texture> textureCacheFiles = new HashMap<>();
+    private final static Map<String, TextureClip> textureCacheFiles = new HashMap<>();
 
-    public static Texture getTexture(String asset, int textureX, int textureY, int textureWidth, int textureHeight) {
+    public static TextureClip getTexture(String asset, int textureX, int textureY, int textureWidth, int textureHeight) {
         return
             textureCacheFiles.computeIfAbsent(
                 "%s_%d".formatted(
@@ -39,7 +39,7 @@ public class TextureFactory {
                         textureWidth,
                         textureHeight
                     )),
-                key -> D2D2.textureManager()
+                key -> D2D2.getTextureManager()
                     .loadTextureAtlas(asset)
                     .createTexture(textureX, textureY, textureWidth, textureHeight)
             );

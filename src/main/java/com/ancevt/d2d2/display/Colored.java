@@ -15,10 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.common;
+package com.ancevt.d2d2.display;
 
-public interface IDisposable {
+public interface Colored extends DisplayObject {
+    void setColor(Color color);
 
-    void dispose();
-    boolean isDisposed();
+    default void setColor(int rgb) {
+        setColor(new Color(rgb));
+    }
+
+    Color getColor();
 }

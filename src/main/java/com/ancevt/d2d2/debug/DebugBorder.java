@@ -18,40 +18,40 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.BorderedRect;
-import com.ancevt.d2d2.common.IDisposable;
+import com.ancevt.d2d2.display.shape.BorderedRectangle;
+import com.ancevt.d2d2.common.Disposable;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.IColored;
-import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.display.IResizable;
+import com.ancevt.d2d2.display.SimpleContainer;
+import com.ancevt.d2d2.display.Colored;
+import com.ancevt.d2d2.display.DisplayObject;
+import com.ancevt.d2d2.display.Resizable;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 
-public class DebugBorder extends Container implements IResizable, IColored, IDisposable {
+public class DebugBorder extends SimpleContainer implements Resizable, Colored, Disposable {
 
-    private final BorderedRect borderedRect;
-    private final IDisplayObject displayObject;
+    private final BorderedRectangle borderedRectangle;
+    private final DisplayObject displayObject;
     private final BitmapText label;
 
     private boolean disposed;
 
-    private DebugBorder(IDisplayObject displayObject) {
+    private DebugBorder(DisplayObject displayObject) {
         Color color = Color.createVisibleRandomColor();
 
         this.displayObject = displayObject;
-        borderedRect = new BorderedRect(displayObject.getWidth(),
+        borderedRectangle = new BorderedRectangle(displayObject.getWidth(),
             displayObject.getHeight(),
             Color.NO_COLOR,
             color
         );
 
-        add(borderedRect);
+        addChild(borderedRectangle);
 
         label = new BitmapText();
         label.setText(displayObject.getDisplayObjectId() + " " + displayObject.getName());
         label.setAutosize(true);
-        add(label, 2, -label.getHeight());
+        addChild(label, 2, -label.getHeight());
 
         displayObject.addEventListener(this, Event.ADD_TO_STAGE, this::displayObject_addToStage);
         displayObject.addEventListener(this, Event.REMOVE_FROM_STAGE, this::displayObject_removeFromStage);
@@ -62,33 +62,33 @@ public class DebugBorder extends Container implements IResizable, IColored, IDis
     }
 
     private void displayObject_addToStage(Event event) {
-        D2D2.stage().add(this);
+        D2D2.stage().addChild(this);
     }
 
     @Override
     public void setSize(float width, float height) {
-        borderedRect.setSize(width, height);
+        borderedRectangle.setSize(width, height);
     }
 
     @Override
     public void setWidth(float value) {
-        borderedRect.setWidth(value);
+        borderedRectangle.setWidth(value);
     }
 
     @Override
     public void setHeight(float value) {
-        borderedRect.setHeight(value);
+        borderedRectangle.setHeight(value);
     }
 
     @Override
     public void setColor(Color color) {
-        borderedRect.setBorderColor(color);
+        borderedRectangle.setBorderColor(color);
         label.setColor(color);
     }
 
     @Override
     public Color getColor() {
-        return borderedRect.getBorderColor();
+        return borderedRectangle.getBorderColor();
     }
 
     @Override
@@ -112,10 +112,10 @@ public class DebugBorder extends Container implements IResizable, IColored, IDis
         return disposed;
     }
 
-    public static DebugBorder create(IDisplayObject displayObject) {
+    public static DebugBorder create(DisplayObject displayObject) {
         DebugBorder debugBorder = new DebugBorder(displayObject);
         if (displayObject.isOnScreen()) {
-            D2D2.stage().add(debugBorder);
+            D2D2.stage().addChild(debugBorder);
         }
         return debugBorder;
     }

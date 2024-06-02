@@ -18,10 +18,10 @@
 package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.IDisposable;
+import com.ancevt.d2d2.common.Disposable;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
 
-public class BitmapFont implements IDisposable {
+public class BitmapFont implements Disposable {
 
     private final BitmapCharInfo[] charInfos;
     private final TextureAtlas textureAtlas;
@@ -123,7 +123,7 @@ public class BitmapFont implements IDisposable {
     @Override
     public void dispose() {
         disposed = true;
-        D2D2.textureManager().unloadTextureAtlas(getTextureAtlas());
+        D2D2.getTextureManager().unloadTextureAtlas(getTextureAtlas());
     }
 
     @Override

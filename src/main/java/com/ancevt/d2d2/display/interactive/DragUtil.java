@@ -17,8 +17,8 @@
  */
 package com.ancevt.d2d2.display.interactive;
 
-import com.ancevt.d2d2.display.IContainer;
-import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DragUtil {
 
-    public static void enableDrag(IDisplayObject displayObject, Interactive interactive) {
+    public static void enableDrag(DisplayObject displayObject, Interactive interactive) {
         AtomicReference<Float> oldXHolder = new AtomicReference<>(0f);
         AtomicReference<Float> oldYHolder = new AtomicReference<>(0f);
 
@@ -36,9 +36,9 @@ public class DragUtil {
             var e = (InteractiveEvent) event;
             oldXHolder.set(e.getX() + displayObject.getX());
             oldYHolder.set(e.getY() + displayObject.getY());
-            IContainer parent = displayObject.getParent();
-            parent.remove(displayObject);
-            parent.add(displayObject);
+            Container parent = displayObject.getParent();
+            parent.removeChild(displayObject);
+            parent.addChild(displayObject);
             interactive.focus();
         });
 
@@ -58,7 +58,7 @@ public class DragUtil {
         enableDrag(interactive, interactive);
     }
 
-    public static void disableDrag(IDisplayObject displayObject, Interactive interactive) {
+    public static void disableDrag(DisplayObject displayObject, Interactive interactive) {
         interactive.removeEventListener(DragUtil.class + displayObject.getName(), InteractiveEvent.DOWN);
         interactive.removeEventListener(DragUtil.class + displayObject.getName(), InteractiveEvent.DRAG);
     }

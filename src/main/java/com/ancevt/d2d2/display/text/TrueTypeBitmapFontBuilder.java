@@ -26,7 +26,6 @@ import java.nio.file.Path;
 
 import static com.ancevt.d2d2.display.text.CharSource.ANCIENT_SYMBOLS;
 import static com.ancevt.d2d2.display.text.CharSource.BASIC_LATIN;
-import static com.ancevt.d2d2.display.text.CharSource.CHINESE;
 import static com.ancevt.d2d2.display.text.CharSource.CYRILLIC;
 import static com.ancevt.d2d2.display.text.CharSource.SUPPLEMENTAL_SYMBOLS;
 
@@ -140,7 +139,7 @@ public class TrueTypeBitmapFontBuilder {
 
     public TrueTypeBitmapFontBuilder assetPath(String assetPath) {
         this.assetPath = assetPath;
-        return inputStream(Assets.getAssetAsStream(assetPath));
+        return inputStream(Assets.getAsset(assetPath));
     }
 
     public TrueTypeBitmapFontBuilder inputStream(InputStream inputStream) {

@@ -18,14 +18,14 @@
 package com.ancevt.d2d2.display.texture;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.IDisposable;
+import com.ancevt.d2d2.common.Disposable;
 import com.ancevt.util.args.Args;
 
 import java.util.StringTokenizer;
 
 import static java.lang.Integer.parseInt;
 
-public class TextureAtlas implements IDisposable {
+public class TextureAtlas implements Disposable {
 
     private final int id;
     private final int width;
@@ -41,12 +41,12 @@ public class TextureAtlas implements IDisposable {
         this.height = height;
     }
 
-    public Texture createTexture() {
+    public TextureClip createTexture() {
         return createTexture(0, 0, getWidth(), getHeight());
     }
 
-    public Texture createTexture(int x, int y, int width, int height) {
-        return new Texture(this, x, y, width, height);
+    public TextureClip createTexture(int x, int y, int width, int height) {
+        return new TextureClip(this, x, y, width, height);
     }
 
     /**
@@ -55,9 +55,9 @@ public class TextureAtlas implements IDisposable {
      * @param textureCoords
      * @return
      */
-    public Texture createTexture(String textureCoords) {
+    public TextureClip createTexture(String textureCoords) {
         var a = Args.of(textureCoords, ',');
-        return new Texture(this, a.next(int.class), a.next(int.class), a.next(int.class), a.next(int.class));
+        return new TextureClip(this, a.next(int.class), a.next(int.class), a.next(int.class), a.next(int.class));
     }
 
     public static String convertCoords(String textureCoords) {
@@ -123,35 +123,35 @@ public class TextureAtlas implements IDisposable {
      * or
      * 16,16,48,48h3
      */
-    public Texture[] createTextures(String textureCoords) {
+    public TextureClip[] createTextures(String textureCoords) {
         textureCoords = convertCoords(textureCoords);
         if (textureCoords.endsWith(";")) {
             textureCoords = textureCoords.substring(0, textureCoords.length() - 2);
         }
         StringTokenizer stringTokenizer = new StringTokenizer(textureCoords, ";");
-        Texture[] textures = new Texture[stringTokenizer.countTokens()];
-        for (int i = 0; i < textures.length; i++) {
-            textures[i] = createTexture(stringTokenizer.nextToken().trim());
+        TextureClip[] textureClips = new TextureClip[stringTokenizer.countTokens()];
+        for (int i = 0; i < textureClips.length; i++) {
+            textureClips[i] = createTexture(stringTokenizer.nextToken().trim());
         }
 
-        return textures;
+        return textureClips;
     }
 
-    public Texture[] createTexturesHor(int x, int y, int w, int h, int count) {
-        Texture[] result = new Texture[count];
+    public TextureClip[] createTexturesHor(int x, int y, int w, int h, int count) {
+        TextureClip[] result = new TextureClip[count];
 
         for (int i = 0; i < result.length; i++) {
-            result[i] = new Texture(this, x + (i * w), y, w, h);
+            result[i] = new TextureClip(this, x + (i * w), y, w, h);
         }
 
         return result;
     }
 
-    public Texture[] createTexturesVert(int x, int y, int w, int h, int count) {
-        Texture[] result = new Texture[count];
+    public TextureClip[] createTexturesVert(int x, int y, int w, int h, int count) {
+        TextureClip[] result = new TextureClip[count];
 
         for (int i = 0; i < result.length; i++) {
-            result[i] = new Texture(this, x, y + (i * h), w, h);
+            result[i] = new TextureClip(this, x, y + (i * h), w, h);
         }
 
         return result;
@@ -181,11 +181,11 @@ public class TextureAtlas implements IDisposable {
 
     @Override
     public void dispose() {
-        D2D2.textureManager().unloadTextureAtlas(this);
+        D2D2.getTextureManager().unloadTextureAtlas(this);
     }
 
     public boolean isDisposed() {
-        return !D2D2.textureManager().containsTextureAtlas(this);
+        return !D2D2.getTextureManager().containsTextureAtlas(this);
     }
 
     @Override

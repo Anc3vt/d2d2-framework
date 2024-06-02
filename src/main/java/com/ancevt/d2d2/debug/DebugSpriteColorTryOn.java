@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.ISprite;
+import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.event.Event;
 
 import java.util.concurrent.CompletableFuture;
@@ -28,7 +28,7 @@ public class DebugSpriteColorTryOn {
 
     private DebugSpriteColorTryOn() {}
 
-    public static void forSprite(ISprite sprite) {
+    public static void forSprite(Sprite sprite) {
         AtomicReference<DebugPanel> r = new AtomicReference<>();
         AtomicReference<DebugPanel> g = new AtomicReference<>();
         AtomicReference<DebugPanel> b = new AtomicReference<>();

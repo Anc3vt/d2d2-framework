@@ -17,22 +17,36 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.display.texture.Texture;
+public interface Playable extends DisplayObject {
+    int DEFAULT_SLOWING = 5;
 
-public interface ISprite extends IDisplayObject, IColored, IRepeatable {
-    Texture getTexture();
+    void processFrame();
 
-    void setTexture(Texture value);
+    void setLoop(boolean loop);
 
-    void setTexture(String textureKey);
+    boolean isLoop();
 
-    void setTextureBleedingFix(double v);
+    void setSlowing(int slowing);
 
-    double getTextureBleedingFix();
+    int getSlowing();
 
-    void setVertexBleedingFix(double v);
+    void nextFrame();
 
-    double getVertexBleedingFix();
+    void prevFrame();
 
-    ISprite cloneSprite();
+    void setFrame(int frameIndex);
+
+    int getCurrentFrameIndex();
+
+    int getNumFrames();
+
+    void setBackward(boolean value);
+
+    boolean isBackward();
+
+    void play();
+
+    void stop();
+
+    boolean isPlaying();
 }
