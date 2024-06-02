@@ -17,9 +17,9 @@
  */
 package com.ancevt.d2d2.display.shape;
 
-import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.DisplayObject;
 
-public interface IShape extends IDisplayObject {
+public interface IShape extends DisplayObject {
 
 
 }

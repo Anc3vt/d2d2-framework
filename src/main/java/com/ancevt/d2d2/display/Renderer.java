@@ -17,10 +17,9 @@
  */
 package com.ancevt.d2d2.display;
 
-public interface IResizable extends IDisplayObject {
-    void setSize(float width, float height);
+public interface Renderer {
 
-    void setWidth(float value);
-
-    void setHeight(float value);
+    void init(long windowId);
+    void reshape(int width, int height);
+    void renderFrame();
 }

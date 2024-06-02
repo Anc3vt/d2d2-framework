@@ -17,278 +17,143 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.event.EventDispatcher;
+import com.ancevt.d2d2.event.IEventDispatcher;
 
-public abstract class DisplayObject extends EventDispatcher implements IDisplayObject {
+public interface DisplayObject extends IEventDispatcher {
 
-    private static int displayObjectIdCounter;
-    private final int displayObjectId;
-    private String name;
-    private Container parent;
-    private float x;
-    private float y;
-    private float scaleX = 1.0f;
-    private float scaleY = 1.0f;
-    private float alpha = 1.0f;
-    private float rotation;
-    private boolean visible = true;
-    private int zOrderIndex;
-    private boolean integerPixelAlignmentEnabled = true;
-
-    protected DisplayObject() {
-        displayObjectId = displayObjectIdCounter++;
-        name = "_" + getClass().getSimpleName() + getDisplayObjectId();
-    }
-
-    @Override
-    public int getDisplayObjectId() {
-        return displayObjectId;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String value) {
-        this.name = value;
-    }
-
-    @Override
-    public void setAbsoluteZOrderIndex(int zOrder) {
-        this.zOrderIndex = zOrder;
-    }
-
-    @Override
-    public int getAbsoluteZOrderIndex() {
-        return zOrderIndex;
-    }
-
-    final void setParent(final Container container) {
-        this.parent = container;
-    }
-
-    @Override
-    public IContainer getParent() {
-        return parent;
-    }
-
-    @Override
-    public boolean hasParent() {
-        return parent != null;
-    }
-
-    @Override
-    public void setXY(float x, float y) {
-        setX(x);
-        setY(y);
-    }
-
-    @Override
-    public void setX(float value) {
-        this.x = value;
-    }
-
-    @Override
-    public float getX() {
-        return x;
-    }
-
-    @Override
-    public void setY(float value) {
-        this.y = value;
-    }
-
-    @Override
-    public float getY() {
-        return y;
-    }
-
-    @Override
-    public void setScale(float scaleX, float scaleY) {
-        setScaleX(scaleX);
-        setScaleY(scaleY);
-    }
-
-    @Override
-    public void setScaleX(float value) {
-        this.scaleX = value;
-    }
-
-    @Override
-    public float getScaleX() {
-        return scaleX;
-    }
-
-    @Override
-    public void setScaleY(float value) {
-        this.scaleY = value;
-    }
-
-    @Override
-    public float getScaleY() {
-        return scaleY;
-    }
-
-    @Override
-    public boolean isOnScreen() {
-        IContainer currentParent = getParent();
-
-        while (currentParent != null) {
-            if (currentParent instanceof Stage) return true;
-            currentParent = currentParent.getParent();
-        }
-
-        return false;
-    }
-
-    @Override
-    public void setVisible(boolean value) {
-        this.visible = value;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return visible;
-    }
-
-    @Override
-    public void setRotation(float degrees) {
-        rotation = degrees;
-    }
-
-    @Override
-    public float getRotation() {
-        return rotation;
-    }
-
-    @Override
-    public void rotate(float toRotation) {
-        rotation += toRotation;
-    }
-
-    @Override
-    public void moveX(float value) {
-        setX(getX() + value);
-    }
-
-    @Override
-    public void moveY(float value) {
-        setY(getY() + value);
-    }
-
-    @Override
-    public void move(float toX, float toY) {
-        moveX(toX);
-        moveY(toY);
-    }
-
-    @Override
-    public void scaleX(float value) {
-        setScaleX(getScaleX() * value);
-    }
-
-    @Override
-    public void scaleY(float value) {
-        setScaleY(getScaleY() * value);
-    }
-
-    @Override
-    public void scale(float toX, float toY) {
-        scaleX(toX);
-        scaleY(toY);
-    }
-
-    @Override
-    public float getWidth() {
-        return 0f;
-    }
-
-    @Override
-    public float getHeight() {
-        return 0f;
-    }
-
-    @Override
-    public float getScaledWidth() {
-        return getWidth() * getScaleX();
-    }
-
-    @Override
-    public float getScaledHeight() {
-        return getHeight() * getScaleY();
-    }
-
-    @Override
-    public float getAbsoluteX() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteX(this);
-    }
-
-    @Override
-    public float getAbsoluteY() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteY(this);
-    }
-
-    @Override
-    public float getAbsoluteScaleX() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteScaleX(this);
-    }
-
-    @Override
-    public float getAbsoluteScaleY() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteScaleY(this);
-    }
-
-    @Override
-    public float getAbsoluteAlpha() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteAlpha(this);
-    }
-
-    @Override
-    public float getAbsoluteRotation() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteRotation(this);
-    }
-
-    @Override
-    public boolean isAbsoluteVisible() {
-        return DisplayObjectAbsoluteComputer.isAbsoluteVisible(this);
-    }
-
-    @Override
-    public final void removeFromParent() {
+    default void centerX() {
         if (hasParent()) {
-            getParent().remove(this);
+            Container parent = getParent();
+            setX((parent.getWidth() - getWidth()) / 2);
+        } else {
+            setX(-getWidth() / 2);
         }
     }
 
-    @Override
-    public void setAlpha(float value) {
-        this.alpha = value;
+    default void centerY() {
+        if (hasParent()) {
+            Container parent = getParent();
+            setY((parent.getHeight() - getHeight()) / 2);
+        } else {
+            setX(-getWidth() / 2);
+        }
     }
 
-    @Override
-    public float getAlpha() {
-        return alpha;
+    default void center() {
+        centerX();
+        centerY();
     }
 
-    @Override
-    public void toAlpha(float value) {
-        alpha *= value;
+    int getDisplayObjectId();
+
+    String getName();
+
+    void setName(String value);
+
+    Container getParent();
+
+    boolean hasParent();
+
+    void setAlpha(float value);
+
+    float getAlpha();
+
+    void toAlpha(float value);
+
+    void setXY(float x, float y);
+
+    void setX(float value);
+
+    void setY(float value);
+
+    default void setXYAs(DisplayObject displayObject) {
+        setXY(displayObject.getX(), displayObject.getY());
     }
 
-    @Override
-    public void setIntegerPixelAlignmentEnabled(boolean value) {
-        this.integerPixelAlignmentEnabled = value;
+    float getX();
+
+    float getY();
+
+    void setScale(float scaleX, float scaleY);
+
+    default void setScale(float xy) {
+        setScale(xy, xy);
     }
 
-    @Override
-    public boolean isIntegerPixelAlignmentEnabled() {
-        return integerPixelAlignmentEnabled;
+    void setScaleX(float value);
+
+    float getScaleX();
+
+    void setScaleY(float value);
+
+    float getScaleY();
+
+    boolean isOnScreen();
+
+    void setVisible(boolean value);
+
+    boolean isVisible();
+
+    void setRotation(float degrees);
+
+    float getRotation();
+
+    void rotate(float toRotation);
+
+    void moveX(float value);
+
+    void moveY(float value);
+
+    void move(float toX, float toY);
+
+    void scaleX(float value);
+
+    void scaleY(float value);
+
+    void scale(float toX, float toY);
+
+    default void scale(float xy) {
+        scale(xy, xy);
     }
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" + "displayObjectId=" + displayObjectId + ", name='" + name + "'}";
-    }
+    float getWidth();
+
+    float getHeight();
+
+    float getScaledWidth();
+
+    float getScaledHeight();
+
+    float getAbsoluteX();
+
+    float getAbsoluteY();
+
+    float getAbsoluteScaleX();
+
+    float getAbsoluteScaleY();
+
+    float getAbsoluteAlpha();
+
+    float getAbsoluteRotation();
+
+    boolean isAbsoluteVisible();
+
+    void setAbsoluteZOrderIndex(int zOrder);
+
+    int getAbsoluteZOrderIndex();
+
+    void removeFromParent();
+
+    void setIntegerPixelAlignmentEnabled(boolean value);
+
+    boolean isIntegerPixelAlignmentEnabled();
+
+    String toString();
+
+
+    default void onExitFrame() {}
+
+    default void onEnterFrame() {}
+
+    default void onLoopUpdate() {}
 }

@@ -18,49 +18,21 @@
 package com.ancevt.d2d2.asset;
 
 import com.ancevt.d2d2.exception.AssetException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Assets {
 
     private static final String ASSETS_DIR = "assets/";
 
-    private Assets() {
-    }
-
-    public static InputStream getAssetAsStream(String assetPath) {
+    public static InputStream getAsset(String assetPath) {
         final ClassLoader classLoader = Assets.class.getClassLoader();
-
         InputStream result = classLoader.getResourceAsStream(ASSETS_DIR + assetPath);
-
         if (result == null) throw new AssetException("resource " + assetPath + " not found");
-
         return result;
-    }
-
-    public static BufferedReader getAssetAsBufferedReader(InputStream inputStream) {
-        return getAssetAsBufferedReader(inputStream, StandardCharsets.UTF_8.name());
-    }
-
-    public static BufferedReader getAssetAsBufferedReader(InputStream inputStream, String charsetName) {
-        try {
-            return new BufferedReader(new InputStreamReader(inputStream, charsetName));
-        } catch (UnsupportedCharsetException | IOException ex) {
-            throw new IllegalStateException(ex);
-        }
-    }
-
-    public static BufferedReader getAssetAsBufferedReader(String assetPath) {
-        return getAssetAsBufferedReader(getAssetAsStream(assetPath), StandardCharsets.UTF_8.name());
-    }
-
-    public static BufferedReader getAssetAsBufferedReader(String assetPath, String charsetName) {
-        return getAssetAsBufferedReader(getAssetAsStream(assetPath), charsetName);
     }
 
 }

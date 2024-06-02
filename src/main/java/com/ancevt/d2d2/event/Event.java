@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.event;
 
-import com.ancevt.d2d2.display.IContainer;
+import com.ancevt.d2d2.display.Container;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -39,7 +39,7 @@ public class Event {
 
     String type;
     Object source;
-    private IContainer parent;
+    private Container parent;
 
     public <T> T casted() {
         return (T) this;
@@ -47,10 +47,9 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event{" +
+        return getClass().getSimpleName() + "{" +
             "type='" + type + '\'' +
             ", source=" + source +
-            ", parent=" + parent +
             '}';
     }
 }

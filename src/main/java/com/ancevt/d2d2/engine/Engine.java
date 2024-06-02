@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.engine;
 
-import com.ancevt.d2d2.display.IRenderer;
+import com.ancevt.d2d2.display.Renderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
@@ -40,7 +40,7 @@ public interface Engine {
 
     void start();
 
-    IRenderer getRenderer();
+    Renderer getRenderer();
 
     void stop();
 

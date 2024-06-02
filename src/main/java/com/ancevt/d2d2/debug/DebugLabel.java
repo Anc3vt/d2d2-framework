@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import lombok.Getter;
@@ -32,10 +32,10 @@ public class DebugLabel extends BitmapText {
 
     private static final int DEFAULT_UPDATE_RATE = 10;
 
-    private static final Map<IDisplayObject, DebugLabel> labels = new HashMap<>();
+    private static final Map<DisplayObject, DebugLabel> labels = new HashMap<>();
 
     @Getter
-    private final IDisplayObject target;
+    private final DisplayObject target;
 
     @Getter
     @Setter
@@ -43,7 +43,7 @@ public class DebugLabel extends BitmapText {
 
     private int tick;
 
-    public DebugLabel(IDisplayObject target, BiConsumer<IDisplayObject, StringBuilder> func, int updateRate) {
+    public DebugLabel(DisplayObject target, BiConsumer<DisplayObject, StringBuilder> func, int updateRate) {
         this.target = target;
         this.updateRate = updateRate;
 
@@ -57,11 +57,11 @@ public class DebugLabel extends BitmapText {
                 setText(out.toString());
 
                 setXY(target.getAbsoluteX(), target.getAbsoluteY());
-                D2D2.stage().add(this);
+                D2D2.stage().addChild(this);
             }
         });
 
-        D2D2.stage().add(this);
+        D2D2.stage().addChild(this);
         labels.put(target, this);
     }
 
@@ -72,7 +72,7 @@ public class DebugLabel extends BitmapText {
         labels.remove(this);
     }
 
-    public static DebugLabel clear(IDisplayObject target) {
+    public static DebugLabel clear(DisplayObject target) {
         DebugLabel debugLabel = labels.get(target);
         if (debugLabel != null) {
             debugLabel.dispose();
@@ -84,7 +84,7 @@ public class DebugLabel extends BitmapText {
         new HashMap<>(labels).forEach((k, v) -> v.dispose());
     }
 
-    public static DebugLabel createLabel(IDisplayObject target, BiConsumer<IDisplayObject, StringBuilder> func, int updateRate) {
+    public static DebugLabel createLabel(DisplayObject target, BiConsumer<DisplayObject, StringBuilder> func, int updateRate) {
         if (labels.containsKey(target)) {
             labels.get(target).dispose();
         }
@@ -95,7 +95,7 @@ public class DebugLabel extends BitmapText {
         return result;
     }
 
-    public static DebugLabel createLabel(IDisplayObject target, BiConsumer<IDisplayObject, StringBuilder> func) {
+    public static DebugLabel createLabel(DisplayObject target, BiConsumer<DisplayObject, StringBuilder> func) {
         return createLabel(target, func, DEFAULT_UPDATE_RATE);
     }
 

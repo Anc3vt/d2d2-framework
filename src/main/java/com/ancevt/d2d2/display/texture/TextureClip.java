@@ -17,7 +17,10 @@
  */
 package com.ancevt.d2d2.display.texture;
 
-public class Texture {
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public class TextureClip {
 
     private final TextureAtlas textureAtlas;
     private final int x;
@@ -25,25 +28,17 @@ public class Texture {
     private final int width;
     private final int height;
 
-    public Texture(TextureAtlas textureAtlas, int x, int y, int width, int height) {
-        this.textureAtlas = textureAtlas;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-    }
+    public int getX() {return x;}
 
-    public int x() {return x;}
+    public int getY() {return y;}
 
-    public int y() {return y;}
+    public int getWidth() {return width;}
 
-    public int width() {return width;}
-
-    public int height() {return height;}
+    public int getHeight() {return height;}
 
 
-    public Texture getSubtexture(int x, int y, int width, int height) {
-        return getTextureAtlas().createTexture(x() + x, y() + y, width, height);
+    public TextureClip getSubTexture(int x, int y, int width, int height) {
+        return getTextureAtlas().createTexture(getX() + x, getY() + y, width, height);
     }
 
     public TextureAtlas getTextureAtlas() {
@@ -65,24 +60,3 @@ public class Texture {
             '}';
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

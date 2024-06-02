@@ -21,9 +21,9 @@ import com.ancevt.commons.io.ByteInput;
 import com.ancevt.commons.io.ByteOutput;
 import com.ancevt.commons.io.InputStreamFork;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.BorderedRect;
+import com.ancevt.d2d2.display.shape.BorderedRectangle;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.IContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
@@ -37,7 +37,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
-public class ByteDisplay extends InteractiveContainer {
+public class ByteBaseDisplay extends InteractiveContainer {
 
     private static final float DEFAULT_WIDTH = 580.0f;
     private static final float DEFAULT_HEIGHT = 400.0f;
@@ -48,7 +48,7 @@ public class ByteDisplay extends InteractiveContainer {
     private static final Color DEFAULT_BORDER_COLOR = Color.YELLOW;
     private static final int PAGE_SIZE = 64;
 
-    private final BorderedRect bgRect;
+    private final BorderedRectangle bgRect;
     @Getter
     private final BitmapText bitmapText;
 
@@ -64,16 +64,16 @@ public class ByteDisplay extends InteractiveContainer {
     private String utfString;
     private int inline, line;
 
-    public ByteDisplay() {
+    public ByteBaseDisplay() {
         super(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        bgRect = new BorderedRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
-        add(bgRect);
+        bgRect = new BorderedRectangle(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
+        addChild(bgRect);
 
         bitmapText = new BitmapText();
         bitmapText.setText("#<FFFF00>ready");
         bitmapText.setMulticolor(true);
         bitmapText.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        add(bitmapText, PADDING, 2);
+        addChild(bitmapText, PADDING, 2);
 
         addEventListener(this, InteractiveEvent.DOWN, this::mouseDown);
         addEventListener(this, InteractiveEvent.DRAG, this::mouseDrag);
@@ -206,9 +206,9 @@ public class ByteDisplay extends InteractiveContainer {
         oldX = (int) (e.getX() + getX());
         oldY = (int) (e.getY() + getY());
 
-        IContainer parent = getParent();
-        parent.remove(this);
-        parent.add(this);
+        Container parent = getParent();
+        parent.removeChild(this);
+        parent.addChild(this);
 
         focus();
     }
@@ -411,14 +411,14 @@ public class ByteDisplay extends InteractiveContainer {
         s.append(line).append("\n");
     }
 
-    public static ByteDisplay show(byte[] bytes) {
-        ByteDisplay result = new ByteDisplay();
+    public static ByteBaseDisplay show(byte[] bytes) {
+        ByteBaseDisplay result = new ByteBaseDisplay();
         result.setBytes(bytes);
-        D2D2.stage().add(result, 100 + new Random().nextInt(100), 100 + new Random().nextInt(100));
+        D2D2.stage().addChild(result, 100 + new Random().nextInt(100), 100 + new Random().nextInt(100));
         return result;
     }
 
-    public static ByteDisplay show(InputStream inputStream) {
+    public static ByteBaseDisplay show(InputStream inputStream) {
         InputStreamFork fork = InputStreamFork.fork(inputStream);
         try {
             byte[] bytes = fork.left().readAllBytes();

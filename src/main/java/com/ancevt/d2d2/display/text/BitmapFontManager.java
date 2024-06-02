@@ -106,7 +106,7 @@ public class BitmapFontManager {
             throw new IllegalArgumentException(e);
         }
 
-        BitmapFont bitmapFont = new BitmapFont(name, D2D2.textureManager().loadTextureAtlas(pngInputStream), charInfos);
+        BitmapFont bitmapFont = new BitmapFont(name, D2D2.getTextureManager().loadTextureAtlas(pngInputStream), charInfos);
 
         bitmapFontMap.put(name, bitmapFont);
 
@@ -127,8 +127,8 @@ public class BitmapFontManager {
         }
 
         BitmapFont bitmapFont = loadBitmapFont(
-            Assets.getAssetAsStream(BITMAP_FONTS_ASSET_DIR + assetWithoutExtension + ".bmf"),
-            Assets.getAssetAsStream(BITMAP_FONTS_ASSET_DIR + assetWithoutExtension + ".png"),
+            Assets.getAsset(BITMAP_FONTS_ASSET_DIR + assetWithoutExtension + ".bmf"),
+            Assets.getAsset(BITMAP_FONTS_ASSET_DIR + assetWithoutExtension + ".png"),
             assetWithoutExtension
         );
 

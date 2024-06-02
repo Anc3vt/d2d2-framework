@@ -17,13 +17,13 @@
  */
 package com.ancevt.d2d2.event;
 
-import com.ancevt.d2d2.display.IContainer;
+import com.ancevt.d2d2.display.Container;
 
 public class EventPool {
 
     private static final Event SIMPLE_EVENT_SINGLETON = Event.builder().build();
 
-    public static Event createEvent(String type, IContainer parent) {
+    public static Event createEvent(String type, Container parent) {
         return Event.builder().type(type).parent(parent).build();
     }
 

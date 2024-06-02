@@ -19,47 +19,47 @@ package com.ancevt.d2d2.display.interactive;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.IColored;
-import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.texture.Texture;
+import com.ancevt.d2d2.display.Colored;
+import com.ancevt.d2d2.display.SimpleSprite;
+import com.ancevt.d2d2.display.texture.TextureClip;
 import lombok.Getter;
 
-public class Combined9Sprites extends InteractiveContainer implements IColored {
+public class Combined9Sprites extends InteractiveContainer implements Colored {
 
-    private final Sprite topLeft;
-    private final Sprite top;
-    private final Sprite topRight;
-    private final Sprite left;
-    private final Sprite center;
-    private final Sprite right;
-    private final Sprite bottomLeft;
-    private final Sprite bottom;
-    private final Sprite bottomRight;
+    private final SimpleSprite topLeft;
+    private final SimpleSprite top;
+    private final SimpleSprite topRight;
+    private final SimpleSprite left;
+    private final SimpleSprite center;
+    private final SimpleSprite right;
+    private final SimpleSprite bottomLeft;
+    private final SimpleSprite bottom;
+    private final SimpleSprite bottomRight;
 
     @Getter
     private boolean repeatsEnabled;
 
 
     public Combined9Sprites() {
-        topLeft = new Sprite();
-        top = new Sprite();
-        topRight = new Sprite();
-        left = new Sprite();
-        center = new Sprite();
-        right = new Sprite();
-        bottomLeft = new Sprite();
-        bottom = new Sprite();
-        bottomRight = new Sprite();
+        topLeft = new SimpleSprite();
+        top = new SimpleSprite();
+        topRight = new SimpleSprite();
+        left = new SimpleSprite();
+        center = new SimpleSprite();
+        right = new SimpleSprite();
+        bottomLeft = new SimpleSprite();
+        bottom = new SimpleSprite();
+        bottomRight = new SimpleSprite();
 
-        add(topLeft);
-        add(top);
-        add(topRight);
-        add(left);
-        add(center);
-        add(right);
-        add(bottomLeft);
-        add(bottom);
-        add(bottomRight);
+        addChild(topLeft);
+        addChild(top);
+        addChild(topRight);
+        addChild(left);
+        addChild(center);
+        addChild(right);
+        addChild(bottomLeft);
+        addChild(bottom);
+        addChild(bottomRight);
 
         setEnabled(false);
     }
@@ -69,25 +69,25 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
         setTextures(textureKeys);
     }
 
-    public Combined9Sprites(Texture topLeftTexture,
-                            Texture topTexture,
-                            Texture topRightTexture,
-                            Texture leftTexture,
-                            Texture centerTexture,
-                            Texture rightTexture,
-                            Texture bottomLeftTexture,
-                            Texture bottomTexture,
-                            Texture bottomRightTexture) {
+    public Combined9Sprites(TextureClip topLeftTextureClip,
+                            TextureClip topTextureClip,
+                            TextureClip topRightTextureClip,
+                            TextureClip leftTextureClip,
+                            TextureClip centerTextureClip,
+                            TextureClip rightTextureClip,
+                            TextureClip bottomLeftTextureClip,
+                            TextureClip bottomTextureClip,
+                            TextureClip bottomRightTextureClip) {
         this();
-        setTextures(topLeftTexture, topTexture, topRightTexture,
-            leftTexture, centerTexture, rightTexture,
-            bottomLeftTexture, bottomTexture, bottomRightTexture);
+        setTextures(topLeftTextureClip, topTextureClip, topRightTextureClip,
+            leftTextureClip, centerTextureClip, rightTextureClip,
+            bottomLeftTextureClip, bottomTextureClip, bottomRightTextureClip);
 
     }
 
-    public Combined9Sprites(Texture all9PartsTexture, int partWidth, int partHeight) {
+    public Combined9Sprites(TextureClip all9PartsTextureClip, int partWidth, int partHeight) {
         this();
-        setTextures(all9PartsTexture, partWidth, partHeight);
+        setTextures(all9PartsTextureClip, partWidth, partHeight);
     }
 
     @Override
@@ -126,54 +126,54 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
         rebuild();
     }
 
-    public void setTextures(Texture all9partsTexture, int partWidth, int partHeight) {
+    public void setTextures(TextureClip all9PartsTextureClip, int partWidth, int partHeight) {
         setTextures(
-            all9partsTexture.getSubtexture(0, 0, partWidth, partHeight),
-            all9partsTexture.getSubtexture(partWidth, 0, partWidth, partHeight),
-            all9partsTexture.getSubtexture(partWidth * 2, 0, partWidth, partHeight),
+            all9PartsTextureClip.getSubTexture(0, 0, partWidth, partHeight),
+            all9PartsTextureClip.getSubTexture(partWidth, 0, partWidth, partHeight),
+            all9PartsTextureClip.getSubTexture(partWidth * 2, 0, partWidth, partHeight),
 
-            all9partsTexture.getSubtexture(0, partHeight, partWidth, partHeight),
-            all9partsTexture.getSubtexture(partWidth, partHeight, partWidth, partHeight),
-            all9partsTexture.getSubtexture(partWidth * 2, partHeight, partWidth, partHeight),
+            all9PartsTextureClip.getSubTexture(0, partHeight, partWidth, partHeight),
+            all9PartsTextureClip.getSubTexture(partWidth, partHeight, partWidth, partHeight),
+            all9PartsTextureClip.getSubTexture(partWidth * 2, partHeight, partWidth, partHeight),
 
-            all9partsTexture.getSubtexture(0, partHeight * 2, partWidth, partHeight),
-            all9partsTexture.getSubtexture(partWidth, partHeight * 2, partWidth, partHeight),
-            all9partsTexture.getSubtexture(partWidth * 2, partHeight * 2, partWidth, partHeight)
+            all9PartsTextureClip.getSubTexture(0, partHeight * 2, partWidth, partHeight),
+            all9PartsTextureClip.getSubTexture(partWidth, partHeight * 2, partWidth, partHeight),
+            all9PartsTextureClip.getSubTexture(partWidth * 2, partHeight * 2, partWidth, partHeight)
         );
     }
 
-    public void setTextures(Texture topLeftTexture,
-                            Texture topTexture,
-                            Texture topRightTexture,
-                            Texture leftTexture,
-                            Texture centerTexture,
-                            Texture rightTexture,
-                            Texture bottomLeftTexture,
-                            Texture bottomTexture,
-                            Texture bottomRightTexture) {
+    public void setTextures(TextureClip topLeftTextureClip,
+                            TextureClip topTextureClip,
+                            TextureClip topRightTextureClip,
+                            TextureClip leftTextureClip,
+                            TextureClip centerTextureClip,
+                            TextureClip rightTextureClip,
+                            TextureClip bottomLeftTextureClip,
+                            TextureClip bottomTextureClip,
+                            TextureClip bottomRightTextureClip) {
 
-        topLeft.setTexture(topLeftTexture);
-        top.setTexture(topTexture);
-        topRight.setTexture(topRightTexture);
-        left.setTexture(leftTexture);
-        center.setTexture(centerTexture);
-        right.setTexture(rightTexture);
-        bottomLeft.setTexture(bottomLeftTexture);
-        bottom.setTexture(bottomTexture);
-        bottomRight.setTexture(bottomRightTexture);
+        topLeft.setTexture(topLeftTextureClip);
+        top.setTexture(topTextureClip);
+        topRight.setTexture(topRightTextureClip);
+        left.setTexture(leftTextureClip);
+        center.setTexture(centerTextureClip);
+        right.setTexture(rightTextureClip);
+        bottomLeft.setTexture(bottomLeftTextureClip);
+        bottom.setTexture(bottomTextureClip);
+        bottomRight.setTexture(bottomRightTextureClip);
         rebuild();
     }
 
     public void setTextures(String[] textureKeys) {
-        topLeft.setTexture(D2D2.textureManager().getTexture(textureKeys[0]));
-        top.setTexture(D2D2.textureManager().getTexture(textureKeys[1]));
-        topRight.setTexture(D2D2.textureManager().getTexture(textureKeys[2]));
-        left.setTexture(D2D2.textureManager().getTexture(textureKeys[3]));
-        center.setTexture(D2D2.textureManager().getTexture(textureKeys[4]));
-        right.setTexture(D2D2.textureManager().getTexture(textureKeys[5]));
-        bottomLeft.setTexture(D2D2.textureManager().getTexture(textureKeys[6]));
-        bottom.setTexture(D2D2.textureManager().getTexture(textureKeys[7]));
-        bottomRight.setTexture(D2D2.textureManager().getTexture(textureKeys[8]));
+        topLeft.setTexture(D2D2.getTextureManager().getTexture(textureKeys[0]));
+        top.setTexture(D2D2.getTextureManager().getTexture(textureKeys[1]));
+        topRight.setTexture(D2D2.getTextureManager().getTexture(textureKeys[2]));
+        left.setTexture(D2D2.getTextureManager().getTexture(textureKeys[3]));
+        center.setTexture(D2D2.getTextureManager().getTexture(textureKeys[4]));
+        right.setTexture(D2D2.getTextureManager().getTexture(textureKeys[5]));
+        bottomLeft.setTexture(D2D2.getTextureManager().getTexture(textureKeys[6]));
+        bottom.setTexture(D2D2.getTextureManager().getTexture(textureKeys[7]));
+        bottomRight.setTexture(D2D2.getTextureManager().getTexture(textureKeys[8]));
     }
 
     @Override
@@ -208,35 +208,35 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
             int textureLength;
             int targetRepeat;
 
-            textureLength = top.getTexture().width();
+            textureLength = top.getTexture().getWidth();
             targetRepeat = (int) (getWidth() - topLeft.getWidth() - topRight.getWidth());
             targetRepeat /= textureLength;
             top.setScale(1.0f, 1.0f);
             top.setRepeatX(targetRepeat);
 
-            textureLength = bottom.getTexture().width();
+            textureLength = bottom.getTexture().getWidth();
             targetRepeat = (int) (getWidth() - bottomLeft.getWidth() - bottomRight.getWidth());
             targetRepeat /= textureLength;
             bottom.setScale(1.0f, 1.0f);
             bottom.setRepeatX(targetRepeat);
 
-            textureLength = left.getTexture().height();
+            textureLength = left.getTexture().getHeight();
             targetRepeat = (int) (getHeight() - topLeft.getHeight() - bottomLeft.getHeight());
             targetRepeat /= textureLength;
             left.setScale(1.0f, 1.0f);
             left.setRepeatY(targetRepeat);
 
-            textureLength = right.getTexture().height();
+            textureLength = right.getTexture().getHeight();
             targetRepeat = (int) (getHeight() - topRight.getHeight() - bottomRight.getHeight());
             targetRepeat /= textureLength;
             right.setScale(1.0f, 1.0f);
             right.setRepeatY(targetRepeat);
 
-            int centerTextureWidth = center.getTexture().width();
+            int centerTextureWidth = center.getTexture().getWidth();
             int centerRepeatX = (int) (getWidth() - left.getWidth() - right.getWidth());
             centerRepeatX /= centerTextureWidth;
 
-            int centerTextureHeight = center.getTexture().height();
+            int centerTextureHeight = center.getTexture().getHeight();
             int centerREpeatY = (int) (getHeight() - top.getHeight() - bottom.getHeight());
             centerREpeatY /= centerTextureHeight;
 
@@ -247,35 +247,35 @@ public class Combined9Sprites extends InteractiveContainer implements IColored {
             float textureLength;
             float targetScale;
 
-            textureLength = top.getTexture().width();
+            textureLength = top.getTexture().getWidth();
             targetScale = getWidth() - topLeft.getWidth() - topRight.getWidth();
             targetScale /= textureLength;
             top.setRepeat(1, 1);
             top.setScaleX(targetScale);
 
-            textureLength = bottom.getTexture().width();
+            textureLength = bottom.getTexture().getWidth();
             targetScale = getWidth() - bottomLeft.getWidth() - bottomRight.getWidth();
             targetScale /= textureLength;
             bottom.setRepeat(1, 1);
             bottom.setScaleX(targetScale);
 
-            textureLength = left.getTexture().height();
+            textureLength = left.getTexture().getHeight();
             targetScale = getHeight() - topLeft.getHeight() - bottomLeft.getHeight();
             targetScale /= textureLength;
             left.setRepeat(1, 1);
             left.setScaleY(targetScale);
 
-            textureLength = right.getTexture().height();
+            textureLength = right.getTexture().getHeight();
             targetScale = getHeight() - topRight.getHeight() - bottomRight.getHeight();
             targetScale /= textureLength;
             right.setRepeat(1, 1);
             right.setScaleY(targetScale);
 
-            float centerTextureWidth = center.getTexture().width();
+            float centerTextureWidth = center.getTexture().getWidth();
             float centerScaleX = getWidth() - left.getWidth() - right.getWidth();
             centerScaleX /= centerTextureWidth;
 
-            float centerTextureHeight = center.getTexture().height();
+            float centerTextureHeight = center.getTexture().getHeight();
             float centerScaleY = getHeight() - top.getHeight() - bottom.getHeight();
             centerScaleY /= centerTextureHeight;
             center.setRepeat(1, 1);

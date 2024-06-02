@@ -19,7 +19,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.IContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -44,7 +44,7 @@ public class DraggingContainer extends InteractiveContainer {
 
     public DraggingContainer() {
         background = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
-        add(background);
+        addChild(background);
 
         addEventListener(this, InteractiveEvent.DOWN, this::mouseDown);
         addEventListener(this, InteractiveEvent.DRAG, this::mouseDrag);
@@ -59,9 +59,9 @@ public class DraggingContainer extends InteractiveContainer {
         oldX = (int) (e.getX() + getX());
         oldY = (int) (e.getY() + getY());
 
-        IContainer parent = getParent();
-        parent.remove(this);
-        parent.add(this);
+        Container parent = getParent();
+        parent.removeChild(this);
+        parent.addChild(this);
 
         focus();
     }
@@ -78,9 +78,9 @@ public class DraggingContainer extends InteractiveContainer {
         if (b == isBackgroundVisible()) return;
 
         if (b) {
-            add(background);
+            addChild(background);
         } else {
-            remove(background);
+            removeChild(background);
         }
     }
 

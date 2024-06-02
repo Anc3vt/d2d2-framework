@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.display;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.texture.Texture;
+import com.ancevt.d2d2.display.texture.TextureClip;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -28,34 +28,37 @@ import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SpriteFactory {
+    private static final Map<String, TextureClip> textureCacheFiles = new HashMap<>();
 
-    private static final Map<String, Texture> textureCacheFiles = new HashMap<>();
+    public static Sprite createSprite(String assetPath) {
+        return new SimpleSprite(assetPath);
+    }
 
-    public static Sprite createSprite(String asset, int textureX, int textureY, int textureWidth, int textureHeight) {
-        return new Sprite(
+    public static Sprite createSprite(String assetPath, int textureX, int textureY, int textureWidth, int textureHeight) {
+        return new SimpleSprite(
             textureCacheFiles.computeIfAbsent(
                 "%s_%d".formatted(
-                    asset,
+                    assetPath,
                     Objects.hash(
-                        asset,
+                        assetPath,
                         textureX,
                         textureY,
                         textureWidth,
                         textureHeight
                     )),
-                key -> D2D2.textureManager()
-                    .loadTextureAtlas(asset)
+                key -> D2D2.getTextureManager()
+                    .loadTextureAtlas(assetPath)
                     .createTexture(textureX, textureY, textureWidth, textureHeight)
             )
         );
     }
 
-    public static Sprite createSprite(String textureKey) {
-        return new Sprite(D2D2.textureManager().getTexture(textureKey));
+    public static Sprite createSpriteByTextureKey(String textureKey) {
+        return new SimpleSprite(D2D2.getTextureManager().getTexture(textureKey));
     }
 
-    public static Sprite createSprite() {
-        return new Sprite();
+    public static Sprite createEmptySprite() {
+        return new SimpleSprite();
     }
 
     public static void clearCache() {

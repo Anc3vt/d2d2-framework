@@ -35,7 +35,7 @@ public class TextureCell {
 	private float alpha = 1.0f;
 	private float rotation = 0.0f;
 
-	private Texture texture;
+	private TextureClip textureClip;
 
 	public Color getColor() {
 		return color;
@@ -125,12 +125,12 @@ public class TextureCell {
 		this.rotation = rotation;
 	}
 
-	public Texture getTexture() {
-		return texture;
+	public TextureClip getTexture() {
+		return textureClip;
 	}
 
-	public void setTexture(Texture texture) {
-		this.texture = texture;
+	public void setTexture(TextureClip textureClip) {
+		this.textureClip = textureClip;
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class TextureCell {
 				", scaleY=" + scaleY +
 				", alpha=" + alpha +
 				", rotation=" + rotation +
-				", texture=" + texture +
+				", texture=" + textureClip +
 				'}';
 	}
 }

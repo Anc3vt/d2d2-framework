@@ -64,7 +64,7 @@ public class TextureUrlLoader extends EventDispatcher {
     }
 
     private byte[] createTexture(byte[] bytes) {
-        this.lastLoadedTextureAtlas = D2D2.textureManager().loadTextureAtlas(new ByteArrayInputStream(bytes));
+        this.lastLoadedTextureAtlas = D2D2.getTextureManager().loadTextureAtlas(new ByteArrayInputStream(bytes));
         dispatchEvent(TextureUrlLoaderEvent.builder()
                 .type(TextureUrlLoaderEvent.TEXTURE_LOAD_COMPLETE)
                 .bytes(bytes)

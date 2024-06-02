@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.engine.norender;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.IRenderer;
+import com.ancevt.d2d2.display.Renderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
@@ -36,7 +36,7 @@ public class NoRenderEngine implements Engine {
     private final int initialHeight;
     private Stage stage;
     private String title;
-    private IRenderer renderer;
+    private Renderer renderer;
     private boolean alive;
     private int frameRate = 60;
     private int frameCounter;
@@ -51,7 +51,7 @@ public class NoRenderEngine implements Engine {
     public NoRenderEngine(int initialWidth, int initialHeight, String title) {
         this.initialWidth = initialWidth;
         this.initialHeight = initialHeight;
-        D2D2.textureManager().setTextureEngine(new NoRenderTextureEngine());
+        D2D2.getTextureManager().setTextureEngine(new NoRenderTextureEngine());
 
     }
 
@@ -114,7 +114,7 @@ public class NoRenderEngine implements Engine {
     }
 
     @Override
-    public IRenderer getRenderer() {
+    public Renderer getRenderer() {
         return renderer;
     }
 
@@ -164,7 +164,7 @@ public class NoRenderEngine implements Engine {
 
     @Override
     public BitmapFont generateBitmapFont(TrueTypeBitmapFontBuilder trueTypeBitmapFontBuilder) {
-        return D2D2.bitmapFontManager().getDefaultBitmapFont();
+        return D2D2.getBitmapFontManager().getDefaultBitmapFont();
     }
 
 

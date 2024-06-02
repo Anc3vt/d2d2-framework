@@ -17,48 +17,15 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.display.texture.Texture;
+public interface Repeatable {
+	void setRepeat(float repeatX, float repeatY);
 
-public interface IFrameSeq extends IDisplayObject {
-    int DEFAULT_SLOWING = 5;
+	void setRepeatX(float value);
 
-    void processFrame();
+	void setRepeatY(float value);
 
-    void setLoop(boolean loop);
+	float getRepeatX();
 
-    boolean isLoop();
+	float getRepeatY();
 
-    void setSlowing(int slowing);
-
-    int getSlowing();
-
-    void nextFrame();
-
-    void prevFrame();
-
-    void setFrame(int frameIndex);
-
-    int getCurrentFrameIndex();
-
-    int getFrameCount();
-
-    void setBackward(boolean value);
-
-    boolean isBackward();
-
-    void play();
-
-    void stop();
-
-    boolean isPlaying();
-
-    void setFrameTextures(Texture[] textures);
-
-    Texture[] getFrameTextures();
-
-    void setFrameSprites(ISprite[] sprites, boolean cloneEach);
-
-    void setFrameSprites(ISprite[] sprites);
-
-    ISprite[] getFrameSprites();
 }

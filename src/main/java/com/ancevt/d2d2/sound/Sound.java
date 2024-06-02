@@ -47,7 +47,7 @@ public interface Sound {
     static Sound lookupSoundAsset(String path) {
         Sound sound = SoundCache.medias.get(':' + path);
         if (sound == null) {
-            sound = new SampledSound(Assets.getAssetAsStream(path));
+            sound = new SampledSound(Assets.getAsset(path));
             SoundCache.medias.put(':' + path, sound);
         }
         return sound;

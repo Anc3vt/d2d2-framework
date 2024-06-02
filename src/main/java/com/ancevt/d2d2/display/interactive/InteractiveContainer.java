@@ -17,12 +17,12 @@
  */
 package com.ancevt.d2d2.display.interactive;
 
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.SimpleContainer;
+import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.exception.InteractiveException;
 
-public class InteractiveContainer extends Container implements Interactive {
+public class InteractiveContainer extends SimpleContainer implements Interactive {
 
     private static final float DEFAULT_WIDTH = 1f;
     private static final float DEFAULT_HEIGHT = 1f;
@@ -46,9 +46,9 @@ public class InteractiveContainer extends Container implements Interactive {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    public InteractiveContainer(IDisplayObject wrappingDisplayObject) {
+    public InteractiveContainer(DisplayObject wrappingDisplayObject) {
         this();
-        add(wrappingDisplayObject);
+        addChild(wrappingDisplayObject);
         setSize(wrappingDisplayObject.getWidth(), wrappingDisplayObject.getHeight());
     }
 

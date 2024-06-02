@@ -15,13 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.common;
+package com.ancevt.d2d2.display.shape;
 
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.shape.RectangleShape;
+import com.ancevt.d2d2.display.SimpleContainer;
 
-public class BorderedRect extends Container {
+public class BorderedRectangle extends SimpleContainer {
 	private static final Color DEFAULT_FILL_COLOR = Color.WHITE;
 	private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
 
@@ -36,27 +35,27 @@ public class BorderedRect extends Container {
 	
 	private float borderWidth = 1;
 	
-	public BorderedRect() {
+	public BorderedRectangle() {
 		this(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_FILL_COLOR, DEFAULT_BORDER_COLOR);
 	}
 
-	public BorderedRect(float width, float height) {
+	public BorderedRectangle(float width, float height) {
 		this(width, height, DEFAULT_FILL_COLOR, DEFAULT_BORDER_COLOR);
 	}
 	
-	public BorderedRect(Color fillColor) {
+	public BorderedRectangle(Color fillColor) {
 		this(DEFAULT_WIDTH, DEFAULT_HEIGHT, fillColor, DEFAULT_BORDER_COLOR);
 	}
 
-	public BorderedRect(Color fillColor, Color borderColor) {
+	public BorderedRectangle(Color fillColor, Color borderColor) {
 		this(DEFAULT_WIDTH, DEFAULT_HEIGHT, fillColor, borderColor);
 	}
 	
-	public BorderedRect(float width, float height, Color fillColor) {
+	public BorderedRectangle(float width, float height, Color fillColor) {
 		this(width, height, fillColor, DEFAULT_BORDER_COLOR);
 	}
 
-	public BorderedRect(float width, float height, Color fillColor, Color borderColor) {
+	public BorderedRectangle(float width, float height, Color fillColor, Color borderColor) {
 		borderLeft   = new RectangleShape();
 		borderRight  = new RectangleShape();
 		borderTop    = new RectangleShape();
@@ -69,11 +68,11 @@ public class BorderedRect extends Container {
 		borderBottom.setSize(1, 1);
 		fillRect.setSize(1, 1);
 		
-		add(fillRect);
-		add(borderLeft);
-		add(borderRight);
-		add(borderTop);
-		add(borderBottom);
+		addChild(fillRect);
+		addChild(borderLeft);
+		addChild(borderRight);
+		addChild(borderTop);
+		addChild(borderBottom);
 		
 
 		setBorderColor(borderColor);
@@ -117,7 +116,7 @@ public class BorderedRect extends Container {
 				fillRect.removeFromParent();
 		} else {
 			if(fillRect.getParent() == null)
-				add(fillRect, 0);
+				addChild(fillRect, 0);
 		}
 		
 		fillRect.setColor(color);
@@ -137,10 +136,10 @@ public class BorderedRect extends Container {
 			}
 		} else {
 			if(borderLeft.getParent() == null) {
-				add(borderLeft);
-				add(borderRight);
-				add(borderBottom);
-				add(borderTop);
+				addChild(borderLeft);
+				addChild(borderRight);
+				addChild(borderBottom);
+				addChild(borderTop);
 			}
 		}
 		
