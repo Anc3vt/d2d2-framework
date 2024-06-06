@@ -25,7 +25,6 @@ import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.event.LifecycleEvent;
-import com.ancevt.d2d2.exception.NotImplementedException;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +36,7 @@ public class NoRenderEngine implements Engine {
     private Stage stage;
     private String title;
     private Renderer renderer;
-    private boolean alive;
+    private boolean running;
     private int frameRate = 60;
     private int frameCounter;
     private int fps = frameRate;
@@ -57,7 +56,7 @@ public class NoRenderEngine implements Engine {
 
     @Override
     public DisplayManager getDisplayManager() {
-        throw new NotImplementedException("No monitors in no-render engine");
+        return new NoRenderDisplayManagerStub();
     }
 
     @Override
@@ -89,12 +88,12 @@ public class NoRenderEngine implements Engine {
     public void create() {
         stage = new Stage();
         stage.setSize(initialWidth, initialHeight);
-        renderer = new RendererStub(stage);
+        renderer = new NoRenderRendererStub(stage);
     }
 
     @Override
     public void start() {
-        alive = true;
+        running = true;
         stage.dispatchEvent(
             LifecycleEvent.builder()
                 .type(LifecycleEvent.START_MAIN_LOOP)
@@ -120,7 +119,7 @@ public class NoRenderEngine implements Engine {
 
     @Override
     public void stop() {
-        alive = false;
+        running = false;
     }
 
     @Override
@@ -134,7 +133,7 @@ public class NoRenderEngine implements Engine {
     }
 
     private void startNoRenderLoop() {
-        while (alive) {
+        while (running) {
             try {
                 renderer.renderFrame();
                 if (fps > frameRate) {

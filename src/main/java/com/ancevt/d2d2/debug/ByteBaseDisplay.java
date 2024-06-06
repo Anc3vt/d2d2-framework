@@ -414,7 +414,7 @@ public class ByteBaseDisplay extends InteractiveContainer {
     public static ByteBaseDisplay show(byte[] bytes) {
         ByteBaseDisplay result = new ByteBaseDisplay();
         result.setBytes(bytes);
-        D2D2.stage().addChild(result, 100 + new Random().nextInt(100), 100 + new Random().nextInt(100));
+        D2D2.getStage().addChild(result, 100 + new Random().nextInt(100), 100 + new Random().nextInt(100));
         return result;
     }
 

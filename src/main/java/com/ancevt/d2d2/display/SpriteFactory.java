@@ -48,7 +48,7 @@ public class SpriteFactory {
                     )),
                 key -> D2D2.getTextureManager()
                     .loadTextureAtlas(assetPath)
-                    .createTexture(textureX, textureY, textureWidth, textureHeight)
+                    .createTextureClip(textureX, textureY, textureWidth, textureHeight)
             )
         );
     }

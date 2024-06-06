@@ -144,7 +144,7 @@ public final class D2D2 {
         D2D2.cursor = cursor;
     }
 
-    public static Stage stage() {
+    public static Stage getStage() {
         return engine.getStage();
     }
 
@@ -156,7 +156,7 @@ public final class D2D2 {
         engine.stop();
     }
 
-    public static Engine engine() {
+    public static Engine getEngine() {
         return engine;
     }
 

@@ -17,9 +17,9 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.event.IEventDispatcher;
+import com.ancevt.d2d2.event.EventDispatcher;
 
-public interface DisplayObject extends IEventDispatcher {
+public interface DisplayObject extends EventDispatcher {
 
     default void centerX() {
         if (hasParent()) {

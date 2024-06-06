@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.display.texture;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.EventDispatcher;
+import com.ancevt.d2d2.event.BaseEventDispatcher;
 import com.ancevt.d2d2.event.TextureUrlLoaderEvent;
 
 import java.io.ByteArrayInputStream;
@@ -27,7 +27,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class TextureUrlLoader extends EventDispatcher {
+public class TextureUrlLoader extends BaseEventDispatcher {
 
     private String url;
     private TextureAtlas lastLoadedTextureAtlas;

@@ -38,14 +38,14 @@ public class SimpleSprite extends BaseDisplayObject implements Sprite {
     }
 
     public SimpleSprite(String assetPathToImage) {
-        this(D2D2.getTextureManager().loadTextureAtlas(assetPathToImage).createTexture());
+        this(D2D2.getTextureManager().loadTextureAtlas(assetPathToImage).createTextureClip());
     }
 
     public SimpleSprite(String assetPathToImage, int textureX, int textureY, int textureWidth, int textureHeight) {
         this(
             D2D2.getTextureManager()
                 .loadTextureAtlas(assetPathToImage)
-                .createTexture(
+                .createTextureClip(
                     textureX,
                     textureY,
                     textureWidth,

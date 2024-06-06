@@ -40,7 +40,7 @@ public class FpsMeter extends BitmapText {
     }
 
     public int getFps() {
-        return D2D2.engine().getActualFps();
+        return D2D2.getEngine().getActualFps();
     }
 
     public void eachFrame(Event event) {

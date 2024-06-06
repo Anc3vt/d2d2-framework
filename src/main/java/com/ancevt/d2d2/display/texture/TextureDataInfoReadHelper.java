@@ -61,7 +61,7 @@ class TextureDataInfoReadHelper {
         int w = Integer.parseInt(splitted[3]);
         int h = Integer.parseInt(splitted[4]);
 
-        TextureClip textureClip = currentTextureAtlas.createTexture(x, y, w, h);
+        TextureClip textureClip = currentTextureAtlas.createTextureClip(x, y, w, h);
         D2D2.getTextureManager().addTexture(textureKey, textureClip);
     }
 
