@@ -41,36 +41,36 @@ public class TextureAtlas implements Disposable {
         this.height = height;
     }
 
-    public TextureClip createTexture() {
-        return createTexture(0, 0, getWidth(), getHeight());
+    public TextureClip createTextureClip() {
+        return createTextureClip(0, 0, getWidth(), getHeight());
     }
 
-    public TextureClip createTexture(int x, int y, int width, int height) {
+    public TextureClip createTextureClip(int x, int y, int width, int height) {
         return new TextureClip(this, x, y, width, height);
     }
 
     /**
      * 16,16,48,48
      *
-     * @param textureCoords
+     * @param textureClipCoords
      * @return
      */
-    public TextureClip createTexture(String textureCoords) {
-        var a = Args.of(textureCoords, ',');
+    public TextureClip createTextureClip(String textureClipCoords) {
+        var a = Args.of(textureClipCoords, ',');
         return new TextureClip(this, a.next(int.class), a.next(int.class), a.next(int.class), a.next(int.class));
     }
 
-    public static String convertCoords(String textureCoords) {
-        if (textureCoords.contains("h")) {
-            StringTokenizer stringTokenizer = new StringTokenizer(textureCoords, "h");
+    public static String convertCoords(String textureClipCoords) {
+        if (textureClipCoords.contains("h")) {
+            StringTokenizer stringTokenizer = new StringTokenizer(textureClipCoords, "h");
             String firstToken = stringTokenizer.nextToken().trim();
             int count = parseInt(stringTokenizer.nextToken().trim());
-            int[] textureCoordsInts = get4Values(firstToken);
+            int[] textureClipCoordsInts = get4Values(firstToken);
             StringBuilder stringBuilder = new StringBuilder();
-            int x = textureCoordsInts[0];
-            int y = textureCoordsInts[1];
-            int width = textureCoordsInts[2];
-            int height = textureCoordsInts[3];
+            int x = textureClipCoordsInts[0];
+            int y = textureClipCoordsInts[1];
+            int width = textureClipCoordsInts[2];
+            int height = textureClipCoordsInts[3];
 
             int currentX = 0;
             for (int i = 0; i < count; i++) {
@@ -86,17 +86,17 @@ public class TextureAtlas implements Disposable {
                 currentX += width;
             }
 
-            textureCoords = stringBuilder.toString();
-        } else if (textureCoords.contains("v")) {
-            StringTokenizer stringTokenizer = new StringTokenizer(textureCoords, "v");
+            textureClipCoords = stringBuilder.toString();
+        } else if (textureClipCoords.contains("v")) {
+            StringTokenizer stringTokenizer = new StringTokenizer(textureClipCoords, "v");
             String firstToken = stringTokenizer.nextToken().trim();
             int count = parseInt(stringTokenizer.nextToken().trim());
-            int[] textureCoordsInts = get4Values(firstToken);
+            int[] textureClipCoordsInts = get4Values(firstToken);
             StringBuilder stringBuilder = new StringBuilder();
-            int x = textureCoordsInts[0];
-            int y = textureCoordsInts[1];
-            int width = textureCoordsInts[2];
-            int height = textureCoordsInts[3];
+            int x = textureClipCoordsInts[0];
+            int y = textureClipCoordsInts[1];
+            int width = textureClipCoordsInts[2];
+            int height = textureClipCoordsInts[3];
 
             int currentY = 0;
             for (int i = 0; i < count; i++) {
@@ -112,10 +112,10 @@ public class TextureAtlas implements Disposable {
                 currentY += height;
             }
 
-            textureCoords = stringBuilder.toString();
+            textureClipCoords = stringBuilder.toString();
         }
 
-        return textureCoords;
+        return textureClipCoords;
     }
 
     /**
@@ -123,21 +123,21 @@ public class TextureAtlas implements Disposable {
      * or
      * 16,16,48,48h3
      */
-    public TextureClip[] createTextures(String textureCoords) {
-        textureCoords = convertCoords(textureCoords);
-        if (textureCoords.endsWith(";")) {
-            textureCoords = textureCoords.substring(0, textureCoords.length() - 2);
+    public TextureClip[] createTextureClips(String textureClipCoords) {
+        textureClipCoords = convertCoords(textureClipCoords);
+        if (textureClipCoords.endsWith(";")) {
+            textureClipCoords = textureClipCoords.substring(0, textureClipCoords.length() - 2);
         }
-        StringTokenizer stringTokenizer = new StringTokenizer(textureCoords, ";");
+        StringTokenizer stringTokenizer = new StringTokenizer(textureClipCoords, ";");
         TextureClip[] textureClips = new TextureClip[stringTokenizer.countTokens()];
         for (int i = 0; i < textureClips.length; i++) {
-            textureClips[i] = createTexture(stringTokenizer.nextToken().trim());
+            textureClips[i] = createTextureClip(stringTokenizer.nextToken().trim());
         }
 
         return textureClips;
     }
 
-    public TextureClip[] createTexturesHor(int x, int y, int w, int h, int count) {
+    public TextureClip[] createTexturesClipsHor(int x, int y, int w, int h, int count) {
         TextureClip[] result = new TextureClip[count];
 
         for (int i = 0; i < result.length; i++) {
@@ -147,7 +147,7 @@ public class TextureAtlas implements Disposable {
         return result;
     }
 
-    public TextureClip[] createTexturesVert(int x, int y, int w, int h, int count) {
+    public TextureClip[] createTextureClipsVert(int x, int y, int w, int h, int count) {
         TextureClip[] result = new TextureClip[count];
 
         for (int i = 0; i < result.length; i++) {
@@ -190,7 +190,7 @@ public class TextureAtlas implements Disposable {
 
     @Override
     public String toString() {
-        return "TextureAtlas{" +
+        return this.getClass().getSimpleName() + "{" +
             "id=" + id +
             ", width=" + width +
             ", height=" + height +

@@ -19,18 +19,18 @@ package com.ancevt.d2d2.engine.norender;
 
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.DisplayObject;
+import com.ancevt.d2d2.display.Playable;
 import com.ancevt.d2d2.display.Renderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
-import com.ancevt.d2d2.display.Playable;
 
-public class RendererStub implements Renderer {
+public class NoRenderRendererStub implements Renderer {
 
     private final Stage stage;
     private int zOrderCounter;
 
-    public RendererStub(Stage stage) {
+    public NoRenderRendererStub(Stage stage) {
         this.stage = stage;
     }
 
@@ -53,11 +53,16 @@ public class RendererStub implements Renderer {
     private void renderDisplayObject(DisplayObject displayObject) {
         if (!displayObject.isVisible()) return;
 
+        displayObject.onEnterFrame();
+        displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.ENTER_FRAME, displayObject));
+
+        displayObject.onLoopUpdate();
+        displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.LOOP_UPDATE, displayObject));
+
         zOrderCounter++;
         displayObject.setAbsoluteZOrderIndex(zOrderCounter);
 
-        if (displayObject instanceof Container) {
-            Container container = (Container) displayObject;
+        if (displayObject instanceof Container container) {
             for (int i = 0; i < container.getNumChildren(); i++) {
                 renderDisplayObject(container.getChild(i));
             }
@@ -69,5 +74,19 @@ public class RendererStub implements Renderer {
 
         displayObject.onExitFrame();
         displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EXIT_FRAME, displayObject));
+    }
+
+    private void dispatchLoopUpdate(DisplayObject o) {
+        if (!o.isVisible()) return;
+
+        if (o instanceof Container c) {
+            for (int i = 0; i < c.getNumChildren(); i++) {
+                DisplayObject child = c.getChild(i);
+                dispatchLoopUpdate(child);
+            }
+        }
+
+        o.dispatchEvent(EventPool.simpleEventSingleton(Event.LOOP_UPDATE, o));
+        o.onLoopUpdate();
     }
 }

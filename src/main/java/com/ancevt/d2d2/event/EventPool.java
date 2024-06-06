@@ -31,7 +31,7 @@ public class EventPool {
         return createEvent(type, null);
     }
 
-    public static Event simpleEventSingleton(String type, IEventDispatcher source) {
+    public static Event simpleEventSingleton(String type, EventDispatcher source) {
         SIMPLE_EVENT_SINGLETON.type = type;
         SIMPLE_EVENT_SINGLETON.source = source;
         return SIMPLE_EVENT_SINGLETON;

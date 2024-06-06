@@ -62,7 +62,7 @@ public class DebugBorder extends SimpleContainer implements Resizable, Colored, 
     }
 
     private void displayObject_addToStage(Event event) {
-        D2D2.stage().addChild(this);
+        D2D2.getStage().addChild(this);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class DebugBorder extends SimpleContainer implements Resizable, Colored, 
     public static DebugBorder create(DisplayObject displayObject) {
         DebugBorder debugBorder = new DebugBorder(displayObject);
         if (displayObject.isOnScreen()) {
-            D2D2.stage().addChild(debugBorder);
+            D2D2.getStage().addChild(debugBorder);
         }
         return debugBorder;
     }

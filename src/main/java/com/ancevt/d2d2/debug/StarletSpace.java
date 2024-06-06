@@ -26,7 +26,7 @@ import com.ancevt.d2d2.event.InteractiveEvent;
 import lombok.Getter;
 import lombok.Setter;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 
 public class StarletSpace extends SimpleContainer {
 
@@ -37,13 +37,13 @@ public class StarletSpace extends SimpleContainer {
 
     public StarletSpace(int count) {
         for (int i = 0; i < count; i++) {
-            createStarlet().setX((float) (Math.random() * stage().getWidth()));
+            createStarlet().setX((float) (Math.random() * getStage().getWidth()));
         }
     }
 
     private Starlet createStarlet() {
         Starlet starlet = new Starlet(this);
-        starlet.setXY(stage().getWidth() + 16, (float) (Math.random() * stage().getHeight()));
+        starlet.setXY(getStage().getWidth() + 16, (float) (Math.random() * getStage().getHeight()));
         addChild(starlet);
         return starlet;
     }
@@ -53,7 +53,7 @@ public class StarletSpace extends SimpleContainer {
     }
 
     public static StarletSpace haveFun(boolean logo) {
-        Stage stage = stage();
+        Stage stage = getStage();
         stage.setBackgroundColor(Color.of(0x000510));
         SimpleSprite d2d2Title = new SimpleSprite("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
         d2d2Title.setColor(Color.LIGHT_GRAY);
@@ -131,21 +131,21 @@ public class StarletSpace extends SimpleContainer {
 
 
             if (getX() < -16.0f) {
-                setX(stage().getWidth() + 16);
-                setY((float) (stage().getHeight() * Math.random()));
+                setX(getStage().getWidth() + 16);
+                setY((float) (getStage().getHeight() * Math.random()));
             }
 
-            if (getX() > stage().getWidth() + 16.0f) {
+            if (getX() > getStage().getWidth() + 16.0f) {
                 setX(-16.0f);
-                setY((float) (stage().getHeight() * Math.random()));
+                setY((float) (getStage().getHeight() * Math.random()));
             }
             if (getY() < -16.0f) {
-                setY((float) (stage().getWidth() * Math.random()));
-                setY(stage().getHeight() + 16);
+                setY((float) (getStage().getWidth() * Math.random()));
+                setY(getStage().getHeight() + 16);
             }
 
-            if (getY() > stage().getHeight() + 16.0f) {
-                setY((float) (stage().getWidth() * Math.random()));
+            if (getY() > getStage().getHeight() + 16.0f) {
+                setY((float) (getStage().getWidth() * Math.random()));
                 setY(-16.0f);
             }
         }

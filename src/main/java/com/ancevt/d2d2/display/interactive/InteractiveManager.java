@@ -51,7 +51,7 @@ public class InteractiveManager {
         interactiveList = new CopyOnWriteArrayList<>();
         focusedInteractiveIndex = -1;
 
-        D2D2.stage().addEventListener(InteractiveEvent.KEY_DOWN, event -> {
+        D2D2.getStage().addEventListener(InteractiveEvent.KEY_DOWN, event -> {
             var e = (InteractiveEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
@@ -66,7 +66,7 @@ public class InteractiveManager {
             }
         });
 
-        D2D2.stage().addEventListener(InteractiveEvent.KEY_REPEAT, event -> {
+        D2D2.getStage().addEventListener(InteractiveEvent.KEY_REPEAT, event -> {
             var e = (InteractiveEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
@@ -81,7 +81,7 @@ public class InteractiveManager {
             }
         });
 
-        D2D2.stage().addEventListener(InteractiveEvent.KEY_UP, event -> {
+        D2D2.getStage().addEventListener(InteractiveEvent.KEY_UP, event -> {
             var e = (InteractiveEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
@@ -96,7 +96,7 @@ public class InteractiveManager {
             }
         });
 
-        D2D2.stage().addEventListener(InteractiveEvent.WHEEL, event -> {
+        D2D2.getStage().addEventListener(InteractiveEvent.WHEEL, event -> {
             var e = (InteractiveEvent) event;
             Interactive interactive = hoveredInteractive != null && hoveredInteractive.isOnScreen() && hoveredInteractive.isHovering()
                 ? hoveredInteractive : getFocused();
@@ -112,7 +112,7 @@ public class InteractiveManager {
             }
         });
 
-        D2D2.stage().addEventListener(InteractiveEvent.KEY_TYPE, event -> {
+        D2D2.getStage().addEventListener(InteractiveEvent.KEY_TYPE, event -> {
             var e = (InteractiveEvent) event;
             Interactive focused = getFocused();
             if (focused != null) {
@@ -419,7 +419,7 @@ public class InteractiveManager {
         this.tabbingEnabled = tabbingEnabled;
 
         if (tabbingEnabled) {
-            D2D2.stage().addEventListener(this, InteractiveEvent.KEY_DOWN, event -> {
+            D2D2.getStage().addEventListener(this, InteractiveEvent.KEY_DOWN, event -> {
                 var e = (InteractiveEvent) event;
                 switch (e.getKeyCode()) {
                     case KeyCode.TAB -> {
@@ -430,7 +430,7 @@ public class InteractiveManager {
                             focusNext();
                             keyHoldTabDirection = 1;
                         }
-                        D2D2.stage().addEventListener(this, InteractiveEvent.EXIT_FRAME, event1 -> {
+                        D2D2.getStage().addEventListener(this, InteractiveEvent.EXIT_FRAME, event1 -> {
                             keyHoldTime--;
                             if (keyHoldTime < 0) {
                                 keyHoldTime = 3;
@@ -455,14 +455,14 @@ public class InteractiveManager {
                     }
                 }
             });
-            D2D2.stage().addEventListener(this, InteractiveEvent.KEY_UP, event -> {
+            D2D2.getStage().addEventListener(this, InteractiveEvent.KEY_UP, event -> {
                 var e = (InteractiveEvent) event;
 
                 switch (e.getKeyCode()) {
                     case KeyCode.TAB -> {
                         keyHoldTime = KEY_HOLD_TIME;
                         keyHoldTabDirection = 0;
-                        D2D2.stage().removeEventListener(this, Event.EXIT_FRAME);
+                        D2D2.getStage().removeEventListener(this, Event.EXIT_FRAME);
                     }
                     case KeyCode.ENTER -> {
                         if (focusedInteractive != null) {
@@ -475,9 +475,9 @@ public class InteractiveManager {
                 }
             });
         } else {
-            D2D2.stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
-            D2D2.stage().removeEventListener(this, InteractiveEvent.KEY_UP);
-            D2D2.stage().removeEventListener(this, Event.EXIT_FRAME);
+            D2D2.getStage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
+            D2D2.getStage().removeEventListener(this, InteractiveEvent.KEY_UP);
+            D2D2.getStage().removeEventListener(this, Event.EXIT_FRAME);
         }
     }
 

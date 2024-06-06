@@ -17,9 +17,9 @@
  */
 package com.ancevt.d2d2.display;
 
-import com.ancevt.d2d2.event.EventDispatcher;
+import com.ancevt.d2d2.event.BaseEventDispatcher;
 
-public abstract class BaseDisplayObject extends EventDispatcher implements DisplayObject {
+public abstract class BaseDisplayObject extends BaseEventDispatcher implements DisplayObject {
 
     private static int displayObjectIdCounter;
     private final int displayObjectId;

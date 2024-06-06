@@ -197,7 +197,7 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
     }
 
     public SimpleSprite toSprite() {
-        SimpleSprite result = new SimpleSprite(D2D2.getTextureManager().bitmapTextToTextureAtlas(this).createTexture());
+        SimpleSprite result = new SimpleSprite(D2D2.getTextureManager().bitmapTextToTextureAtlas(this).createTextureClip());
         result.setXY(getX(), getY());
         result.setScale(getScaleX(), getScaleY());
         result.setRotation(getRotation());
