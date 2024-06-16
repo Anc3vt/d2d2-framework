@@ -54,7 +54,7 @@ public class SpriteFactory {
     }
 
     public static Sprite createSpriteByTextureKey(String textureKey) {
-        return new SimpleSprite(D2D2.getTextureManager().getTexture(textureKey));
+        return new SimpleSprite(D2D2.getTextureManager().getTextureClip(textureKey));
     }
 
     public static Sprite createEmptySprite() {

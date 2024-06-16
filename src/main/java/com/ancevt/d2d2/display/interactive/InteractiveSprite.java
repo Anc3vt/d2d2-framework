@@ -52,7 +52,7 @@ public class InteractiveSprite extends SimpleSprite implements Interactive {
 
     public InteractiveSprite(String textureKey) {
         super(textureKey);
-        interactiveArea = new InteractiveArea(0, 0, getTexture().getWidth(), getTexture().getHeight());
+        interactiveArea = new InteractiveArea(0, 0, getTextureClip().getWidth(), getTextureClip().getHeight());
         enabled = true;
         pushEventUp = true;
         InteractiveManager.getInstance().registerInteractive(this);
@@ -92,20 +92,11 @@ public class InteractiveSprite extends SimpleSprite implements Interactive {
     }
 
     @Override
-    public void setTexture(TextureClip value) {
-        super.setTexture(value);
+    public void setTextureClip(TextureClip value) {
+        super.setTextureClip(value);
         if (interactiveArea != null) {
-            interactiveArea.setWidth(getTexture().getWidth());
-            interactiveArea.setHeight(getTexture().getHeight());
-        }
-    }
-
-    @Override
-    public void setTexture(String textureKey) {
-        super.setTexture(textureKey);
-        if (interactiveArea != null) {
-            interactiveArea.setWidth(getTexture().getWidth());
-            interactiveArea.setHeight(getTexture().getHeight());
+            interactiveArea.setWidth(getTextureClip().getWidth());
+            interactiveArea.setHeight(getTextureClip().getHeight());
         }
     }
 
@@ -139,13 +130,13 @@ public class InteractiveSprite extends SimpleSprite implements Interactive {
     @Override
     public void setScaleX(float value) {
         super.setScaleX(value);
-        interactiveArea.setWidth(value / getTexture().getWidth());
+        interactiveArea.setWidth(value / getTextureClip().getWidth());
     }
 
     @Override
     public void setScaleY(float value) {
         super.setScaleY(value);
-        interactiveArea.setHeight(value / getTexture().getHeight());
+        interactiveArea.setHeight(value / getTextureClip().getHeight());
     }
 
     @Override

@@ -34,7 +34,7 @@ public interface ITextureEngine {
 
     TextureAtlas createTextureAtlas(String assetPath);
 
-    TextureAtlas createTextureAtlas(int width, int height, TextureCell[] cells);
+    TextureAtlas createTextureAtlas(int width, int height, TextureClipCombinerCell[] cells);
 
     void unloadTextureAtlas(TextureAtlas textureAtlas);
 

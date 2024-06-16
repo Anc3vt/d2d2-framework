@@ -133,11 +133,11 @@ public class PlayableSprite extends SimpleSprite implements Playable {
     }
 
     private void drawCurrentFrame() {
-        super.setTexture(frameTextureClips[currentFrameIndex]);
+        super.setTextureClip(frameTextureClips[currentFrameIndex]);
     }
 
     @Override
-    public void setTexture(TextureClip value) {
+    public void setTextureClip(TextureClip value) {
         throw new IllegalStateException("Unable to set texture directly. Use setFrameTextures([]) instead");
     }
 }
