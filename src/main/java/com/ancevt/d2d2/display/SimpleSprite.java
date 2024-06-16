@@ -55,7 +55,7 @@ public class SimpleSprite extends BaseDisplayObject implements Sprite {
     }
 
     public SimpleSprite(TextureClip textureClip) {
-        setTexture(textureClip);
+        setTextureClip(textureClip);
 
         setColor(DEFAULT_COLOR);
         setRepeat(1, 1);
@@ -103,12 +103,12 @@ public class SimpleSprite extends BaseDisplayObject implements Sprite {
     }
 
     @Override
-    public TextureClip getTexture() {
+    public TextureClip getTextureClip() {
         return textureClip;
     }
 
     @Override
-    public void setTexture(TextureClip value) {
+    public void setTextureClip(TextureClip value) {
         this.textureClip = value;
         if (textureClip.getTextureAtlas().isDisposed()) {
             throw new IllegalStateException("Texture atlas " + textureClip.getTextureAtlas().getId() + " is disposed");
@@ -116,8 +116,8 @@ public class SimpleSprite extends BaseDisplayObject implements Sprite {
     }
 
     @Override
-    public void setTexture(String textureKey) {
-        setTexture(D2D2.getTextureManager().getTexture(textureKey));
+    public void setTextureClip(String textureClipKey) {
+        setTextureClip(D2D2.getTextureManager().getTextureClip(textureClipKey));
     }
 
     @Override
@@ -137,7 +137,7 @@ public class SimpleSprite extends BaseDisplayObject implements Sprite {
 
     @Override
     public SimpleSprite cloneSprite() {
-        SimpleSprite result = new SimpleSprite(getTexture());
+        SimpleSprite result = new SimpleSprite(getTextureClip());
         result.setXY(getX(), getY());
         result.setRepeat(getRepeatX(), getRepeatY());
         result.setScale(getScaleX(), getScaleY());
@@ -151,16 +151,6 @@ public class SimpleSprite extends BaseDisplayObject implements Sprite {
     @Override
     public void setTextureBleedingFix(double v) {
         this.textureBleedingFix = v;
-        if (getName().equals("_renderer_test_")) {
-
-            System.out.println(v);
-
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override

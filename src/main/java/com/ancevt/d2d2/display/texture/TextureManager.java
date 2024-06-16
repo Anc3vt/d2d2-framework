@@ -34,14 +34,14 @@ public class TextureManager {
 
     private final Map<String, TextureAtlas> textureAtlasCache;
 
-    private final Map<String, TextureClip> textures;
+    private final Map<String, TextureClip> textureClips;
 
     @Getter
     @Setter
     private ITextureEngine textureEngine;
 
     public TextureManager() {
-        textures = new HashMap<>();
+        textureClips = new HashMap<>();
         textureAtlases = new ArrayList<>();
         textureAtlasCache = new HashMap<>();
     }
@@ -96,13 +96,13 @@ public class TextureManager {
     }
 
     public void addTexture(String key, TextureClip textureClip) {
-        textures.put(key, textureClip);
+        textureClips.put(key, textureClip);
     }
 
-    public TextureClip getTexture(String key) {
-        TextureClip result = textures.get(key);
+    public TextureClip getTextureClip(String key) {
+        TextureClip result = textureClips.get(key);
         if (result == null) {
-            throw new IllegalArgumentException("No such texture key: " + key);
+            throw new IllegalArgumentException("No such texture clip key: " + key);
         }
         return result;
     }

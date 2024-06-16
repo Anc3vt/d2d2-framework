@@ -17,14 +17,15 @@
  */
 package com.ancevt.d2d2.display;
 
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.texture.TextureClip;
 
 public interface Sprite extends DisplayObject, Colored, Repeatable {
-    TextureClip getTexture();
+    TextureClip getTextureClip();
 
-    void setTexture(TextureClip value);
+    void setTextureClip(TextureClip value);
 
-    void setTexture(String textureKey);
+    void setTextureClip(String textureClipKey);
 
     void setTextureBleedingFix(double v);
 

@@ -152,28 +152,28 @@ public class Combined9Sprites extends InteractiveContainer implements Colored {
                             TextureClip bottomTextureClip,
                             TextureClip bottomRightTextureClip) {
 
-        topLeft.setTexture(topLeftTextureClip);
-        top.setTexture(topTextureClip);
-        topRight.setTexture(topRightTextureClip);
-        left.setTexture(leftTextureClip);
-        center.setTexture(centerTextureClip);
-        right.setTexture(rightTextureClip);
-        bottomLeft.setTexture(bottomLeftTextureClip);
-        bottom.setTexture(bottomTextureClip);
-        bottomRight.setTexture(bottomRightTextureClip);
+        topLeft.setTextureClip(topLeftTextureClip);
+        top.setTextureClip(topTextureClip);
+        topRight.setTextureClip(topRightTextureClip);
+        left.setTextureClip(leftTextureClip);
+        center.setTextureClip(centerTextureClip);
+        right.setTextureClip(rightTextureClip);
+        bottomLeft.setTextureClip(bottomLeftTextureClip);
+        bottom.setTextureClip(bottomTextureClip);
+        bottomRight.setTextureClip(bottomRightTextureClip);
         rebuild();
     }
 
     public void setTextures(String[] textureKeys) {
-        topLeft.setTexture(D2D2.getTextureManager().getTexture(textureKeys[0]));
-        top.setTexture(D2D2.getTextureManager().getTexture(textureKeys[1]));
-        topRight.setTexture(D2D2.getTextureManager().getTexture(textureKeys[2]));
-        left.setTexture(D2D2.getTextureManager().getTexture(textureKeys[3]));
-        center.setTexture(D2D2.getTextureManager().getTexture(textureKeys[4]));
-        right.setTexture(D2D2.getTextureManager().getTexture(textureKeys[5]));
-        bottomLeft.setTexture(D2D2.getTextureManager().getTexture(textureKeys[6]));
-        bottom.setTexture(D2D2.getTextureManager().getTexture(textureKeys[7]));
-        bottomRight.setTexture(D2D2.getTextureManager().getTexture(textureKeys[8]));
+        topLeft.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[0]));
+        top.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[1]));
+        topRight.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[2]));
+        left.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[3]));
+        center.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[4]));
+        right.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[5]));
+        bottomLeft.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[6]));
+        bottom.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[7]));
+        bottomRight.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[8]));
     }
 
     @Override
@@ -208,35 +208,35 @@ public class Combined9Sprites extends InteractiveContainer implements Colored {
             int textureLength;
             int targetRepeat;
 
-            textureLength = top.getTexture().getWidth();
+            textureLength = top.getTextureClip().getWidth();
             targetRepeat = (int) (getWidth() - topLeft.getWidth() - topRight.getWidth());
             targetRepeat /= textureLength;
             top.setScale(1.0f, 1.0f);
             top.setRepeatX(targetRepeat);
 
-            textureLength = bottom.getTexture().getWidth();
+            textureLength = bottom.getTextureClip().getWidth();
             targetRepeat = (int) (getWidth() - bottomLeft.getWidth() - bottomRight.getWidth());
             targetRepeat /= textureLength;
             bottom.setScale(1.0f, 1.0f);
             bottom.setRepeatX(targetRepeat);
 
-            textureLength = left.getTexture().getHeight();
+            textureLength = left.getTextureClip().getHeight();
             targetRepeat = (int) (getHeight() - topLeft.getHeight() - bottomLeft.getHeight());
             targetRepeat /= textureLength;
             left.setScale(1.0f, 1.0f);
             left.setRepeatY(targetRepeat);
 
-            textureLength = right.getTexture().getHeight();
+            textureLength = right.getTextureClip().getHeight();
             targetRepeat = (int) (getHeight() - topRight.getHeight() - bottomRight.getHeight());
             targetRepeat /= textureLength;
             right.setScale(1.0f, 1.0f);
             right.setRepeatY(targetRepeat);
 
-            int centerTextureWidth = center.getTexture().getWidth();
+            int centerTextureWidth = center.getTextureClip().getWidth();
             int centerRepeatX = (int) (getWidth() - left.getWidth() - right.getWidth());
             centerRepeatX /= centerTextureWidth;
 
-            int centerTextureHeight = center.getTexture().getHeight();
+            int centerTextureHeight = center.getTextureClip().getHeight();
             int centerREpeatY = (int) (getHeight() - top.getHeight() - bottom.getHeight());
             centerREpeatY /= centerTextureHeight;
 
@@ -247,35 +247,35 @@ public class Combined9Sprites extends InteractiveContainer implements Colored {
             float textureLength;
             float targetScale;
 
-            textureLength = top.getTexture().getWidth();
+            textureLength = top.getTextureClip().getWidth();
             targetScale = getWidth() - topLeft.getWidth() - topRight.getWidth();
             targetScale /= textureLength;
             top.setRepeat(1, 1);
             top.setScaleX(targetScale);
 
-            textureLength = bottom.getTexture().getWidth();
+            textureLength = bottom.getTextureClip().getWidth();
             targetScale = getWidth() - bottomLeft.getWidth() - bottomRight.getWidth();
             targetScale /= textureLength;
             bottom.setRepeat(1, 1);
             bottom.setScaleX(targetScale);
 
-            textureLength = left.getTexture().getHeight();
+            textureLength = left.getTextureClip().getHeight();
             targetScale = getHeight() - topLeft.getHeight() - bottomLeft.getHeight();
             targetScale /= textureLength;
             left.setRepeat(1, 1);
             left.setScaleY(targetScale);
 
-            textureLength = right.getTexture().getHeight();
+            textureLength = right.getTextureClip().getHeight();
             targetScale = getHeight() - topRight.getHeight() - bottomRight.getHeight();
             targetScale /= textureLength;
             right.setRepeat(1, 1);
             right.setScaleY(targetScale);
 
-            float centerTextureWidth = center.getTexture().getWidth();
+            float centerTextureWidth = center.getTextureClip().getWidth();
             float centerScaleX = getWidth() - left.getWidth() - right.getWidth();
             centerScaleX /= centerTextureWidth;
 
-            float centerTextureHeight = center.getTexture().getHeight();
+            float centerTextureHeight = center.getTextureClip().getHeight();
             float centerScaleY = getHeight() - top.getHeight() - bottom.getHeight();
             centerScaleY /= centerTextureHeight;
             center.setRepeat(1, 1);

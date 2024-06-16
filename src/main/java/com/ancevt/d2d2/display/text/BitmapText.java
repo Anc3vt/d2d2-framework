@@ -149,15 +149,15 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
     public void disposeOnRemoveFromStage() {
         addEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE, event -> {
             removeEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE);
-            if (sprite != null && sprite.getTexture() != null) {
-                D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
+            if (sprite != null && sprite.getTextureClip() != null) {
+                D2D2.getTextureManager().unloadTextureAtlas(sprite.getTextureClip().getTextureAtlas());
             }
         });
     }
 
     private void updateCachedSprite() {
-        if (sprite != null && sprite.getTexture() != null) {
-            D2D2.getTextureManager().unloadTextureAtlas(sprite.getTexture().getTextureAtlas());
+        if (sprite != null && sprite.getTextureClip() != null) {
+            D2D2.getTextureManager().unloadTextureAtlas(sprite.getTextureClip().getTextureAtlas());
         }
 
         if (isCacheAsSprite()) sprite = toSprite();

@@ -24,25 +24,25 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextureCombiner {
-    private final List<TextureCell> cells;
+public class TextureClipCombiner {
+    private final List<TextureClipCombinerCell> cells;
     @Getter
     private final int width;
     @Getter
     private final int height;
     private int cellIdCounter;
 
-    public TextureCombiner(final int width, final int height) {
+    public TextureClipCombiner(final int width, final int height) {
         this.width = width;
         this.height = height;
         cells = new ArrayList<>();
     }
 
-    public TextureCombiner(float width, float height) {
+    public TextureClipCombiner(float width, float height) {
         this((int) width, (int) height);
     }
 
-    public final int append(
+    public final TextureClipCombinerCell append(
         final TextureClip textureClip,
         final int x,
         final int y,
@@ -54,7 +54,7 @@ public class TextureCombiner {
         final float repeatX,
         final float repeatY) {
 
-        final TextureCell cell = new TextureCell();
+        final TextureClipCombinerCell cell = new TextureClipCombinerCell();
         cell.setX(x);
         cell.setY(y);
         cell.setColor(color);
@@ -68,11 +68,11 @@ public class TextureCombiner {
         cell.setId(cellIdCounter++);
         cells.add(cell);
 
-        return cell.getId();
+        return cell;
     }
 
-    public final int append(int x, int y, Color color, float alpha) {
-        final TextureCell cell = new TextureCell();
+    public final TextureClipCombinerCell append(int x, int y, Color color, float alpha) {
+        final TextureClipCombinerCell cell = new TextureClipCombinerCell();
         cell.setAlpha(alpha);
         cell.setPixel(true);
         cell.setColor(color);
@@ -81,27 +81,27 @@ public class TextureCombiner {
         cell.setId(cellIdCounter++);
         cells.add(cell);
 
-        return cell.getId();
+        return cell;
     }
 
-    public final int append(int x, int y, Color color) {
-        final TextureCell cell = new TextureCell();
+    public final TextureClipCombinerCell append(int x, int y, Color color) {
+        final TextureClipCombinerCell cell = new TextureClipCombinerCell();
         cell.setPixel(true);
         cell.setColor(color);
         cell.setX(x);
         cell.setY(y);
         cell.setId(cellIdCounter++);
         cells.add(cell);
-        return cell.getId();
+        return cell;
     }
 
-    public final int append(
+    public final TextureClipCombinerCell append(
         final TextureClip textureClip,
         final int x,
         final int y,
         final float scaleX,
         final float scaleY) {
-        final TextureCell cell = new TextureCell();
+        final TextureClipCombinerCell cell = new TextureClipCombinerCell();
         cell.setX(x);
         cell.setY(y);
         cell.setTexture(textureClip);
@@ -109,16 +109,16 @@ public class TextureCombiner {
         cell.setScaleY(scaleY);
         cell.setId(cellIdCounter++);
         cells.add(cell);
-        return cell.getId();
+        return cell;
     }
 
-    public final int append(
+    public final TextureClipCombinerCell append(
         final TextureClip textureClip,
         final int x,
         final int y,
         final int repeatX,
         final int repeatY) {
-        final TextureCell cell = new TextureCell();
+        final TextureClipCombinerCell cell = new TextureClipCombinerCell();
         cell.setX(x);
         cell.setY(y);
         cell.setTexture(textureClip);
@@ -127,27 +127,31 @@ public class TextureCombiner {
         cell.setId(cellIdCounter++);
         cells.add(cell);
 
-        return cell.getId();
+        return cell;
     }
 
-    public final int append(
+    public final TextureClipCombinerCell append(
         final TextureClip textureClip,
         final int x,
         final int y) {
-        final TextureCell cell = new TextureCell();
+        final TextureClipCombinerCell cell = new TextureClipCombinerCell();
         cell.setX(x);
         cell.setY(y);
         cell.setTexture(textureClip);
         cell.setId(cellIdCounter++);
         cells.add(cell);
 
-        return cell.getId();
+        return cell;
+    }
+
+    public final void remove(TextureClipCombinerCell cell) {
+        cells.remove(cell);
     }
 
     public final void remove(final int cellId) {
         final int count = cells.size();
         for (int i = 0; i < count; i++) {
-            final TextureCell cell = cells.get(i);
+            final TextureClipCombinerCell cell = cells.get(i);
             if (cell.getId() == cellId) {
                 cells.remove(cell);
                 return;
@@ -157,7 +161,7 @@ public class TextureCombiner {
 
     public final TextureAtlas createTextureAtlas() {
         return D2D2.getTextureManager().getTextureEngine().
-            createTextureAtlas(width, height, cells.toArray(new TextureCell[]{}));
+            createTextureAtlas(width, height, cells.toArray(new TextureClipCombinerCell[]{}));
     }
 
 }

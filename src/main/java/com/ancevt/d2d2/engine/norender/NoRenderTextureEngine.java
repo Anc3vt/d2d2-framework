@@ -22,7 +22,7 @@ import com.ancevt.d2d2.asset.Assets;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.ITextureEngine;
 import com.ancevt.d2d2.display.texture.TextureAtlas;
-import com.ancevt.d2d2.display.texture.TextureCell;
+import com.ancevt.d2d2.display.texture.TextureClipCombinerCell;
 
 
 import javax.imageio.ImageIO;
@@ -78,7 +78,7 @@ public class NoRenderTextureEngine implements ITextureEngine {
     }
 
     @Override
-    public TextureAtlas createTextureAtlas(int width, int height, TextureCell[] cells) {
+    public TextureAtlas createTextureAtlas(int width, int height, TextureClipCombinerCell[] cells) {
         textureAtlasIdCounter++;
         images.put(textureAtlasIdCounter, new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
         return new TextureAtlas(textureAtlasIdCounter, width, height);
