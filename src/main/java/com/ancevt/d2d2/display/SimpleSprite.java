@@ -38,12 +38,12 @@ public class SimpleSprite extends BaseDisplayObject implements Sprite {
     }
 
     public SimpleSprite(String assetPathToImage) {
-        this(D2D2.getTextureManager().loadTextureAtlas(assetPathToImage).createTextureClip());
+        this(D2D2.textureManager().loadTextureAtlas(assetPathToImage).createTextureClip());
     }
 
     public SimpleSprite(String assetPathToImage, int textureX, int textureY, int textureWidth, int textureHeight) {
         this(
-            D2D2.getTextureManager()
+            D2D2.textureManager()
                 .loadTextureAtlas(assetPathToImage)
                 .createTextureClip(
                     textureX,
@@ -110,14 +110,14 @@ public class SimpleSprite extends BaseDisplayObject implements Sprite {
     @Override
     public void setTextureClip(TextureClip value) {
         this.textureClip = value;
-        if (textureClip.getTextureAtlas().isDisposed()) {
+        if (textureClip != null && textureClip.getTextureAtlas().isDisposed()) {
             throw new IllegalStateException("Texture atlas " + textureClip.getTextureAtlas().getId() + " is disposed");
         }
     }
 
     @Override
     public void setTextureClip(String textureClipKey) {
-        setTextureClip(D2D2.getTextureManager().getTextureClip(textureClipKey));
+        setTextureClip(D2D2.textureManager().getTextureClip(textureClipKey));
     }
 
     @Override

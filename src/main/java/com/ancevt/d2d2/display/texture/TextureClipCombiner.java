@@ -160,7 +160,7 @@ public class TextureClipCombiner {
     }
 
     public final TextureAtlas createTextureAtlas() {
-        return D2D2.getTextureManager().getTextureEngine().
+        return D2D2.textureManager().getTextureEngine().
             createTextureAtlas(width, height, cells.toArray(new TextureClipCombinerCell[]{}));
     }
 

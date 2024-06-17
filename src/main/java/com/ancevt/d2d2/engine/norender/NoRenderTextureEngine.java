@@ -95,7 +95,7 @@ public class NoRenderTextureEngine implements ITextureEngine {
         int height = (int) bitmapText.getHeight();
         textureAtlasIdCounter++;
         TextureAtlas textureAtlas = new TextureAtlas(textureAtlasIdCounter, width, height);
-        D2D2.getTextureManager().addTexture("_textureAtlas_text_" + textureAtlas.getId(), textureAtlas.createTextureClip());
+        D2D2.textureManager().addTexture("_textureAtlas_text_" + textureAtlas.getId(), textureAtlas.createTextureClip());
         return textureAtlas;
     }
 }

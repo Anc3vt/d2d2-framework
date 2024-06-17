@@ -192,7 +192,7 @@ Now the stage contains one display object, which is `Sprite`.
 
 ## TextureManager
 
-There's a more detailed and flexible way to manage texture resources - `TextureManager`. You can obtain the `TextureManager` by calling the static method `D2D2.getTextureManager()`. It contains all the loaded texture atlases. Texture atlases allow you to create texture atlases from source resource files where images are combined.
+There's a more detailed and flexible way to manage texture resources - `TextureManager`. You can obtain the `TextureManager` by calling the static method `D2D2.textureManager()`. It contains all the loaded texture atlases. Texture atlases allow you to create texture atlases from source resource files where images are combined.
 
 This way, you can store multiple images in a single PNG file, extracting the texture clips we need from it based on specified coordinates on the atlas.
 
@@ -207,7 +207,7 @@ Suppose we need a sprite that will display only the large letter 'D' from this a
 @Override
 public void onCreate(Stage stage) {
     // Get the texture manager from D2D2
-    TextureManager textureManager = D2D2.getTextureManager();
+    TextureManager textureManager = D2D2.textureManager();
     // Load the texture atlas from src/main/resources/assets/
     TextureAtlas textureAtlas = textureManager.loadTextureAtlas("d2d2-samples-tileset.png");
     // Create a texture clip from the atlas with the specified coordinates and dimensions
@@ -250,7 +250,7 @@ Here are some commonly used sizes that meet this requirement:
 
 Use these sizes to create texture atlases. For example, if you want to create a texture atlas with dimensions of 256x256 pixels, you can place 16 texture clips of size 64x64 pixels on it, or 64 texture clips of size 32x32 pixels, and so on.
 
-The procedure for unloading texture atlases is the reverse of loading: `D2D2.getTextureManager().unloadTextureAtlas(textureAtlas)`.
+The procedure for unloading texture atlases is the reverse of loading: `D2D2.textureManager().unloadTextureAtlas(textureAtlas)`.
 
 ## BitmapText
 
@@ -585,7 +585,7 @@ public void onCreate(Stage stage) {
     createSomeBackground();
 
     // Load the textureClip atlas and create textureClips
-    Texture[] textureClips = D2D2.getTextureManager()
+    Texture[] textureClips = D2D2.textureManager()
         .loadTextureAtlas("d2d2-samples-tileset.png")
         .createTexturesHor(256, 128, 48, 48, 4);
     

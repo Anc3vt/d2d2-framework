@@ -46,7 +46,7 @@ public class SpriteFactory {
                         textureWidth,
                         textureHeight
                     )),
-                key -> D2D2.getTextureManager()
+                key -> D2D2.textureManager()
                     .loadTextureAtlas(assetPath)
                     .createTextureClip(textureX, textureY, textureWidth, textureHeight)
             )
@@ -54,7 +54,7 @@ public class SpriteFactory {
     }
 
     public static Sprite createSpriteByTextureKey(String textureKey) {
-        return new SimpleSprite(D2D2.getTextureManager().getTextureClip(textureKey));
+        return new SimpleSprite(D2D2.textureManager().getTextureClip(textureKey));
     }
 
     public static Sprite createEmptySprite() {

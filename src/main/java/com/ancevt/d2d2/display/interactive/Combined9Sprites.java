@@ -165,15 +165,15 @@ public class Combined9Sprites extends InteractiveContainer implements Colored {
     }
 
     public void setTextures(String[] textureKeys) {
-        topLeft.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[0]));
-        top.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[1]));
-        topRight.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[2]));
-        left.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[3]));
-        center.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[4]));
-        right.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[5]));
-        bottomLeft.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[6]));
-        bottom.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[7]));
-        bottomRight.setTextureClip(D2D2.getTextureManager().getTextureClip(textureKeys[8]));
+        topLeft.setTextureClip(D2D2.textureManager().getTextureClip(textureKeys[0]));
+        top.setTextureClip(D2D2.textureManager().getTextureClip(textureKeys[1]));
+        topRight.setTextureClip(D2D2.textureManager().getTextureClip(textureKeys[2]));
+        left.setTextureClip(D2D2.textureManager().getTextureClip(textureKeys[3]));
+        center.setTextureClip(D2D2.textureManager().getTextureClip(textureKeys[4]));
+        right.setTextureClip(D2D2.textureManager().getTextureClip(textureKeys[5]));
+        bottomLeft.setTextureClip(D2D2.textureManager().getTextureClip(textureKeys[6]));
+        bottom.setTextureClip(D2D2.textureManager().getTextureClip(textureKeys[7]));
+        bottomRight.setTextureClip(D2D2.textureManager().getTextureClip(textureKeys[8]));
     }
 
     @Override

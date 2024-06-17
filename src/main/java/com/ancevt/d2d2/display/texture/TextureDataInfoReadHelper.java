@@ -49,7 +49,7 @@ class TextureDataInfoReadHelper {
         char firstChar = line.charAt(0);
         if (firstChar == ':') {
             String tileSetName = line.substring(1);
-            currentTextureAtlas = D2D2.getTextureManager().loadTextureAtlas(tileSetName);
+            currentTextureAtlas = D2D2.textureManager().loadTextureAtlas(tileSetName);
             return;
         }
 
@@ -62,7 +62,7 @@ class TextureDataInfoReadHelper {
         int h = Integer.parseInt(splitted[4]);
 
         TextureClip textureClip = currentTextureAtlas.createTextureClip(x, y, w, h);
-        D2D2.getTextureManager().addTexture(textureKey, textureClip);
+        D2D2.textureManager().addTexture(textureKey, textureClip);
     }
 
 }

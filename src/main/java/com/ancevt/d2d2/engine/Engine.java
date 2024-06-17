@@ -24,7 +24,7 @@ import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
 
 public interface Engine {
 
-    Stage getStage();
+    Stage stage();
 
     void setAlwaysOnTop(boolean b);
 
@@ -58,5 +58,5 @@ public interface Engine {
 
     int getTimerCheckFrameFrequency();
 
-    DisplayManager getDisplayManager();
+    DisplayManager displayManager();
 }

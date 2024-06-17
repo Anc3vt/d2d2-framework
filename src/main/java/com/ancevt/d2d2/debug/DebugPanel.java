@@ -131,8 +131,8 @@ public class DebugPanel extends SimpleContainer {
 
     private void this_addToStage(Event event) {
         removeEventListener(this, Event.ADD_TO_STAGE);
-        D2D2.getStage().addEventListener(InteractiveEvent.KEY_DOWN, this::root_keyDown);
-        D2D2.getStage().addEventListener(InteractiveEvent.KEY_UP, this::root_keyUp);
+        D2D2.stage().addEventListener(InteractiveEvent.KEY_DOWN, this::root_keyDown);
+        D2D2.stage().addEventListener(InteractiveEvent.KEY_UP, this::root_keyUp);
     }
 
     private void root_keyDown(Event event) {
@@ -340,7 +340,7 @@ public class DebugPanel extends SimpleContainer {
                 debugPanel = new DebugPanel(propertyName);
             }
 
-            D2D2.getStage().addChild(debugPanel);
+            D2D2.stage().addChild(debugPanel);
             if (propertyName != null) {
                 System.setProperty(propertyName, String.valueOf(value));
             }

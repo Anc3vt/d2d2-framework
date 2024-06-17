@@ -43,11 +43,10 @@ import static com.ancevt.commons.string.ConvertableString.convert;
 public final class D2D2 {
     private static final String PROPERTIES_FILENAME = "application.properties";
 
-    @Getter
     private static final TextureManager textureManager = new TextureManager();
 
-    @Getter
     private static BitmapFontManager bitmapFontManager;
+
     @Getter
     private static DisplayObject cursor;
     private static Engine engine;
@@ -79,7 +78,7 @@ public final class D2D2 {
         bitmapFontManager = new BitmapFontManager();
         D2D2.engine = engine;
         engine.create();
-        return engine.getStage();
+        return engine.stage();
     }
 
     public static D2D2Application createMain(Class<? extends D2D2Application> clazz) {
@@ -144,8 +143,8 @@ public final class D2D2 {
         D2D2.cursor = cursor;
     }
 
-    public static Stage getStage() {
-        return engine.getStage();
+    public static Stage stage() {
+        return engine.stage();
     }
 
     public static void loop() {
@@ -156,12 +155,20 @@ public final class D2D2 {
         engine.stop();
     }
 
-    public static Engine getEngine() {
+    public static TextureManager textureManager() {
+        return textureManager;
+    }
+
+    public static BitmapFontManager bitmapFontManager() {
+        return bitmapFontManager;
+    }
+
+    public static Engine engine() {
         return engine;
     }
 
-    public static DisplayManager getDisplayManager() {
-        return engine.getDisplayManager();
+    public static DisplayManager displayManager() {
+        return engine.displayManager();
     }
 
 }

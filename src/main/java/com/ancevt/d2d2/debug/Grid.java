@@ -57,7 +57,7 @@ public class Grid extends SimpleContainer implements Colored {
 
 
     public Grid() {
-        this(D2D2.getStage().getWidth(), D2D2.getStage().getHeight(), 16);
+        this(D2D2.stage().getWidth(), D2D2.stage().getHeight(), 16);
     }
 
     public void setCellSize(float cellSize) {
