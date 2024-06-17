@@ -106,7 +106,7 @@ public class BitmapFontManager {
             throw new IllegalArgumentException(e);
         }
 
-        BitmapFont bitmapFont = new BitmapFont(name, D2D2.getTextureManager().loadTextureAtlas(pngInputStream), charInfos);
+        BitmapFont bitmapFont = new BitmapFont(name, D2D2.textureManager().loadTextureAtlas(pngInputStream), charInfos);
 
         bitmapFontMap.put(name, bitmapFont);
 

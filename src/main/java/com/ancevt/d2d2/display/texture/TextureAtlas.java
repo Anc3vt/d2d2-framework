@@ -181,11 +181,11 @@ public class TextureAtlas implements Disposable {
 
     @Override
     public void dispose() {
-        D2D2.getTextureManager().unloadTextureAtlas(this);
+        D2D2.textureManager().unloadTextureAtlas(this);
     }
 
     public boolean isDisposed() {
-        return !D2D2.getTextureManager().containsTextureAtlas(this);
+        return !D2D2.textureManager().containsTextureAtlas(this);
     }
 
     @Override

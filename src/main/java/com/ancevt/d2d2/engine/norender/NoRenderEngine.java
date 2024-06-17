@@ -50,12 +50,12 @@ public class NoRenderEngine implements Engine {
     public NoRenderEngine(int initialWidth, int initialHeight, String title) {
         this.initialWidth = initialWidth;
         this.initialHeight = initialHeight;
-        D2D2.getTextureManager().setTextureEngine(new NoRenderTextureEngine());
+        D2D2.textureManager().setTextureEngine(new NoRenderTextureEngine());
 
     }
 
     @Override
-    public DisplayManager getDisplayManager() {
+    public DisplayManager displayManager() {
         return new NoRenderDisplayManagerStub();
     }
 
@@ -108,7 +108,7 @@ public class NoRenderEngine implements Engine {
     }
 
     @Override
-    public Stage getStage() {
+    public Stage stage() {
         return stage;
     }
 
@@ -163,7 +163,7 @@ public class NoRenderEngine implements Engine {
 
     @Override
     public BitmapFont generateBitmapFont(TrueTypeBitmapFontBuilder trueTypeBitmapFontBuilder) {
-        return D2D2.getBitmapFontManager().getDefaultBitmapFont();
+        return D2D2.bitmapFontManager().getDefaultBitmapFont();
     }
 
 

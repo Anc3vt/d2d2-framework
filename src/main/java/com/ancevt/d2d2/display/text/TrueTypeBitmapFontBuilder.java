@@ -214,7 +214,7 @@ public class TrueTypeBitmapFontBuilder {
             }
         }
 
-        return D2D2.getEngine().generateBitmapFont(this);
+        return D2D2.engine().generateBitmapFont(this);
     }
 
 }

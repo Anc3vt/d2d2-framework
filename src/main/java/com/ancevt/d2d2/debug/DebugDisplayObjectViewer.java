@@ -92,14 +92,14 @@ public class DebugDisplayObjectViewer {
     }
 
     public Container getTargetContainer() {
-        if (targetContainer == null) targetContainer = D2D2.getStage();
+        if (targetContainer == null) targetContainer = D2D2.stage();
         return targetContainer;
     }
 
     public void show() {
-        RectangleShape rectangleShape = new RectangleShape(D2D2.getStage().getWidth(), D2D2.getStage().getHeight(), Color.BLACK);
+        RectangleShape rectangleShape = new RectangleShape(D2D2.stage().getWidth(), D2D2.stage().getHeight(), Color.BLACK);
         rectangleShape.setAlpha(0.5f);
-        D2D2.getStage().addChild(rectangleShape);
+        D2D2.stage().addChild(rectangleShape);
         displayObjects.add(rectangleShape);
 
         show(getTargetContainer(), -1);
@@ -120,13 +120,13 @@ public class DebugDisplayObjectViewer {
                     o.getHeight() * o.getAbsoluteY(),
                     null,
                     color);
-                D2D2.getStage().addChild(borderedRectangle, o.getAbsoluteX(), o.getAbsoluteY());
+                D2D2.stage().addChild(borderedRectangle, o.getAbsoluteX(), o.getAbsoluteY());
 
                 BitmapText bitmapText = new BitmapText(o.getName());
                 bitmapText.setColor(color);
                 bitmapText.setRotation(-20);
 
-                D2D2.getStage().addChild(bitmapText, o.getAbsoluteX(), o.getAbsoluteY());
+                D2D2.stage().addChild(bitmapText, o.getAbsoluteX(), o.getAbsoluteY());
 
                 displayObjects.add(borderedRectangle);
                 displayObjects.add(bitmapText);
@@ -157,7 +157,7 @@ public class DebugDisplayObjectViewer {
         if (keyListenerEnabled == b) return this;
         keyListenerEnabled = b;
 
-        Stage s = D2D2.getStage();
+        Stage s = D2D2.stage();
 
         s.removeEventListener(this, InteractiveEvent.KEY_DOWN);
         s.removeEventListener(this, InteractiveEvent.KEY_UP);
