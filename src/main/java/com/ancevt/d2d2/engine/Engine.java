@@ -59,4 +59,6 @@ public interface Engine {
     int getTimerCheckFrameFrequency();
 
     DisplayManager displayManager();
+
+    void setCursorXY(int x, int y);
 }

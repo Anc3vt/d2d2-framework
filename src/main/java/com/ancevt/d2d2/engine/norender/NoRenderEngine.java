@@ -25,6 +25,7 @@ import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.event.LifecycleEvent;
+import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,6 +53,11 @@ public class NoRenderEngine implements Engine {
         this.initialHeight = initialHeight;
         D2D2.textureManager().setTextureEngine(new NoRenderTextureEngine());
 
+    }
+
+    @Override
+    public void setCursorXY(int x, int y) {
+        Mouse.setXY(x, y);
     }
 
     @Override
