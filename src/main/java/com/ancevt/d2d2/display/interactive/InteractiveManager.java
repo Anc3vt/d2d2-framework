@@ -151,7 +151,14 @@ public class InteractiveManager {
         }
     }
 
-    public final void screenTouch(final int x, final int y, final int pointer, int mouseButton, final boolean down) {
+    public final void screenTouch(final int x,
+                                  final int y,
+                                  final int pointer,
+                                  int mouseButton,
+                                  final boolean down,
+                                  boolean shift,
+                                  boolean control,
+                                  boolean alt) {
         switch (mouseButton) {
             case MouseButton.LEFT -> leftMouseButton = down;
             case MouseButton.RIGHT -> rightMouseButton = down;
@@ -192,6 +199,9 @@ public class InteractiveManager {
                     .leftMouseButton(leftMouseButton)
                     .rightMouseButton(rightMouseButton)
                     .middleMouseButton(middleMouseButton)
+                    .shift(shift)
+                    .control(control)
+                    .alt(alt)
                     .mouseButton(mouseButton)
                     .build());
 
@@ -219,6 +229,9 @@ public class InteractiveManager {
                                 .leftMouseButton(leftMouseButton)
                                 .rightMouseButton(rightMouseButton)
                                 .middleMouseButton(middleMouseButton)
+                                .shift(shift)
+                                .control(control)
+                                .alt(alt)
                                 .build());
 
                             interactive.setDragging(false);
@@ -229,7 +242,7 @@ public class InteractiveManager {
         }
     }
 
-    public final void screenDrag(int pointer, final int x, final int y) {
+    public final void screenDrag(int pointer, final int x, final int y, boolean shift, boolean control, boolean alt) {
         float _tcX = 0.0f, _tcY = 0.0f;
         int maxIndex = 0;
         Interactive upperIntaractive = null;
@@ -265,6 +278,9 @@ public class InteractiveManager {
                         .leftMouseButton(leftMouseButton)
                         .rightMouseButton(rightMouseButton)
                         .middleMouseButton(middleMouseButton)
+                        .shift(shift)
+                        .control(control)
+                        .alt(alt)
                         .build());
                 }
 
@@ -278,6 +294,9 @@ public class InteractiveManager {
                         .leftMouseButton(leftMouseButton)
                         .rightMouseButton(rightMouseButton)
                         .middleMouseButton(middleMouseButton)
+                        .shift(shift)
+                        .control(control)
+                        .alt(alt)
                         .build());
                 }
 
@@ -295,6 +314,9 @@ public class InteractiveManager {
                         .leftMouseButton(leftMouseButton)
                         .rightMouseButton(rightMouseButton)
                         .middleMouseButton(middleMouseButton)
+                        .shift(shift)
+                        .control(control)
+                        .alt(alt)
                         .build());
                     hoveredInteractive.setHovering(false);
                 }
@@ -310,6 +332,9 @@ public class InteractiveManager {
                     .leftMouseButton(leftMouseButton)
                     .rightMouseButton(rightMouseButton)
                     .middleMouseButton(middleMouseButton)
+                    .shift(shift)
+                    .control(control)
+                    .alt(alt)
                     .build());
             }
         }
