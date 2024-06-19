@@ -59,7 +59,6 @@ public class TextureAtlas implements Disposable {
         if(textureClipCoords.contains(";")) {
             textureClipCoords = textureClipCoords.split(";")[0];
         }
-
         var a = Args.of(textureClipCoords, ',');
         return new TextureClip(this, a.next(int.class), a.next(int.class), a.next(int.class), a.next(int.class));
     }

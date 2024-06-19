@@ -11,6 +11,7 @@ public class KeyHandler {
 
     private final int keyCode;
     private final EventDispatcher eventDispatcher;
+    private final int keyAlias;
     public Consumer<Options> onKeyDown;
     public Consumer<Options> onKeyUp;
     public Consumer<Options> onKeyRepeat;
@@ -19,14 +20,14 @@ public class KeyHandler {
     @Getter
     private boolean enabled;
 
-    public KeyHandler(int keyCode) {
-        this(keyCode, D2D2.stage());
+    public KeyHandler(int keyCode, EventDispatcher eventDispatcher) {
+        this(keyCode, eventDispatcher, 0);
     }
 
-    public KeyHandler(int keyCode, EventDispatcher eventDispatcher) {
+    public KeyHandler(int keyCode, EventDispatcher eventDispatcher, int keyAlias) {
         this.keyCode = keyCode;
         this.eventDispatcher = eventDispatcher;
-        setEnabled(true);
+        this.keyAlias = keyAlias;
     }
 
     public void setEnabled(boolean enabled) {
@@ -36,25 +37,25 @@ public class KeyHandler {
         if (enabled) {
             eventDispatcher.addEventListener(this, InteractiveEvent.KEY_DOWN, event -> {
                 InteractiveEvent e = event.casted();
-                if (e.getKeyCode() == keyCode && onKeyDown != null) {
+                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyDown != null) {
                     onKeyDown.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
                 }
             });
             eventDispatcher.addEventListener(this, InteractiveEvent.KEY_UP, event -> {
                 InteractiveEvent e = event.casted();
-                if (e.getKeyCode() == keyCode && onKeyUp != null) {
+                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyUp != null) {
                     onKeyUp.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
                 }
             });
             eventDispatcher.addEventListener(this, InteractiveEvent.KEY_REPEAT, event -> {
                 InteractiveEvent e = event.casted();
-                if (e.getKeyCode() == keyCode && onKeyRepeat != null) {
+                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyRepeat != null) {
                     onKeyRepeat.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
                 }
             });
             eventDispatcher.addEventListener(this, InteractiveEvent.KEY_TYPE, event -> {
                 InteractiveEvent e = event.casted();
-                if (e.getKeyCode() == keyCode && onKeyType != null) {
+                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyType != null) {
                     onKeyType.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
                 }
             });
@@ -64,7 +65,28 @@ public class KeyHandler {
             eventDispatcher.removeEventListener(this, InteractiveEvent.KEY_REPEAT);
             eventDispatcher.removeEventListener(this, InteractiveEvent.KEY_TYPE);
         }
+    }
 
+    public KeyHandler registerOnKeyDown(Consumer<Options> fn) {
+        onKeyDown = fn;
+        return this;
+    }
+    public KeyHandler registerOnKeyUp(Consumer<Options> fn) {
+        onKeyUp = fn;
+        return this;
+    }
+    public KeyHandler registerOnKeyRepeat(Consumer<Options> fn) {
+        onKeyRepeat = fn;
+        return this;
+    }
+    public KeyHandler registerOnKeyType(Consumer<Options> fn) {
+        onKeyType = fn;
+        return this;
+    }
+
+    public KeyHandler registerOkKeyRepeatAsOnKeyDown() {
+        onKeyRepeat = onKeyDown;
+        return this;
     }
 
     public record Options(
@@ -77,21 +99,4 @@ public class KeyHandler {
     ) {
     }
 
-    public static void main(String[] args) {
-
-        KeyHandler kh = new KeyHandler(KeyCode.D);
-        kh.onKeyDown = options -> {
-            System.out.println("hk down " + options);
-        };
-        kh.onKeyUp = options -> {
-            System.out.println("hk up " + options);
-        };
-        kh.onKeyRepeat = options -> {
-            System.out.println("hk repeat " + options);
-        };
-        kh.onKeyType = options -> {
-            System.out.println("hk type " + options);
-        };
-
-    }
 }
