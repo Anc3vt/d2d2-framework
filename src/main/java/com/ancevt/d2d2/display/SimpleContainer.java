@@ -48,7 +48,7 @@ public class SimpleContainer extends BaseDisplayObject implements Container {
     }
 
     @Override
-    public void addChild(DisplayObject child) {
+    public final void addChild(DisplayObject child) {
         if (child.hasParent() && child.getParent() != this) {
             child.removeFromParent();
         }
@@ -63,7 +63,7 @@ public class SimpleContainer extends BaseDisplayObject implements Container {
     }
 
     @Override
-    public void addChild(DisplayObject child, int index) {
+    public final void addChild(DisplayObject child, int index) {
         if (child.hasParent() && child.getParent() != this) {
             child.removeFromParent();
         }
@@ -78,7 +78,7 @@ public class SimpleContainer extends BaseDisplayObject implements Container {
     }
 
     @Override
-    public void addChild(DisplayObject child, float x, float y) {
+    public final void addChild(DisplayObject child, float x, float y) {
         if (child.hasParent() && child.getParent() != this) {
             child.removeFromParent();
         }
@@ -94,7 +94,7 @@ public class SimpleContainer extends BaseDisplayObject implements Container {
     }
 
     @Override
-    public void addChild(DisplayObject child, int index, float x, float y) {
+    public final void addChild(DisplayObject child, int index, float x, float y) {
         if (child.hasParent() && child.getParent() != this) {
             child.removeFromParent();
         }
@@ -110,7 +110,7 @@ public class SimpleContainer extends BaseDisplayObject implements Container {
     }
 
     @Override
-    public void addChild(DisplayObject child, PlaceBy placeBy) {
+    public final void addChild(DisplayObject child, PlaceBy placeBy) {
         if (child.hasParent() && child.getParent() != this) {
             child.removeFromParent();
         }
