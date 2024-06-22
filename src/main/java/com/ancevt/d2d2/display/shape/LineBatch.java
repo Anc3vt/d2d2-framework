@@ -50,17 +50,21 @@ public class LineBatch extends BaseDisplayObject implements Shape {
     }
 
     public void moveTo(float x, float y) {
-        if(!started) {
+        if (!started) {
             startX = x;
             startY = y;
             started = true;
         }
-        if(currentLine != null) {
+        if (currentLine != null) {
             currentLine.closing = true;
         }
 
         currentX = x;
         currentY = y;
+    }
+
+    public void moveTo(int x, int y) {
+        moveTo((float) x, (float) y);
     }
 
     public Line lineTo(float x, float y) {
@@ -76,8 +80,12 @@ public class LineBatch extends BaseDisplayObject implements Shape {
         return currentLine;
     }
 
+    public Line lintTo(int x, int y) {
+        return lineTo((float) x, (float) y);
+    }
+
     public void closePath() {
-        if(!started) throw new IllegalStateException("Lint batch has not been started");
+        if (!started) throw new IllegalStateException("Lint batch has not been started");
         lineTo(startX, startY);
     }
 

@@ -37,7 +37,7 @@ public class TextureClip {
     public int getHeight() {return height;}
 
 
-    public TextureClip getSubTexture(int x, int y, int width, int height) {
+    public TextureClip createSubTextureClip(int x, int y, int width, int height) {
         return getTextureAtlas().createTextureClip(getX() + x, getY() + y, width, height);
     }
 
