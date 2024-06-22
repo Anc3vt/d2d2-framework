@@ -17,9 +17,10 @@
  */
 package com.ancevt.d2d2.display.shape;
 
+import com.ancevt.d2d2.display.Colored;
 import com.ancevt.d2d2.display.DisplayObject;
 
-public interface Shape extends DisplayObject {
+public interface Shape extends DisplayObject, Colored {
 
 
 }

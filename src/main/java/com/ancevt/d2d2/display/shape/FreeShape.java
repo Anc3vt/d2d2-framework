@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 public class FreeShape extends BaseDisplayObject implements Shape, Colored {
 
-    private final List<Vertex> vertexList = new ArrayList<>();
+    private final List<Vertex> vertices = new ArrayList<>();
 
     @Setter
     private Color color = Color.WHITE;
@@ -33,7 +33,7 @@ public class FreeShape extends BaseDisplayObject implements Shape, Colored {
     public void vertex(float x, float y) {
         this.currentX = x;
         this.currentY = y;
-        vertexList.add(new Vertex(x, y));
+        vertices.add(new Vertex(x, y));
     }
 
     public void curveTo(float controlX1, float controlY1, float controlX2, float controlY2, float endX, float endY, float step) {
@@ -59,11 +59,11 @@ public class FreeShape extends BaseDisplayObject implements Shape, Colored {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + vertexList.size() + "}";
+        return getClass().getSimpleName() + "{" + vertices.size() + "}";
     }
 
     public void closePath() {
-        var begin = vertexList.get(0);
+        var begin = vertices.get(0);
         vertex(begin.getX(), begin.getY());
     }
 
