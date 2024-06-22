@@ -128,17 +128,17 @@ public class Combined9Sprites extends InteractiveContainer implements Colored {
 
     public void setTextures(TextureClip all9PartsTextureClip, int partWidth, int partHeight) {
         setTextures(
-            all9PartsTextureClip.getSubTexture(0, 0, partWidth, partHeight),
-            all9PartsTextureClip.getSubTexture(partWidth, 0, partWidth, partHeight),
-            all9PartsTextureClip.getSubTexture(partWidth * 2, 0, partWidth, partHeight),
+            all9PartsTextureClip.createSubTextureClip(0, 0, partWidth, partHeight),
+            all9PartsTextureClip.createSubTextureClip(partWidth, 0, partWidth, partHeight),
+            all9PartsTextureClip.createSubTextureClip(partWidth * 2, 0, partWidth, partHeight),
 
-            all9PartsTextureClip.getSubTexture(0, partHeight, partWidth, partHeight),
-            all9PartsTextureClip.getSubTexture(partWidth, partHeight, partWidth, partHeight),
-            all9PartsTextureClip.getSubTexture(partWidth * 2, partHeight, partWidth, partHeight),
+            all9PartsTextureClip.createSubTextureClip(0, partHeight, partWidth, partHeight),
+            all9PartsTextureClip.createSubTextureClip(partWidth, partHeight, partWidth, partHeight),
+            all9PartsTextureClip.createSubTextureClip(partWidth * 2, partHeight, partWidth, partHeight),
 
-            all9PartsTextureClip.getSubTexture(0, partHeight * 2, partWidth, partHeight),
-            all9PartsTextureClip.getSubTexture(partWidth, partHeight * 2, partWidth, partHeight),
-            all9PartsTextureClip.getSubTexture(partWidth * 2, partHeight * 2, partWidth, partHeight)
+            all9PartsTextureClip.createSubTextureClip(0, partHeight * 2, partWidth, partHeight),
+            all9PartsTextureClip.createSubTextureClip(partWidth, partHeight * 2, partWidth, partHeight),
+            all9PartsTextureClip.createSubTextureClip(partWidth * 2, partHeight * 2, partWidth, partHeight)
         );
     }
 

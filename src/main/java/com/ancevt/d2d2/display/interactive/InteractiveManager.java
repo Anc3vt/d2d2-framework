@@ -242,10 +242,10 @@ public class InteractiveManager {
         }
     }
 
-    public final void screenDrag(int pointer, final int x, final int y, boolean shift, boolean control, boolean alt) {
+    public final void screenMove(int pointer, final int x, final int y, boolean shift, boolean control, boolean alt) {
         float _tcX = 0.0f, _tcY = 0.0f;
         int maxIndex = 0;
-        Interactive upperIntaractive = null;
+        Interactive upperInteractive = null;
 
         for (final Interactive interactive : interactiveList) {
             final float tcX = interactive.getAbsoluteX();
@@ -265,7 +265,20 @@ public class InteractiveManager {
                         maxIndex = index;
                         _tcX = tcX;
                         _tcY = tcY;
-                        upperIntaractive = interactive;
+                        upperInteractive = interactive;
+
+                        dispatch(interactive, InteractiveEvent.builder()
+                            .type(InteractiveEvent.MOVE)
+                            .x((int) (x - tcX))
+                            .y((int) (y - tcY))
+                            .onArea(onArea)
+                            .leftMouseButton(leftMouseButton)
+                            .rightMouseButton(rightMouseButton)
+                            .middleMouseButton(middleMouseButton)
+                            .shift(shift)
+                            .control(control)
+                            .alt(alt)
+                            .build());
                     }
                 }
 
@@ -303,8 +316,8 @@ public class InteractiveManager {
             }
 
         }
-        if (upperIntaractive != null) {
-            if (!upperIntaractive.isHovering()) {
+        if (upperInteractive != null) {
+            if (!upperInteractive.isHovering()) {
                 if (hoveredInteractive != null) {
                     dispatch(hoveredInteractive, InteractiveEvent.builder()
                         .type(InteractiveEvent.OUT)
@@ -321,10 +334,10 @@ public class InteractiveManager {
                     hoveredInteractive.setHovering(false);
                 }
 
-                hoveredInteractive = upperIntaractive;
+                hoveredInteractive = upperInteractive;
 
-                upperIntaractive.setHovering(true);
-                dispatch(upperIntaractive, InteractiveEvent.builder()
+                upperInteractive.setHovering(true);
+                dispatch(upperInteractive, InteractiveEvent.builder()
                     .type(InteractiveEvent.HOVER)
                     .x((int) (x - _tcX))
                     .y((int) (y - _tcY))
