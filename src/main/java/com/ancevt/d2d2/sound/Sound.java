@@ -19,6 +19,8 @@ package com.ancevt.d2d2.sound;
 
 import com.ancevt.d2d2.asset.Assets;
 
+import java.io.InputStream;
+
 public interface Sound {
 
     void play();
@@ -35,26 +37,31 @@ public interface Sound {
 
     float getPan();
 
+    static Sound loadSound(InputStream inputStream) {
+        return new SampledSound(inputStream);
+    }
+
+
     static Sound lookupSound(String path) {
-        Sound sound = SoundCache.medias.get(path);
+        Sound sound = SoundCache.sounds.get(path);
         if (sound == null) {
             sound = new SampledSound(path);
-            SoundCache.medias.put(path, sound);
+            SoundCache.sounds.put(path, sound);
         }
         return sound;
     }
 
     static Sound lookupSoundAsset(String path) {
-        Sound sound = SoundCache.medias.get(':' + path);
+        Sound sound = SoundCache.sounds.get(':' + path);
         if (sound == null) {
             sound = new SampledSound(Assets.getAsset(path));
-            SoundCache.medias.put(':' + path, sound);
+            SoundCache.sounds.put(':' + path, sound);
         }
         return sound;
     }
 
     static void clearCache() {
-        SoundCache.medias.clear();
+        SoundCache.sounds.clear();
     }
 
 }

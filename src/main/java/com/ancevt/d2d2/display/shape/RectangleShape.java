@@ -25,7 +25,7 @@ import com.ancevt.d2d2.event.Event;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class RectangleShape extends BaseDisplayObject implements IShape, Resizable, Colored {
+public class RectangleShape extends BaseDisplayObject implements Shape, Resizable, Colored {
 
     private float width = 100f;
     private float height = 100f;

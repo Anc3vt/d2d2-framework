@@ -22,5 +22,5 @@ import java.util.Map;
 
 class SoundCache {
 
-    static Map<String, Sound> medias = new HashMap<>();
+    static Map<String, Sound> sounds = new HashMap<>();
 }
