@@ -7,6 +7,11 @@ import com.ancevt.d2d2.display.texture.TextureAtlas;
 import com.ancevt.d2d2.exception.NotImplementedException;
 import lombok.Getter;
 import lombok.Setter;
+import org.lwjgl.opencl.APPLEGLSharing;
+import org.poly2tri.Poly2Tri;
+import org.poly2tri.geometry.polygon.Polygon;
+import org.poly2tri.geometry.polygon.PolygonPoint;
+import org.poly2tri.triangulation.delaunay.DelaunayTriangle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +19,7 @@ import java.util.List;
 @Getter
 public class FreeShape extends BaseDisplayObject implements Shape, Colored {
 
-    private final List<Vertex> vertices = new ArrayList<>();
+    private List<Vertex> vertices = new ArrayList<>();
 
     @Setter
     private Color color = Color.WHITE;
@@ -27,7 +32,7 @@ public class FreeShape extends BaseDisplayObject implements Shape, Colored {
     private float currentY;
 
     @Getter
-    private final List<Triangle> triangles = new ArrayList<>();
+    private List<Triangle> triangles = new ArrayList<>();
 
 
     public void vertex(float x, float y) {
@@ -67,12 +72,61 @@ public class FreeShape extends BaseDisplayObject implements Shape, Colored {
         vertex(begin.getX(), begin.getY());
     }
 
+    public FreeShape copy() {
+        FreeShape copy = new FreeShape();
+
+        List<Vertex> copyVertices = new ArrayList<>();
+        for (Vertex v : vertices) {
+            Vertex newVertex = new Vertex(v.getX(), v.getY());
+            copyVertices.add(newVertex);
+        }
+        copy.vertices = copyVertices;
+
+        List<Triangle> copyTriangles = new ArrayList<>();
+        for (Triangle t : triangles) {
+            Triangle newTriangle = new Triangle(t.getX1(), t.getY1(), t.getX2(), t.getY2(), t.getX3(), t.getY3());
+        }
+        copy.triangles = copyTriangles;
+        return copy;
+    }
+
     public void compile() {
         triangles.clear();
 
+        List<PolygonPoint> polygonPoints = new ArrayList<>();
+        for (Vertex vertex : vertices) {
+            PolygonPoint polygonPoint = new PolygonPoint(vertex.x, vertex.y);
+            polygonPoints.add(polygonPoint);
+        }
+        Polygon polygon = new Polygon(polygonPoints);
 
-        //TODO:implement
-        throw new NotImplementedException();
+        Poly2Tri.triangulate(polygon);
+
+        List<DelaunayTriangle> result = polygon.getTriangles();
+        for (DelaunayTriangle delaunayTriangle : result) {
+            triangles.add(
+                new Triangle(
+                    delaunayTriangle.points[0].getXf(),
+                    delaunayTriangle.points[0].getYf(),
+                    delaunayTriangle.points[1].getXf(),
+                    delaunayTriangle.points[1].getYf(),
+                    delaunayTriangle.points[2].getXf(),
+                    delaunayTriangle.points[2].getYf()
+                )
+            );
+        }
     }
+
+
+    /*
+        // Prepare input data
+        Polygon polygon = new Polygon(Arrays.asList(new PolygonPoint(0, 0, 0),
+          new PolygonPoint(10, 0, 1),new PolygonPoint(10, 10, 2),new PolygonPoint(0, 10, 3)));
+        // Launch tessellation
+        Poly2Tri.triangulate(polygon);
+        // Gather triangles
+        List<DelaunayTriangle> triangles = polygon.getTriangles();
+      }
+     */
 
 }
