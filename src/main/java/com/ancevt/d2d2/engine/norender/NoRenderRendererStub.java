@@ -40,7 +40,7 @@ public class NoRenderRendererStub implements Renderer {
     }
 
     @Override
-    public void reshape(int width, int height) {
+    public void reshape() {
 
     }
 

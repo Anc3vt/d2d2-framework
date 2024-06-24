@@ -21,8 +21,9 @@ import com.ancevt.d2d2.display.Renderer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
+import com.ancevt.d2d2.event.EventDispatcher;
 
-public interface Engine {
+public interface Engine extends EventDispatcher {
 
     Stage stage();
 
@@ -61,4 +62,10 @@ public interface Engine {
     DisplayManager displayManager();
 
     void setCursorXY(int x, int y);
+
+    void setCanvasSize(int width, int height);
+
+    int getCanvasWidth();
+
+    int getCanvasHeight();
 }

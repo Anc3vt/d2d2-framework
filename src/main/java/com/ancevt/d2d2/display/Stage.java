@@ -23,13 +23,14 @@ import com.ancevt.d2d2.event.EventPool;
 import lombok.Getter;
 
 
-public class Stage extends SimpleContainer {
-
+public class Stage extends SimpleContainer implements Resizable {
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
 
-    private int width;
-    private int height;
+    @Getter
+    private float width;
 
+    @Getter
+    private float height;
 
     @Getter
     private Color backgroundColor;
@@ -47,16 +48,6 @@ public class Stage extends SimpleContainer {
         setBackgroundColor(Color.of(rgb));
     }
 
-    public void setSize(float width, float height) {
-        D2D2.displayManager().setWindowSize((int) width, (int) height);
-    }
-
-    public void onResize(int width, int height) {
-        this.width = width;
-        this.height = height;
-        dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
-    }
-
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
@@ -66,14 +57,20 @@ public class Stage extends SimpleContainer {
             '}';
     }
 
-    @Override
-    public float getWidth() {
-        return width;
+    public void setSize(float width, float height) {
+        this.width = width;
+        this.height = height;
+        dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
     }
 
-    @Override
-    public float getHeight() {
-        return height;
+    public void setWidth(float width) {
+        this.width = width;
+        dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+        dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
     }
 
     static void dispatchAddToStage(DisplayObject displayObject) {

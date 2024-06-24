@@ -24,13 +24,16 @@ import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
+import com.ancevt.d2d2.event.BaseEventDispatcher;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
 
-public class NoRenderEngine implements Engine {
+public class NoRenderEngine extends BaseEventDispatcher implements Engine {
 
     private final int initialWidth;
     private final int initialHeight;
@@ -43,6 +46,12 @@ public class NoRenderEngine implements Engine {
     private int fps = frameRate;
     private long time;
     private long tick;
+
+    @Getter
+    private int canvasWidth;
+
+    @Getter
+    private int canvasHeight;
 
     @Getter
     @Setter
@@ -58,6 +67,14 @@ public class NoRenderEngine implements Engine {
     @Override
     public void setCursorXY(int x, int y) {
         Mouse.setXY(x, y);
+    }
+
+    @Override
+    public void setCanvasSize(int width, int height) {
+        canvasWidth = width;
+        canvasHeight = height;
+
+        dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
     }
 
     @Override

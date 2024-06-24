@@ -20,6 +20,6 @@ package com.ancevt.d2d2.display;
 public interface Renderer {
 
     void init(long windowId);
-    void reshape(int width, int height);
+    void reshape();
     void renderFrame();
 }
