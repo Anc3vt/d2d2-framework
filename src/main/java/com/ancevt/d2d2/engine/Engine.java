@@ -19,8 +19,8 @@ package com.ancevt.d2d2.engine;
 
 import com.ancevt.d2d2.display.Renderer;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
+import com.ancevt.d2d2.display.text.Font;
+import com.ancevt.d2d2.display.text.TrueTypeFontBuilder;
 import com.ancevt.d2d2.event.EventDispatcher;
 
 public interface Engine extends EventDispatcher {
@@ -53,7 +53,7 @@ public interface Engine extends EventDispatcher {
 
     default boolean isSmoothMode() {return false;}
 
-    BitmapFont generateBitmapFont(TrueTypeBitmapFontBuilder trueTypeBitmapFontBuilder);
+    Font generateBitmapFont(TrueTypeFontBuilder trueTypeFontBuilder);
 
     void setTimerCheckFrameFrequency(int v);
 

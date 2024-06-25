@@ -25,7 +25,7 @@ import com.ancevt.d2d2.display.shape.BorderedRectangle;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.interactive.InteractiveContainer;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -50,7 +50,7 @@ public class ByteBaseDisplay extends InteractiveContainer {
 
     private final BorderedRectangle bgRect;
     @Getter
-    private final BitmapText bitmapText;
+    private final Text text;
 
     private int oldX;
     private int oldY;
@@ -69,11 +69,11 @@ public class ByteBaseDisplay extends InteractiveContainer {
         bgRect = new BorderedRectangle(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
         addChild(bgRect);
 
-        bitmapText = new BitmapText();
-        bitmapText.setText("#<FFFF00>ready");
-        bitmapText.setMulticolor(true);
-        bitmapText.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        addChild(bitmapText, PADDING, 2);
+        text = new Text();
+        text.setText("#<FFFF00>ready");
+        text.setMulticolor(true);
+        text.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        addChild(text, PADDING, 2);
 
         addEventListener(this, InteractiveEvent.DOWN, this::mouseDown);
         addEventListener(this, InteractiveEvent.DRAG, this::mouseDrag);
@@ -181,21 +181,21 @@ public class ByteBaseDisplay extends InteractiveContainer {
     public void setWidth(float width) {
         super.setWidth(width);
         bgRect.setWidth(width);
-        bitmapText.setWidth(width);
+        text.setWidth(width);
     }
 
     @Override
     public void setHeight(float height) {
         super.setHeight(height);
         bgRect.setHeight(height);
-        bitmapText.setHeight(height);
+        text.setHeight(height);
     }
 
     @Override
     public void setSize(float width, float height) {
         super.setSize(width, height);
         bgRect.setSize(width, height);
-        bitmapText.setSize(width, height);
+        text.setSize(width, height);
     }
 
     private void mouseDown(Event event) {
@@ -281,7 +281,7 @@ public class ByteBaseDisplay extends InteractiveContainer {
 
         s.append(utfString);
 
-        bitmapText.setText(s.toString());
+        text.setText(s.toString());
     }
 
     private void renderTextRepresentation(StringBuilder s) {
@@ -340,11 +340,11 @@ public class ByteBaseDisplay extends InteractiveContainer {
     }
 
     private int getWidthInChars() {
-        return (int) ((getWidth() / bitmapText.getCharWidth()) - 4);
+        return (int) ((getWidth() / text.getCharWidth()) - 4);
     }
 
     private int getHeightInChars() {
-        return (int) (getHeight() / bitmapText.getCharHeight());
+        return (int) (getHeight() / text.getCharHeight());
     }
 
     private static String indent(Object o) {
@@ -405,7 +405,7 @@ public class ByteBaseDisplay extends InteractiveContainer {
     }
 
     private void renderDecorLine(StringBuilder s) {
-        float cw = bitmapText.getCharWidth();
+        float cw = text.getCharWidth();
         int charCount = (int) ((getWidth() - PADDING * 2) / cw);
         String line = "<FFFFFF>%s".formatted("-".repeat(charCount));
         s.append(line).append("\n");

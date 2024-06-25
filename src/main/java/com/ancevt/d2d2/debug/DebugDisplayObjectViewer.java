@@ -24,7 +24,7 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -122,19 +122,19 @@ public class DebugDisplayObjectViewer {
                     color);
                 D2D2.stage().addChild(borderedRectangle, o.getAbsoluteX(), o.getAbsoluteY());
 
-                BitmapText bitmapText = new BitmapText(o.getName());
-                bitmapText.setColor(color);
-                bitmapText.setRotation(-20);
+                Text text = new Text(o.getName());
+                text.setColor(color);
+                text.setRotation(-20);
 
-                D2D2.stage().addChild(bitmapText, o.getAbsoluteX(), o.getAbsoluteY());
+                D2D2.stage().addChild(text, o.getAbsoluteX(), o.getAbsoluteY());
 
                 displayObjects.add(borderedRectangle);
-                displayObjects.add(bitmapText);
+                displayObjects.add(text);
 
                 borderedRectangle.addEventListener(Event.ENTER_FRAME, event -> {
                     borderedRectangle.setSize(o.getWidth() * o.getAbsoluteScaleX(), o.getHeight() * o.getAbsoluteScaleY());
                     borderedRectangle.setXY(o.getAbsoluteX(), o.getAbsoluteY());
-                    bitmapText.setXY(borderedRectangle.getX(), borderedRectangle.getY());
+                    text.setXY(borderedRectangle.getX(), borderedRectangle.getY());
                 });
             }
 

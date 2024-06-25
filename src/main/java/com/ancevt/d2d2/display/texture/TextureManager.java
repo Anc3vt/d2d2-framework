@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.display.texture;
 
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -81,8 +81,8 @@ public class TextureManager {
         }
     }
 
-    public Texture bitmapTextToTexture(BitmapText bitmapText) {
-        Texture texture = textureEngine.bitmapTextToTexture(bitmapText);
+    public Texture bitmapTextToTexture(Text text) {
+        Texture texture = textureEngine.bitmapTextToTexture(text);
         textures.add(texture);
         return texture;
     }

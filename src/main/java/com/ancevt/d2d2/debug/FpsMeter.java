@@ -19,16 +19,16 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Font;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 
-public class FpsMeter extends BitmapText {
+public class FpsMeter extends Text {
 
     private long time = System.currentTimeMillis();
 
 
-    public FpsMeter(BitmapFont font) {
+    public FpsMeter(Font font) {
         super(font);
         addEventListener(Event.EXIT_FRAME, this::eachFrame);
 

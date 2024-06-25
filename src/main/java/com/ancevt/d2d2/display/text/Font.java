@@ -21,7 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.Disposable;
 import com.ancevt.d2d2.display.texture.Texture;
 
-public class BitmapFont implements Disposable {
+public class Font implements Disposable {
 
     private final BitmapCharInfo[] charInfos;
     private final Texture texture;
@@ -32,7 +32,7 @@ public class BitmapFont implements Disposable {
     private float paddingTop;
     private boolean disposed;
 
-    BitmapFont(String name, Texture texture, BitmapCharInfo[] charInfos) {
+    Font(String name, Texture texture, BitmapCharInfo[] charInfos) {
         this.name = name;
         this.texture = texture;
         this.charInfos = charInfos;

@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.display.texture;
 
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 
 import java.io.InputStream;
 
@@ -38,6 +38,6 @@ public interface ITextureEngine {
 
     void unloadTexture(Texture texture);
 
-    Texture bitmapTextToTexture(BitmapText bitmapText);
+    Texture bitmapTextToTexture(Text text);
 
 }

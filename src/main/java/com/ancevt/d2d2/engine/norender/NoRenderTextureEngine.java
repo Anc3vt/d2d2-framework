@@ -19,7 +19,7 @@ package com.ancevt.d2d2.engine.norender;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.display.texture.ITextureEngine;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.display.texture.TextureClipCombinerCell;
@@ -90,9 +90,9 @@ public class NoRenderTextureEngine implements ITextureEngine {
     }
 
     @Override
-    public Texture bitmapTextToTexture(BitmapText bitmapText) {
-        int width = (int) bitmapText.getWidth();
-        int height = (int) bitmapText.getHeight();
+    public Texture bitmapTextToTexture(Text text) {
+        int width = (int) text.getWidth();
+        int height = (int) text.getHeight();
         textureIdCounter++;
         Texture texture = new Texture(textureIdCounter, width, height);
         D2D2.textureManager().addTextureClip("_texture_text_" + texture.getId(), texture.createTextureClip());

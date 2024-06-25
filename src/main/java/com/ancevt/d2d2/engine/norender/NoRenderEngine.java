@@ -20,8 +20,8 @@ package com.ancevt.d2d2.engine.norender;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Renderer;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.TrueTypeBitmapFontBuilder;
+import com.ancevt.d2d2.display.text.Font;
+import com.ancevt.d2d2.display.text.TrueTypeFontBuilder;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.event.BaseEventDispatcher;
@@ -185,8 +185,8 @@ public class NoRenderEngine extends BaseEventDispatcher implements Engine {
 
 
     @Override
-    public BitmapFont generateBitmapFont(TrueTypeBitmapFontBuilder trueTypeBitmapFontBuilder) {
-        return D2D2.bitmapFontManager().getDefaultBitmapFont();
+    public Font generateBitmapFont(TrueTypeFontBuilder trueTypeFontBuilder) {
+        return D2D2.bitmapFontManager().getDefaultFont();
     }
 
 
