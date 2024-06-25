@@ -26,7 +26,7 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.SimpleContainer;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.interactive.InteractiveContainer;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -56,7 +56,7 @@ public class DebugPanel extends SimpleContainer {
     private static boolean enabled;
     private static float scale = 1;
 
-    private final BitmapText bitmapText;
+    private final Text text;
     private final String systemPropertyName;
     private final RectangleShape bg;
     private final InteractiveContainer interactiveButton;
@@ -84,11 +84,11 @@ public class DebugPanel extends SimpleContainer {
         bg.setAlpha(0.75f);
         addChild(bg);
 
-        bitmapText = new BitmapText();
+        text = new Text();
         //text.setBitmapFont(BitmapFont.loadBitmapFont("open-sans/OpenSans-14-Regular"));
-        bitmapText.setColor(Color.WHITE);
-        bitmapText.setSize(width, height);
-        addChild(bitmapText, 1, 1);
+        text.setColor(Color.WHITE);
+        text.setSize(width, height);
+        addChild(text, 1, 1);
 
         interactiveButton = new InteractiveContainer(width, height);
         interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
@@ -176,7 +176,7 @@ public class DebugPanel extends SimpleContainer {
                 bg.setHeight(5f);
             }
 
-            bitmapText.setSize(bg.getWidth(), bg.getHeight());
+            text.setSize(bg.getWidth(), bg.getHeight());
             interactiveButton.setSize(bg.getWidth(), bg.getHeight());
 
             dispatchEvent(Event.builder().type(Event.RESIZE).build());
@@ -195,13 +195,13 @@ public class DebugPanel extends SimpleContainer {
 
     public void setWidth(float v) {
         bg.setWidth(v);
-        bitmapText.setWidth(bg.getWidth());
+        text.setWidth(bg.getWidth());
         interactiveButton.setWidth(bg.getWidth());
     }
 
     public void setHeight(float v) {
         bg.setHeight(v);
-        bitmapText.setHeight(bg.getHeight());
+        text.setHeight(bg.getHeight());
         interactiveButton.setHeight(bg.getHeight());
     }
 
@@ -225,11 +225,11 @@ public class DebugPanel extends SimpleContainer {
 
     private void this_eachFrame(Event event) {
         if (System.getProperty(systemPropertyName) != null) {
-            bitmapText.setText("[" + systemPropertyName + "]\n" + System.getProperty(systemPropertyName));
+            text.setText("[" + systemPropertyName + "]\n" + System.getProperty(systemPropertyName));
         }
 
         if (bg.getWidth() < 10) bg.setWidth(10);
-        if (bitmapText.getWidth() < 10) bitmapText.setWidth(10);
+        if (text.getWidth() < 10) text.setWidth(10);
     }
 
     private void load() {
@@ -244,9 +244,9 @@ public class DebugPanel extends SimpleContainer {
             String data = o.get("data").getAsString();
 
             bg.setSize(w, h);
-            bitmapText.setSize(w, h);
+            text.setSize(w, h);
             interactiveButton.setSize(w, h);
-            bitmapText.setText(data);
+            text.setText(data);
             setXY(x, y);
         }
     }
@@ -257,7 +257,7 @@ public class DebugPanel extends SimpleContainer {
         o.addProperty("y", getY());
         o.addProperty("w", getWidth());
         o.addProperty("h", getHeight());
-        o.addProperty("data", bitmapText.getText());
+        o.addProperty("data", text.getText());
         saveToFile(file(), o.toString());
     }
 
@@ -370,7 +370,7 @@ public class DebugPanel extends SimpleContainer {
             super(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK, Color.WHITE);
             setBorderWidth(0.2f);
             interactiveButton = new InteractiveContainer(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            BitmapText bitmapText = new BitmapText(String.valueOf(text));
+            Text bitmapText = new Text(String.valueOf(text));
 
             addChild(interactiveButton);
             addChild(bitmapText, 2, -2);

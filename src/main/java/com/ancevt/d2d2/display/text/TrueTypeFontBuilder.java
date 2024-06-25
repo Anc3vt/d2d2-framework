@@ -29,7 +29,7 @@ import static com.ancevt.d2d2.display.text.CharSource.BASIC_LATIN;
 import static com.ancevt.d2d2.display.text.CharSource.CYRILLIC;
 import static com.ancevt.d2d2.display.text.CharSource.SUPPLEMENTAL_SYMBOLS;
 
-public class TrueTypeBitmapFontBuilder {
+public class TrueTypeFontBuilder {
 
     private static final int DEFAULT_WIDTH = 512;
     private static final int DEFAULT_HEIGHT = 512;
@@ -93,96 +93,96 @@ public class TrueTypeBitmapFontBuilder {
         //, CHINESE
     );
 
-    public TrueTypeBitmapFontBuilder charSourceString(String charSourceString) {
+    public TrueTypeFontBuilder charSourceString(String charSourceString) {
         this.charSourceString = charSourceString;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder name(String name) {
+    public TrueTypeFontBuilder name(String name) {
         this.name = name;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder bold(boolean bold) {
+    public TrueTypeFontBuilder bold(boolean bold) {
         this.bold = bold;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder offsetX(int offsetX) {
+    public TrueTypeFontBuilder offsetX(int offsetX) {
         this.offsetX = offsetX;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder offsetY(int offsetY) {
+    public TrueTypeFontBuilder offsetY(int offsetY) {
         this.offsetY = offsetY;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder filePath(String filePath) {
+    public TrueTypeFontBuilder filePath(String filePath) {
         return filePath(Path.of(filePath));
     }
 
-    public TrueTypeBitmapFontBuilder filePath(Path filePath) {
+    public TrueTypeFontBuilder filePath(Path filePath) {
         this.filePath = filePath;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder atlasWidth(int atlasWidth) {
+    public TrueTypeFontBuilder atlasWidth(int atlasWidth) {
         this.atlasWidth = atlasWidth;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder atlasHeight(int atlasHeight) {
+    public TrueTypeFontBuilder atlasHeight(int atlasHeight) {
         this.atlasHeight = atlasHeight;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder assetPath(String assetPath) {
+    public TrueTypeFontBuilder assetPath(String assetPath) {
         this.assetPath = assetPath;
         return inputStream(Assets.getAsset(assetPath));
     }
 
-    public TrueTypeBitmapFontBuilder inputStream(InputStream inputStream) {
+    public TrueTypeFontBuilder inputStream(InputStream inputStream) {
         this.inputStream = inputStream;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder fontSize(int fontSize) {
+    public TrueTypeFontBuilder fontSize(int fontSize) {
         this.fontSize = fontSize;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder textAntialias(boolean textAntialiasOn) {
+    public TrueTypeFontBuilder textAntialias(boolean textAntialiasOn) {
         this.textAntialiasOn = textAntialiasOn;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder withHintTextAntialiasGasp() {
+    public TrueTypeFontBuilder withHintTextAntialiasGasp() {
         this.textAntialiasGasp = true;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder withHintTextAntialiasLcdHrgb() {
+    public TrueTypeFontBuilder withHintTextAntialiasLcdHrgb() {
         this.textAntialiasLcdHrgb = true;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder withHintTextAntialiasLcdHbgr() {
+    public TrueTypeFontBuilder withHintTextAntialiasLcdHbgr() {
         this.textAntialiasLcdHbgr = true;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder withHintTextAntialiasLcdVrgb() {
+    public TrueTypeFontBuilder withHintTextAntialiasLcdVrgb() {
         this.textAntialiasLcdVrgb = true;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder withHintTextAntialiasLcdVbgr() {
+    public TrueTypeFontBuilder withHintTextAntialiasLcdVbgr() {
         this.textAntialiasLcdVbgr = true;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder fractionalMetrics(FractionalMetrics fractionalMetrics) {
+    public TrueTypeFontBuilder fractionalMetrics(FractionalMetrics fractionalMetrics) {
         this.fractionalMetrics = fractionalMetrics;
         return this;
     }
@@ -191,17 +191,17 @@ public class TrueTypeBitmapFontBuilder {
         return fractionalMetrics;
     }
 
-    public TrueTypeBitmapFontBuilder spacingX(int spacingX) {
+    public TrueTypeFontBuilder spacingX(int spacingX) {
         this.spacingX = spacingX;
         return this;
     }
 
-    public TrueTypeBitmapFontBuilder spacingY(int spacingY) {
+    public TrueTypeFontBuilder spacingY(int spacingY) {
         this.spacingY = spacingY;
         return this;
     }
 
-    public BitmapFont build() {
+    public Font build() {
         if (filePath == null && assetPath == null && inputStream == null) {
             throw new IllegalStateException("filePath == null &&  assetPath == null && inputStream == null");
         }

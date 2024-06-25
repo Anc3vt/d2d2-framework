@@ -32,7 +32,7 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class BitmapText extends BaseDisplayObject implements Colored, Resizable {
+public class Text extends BaseDisplayObject implements Colored, Resizable {
 
     protected static final String DEFAULT_TEXT = "";
 
@@ -43,7 +43,7 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
     private String text;
     private Color color;
 
-    private BitmapFont bitmapFont;
+    private Font font;
 
     private float lineSpacing;
     private float spacing;
@@ -78,8 +78,8 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
     private boolean wordWrap = true;
     private SimpleSprite sprite;
 
-    public BitmapText(final BitmapFont bitmapFont, float width, float height, String text) {
-        setBitmapFont(bitmapFont);
+    public Text(final Font font, float width, float height, String text) {
+        setFont(font);
         setColor(DEFAULT_COLOR);
         setWidth(width);
         setHeight(height);
@@ -87,48 +87,48 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
-    public BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight) {
-        this(bitmapFont, boundWidth, boundHeight, DEFAULT_TEXT);
+    public Text(final Font font, float boundWidth, float boundHeight) {
+        this(font, boundWidth, boundHeight, DEFAULT_TEXT);
     }
 
-    public BitmapText(String text) {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
+    public Text(String text) {
+        this(D2D2.bitmapFontManager().getDefaultFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
     }
 
-    public BitmapText(final BitmapFont bitmapFont) {
-        this(bitmapFont, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
+    public Text(final Font font) {
+        this(font, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
     }
 
-    public BitmapText(float boundWidth, float boundHeight) {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
+    public Text(float boundWidth, float boundHeight) {
+        this(D2D2.bitmapFontManager().getDefaultFont(), boundWidth, boundHeight, DEFAULT_TEXT);
     }
 
-    public BitmapText() {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
+    public Text() {
+        this(D2D2.bitmapFontManager().getDefaultFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
     }
 
-    public BitmapText cloneBitmapText() {
-        BitmapText bitmapText = new BitmapText();
-        bitmapText.setXY(getX(), getY());
-        bitmapText.setText(getText());
-        bitmapText.setSize(getWidth(), getHeight());
-        bitmapText.setAlpha(getAlpha());
-        bitmapText.setMulticolor(isMulticolor());
-        bitmapText.setBitmapFont(getBitmapFont());
-        bitmapText.setVertexBleedingFix(getVertexBleedingFix());
-        bitmapText.setTextureBleedingFix(getTextureBleedingFix());
-        bitmapText.setColor(getColor());
-        bitmapText.setName(bitmapText.getName() + "_copy_" + getName());
-        bitmapText.setSpacing(getSpacing());
-        bitmapText.setLineSpacing(getLineSpacing());
-        bitmapText.setRotation(getRotation());
-        bitmapText.setVisible(isVisible());
-        bitmapText.setAutosize(isAutosize());
-        bitmapText.setMultiline(isMultiline());
-        bitmapText.setWordWrap(isWordWrap());
-        bitmapText.setCacheAsSprite(isCacheAsSprite());
-        bitmapText.setScale(getScaleX(), getScaleY());
-        return bitmapText;
+    public Text cloneBitmapText() {
+        Text text = new Text();
+        text.setXY(getX(), getY());
+        text.setText(getText());
+        text.setSize(getWidth(), getHeight());
+        text.setAlpha(getAlpha());
+        text.setMulticolor(isMulticolor());
+        text.setFont(getFont());
+        text.setVertexBleedingFix(getVertexBleedingFix());
+        text.setTextureBleedingFix(getTextureBleedingFix());
+        text.setColor(getColor());
+        text.setName(text.getName() + "_copy_" + getName());
+        text.setSpacing(getSpacing());
+        text.setLineSpacing(getLineSpacing());
+        text.setRotation(getRotation());
+        text.setVisible(isVisible());
+        text.setAutosize(isAutosize());
+        text.setMultiline(isMultiline());
+        text.setWordWrap(isWordWrap());
+        text.setCacheAsSprite(isCacheAsSprite());
+        text.setScale(getScaleX(), getScaleY());
+        return text;
     }
 
     public void setCacheAsSprite(boolean cacheAsSprite) {
@@ -147,8 +147,8 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
     }
 
     public void disposeOnRemoveFromStage() {
-        addEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE, event -> {
-            removeEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE);
+        addEventListener(Text.class, Event.REMOVE_FROM_STAGE, event -> {
+            removeEventListener(Text.class, Event.REMOVE_FROM_STAGE);
             if (sprite != null && sprite.getTextureClip() != null) {
                 D2D2.textureManager().unloadTexture(sprite.getTextureClip().getTexture());
             }
@@ -188,7 +188,7 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
     }
 
     public float computeTextWidth(String text) {
-        return bitmapFont.computeTextWidth(text, getSpacing());
+        return font.computeTextWidth(text, getSpacing());
     }
 
     public void setMultiline(boolean multiline) {
@@ -250,12 +250,12 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
         return text == null || text.length() == 0;
     }
 
-    public BitmapFont getBitmapFont() {
-        return bitmapFont;
+    public Font getFont() {
+        return font;
     }
 
-    public void setBitmapFont(BitmapFont bitmapFont) {
-        this.bitmapFont = bitmapFont;
+    public void setFont(Font font) {
+        this.font = font;
         updateCachedSprite();
     }
 
@@ -283,7 +283,7 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
         final char[] chars = getPlainText().toCharArray();
         float w = 0;
 
-        final BitmapFont font = getBitmapFont();
+        final Font font = getFont();
 
         float max = 0;
 
@@ -310,7 +310,7 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
         final char[] chars = getPlainText().toCharArray();
         float w = 0;
 
-        final BitmapFont font = getBitmapFont();
+        final Font font = getFont();
 
         float max = 0;
 
@@ -347,7 +347,7 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
     @Override
     public float getHeight() {
         if (!isMultiline()) {
-            return bitmapFont.getZeroCharHeight();
+            return font.getZeroCharHeight();
         }
 
         if (isAutosize()) {
@@ -414,11 +414,11 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
     }
 
     public float getCharWidth() {
-        return getBitmapFont().getCharInfo('0').width();
+        return getFont().getCharInfo('0').width();
     }
 
     public float getCharHeight() {
-        return getBitmapFont().getCharInfo('0').height();
+        return getFont().getCharInfo('0').height();
     }
 
     @Override
@@ -431,7 +431,7 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
         return "BitmapText{" +
             "text='" + text + '\'' +
             ", color=" + color +
-            ", bitmapFont=" + bitmapFont +
+            ", bitmapFont=" + font +
             ", lineSpacing=" + lineSpacing +
             ", spacing=" + spacing +
             ", boundWidth=" + width +

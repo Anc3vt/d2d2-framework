@@ -25,14 +25,14 @@ import com.ancevt.d2d2.display.SimpleContainer;
 import com.ancevt.d2d2.display.Colored;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.Resizable;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 
 public class DebugBorder extends SimpleContainer implements Resizable, Colored, Disposable {
 
     private final BorderedRectangle borderedRectangle;
     private final DisplayObject displayObject;
-    private final BitmapText label;
+    private final Text label;
 
     private boolean disposed;
 
@@ -48,7 +48,7 @@ public class DebugBorder extends SimpleContainer implements Resizable, Colored, 
 
         addChild(borderedRectangle);
 
-        label = new BitmapText();
+        label = new Text();
         label.setText(displayObject.getDisplayObjectId() + " " + displayObject.getName());
         label.setAutosize(true);
         addChild(label, 2, -label.getHeight());

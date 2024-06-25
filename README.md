@@ -262,32 +262,32 @@ Like `Sprite`, `BitmapText` is one of display objects, allowing text to be displ
 
 @Override
 public void onCreate(Stage stage) {
-    BitmapText bitmapText1 = new BitmapText();
-    bitmapText1.setText("bitmapText1: Using default bitmap font\nSecond line...\nThird...");
-    bitmapText1.setColor(Color.YELLOW);
-    bitmapText1.setScale(2, 2);
-    stage.addChild(bitmapText1, 100, 100);
+    BitmapText text1 = new BitmapText();
+    text1.setText("text1: Using default bitmap font\nSecond line...\nThird...");
+    text1.setColor(Color.YELLOW);
+    text1.setScale(2, 2);
+    stage.addChild(text1, 100, 100);
 }
 ```
 
 It will look like this:
 
-![BitmapText1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/bitmapText1.png)
+![BitmapText1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/text1.png)
 
 ### BitmapText with the TrueType font, using `TrueTypeBitmapFontBuilder`
 
 ```java
 public void onCreate(Stage stage) {
-    BitmapFont bitmapFont = new TrueTypeBitmapFontBuilder()
+    BitmapFont font = new TrueTypeBitmapFontBuilder()
       .fontSize(24)
       .assetPath("d2d2ttf/FreeSansBold.ttf")
       .textAntialias(true)
       .build();
 
-    BitmapText bitmapText2 = new BitmapText(bitmapFont);
-    bitmapText2.setText("bitmapText2: Using TtfBitmapFontBuilder generated bitmap font");
-    bitmapText2.setColor(Color.GREEN);
-    stage.addChild(bitmapText2, 100, 200);
+    BitmapText text2 = new BitmapText(font);
+    text2.setText("text2: Using TtfBitmapFontBuilder generated bitmap font");
+    text2.setColor(Color.GREEN);
+    stage.addChild(text2, 100, 200);
 }
 ```
 
@@ -295,34 +295,34 @@ In this example, the TrueType font file is located in the resources as `../asset
 
 It will look like this:
 
-![BitmapText2](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/bitmapText2.png)
+![BitmapText2](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/text2.png)
 
 ### Multicolor BitmapText
 
 ```java
 public void onCreate(Stage stage) {
-    BitmapFont bitmapFont = new TrueTypeBitmapFontBuilder()
+    BitmapFont font = new TrueTypeBitmapFontBuilder()
       .fontSize(24)
       .assetPath("d2d2ttf/FreeSansBold.ttf")
       .textAntialias(true)
       .build();
 
-    BitmapText bitmapText3 = new BitmapText(bitmapFont);
+    BitmapText text3 = new BitmapText(font);
     // Enable multicolor
-    bitmapText3.setMulticolorEnabled(true);
+    text3.setMulticolorEnabled(true);
     // Multicolor text should start with the `#` sign. It will not be rendered and will only signal
     // to the bitmap text that it should be rendered using multicolor
-    bitmapText3.setText("#bitmapText3: <FF00FF>multicolor<FF99EE> bitmap<0000FF> text\n" +
+    text3.setText("#text3: <FF00FF>multicolor<FF99EE> bitmap<0000FF> text\n" +
         "<AABBEE>The second line of bitmap text");
 
     // place it on the stage
-    stage.addChild(bitmapText3, 100, 300);
+    stage.addChild(text3, 100, 300);
 }
 ```
 
 It will look like this:
 
-![Container1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/bitmapText3.png)
+![Container1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/text3.png)
 
 ## Container
 
