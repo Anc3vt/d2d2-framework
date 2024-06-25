@@ -31,16 +31,16 @@ import static com.ancevt.d2d2.display.text.CharSource.SUPPLEMENTAL_SYMBOLS;
 
 public class TrueTypeBitmapFontBuilder {
 
-    private static final int DEFAULT_ATLAS_WIDTH = 512;
-    private static final int DEFAULT_ATLAS_HEIGHT = 512;
+    private static final int DEFAULT_WIDTH = 512;
+    private static final int DEFAULT_HEIGHT = 512;
     private static final int DEFAULT_FONT_SIZE = 12;
     private static final int DEFAULT_SPACING_X = 2;
     private static final int DEFAULT_SPACING_Y = 2;
 
     @Getter
-    private int atlasWidth = DEFAULT_ATLAS_WIDTH;
+    private int atlasWidth = DEFAULT_WIDTH;
     @Getter
-    private int atlasHeight = DEFAULT_ATLAS_HEIGHT;
+    private int atlasHeight = DEFAULT_HEIGHT;
     @Getter
     private InputStream inputStream;
     @Getter

@@ -47,7 +47,7 @@ public class SpriteFactory {
                         textureHeight
                     )),
                 key -> D2D2.textureManager()
-                    .loadTextureAtlas(assetPath)
+                    .loadTexture(assetPath)
                     .createTextureClip(textureX, textureY, textureWidth, textureHeight)
             )
         );

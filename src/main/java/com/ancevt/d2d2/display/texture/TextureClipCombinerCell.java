@@ -125,11 +125,11 @@ public class TextureClipCombinerCell {
         this.rotation = rotation;
     }
 
-    public TextureClip getTexture() {
+    public TextureClip getTextureClip() {
         return textureClip;
     }
 
-    public void setTexture(TextureClip textureClip) {
+    public void setTextureClip(TextureClip textureClip) {
         this.textureClip = textureClip;
     }
 

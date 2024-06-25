@@ -24,20 +24,20 @@ import java.io.InputStream;
 // TODO: refactor and delete this interface
 public interface ITextureEngine {
 
-    boolean bind(TextureAtlas textureAtlas);
+    boolean bind(Texture texture);
 
-    void enable(TextureAtlas textureAtlas);
+    void enable(Texture texture);
 
-    void disable(TextureAtlas textureAtlas);
+    void disable(Texture texture);
 
-    TextureAtlas createTextureAtlas(InputStream pngInputStream);
+    Texture createTexture(InputStream pngInputStream);
 
-    TextureAtlas createTextureAtlas(String assetPath);
+    Texture createTexture(String assetPath);
 
-    TextureAtlas createTextureAtlas(int width, int height, TextureClipCombinerCell[] cells);
+    Texture createTexture(int width, int height, TextureClipCombinerCell[] cells);
 
-    void unloadTextureAtlas(TextureAtlas textureAtlas);
+    void unloadTexture(Texture texture);
 
-    TextureAtlas bitmapTextToTextureAtlas(BitmapText bitmapText);
+    Texture bitmapTextToTexture(BitmapText bitmapText);
 
 }

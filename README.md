@@ -209,9 +209,9 @@ public void onCreate(Stage stage) {
     // Get the texture manager from D2D2
     TextureManager textureManager = D2D2.textureManager();
     // Load the texture atlas from src/main/resources/assets/
-    TextureAtlas textureAtlas = textureManager.loadTextureAtlas("d2d2-samples-tileset.png");
+    TextureAtlas texture = textureManager.loadTextureAtlas("d2d2-samples-tileset.png");
     // Create a texture clip from the atlas with the specified coordinates and dimensions
-    TextureClip textureClip = textureAtlas.createTexture(256, 0, 144, 128);
+    TextureClip textureClip = texture.createTexture(256, 0, 144, 128);
     // Create a sprite using the created textureClip
     Sprite sprite = new SimpleSprite(textureClip);
 
@@ -226,7 +226,7 @@ Running example looks like this:
 
 ![TextureManager1](https://raw.githubusercontent.com/Anc3vt/d2d2-core/09a1f6658d3f0ea4219e5cd3f16c3e3ed6f75937/img/TextureManagerDemo.png)
 
-In the example above, pay attention to the method call `textureAtlas.createTextureClip(256, 0, 144, 128)`, where the coordinates of the required texture clip on the texture atlas and its size in pixels are passed.
+In the example above, pay attention to the method call `texture.createTextureClip(256, 0, 144, 128)`, where the coordinates of the required texture clip on the texture atlas and its size in pixels are passed.
 
 `256,0` - are the coordinates of the top-left corner of the texture clip on the atlas, and `144,128` - is the size of the texture clip.
 
@@ -250,7 +250,7 @@ Here are some commonly used sizes that meet this requirement:
 
 Use these sizes to create texture atlases. For example, if you want to create a texture atlas with dimensions of 256x256 pixels, you can place 16 texture clips of size 64x64 pixels on it, or 64 texture clips of size 32x32 pixels, and so on.
 
-The procedure for unloading texture atlases is the reverse of loading: `D2D2.textureManager().unloadTextureAtlas(textureAtlas)`.
+The procedure for unloading texture atlases is the reverse of loading: `D2D2.textureManager().unloadTextureAtlas(texture)`.
 
 ## BitmapText
 

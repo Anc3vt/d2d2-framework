@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TextureClip {
 
-    private final TextureAtlas textureAtlas;
+    private final Texture texture;
     private final int x;
     private final int y;
     private final int width;
@@ -38,11 +38,11 @@ public class TextureClip {
 
 
     public TextureClip createSubTextureClip(int x, int y, int width, int height) {
-        return getTextureAtlas().createTextureClip(getX() + x, getY() + y, width, height);
+        return getTexture().createTextureClip(getX() + x, getY() + y, width, height);
     }
 
-    public TextureAtlas getTextureAtlas() {
-        return textureAtlas;
+    public Texture getTexture() {
+        return texture;
     }
 
     public String stringify() {
@@ -52,7 +52,7 @@ public class TextureClip {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
-            "atlas=" + textureAtlas +
+            "texture=" + texture +
             ", x=" + x +
             ", y=" + y +
             ", width=" + width +

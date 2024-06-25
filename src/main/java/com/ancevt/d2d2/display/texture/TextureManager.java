@@ -30,9 +30,9 @@ import java.util.Map;
 
 public class TextureManager {
 
-    private final List<TextureAtlas> textureAtlases;
+    private final List<Texture> textures;
 
-    private final Map<String, TextureAtlas> textureAtlasCache;
+    private final Map<String, Texture> textureCache;
 
     private final Map<String, TextureClip> textureClips;
 
@@ -42,60 +42,60 @@ public class TextureManager {
 
     public TextureManager() {
         textureClips = new HashMap<>();
-        textureAtlases = new ArrayList<>();
-        textureAtlasCache = new HashMap<>();
+        textures = new ArrayList<>();
+        textureCache = new HashMap<>();
     }
 
-    public TextureAtlas loadTextureAtlas(InputStream pngInputStream) {
-        final TextureAtlas result = textureEngine.createTextureAtlas(pngInputStream);
-        textureAtlases.add(result);
+    public Texture loadTexture(InputStream pngInputStream) {
+        final Texture result = textureEngine.createTexture(pngInputStream);
+        textures.add(result);
         return result;
     }
 
-    public TextureAtlas loadTextureAtlas(String assetPath) {
-        if (textureAtlasCache.containsKey(assetPath)) {
-            return textureAtlasCache.get(assetPath);
+    public Texture loadTexture(String assetPath) {
+        if (textureCache.containsKey(assetPath)) {
+            return textureCache.get(assetPath);
         }
 
-        final TextureAtlas result = textureEngine.createTextureAtlas(assetPath);
-        textureAtlases.add(result);
-        textureAtlasCache.put(assetPath, result);
+        final Texture result = textureEngine.createTexture(assetPath);
+        textures.add(result);
+        textureCache.put(assetPath, result);
         return result;
     }
 
-    public void unloadTextureAtlas(TextureAtlas textureAtlas) {
-        textureEngine.unloadTextureAtlas(textureAtlas);
-        textureAtlases.remove(textureAtlas);
+    public void unloadTexture(Texture texture) {
+        textureEngine.unloadTexture(texture);
+        textures.remove(texture);
 
-        for (Map.Entry<String, TextureAtlas> e : textureAtlasCache.entrySet()) {
-            if (e.getValue() == textureAtlas) {
-                textureAtlasCache.remove(e.getKey());
+        for (Map.Entry<String, Texture> e : textureCache.entrySet()) {
+            if (e.getValue() == texture) {
+                textureCache.remove(e.getKey());
                 break;
             }
         }
     }
 
     public void clear() {
-        while (!textureAtlases.isEmpty()) {
-            unloadTextureAtlas(textureAtlases.get(0));
+        while (!textures.isEmpty()) {
+            unloadTexture(textures.get(0));
         }
     }
 
-    public TextureAtlas bitmapTextToTextureAtlas(BitmapText bitmapText) {
-        TextureAtlas textureAtlas = textureEngine.bitmapTextToTextureAtlas(bitmapText);
-        textureAtlases.add(textureAtlas);
-        return textureAtlas;
+    public Texture bitmapTextToTexture(BitmapText bitmapText) {
+        Texture texture = textureEngine.bitmapTextToTexture(bitmapText);
+        textures.add(texture);
+        return texture;
     }
 
-    public int getTextureAtlasCount() {
-        return textureAtlases.size();
+    public int getTextureCount() {
+        return textures.size();
     }
 
-    public TextureAtlas getTextureAtlas(int index) {
-        return textureAtlases.get(index);
+    public Texture getTexture(int index) {
+        return textures.get(index);
     }
 
-    public void addTexture(String key, TextureClip textureClip) {
+    public void addTextureClip(String key, TextureClip textureClip) {
         textureClips.put(key, textureClip);
     }
 
@@ -115,11 +115,11 @@ public class TextureManager {
         }
     }
 
-    public boolean containsTextureAtlas(TextureAtlas textureAtlas) {
-        return textureAtlases.contains(textureAtlas);
+    public boolean containsTexture(Texture texture) {
+        return textures.contains(texture);
     }
 
-    public void addTextureAtlas(TextureAtlas textureAtlas) {
-        textureAtlases.add(textureAtlas);
+    public void addTexture(Texture texture) {
+        textures.add(texture);
     }
 }

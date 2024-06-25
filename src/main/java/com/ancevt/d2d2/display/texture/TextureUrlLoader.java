@@ -30,7 +30,7 @@ import java.net.http.HttpResponse;
 public class TextureUrlLoader extends BaseEventDispatcher {
 
     private String url;
-    private TextureAtlas lastLoadedTextureAtlas;
+    private Texture lastLoadedTexture;
 
     public TextureUrlLoader(String url) {
         this.url = url;
@@ -64,11 +64,11 @@ public class TextureUrlLoader extends BaseEventDispatcher {
     }
 
     private byte[] createTexture(byte[] bytes) {
-        this.lastLoadedTextureAtlas = D2D2.textureManager().loadTextureAtlas(new ByteArrayInputStream(bytes));
+        this.lastLoadedTexture = D2D2.textureManager().loadTexture(new ByteArrayInputStream(bytes));
         dispatchEvent(TextureUrlLoaderEvent.builder()
                 .type(TextureUrlLoaderEvent.TEXTURE_LOAD_COMPLETE)
                 .bytes(bytes)
-                .textureAtlas(lastLoadedTextureAtlas)
+                .texture(lastLoadedTexture)
                 .build());
         return bytes;
     }
@@ -81,8 +81,8 @@ public class TextureUrlLoader extends BaseEventDispatcher {
         return url;
     }
 
-    public TextureAtlas getLastLoadedTextureAtlas() {
-        return lastLoadedTextureAtlas;
+    public Texture getLastLoadedTexture() {
+        return lastLoadedTexture;
     }
 
 
