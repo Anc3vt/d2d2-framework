@@ -107,6 +107,8 @@ public class InteractiveManager {
                     .type(InteractiveEvent.WHEEL)
                     .delta(e.getDelta())
                     .shift(e.isShift())
+                    .x(e.getX())
+                    .y(e.getY())
                     .control(e.isControl())
                     .build());
             }
