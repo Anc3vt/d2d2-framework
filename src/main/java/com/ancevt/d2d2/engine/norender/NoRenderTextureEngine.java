@@ -21,7 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.ITextureEngine;
-import com.ancevt.d2d2.display.texture.TextureAtlas;
+import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.display.texture.TextureClipCombinerCell;
 
 
@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NoRenderTextureEngine implements ITextureEngine {
-    private int textureAtlasIdCounter;
+    private int textureIdCounter;
     private final Map<Integer, Image> images;
 
     public NoRenderTextureEngine() {
@@ -42,28 +42,28 @@ public class NoRenderTextureEngine implements ITextureEngine {
     }
 
     @Override
-    public boolean bind(TextureAtlas textureAtlas) {
+    public boolean bind(Texture texture) {
         return false;
     }
 
     @Override
-    public void enable(TextureAtlas textureAtlas) {
+    public void enable(Texture texture) {
 
     }
 
     @Override
-    public void disable(TextureAtlas textureAtlas) {
+    public void disable(Texture texture) {
 
     }
 
     @Override
-    public TextureAtlas createTextureAtlas(InputStream pngInputStream) {
+    public Texture createTexture(InputStream pngInputStream) {
         try {
             BufferedImage image = ImageIO.read(pngInputStream);
-            textureAtlasIdCounter++;
-            images.put(textureAtlasIdCounter, image);
-            return new TextureAtlas(
-                    textureAtlasIdCounter,
+            textureIdCounter++;
+            images.put(textureIdCounter, image);
+            return new Texture(
+                textureIdCounter,
                     image.getWidth(),
                     image.getHeight()
             );
@@ -73,29 +73,29 @@ public class NoRenderTextureEngine implements ITextureEngine {
     }
 
     @Override
-    public TextureAtlas createTextureAtlas(String assetPath) {
-        return createTextureAtlas(Assets.getAsset(assetPath));
+    public Texture createTexture(String assetPath) {
+        return createTexture(Assets.getAsset(assetPath));
     }
 
     @Override
-    public TextureAtlas createTextureAtlas(int width, int height, TextureClipCombinerCell[] cells) {
-        textureAtlasIdCounter++;
-        images.put(textureAtlasIdCounter, new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
-        return new TextureAtlas(textureAtlasIdCounter, width, height);
+    public Texture createTexture(int width, int height, TextureClipCombinerCell[] cells) {
+        textureIdCounter++;
+        images.put(textureIdCounter, new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
+        return new Texture(textureIdCounter, width, height);
     }
 
     @Override
-    public void unloadTextureAtlas( TextureAtlas textureAtlas) {
-        images.remove(textureAtlas.getId());
+    public void unloadTexture(Texture texture) {
+        images.remove(texture.getId());
     }
 
     @Override
-    public TextureAtlas bitmapTextToTextureAtlas(BitmapText bitmapText) {
+    public Texture bitmapTextToTexture(BitmapText bitmapText) {
         int width = (int) bitmapText.getWidth();
         int height = (int) bitmapText.getHeight();
-        textureAtlasIdCounter++;
-        TextureAtlas textureAtlas = new TextureAtlas(textureAtlasIdCounter, width, height);
-        D2D2.textureManager().addTexture("_textureAtlas_text_" + textureAtlas.getId(), textureAtlas.createTextureClip());
-        return textureAtlas;
+        textureIdCounter++;
+        Texture texture = new Texture(textureIdCounter, width, height);
+        D2D2.textureManager().addTextureClip("_texture_text_" + texture.getId(), texture.createTextureClip());
+        return texture;
     }
 }

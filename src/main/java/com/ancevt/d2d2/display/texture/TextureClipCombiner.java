@@ -58,7 +58,7 @@ public class TextureClipCombiner {
         cell.setX(x);
         cell.setY(y);
         cell.setColor(color);
-        cell.setTexture(textureClip);
+        cell.setTextureClip(textureClip);
         cell.setScaleX(scaleX);
         cell.setScaleY(scaleY);
         cell.setAlpha(alpha);
@@ -104,7 +104,7 @@ public class TextureClipCombiner {
         final TextureClipCombinerCell cell = new TextureClipCombinerCell();
         cell.setX(x);
         cell.setY(y);
-        cell.setTexture(textureClip);
+        cell.setTextureClip(textureClip);
         cell.setScaleX(scaleX);
         cell.setScaleY(scaleY);
         cell.setId(cellIdCounter++);
@@ -121,7 +121,7 @@ public class TextureClipCombiner {
         final TextureClipCombinerCell cell = new TextureClipCombinerCell();
         cell.setX(x);
         cell.setY(y);
-        cell.setTexture(textureClip);
+        cell.setTextureClip(textureClip);
         cell.setRepeatX(repeatX);
         cell.setRepeatY(repeatY);
         cell.setId(cellIdCounter++);
@@ -137,7 +137,7 @@ public class TextureClipCombiner {
         final TextureClipCombinerCell cell = new TextureClipCombinerCell();
         cell.setX(x);
         cell.setY(y);
-        cell.setTexture(textureClip);
+        cell.setTextureClip(textureClip);
         cell.setId(cellIdCounter++);
         cells.add(cell);
 
@@ -159,9 +159,9 @@ public class TextureClipCombiner {
         }
     }
 
-    public final TextureAtlas createTextureAtlas() {
+    public final Texture createTexture() {
         return D2D2.textureManager().getTextureEngine().
-            createTextureAtlas(width, height, cells.toArray(new TextureClipCombinerCell[]{}));
+            createTexture(width, height, cells.toArray(new TextureClipCombinerCell[]{}));
     }
 
 }

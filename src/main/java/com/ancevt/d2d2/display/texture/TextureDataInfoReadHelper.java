@@ -29,7 +29,7 @@ class TextureDataInfoReadHelper {
     private TextureDataInfoReadHelper() {
     }
 
-    private static TextureAtlas currentTextureAtlas;
+    private static Texture currentTexture;
 
     public static void readTextureDataInfoFile(String assetPath) throws IOException {
         final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Assets.getAsset(assetPath)));
@@ -49,7 +49,7 @@ class TextureDataInfoReadHelper {
         char firstChar = line.charAt(0);
         if (firstChar == ':') {
             String tileSetName = line.substring(1);
-            currentTextureAtlas = D2D2.textureManager().loadTextureAtlas(tileSetName);
+            currentTexture = D2D2.textureManager().loadTexture(tileSetName);
             return;
         }
 
@@ -61,8 +61,8 @@ class TextureDataInfoReadHelper {
         int w = Integer.parseInt(splitted[3]);
         int h = Integer.parseInt(splitted[4]);
 
-        TextureClip textureClip = currentTextureAtlas.createTextureClip(x, y, w, h);
-        D2D2.textureManager().addTexture(textureKey, textureClip);
+        TextureClip textureClip = currentTexture.createTextureClip(x, y, w, h);
+        D2D2.textureManager().addTextureClip(textureKey, textureClip);
     }
 
 }

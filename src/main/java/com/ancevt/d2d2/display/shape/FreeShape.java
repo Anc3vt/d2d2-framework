@@ -3,11 +3,9 @@ package com.ancevt.d2d2.display.shape;
 import com.ancevt.d2d2.display.BaseDisplayObject;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Colored;
-import com.ancevt.d2d2.display.texture.TextureAtlas;
-import com.ancevt.d2d2.exception.NotImplementedException;
+import com.ancevt.d2d2.display.texture.Texture;
 import lombok.Getter;
 import lombok.Setter;
-import org.lwjgl.opencl.APPLEGLSharing;
 import org.poly2tri.Poly2Tri;
 import org.poly2tri.geometry.polygon.Polygon;
 import org.poly2tri.geometry.polygon.PolygonPoint;
@@ -25,7 +23,7 @@ public class FreeShape extends BaseDisplayObject implements Shape, Colored {
     private Color color = Color.WHITE;
 
     @Setter
-    private TextureAtlas textureAtlas;
+    private Texture texture;
     @Getter
     private float currentX;
     @Getter

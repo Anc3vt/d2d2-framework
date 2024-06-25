@@ -150,14 +150,14 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
         addEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE, event -> {
             removeEventListener(BitmapText.class, Event.REMOVE_FROM_STAGE);
             if (sprite != null && sprite.getTextureClip() != null) {
-                D2D2.textureManager().unloadTextureAtlas(sprite.getTextureClip().getTextureAtlas());
+                D2D2.textureManager().unloadTexture(sprite.getTextureClip().getTexture());
             }
         });
     }
 
     private void updateCachedSprite() {
         if (sprite != null && sprite.getTextureClip() != null) {
-            D2D2.textureManager().unloadTextureAtlas(sprite.getTextureClip().getTextureAtlas());
+            D2D2.textureManager().unloadTexture(sprite.getTextureClip().getTexture());
         }
 
         if (isCacheAsSprite()) sprite = toSprite();
@@ -197,7 +197,7 @@ public class BitmapText extends BaseDisplayObject implements Colored, Resizable 
     }
 
     public SimpleSprite toSprite() {
-        SimpleSprite result = new SimpleSprite(D2D2.textureManager().bitmapTextToTextureAtlas(this).createTextureClip());
+        SimpleSprite result = new SimpleSprite(D2D2.textureManager().bitmapTextToTexture(this).createTextureClip());
         result.setXY(getX(), getY());
         result.setScale(getScaleX(), getScaleY());
         result.setRotation(getRotation());

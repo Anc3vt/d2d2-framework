@@ -19,12 +19,12 @@ package com.ancevt.d2d2.display.text;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.Disposable;
-import com.ancevt.d2d2.display.texture.TextureAtlas;
+import com.ancevt.d2d2.display.texture.Texture;
 
 public class BitmapFont implements Disposable {
 
     private final BitmapCharInfo[] charInfos;
-    private final TextureAtlas textureAtlas;
+    private final Texture texture;
     private final String name;
 
     private final boolean monospaced;
@@ -32,9 +32,9 @@ public class BitmapFont implements Disposable {
     private float paddingTop;
     private boolean disposed;
 
-    BitmapFont(String name, TextureAtlas textureAtlas, BitmapCharInfo[] charInfos) {
+    BitmapFont(String name, Texture texture, BitmapCharInfo[] charInfos) {
         this.name = name;
-        this.textureAtlas = textureAtlas;
+        this.texture = texture;
         this.charInfos = charInfos;
 
         BitmapCharInfo[] charInfosToCheck = {
@@ -100,8 +100,8 @@ public class BitmapFont implements Disposable {
         return charInfos['0'].height();
     }
 
-    public TextureAtlas getTextureAtlas() {
-        return textureAtlas;
+    public Texture getTexture() {
+        return texture;
     }
 
     public void setPaddingTop(float paddingTop) {
@@ -116,14 +116,14 @@ public class BitmapFont implements Disposable {
     public String toString() {
         return "BitmapFont{" +
                 "name = " + name +
-                ", textureAtlas=" + textureAtlas +
+                ", texture=" + texture +
                 '}';
     }
 
     @Override
     public void dispose() {
         disposed = true;
-        D2D2.textureManager().unloadTextureAtlas(getTextureAtlas());
+        D2D2.textureManager().unloadTexture(getTexture());
     }
 
     @Override

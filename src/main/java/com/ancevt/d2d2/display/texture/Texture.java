@@ -25,17 +25,17 @@ import java.util.StringTokenizer;
 
 import static java.lang.Integer.parseInt;
 
-public class TextureAtlas implements Disposable {
+public class Texture implements Disposable {
 
     private final int id;
     private final int width;
     private final int height;
 
-    private TextureAtlas(int id) {
+    private Texture(int id) {
         this(id, 0, 0);
     }
 
-    public TextureAtlas(int id, int width, int height) {
+    public Texture(int id, int width, int height) {
         this.id = id;
         this.width = width;
         this.height = height;
@@ -184,11 +184,11 @@ public class TextureAtlas implements Disposable {
 
     @Override
     public void dispose() {
-        D2D2.textureManager().unloadTextureAtlas(this);
+        D2D2.textureManager().unloadTexture(this);
     }
 
     public boolean isDisposed() {
-        return !D2D2.textureManager().containsTextureAtlas(this);
+        return !D2D2.textureManager().containsTexture(this);
     }
 
     @Override
