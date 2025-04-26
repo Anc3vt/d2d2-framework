@@ -18,8 +18,8 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,10 +32,10 @@ public class DebugLabel extends Text {
 
     private static final int DEFAULT_UPDATE_RATE = 10;
 
-    private static final Map<DisplayObject, DebugLabel> labels = new HashMap<>();
+    private static final Map<SceneEntity, DebugLabel> labels = new HashMap<>();
 
     @Getter
-    private final DisplayObject target;
+    private final SceneEntity target;
 
     @Getter
     @Setter
@@ -43,7 +43,7 @@ public class DebugLabel extends Text {
 
     private int tick;
 
-    public DebugLabel(DisplayObject target, BiConsumer<DisplayObject, StringBuilder> func, int updateRate) {
+    public DebugLabel(SceneEntity target, BiConsumer<SceneEntity, StringBuilder> func, int updateRate) {
         this.target = target;
         this.updateRate = updateRate;
 
@@ -72,7 +72,7 @@ public class DebugLabel extends Text {
         labels.remove(this);
     }
 
-    public static DebugLabel clear(DisplayObject target) {
+    public static DebugLabel clear(SceneEntity target) {
         DebugLabel debugLabel = labels.get(target);
         if (debugLabel != null) {
             debugLabel.dispose();
@@ -84,7 +84,7 @@ public class DebugLabel extends Text {
         new HashMap<>(labels).forEach((k, v) -> v.dispose());
     }
 
-    public static DebugLabel createLabel(DisplayObject target, BiConsumer<DisplayObject, StringBuilder> func, int updateRate) {
+    public static DebugLabel createLabel(SceneEntity target, BiConsumer<SceneEntity, StringBuilder> func, int updateRate) {
         if (labels.containsKey(target)) {
             labels.get(target).dispose();
         }
@@ -95,7 +95,7 @@ public class DebugLabel extends Text {
         return result;
     }
 
-    public static DebugLabel createLabel(DisplayObject target, BiConsumer<DisplayObject, StringBuilder> func) {
+    public static DebugLabel createLabel(SceneEntity target, BiConsumer<SceneEntity, StringBuilder> func) {
         return createLabel(target, func, DEFAULT_UPDATE_RATE);
     }
 

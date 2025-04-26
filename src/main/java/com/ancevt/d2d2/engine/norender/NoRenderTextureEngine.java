@@ -19,10 +19,10 @@ package com.ancevt.d2d2.engine.norender;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
-import com.ancevt.d2d2.display.text.Text;
-import com.ancevt.d2d2.display.texture.ITextureEngine;
-import com.ancevt.d2d2.display.texture.Texture;
-import com.ancevt.d2d2.display.texture.TextureClipCombinerCell;
+import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.texture.ITextureEngine;
+import com.ancevt.d2d2.scene.texture.Texture;
+import com.ancevt.d2d2.scene.texture.TextureClipCombinerCell;
 
 
 import javax.imageio.ImageIO;

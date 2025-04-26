@@ -18,17 +18,16 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.shape.BorderedRectangle;
-import com.ancevt.d2d2.display.shape.RectangleShape;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Scene;
+import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -36,12 +35,12 @@ import java.util.List;
 
 public class DebugDisplayObjectViewer {
 
-    private final List<DisplayObject> displayObjects = new ArrayList<>();
+    private final List<SceneEntity> sceneEntities = new ArrayList<>();
 
     @Getter
-    private List<Class<? extends DisplayObject>> typesIncluded = new ArrayList<>();
+    private List<Class<? extends SceneEntity>> typesIncluded = new ArrayList<>();
     @Getter
-    private List<Class<? extends DisplayObject>> typesExcluded = new ArrayList<>();
+    private List<Class<? extends SceneEntity>> typesExcluded = new ArrayList<>();
     private Container targetContainer;
     private boolean keyListenerEnabled;
 
@@ -66,12 +65,12 @@ public class DebugDisplayObjectViewer {
         setKeyListenerEnabled(keyListenerEnabled);
     }
 
-    public DebugDisplayObjectViewer setTypesExcluded(List<Class<? extends DisplayObject>> typesExcluded) {
+    public DebugDisplayObjectViewer setTypesExcluded(List<Class<? extends SceneEntity>> typesExcluded) {
         this.typesExcluded = typesExcluded;
         return this;
     }
 
-    public DebugDisplayObjectViewer setTypesIncluded(List<Class<? extends DisplayObject>> typesIncluded) {
+    public DebugDisplayObjectViewer setTypesIncluded(List<Class<? extends SceneEntity>> typesIncluded) {
         this.typesIncluded = typesIncluded;
         return this;
     }
@@ -99,7 +98,7 @@ public class DebugDisplayObjectViewer {
         RectangleShape rectangleShape = new RectangleShape(D2D2.stage().getWidth(), D2D2.stage().getHeight(), Color.BLACK);
         rectangleShape.setAlpha(0.5f);
         D2D2.stage().addChild(rectangleShape);
-        displayObjects.add(rectangleShape);
+        sceneEntities.add(rectangleShape);
 
         show(getTargetContainer(), -1);
     }
@@ -108,7 +107,7 @@ public class DebugDisplayObjectViewer {
         int counter = 0;
 
         for (int i = 0; i < container.getNumChildren(); i++) {
-            DisplayObject o = container.getChild(i);
+            SceneEntity o = container.getChild(i);
 
             if ((typesIncluded.isEmpty() || typesIncluded.contains(o.getClass())) &&
                 (typesExcluded.isEmpty() || !typesExcluded.contains(o.getClass()))) {
@@ -127,8 +126,8 @@ public class DebugDisplayObjectViewer {
 
                 D2D2.stage().addChild(text, o.getAbsoluteX(), o.getAbsoluteY());
 
-                displayObjects.add(borderedRectangle);
-                displayObjects.add(text);
+                sceneEntities.add(borderedRectangle);
+                sceneEntities.add(text);
 
                 borderedRectangle.addEventListener(Event.ENTER_FRAME, event -> {
                     borderedRectangle.setSize(o.getWidth() * o.getAbsoluteScaleX(), o.getHeight() * o.getAbsoluteScaleY());
@@ -147,8 +146,8 @@ public class DebugDisplayObjectViewer {
     }
 
     public void clear() {
-        while (!displayObjects.isEmpty()) {
-            displayObjects.remove(0).removeFromParent();
+        while (!sceneEntities.isEmpty()) {
+            sceneEntities.remove(0).removeFromParent();
         }
     }
 
@@ -156,7 +155,7 @@ public class DebugDisplayObjectViewer {
         if (keyListenerEnabled == b) return this;
         keyListenerEnabled = b;
 
-        Stage s = D2D2.stage();
+        Scene s = D2D2.stage();
 
         s.removeEventListener(this, InteractiveEvent.KEY_DOWN);
         s.removeEventListener(this, InteractiveEvent.KEY_UP);

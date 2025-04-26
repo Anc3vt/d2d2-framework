@@ -17,10 +17,7 @@
  */
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.SimpleSprite;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import lombok.Getter;
@@ -28,7 +25,7 @@ import lombok.Setter;
 
 import static com.ancevt.d2d2.D2D2.stage;
 
-public class StarletSpace extends SimpleContainer {
+public class StarletSpace extends com.ancevt.d2d2.scene.ContainerImpl {
 
     private float velocityX = 30f;
     @Getter
@@ -53,9 +50,9 @@ public class StarletSpace extends SimpleContainer {
     }
 
     public static StarletSpace haveFun(boolean logo) {
-        Stage stage = stage();
+        com.ancevt.d2d2.scene.Scene stage = stage();
         stage.setBackgroundColor(Color.of(0x000510));
-        SimpleSprite d2d2Title = new SimpleSprite("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
+        com.ancevt.d2d2.scene.SpriteImpl d2d2Title = new com.ancevt.d2d2.scene.SpriteImpl("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
         d2d2Title.setColor(Color.LIGHT_GRAY);
         StarletSpace starletSpace = new StarletSpace(100);
         if (logo) starletSpace.addChild(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
@@ -71,16 +68,16 @@ public class StarletSpace extends SimpleContainer {
         return starletSpace;
     }
 
-    private static class Starlet extends SimpleContainer {
+    private static class Starlet extends com.ancevt.d2d2.scene.ContainerImpl {
 
-        private final SimpleSprite sprite;
+        private final com.ancevt.d2d2.scene.SpriteImpl sprite;
         private float t;
         private final StarletSpace starletSpace;
 
 
         public Starlet(StarletSpace starletSpace) {
             this.starletSpace = starletSpace;
-            sprite = new SimpleSprite("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
+            sprite = new com.ancevt.d2d2.scene.SpriteImpl("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
             sprite.setXY(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
             addChild(sprite);
 
@@ -112,7 +109,7 @@ public class StarletSpace extends SimpleContainer {
                 x += step;
 
                 if (x % starletSpace.someVal == 0) {
-                    SimpleSprite plume = sprite.cloneSprite();
+                    com.ancevt.d2d2.scene.SpriteImpl plume = sprite.cloneSprite();
                     plume.addEventListener(Event.LOOP_UPDATE, event -> {
                         plume.setAlpha(plume.getAlpha() - 0.01f);
                         plume.moveY(0.05f);

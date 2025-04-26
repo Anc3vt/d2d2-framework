@@ -18,9 +18,9 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.text.Font;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.text.Font;
+import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
 
 public class FpsMeter extends Text {

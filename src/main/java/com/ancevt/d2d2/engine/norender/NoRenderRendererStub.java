@@ -17,21 +17,21 @@
  */
 package com.ancevt.d2d2.engine.norender;
 
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.Playable;
-import com.ancevt.d2d2.display.Renderer;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Playable;
+import com.ancevt.d2d2.scene.Renderer;
+import com.ancevt.d2d2.scene.Scene;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 
 public class NoRenderRendererStub implements Renderer {
 
-    private final Stage stage;
+    private final Scene scene;
     private int zOrderCounter;
 
-    public NoRenderRendererStub(Stage stage) {
-        this.stage = stage;
+    public NoRenderRendererStub(Scene scene) {
+        this.scene = scene;
     }
 
     @Override
@@ -47,41 +47,41 @@ public class NoRenderRendererStub implements Renderer {
     @Override
     public void renderFrame() {
         zOrderCounter = 0;
-        renderDisplayObject(stage);
+        renderDisplayObject(scene);
     }
 
-    private void renderDisplayObject(DisplayObject displayObject) {
-        if (!displayObject.isVisible()) return;
+    private void renderDisplayObject(SceneEntity sceneEntity) {
+        if (!sceneEntity.isVisible()) return;
 
-        displayObject.onEnterFrame();
-        displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.ENTER_FRAME, displayObject));
+        sceneEntity.onEnterFrame();
+        sceneEntity.dispatchEvent(EventPool.simpleEventSingleton(Event.ENTER_FRAME, sceneEntity));
 
-        displayObject.onLoopUpdate();
-        displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.LOOP_UPDATE, displayObject));
+        sceneEntity.onLoopUpdate();
+        sceneEntity.dispatchEvent(EventPool.simpleEventSingleton(Event.LOOP_UPDATE, sceneEntity));
 
         zOrderCounter++;
-        displayObject.setAbsoluteZOrderIndex(zOrderCounter);
+        sceneEntity.setAbsoluteZOrderIndex(zOrderCounter);
 
-        if (displayObject instanceof Container container) {
+        if (sceneEntity instanceof Container container) {
             for (int i = 0; i < container.getNumChildren(); i++) {
                 renderDisplayObject(container.getChild(i));
             }
         }
 
-        if (displayObject instanceof Playable) {
-            ((Playable) displayObject).processFrame();
+        if (sceneEntity instanceof Playable) {
+            ((Playable) sceneEntity).processFrame();
         }
 
-        displayObject.onExitFrame();
-        displayObject.dispatchEvent(EventPool.simpleEventSingleton(Event.EXIT_FRAME, displayObject));
+        sceneEntity.onExitFrame();
+        sceneEntity.dispatchEvent(EventPool.simpleEventSingleton(Event.EXIT_FRAME, sceneEntity));
     }
 
-    private void dispatchLoopUpdate(DisplayObject o) {
+    private void dispatchLoopUpdate(SceneEntity o) {
         if (!o.isVisible()) return;
 
         if (o instanceof Container c) {
             for (int i = 0; i < c.getNumChildren(); i++) {
-                DisplayObject child = c.getChild(i);
+                SceneEntity child = c.getChild(i);
                 dispatchLoopUpdate(child);
             }
         }

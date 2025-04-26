@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.event;
 
-import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.scene.Container;
 
 public class EventPool {
 

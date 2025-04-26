@@ -20,13 +20,13 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.commons.hash.MD5;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.shape.BorderedRectangle;
-import com.ancevt.d2d2.display.shape.RectangleShape;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.interactive.InteractiveContainer;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
+import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -50,7 +50,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 @Slf4j
-public class DebugPanel extends SimpleContainer {
+public class DebugPanel extends ContainerImpl {
 
     private static final Map<String, DebugPanel> debugPanels = new HashMap<>();
     private static boolean enabled;

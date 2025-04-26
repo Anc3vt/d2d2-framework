@@ -17,11 +17,11 @@
  */
 package com.ancevt.d2d2.lifecycle;
 
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.scene.Scene;
 import lombok.NonNull;
 
 public interface D2D2Application {
-    void onCreate(@NonNull Stage stage);
+    void onCreate(@NonNull Scene scene);
 
     default void onDispose() {}
 }

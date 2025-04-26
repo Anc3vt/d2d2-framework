@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.event;
 
-import com.ancevt.d2d2.display.texture.Texture;
+import com.ancevt.d2d2.scene.texture.Texture;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;

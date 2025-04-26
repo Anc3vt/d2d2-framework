@@ -18,15 +18,15 @@
 package com.ancevt.d2d2.engine.norender;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.Renderer;
-import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.Font;
-import com.ancevt.d2d2.display.text.TrueTypeFontBuilder;
+import com.ancevt.d2d2.scene.Renderer;
+import com.ancevt.d2d2.scene.Scene;
+import com.ancevt.d2d2.scene.text.Font;
+import com.ancevt.d2d2.scene.text.TrueTypeFontBuilder;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.ShaderFactory;
 import com.ancevt.d2d2.engine.SoundManager;
-import com.ancevt.d2d2.event.BaseEventDispatcher;
+import com.ancevt.d2d2.event.EventDispatcherImpl;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventPool;
 import com.ancevt.d2d2.event.LifecycleEvent;
@@ -36,11 +36,11 @@ import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
 
-public class NoRenderEngine extends BaseEventDispatcher implements Engine {
+public class NoRenderEngine extends EventDispatcherImpl implements Engine {
 
     private final int initialWidth;
     private final int initialHeight;
-    private Stage stage;
+    private Scene scene;
     private String title;
     private Renderer renderer;
     private boolean running;
@@ -129,21 +129,21 @@ public class NoRenderEngine extends BaseEventDispatcher implements Engine {
 
     @Override
     public void create() {
-        stage = new Stage();
-        stage.setSize(initialWidth, initialHeight);
-        renderer = new NoRenderRendererStub(stage);
+        scene = new Scene();
+        scene.setSize(initialWidth, initialHeight);
+        renderer = new NoRenderRendererStub(scene);
     }
 
     @Override
     public void start() {
         running = true;
-        stage.dispatchEvent(
+        scene.dispatchEvent(
             LifecycleEvent.builder()
                 .type(LifecycleEvent.START_MAIN_LOOP)
                 .build()
         );
         startNoRenderLoop();
-        stage.dispatchEvent(
+        scene.dispatchEvent(
             LifecycleEvent.builder()
                 .type(LifecycleEvent.EXIT_MAIN_LOOP)
                 .build()
@@ -151,8 +151,8 @@ public class NoRenderEngine extends BaseEventDispatcher implements Engine {
     }
 
     @Override
-    public Stage stage() {
-        return stage;
+    public Scene stage() {
+        return scene;
     }
 
     @Override

@@ -18,18 +18,18 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.shape.RectangleShape;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.Colored;
-import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.Colored;
+import com.ancevt.d2d2.scene.Container;
 import com.ancevt.d2d2.event.Event;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grid extends SimpleContainer implements Colored {
+public class Grid extends ContainerImpl implements Colored {
 
     public static final int DEFAULT_COLOR = 0xFFFFFF;
 

@@ -17,10 +17,10 @@
  */
 package com.ancevt.d2d2;
 
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapFontManager;
-import com.ancevt.d2d2.display.texture.TextureManager;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Scene;
+import com.ancevt.d2d2.scene.text.BitmapFontManager;
+import com.ancevt.d2d2.scene.texture.TextureManager;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.SoundManager;
@@ -51,7 +51,7 @@ public final class D2D2 {
     private static BitmapFontManager bitmapFontManager;
 
     @Getter
-    private static DisplayObject cursor;
+    private static SceneEntity cursor;
     private static Engine engine;
 
     @Getter
@@ -92,9 +92,9 @@ public final class D2D2 {
         int height = convert(p.getProperty(SystemProperties.D2D2_WINDOW_HEIGHT, "600")).toInt();
         Engine engine = createEngine(engineClassName, width, height, titleText);
 
-        Stage stage = D2D2.createStage(engine);
+        Scene scene = D2D2.createStage(engine);
         D2D2Application entryPoint = createMain(d2d2EntryPointClass);
-        entryPoint.onCreate(stage);
+        entryPoint.onCreate(scene);
         D2D2.loop();
         entryPoint.onDispose();
     }
@@ -103,7 +103,7 @@ public final class D2D2 {
         properties.forEach(System::setProperty);
     }
 
-    public static Stage createStage(Engine engine) {
+    public static Scene createStage(Engine engine) {
         bitmapFontManager = new BitmapFontManager();
         D2D2.engine = engine;
         engine.create();
@@ -160,7 +160,7 @@ public final class D2D2 {
         }
     }
 
-    public static void setCursor(DisplayObject cursor) {
+    public static void setCursor(SceneEntity cursor) {
         if (cursor == D2D2.cursor) return;
 
         if (cursor != null) {
@@ -174,7 +174,7 @@ public final class D2D2 {
         D2D2.cursor = cursor;
     }
 
-    public static Stage stage() {
+    public static Scene stage() {
         return engine.stage();
     }
 

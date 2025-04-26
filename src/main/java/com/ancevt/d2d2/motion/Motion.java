@@ -1,7 +1,7 @@
 package com.ancevt.d2d2.motion;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.BaseEventDispatcher;
+import com.ancevt.d2d2.event.EventDispatcherImpl;
 import com.ancevt.d2d2.event.Event;
 import lombok.Getter;
 
@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 import static com.ancevt.d2d2.motion.Motion.State.*;
 
-public class Motion<N extends Number> extends BaseEventDispatcher {
+public class Motion<N extends Number> extends EventDispatcherImpl {
 
     @Getter
     private final N beginValue;

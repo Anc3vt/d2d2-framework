@@ -18,30 +18,30 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.shape.BorderedRectangle;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.common.Disposable;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.Colored;
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.Resizable;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.Colored;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Resizable;
+import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
 
-public class DebugBorder extends SimpleContainer implements Resizable, Colored, Disposable {
+public class DebugBorder extends ContainerImpl implements Resizable, Colored, Disposable {
 
     private final BorderedRectangle borderedRectangle;
-    private final DisplayObject displayObject;
+    private final SceneEntity sceneEntity;
     private final Text label;
 
     private boolean disposed;
 
-    private DebugBorder(DisplayObject displayObject) {
+    private DebugBorder(SceneEntity sceneEntity) {
         Color color = Color.createVisibleRandomColor();
 
-        this.displayObject = displayObject;
-        borderedRectangle = new BorderedRectangle(displayObject.getWidth(),
-            displayObject.getHeight(),
+        this.sceneEntity = sceneEntity;
+        borderedRectangle = new BorderedRectangle(sceneEntity.getWidth(),
+            sceneEntity.getHeight(),
             Color.NO_COLOR,
             color
         );
@@ -49,12 +49,12 @@ public class DebugBorder extends SimpleContainer implements Resizable, Colored, 
         addChild(borderedRectangle);
 
         label = new Text();
-        label.setText(displayObject.getDisplayObjectId() + " " + displayObject.getName());
+        label.setText(sceneEntity.getDisplayObjectId() + " " + sceneEntity.getName());
         label.setAutosize(true);
         addChild(label, 2, -label.getHeight());
 
-        displayObject.addEventListener(this, Event.ADD_TO_STAGE, this::displayObject_addToStage);
-        displayObject.addEventListener(this, Event.REMOVE_FROM_STAGE, this::displayObject_removeFromStage);
+        sceneEntity.addEventListener(this, Event.ADD_TO_STAGE, this::displayObject_addToStage);
+        sceneEntity.addEventListener(this, Event.REMOVE_FROM_STAGE, this::displayObject_removeFromStage);
     }
 
     private void displayObject_removeFromStage(Event event) {
@@ -93,16 +93,16 @@ public class DebugBorder extends SimpleContainer implements Resizable, Colored, 
 
     @Override
     public void onEnterFrame() {
-        setXY(displayObject.getAbsoluteX(), displayObject.getAbsoluteY());
-        setSize(displayObject.getWidth(), displayObject.getHeight());
-        setScale(displayObject.getAbsoluteScaleX(), displayObject.getAbsoluteScaleY());
-        setRotation(displayObject.getAbsoluteRotation());
+        setXY(sceneEntity.getAbsoluteX(), sceneEntity.getAbsoluteY());
+        setSize(sceneEntity.getWidth(), sceneEntity.getHeight());
+        setScale(sceneEntity.getAbsoluteScaleX(), sceneEntity.getAbsoluteScaleY());
+        setRotation(sceneEntity.getAbsoluteRotation());
     }
 
     @Override
     public void dispose() {
-        displayObject.removeEventListener(this, Event.ADD_TO_STAGE);
-        displayObject.removeEventListener(this, Event.REMOVE_FROM_STAGE);
+        sceneEntity.removeEventListener(this, Event.ADD_TO_STAGE);
+        sceneEntity.removeEventListener(this, Event.REMOVE_FROM_STAGE);
         removeFromParent();
         disposed = true;
     }
@@ -112,9 +112,9 @@ public class DebugBorder extends SimpleContainer implements Resizable, Colored, 
         return disposed;
     }
 
-    public static DebugBorder create(DisplayObject displayObject) {
-        DebugBorder debugBorder = new DebugBorder(displayObject);
-        if (displayObject.isOnScreen()) {
+    public static DebugBorder create(SceneEntity sceneEntity) {
+        DebugBorder debugBorder = new DebugBorder(sceneEntity);
+        if (sceneEntity.isOnScreen()) {
             D2D2.stage().addChild(debugBorder);
         }
         return debugBorder;

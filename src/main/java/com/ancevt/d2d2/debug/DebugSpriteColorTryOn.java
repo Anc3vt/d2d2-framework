@@ -17,8 +17,8 @@
  */
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.event.Event;
 
 import java.util.concurrent.CompletableFuture;
