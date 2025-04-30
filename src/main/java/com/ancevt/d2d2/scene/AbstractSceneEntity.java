@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.scene.shader.ShaderProgram;
-import com.ancevt.d2d2.event.EventDispatcherImpl;
+import com.ancevt.d2d2.event.dispatch.EventDispatcherImpl;
 
 public abstract class AbstractSceneEntity extends EventDispatcherImpl implements SceneEntity {
 

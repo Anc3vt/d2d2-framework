@@ -21,7 +21,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -62,8 +62,8 @@ public class StarletSpace extends com.ancevt.d2d2.scene.ContainerImpl {
         stage.addEventListener(Event.RESIZE, event -> {
             d2d2Title.setXY((stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
         });
-        stage.addEventListener(InteractiveEvent.MOVE, event -> {
-            var e = (InteractiveEvent) event;
+        stage.addEventListener(InteractiveEvent_toRemove.MOVE, event -> {
+            var e = (InteractiveEvent_toRemove) event;
             float center = stage.getWidth() / 2;
             starletSpace.velocityX = center - e.getX();
         });

@@ -30,7 +30,7 @@ import com.ancevt.d2d2.scene.Container;
 import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
 import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 import com.google.gson.JsonObject;
@@ -93,8 +93,8 @@ public class DebugPanel extends ContainerImpl {
         addChild(text, 1, 1);
 
         interactiveButton = new InteractiveContainer(width, height);
-        interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
-        interactiveButton.addEventListener(InteractiveEvent.DRAG, this::interactiveButton_drag);
+        interactiveButton.addEventListener(InteractiveEvent_toRemove.DOWN, this::interactiveButton_down);
+        interactiveButton.addEventListener(InteractiveEvent_toRemove.DRAG, this::interactiveButton_drag);
 
         addEventListener(this, Event.ADD_TO_STAGE, this::this_addToStage);
 
@@ -133,26 +133,26 @@ public class DebugPanel extends ContainerImpl {
 
     private void this_addToStage(Event event) {
         removeEventListener(this, Event.ADD_TO_STAGE);
-        D2D2.stage().addEventListener(InteractiveEvent.KEY_DOWN, this::root_keyDown);
-        D2D2.stage().addEventListener(InteractiveEvent.KEY_UP, this::root_keyUp);
+        D2D2.stage().addEventListener(InteractiveEvent_toRemove.KEY_DOWN, this::root_keyDown);
+        D2D2.stage().addEventListener(InteractiveEvent_toRemove.KEY_UP, this::root_keyUp);
     }
 
     private void root_keyDown(Event event) {
-        var e = (InteractiveEvent) event;
+        var e = (InteractiveEvent_toRemove) event;
         if (KeyCode.isShift(e.getKeyCode())) {
             shiftDown = true;
         }
     }
 
     private void root_keyUp(Event event) {
-        var e = (InteractiveEvent) event;
+        var e = (InteractiveEvent_toRemove) event;
         if (KeyCode.isShift(e.getKeyCode())) {
             shiftDown = false;
         }
     }
 
     private void interactiveButton_down(Event event) {
-        var e = (InteractiveEvent) event;
+        var e = (InteractiveEvent_toRemove) event;
 
         mouseButton = e.getMouseButton();
 
@@ -167,7 +167,7 @@ public class DebugPanel extends ContainerImpl {
     }
 
     private void interactiveButton_drag(Event event) {
-        var e = (InteractiveEvent) event;
+        var e = (InteractiveEvent_toRemove) event;
 
         if (mouseButton == MouseButton.RIGHT) {
             bg.setSize(e.getX() + 1f, e.getY() + 1f);
@@ -377,7 +377,7 @@ public class DebugPanel extends ContainerImpl {
             addChild(interactiveButton);
             addChild(bitmapText, 2, -2);
 
-            interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
+            interactiveButton.addEventListener(InteractiveEvent_toRemove.DOWN, this::interactiveButton_down);
         }
 
         private void interactiveButton_down(Event event) {

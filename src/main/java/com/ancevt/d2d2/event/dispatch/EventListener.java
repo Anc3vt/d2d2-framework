@@ -16,25 +16,11 @@
  * limitations under the License.
  */
 
-package com.ancevt.d2d2.event;
+package com.ancevt.d2d2.event.dispatch;
 
-import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.event.Event;
 
-public class EventPool {
-
-    private static final Event SIMPLE_EVENT_SINGLETON = Event.builder().build();
-
-    public static Event createEvent(String type, Container parent) {
-        return Event.builder().type(type).parent(parent).build();
-    }
-
-    public static Event createEvent(String type) {
-        return createEvent(type, null);
-    }
-
-    public static Event simpleEventSingleton(String type, EventDispatcher source) {
-        SIMPLE_EVENT_SINGLETON.type = type;
-        SIMPLE_EVENT_SINGLETON.source = source;
-        return SIMPLE_EVENT_SINGLETON;
-    }
+@FunctionalInterface
+public interface EventListener<T extends Event<?>> {
+    void onEvent(T event);
 }

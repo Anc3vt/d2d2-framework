@@ -26,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class InteractiveEvent extends Event {
+public class InteractiveEvent_toRemove extends Event {
 
     public static final String DOWN       = "interactiveDown";
     public static final String UP         = "interactiveUp";

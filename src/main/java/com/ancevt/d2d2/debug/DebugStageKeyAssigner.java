@@ -21,7 +21,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +34,8 @@ public class DebugStageKeyAssigner {
     public static void onKeyDown(int keyCode, Runnable action) {
 
         if (!actions.containsKey(keyCode)) {
-            D2D2.stage().addEventListener(InteractiveEvent.KEY_DOWN, event -> {
-                InteractiveEvent e = event.casted();
+            D2D2.stage().addEventListener(InteractiveEvent_toRemove.KEY_DOWN, event -> {
+                InteractiveEvent_toRemove e = event.casted();
 
                 if (e.getKeyCode() == keyCode) action.run();
             });
@@ -48,13 +48,13 @@ public class DebugStageKeyAssigner {
         AtomicBoolean hold = new AtomicBoolean();
 
         if (!actions.containsKey(keyCode)) {
-            D2D2.stage().addEventListener(InteractiveEvent.KEY_DOWN, event -> {
-                InteractiveEvent e = event.casted();
+            D2D2.stage().addEventListener(InteractiveEvent_toRemove.KEY_DOWN, event -> {
+                InteractiveEvent_toRemove e = event.casted();
 
                 if(e.getKeyCode() == keyCode) hold.set(true);
             });
-            D2D2.stage().addEventListener(InteractiveEvent.KEY_UP, event -> {
-                InteractiveEvent e = event.casted();
+            D2D2.stage().addEventListener(InteractiveEvent_toRemove.KEY_UP, event -> {
+                InteractiveEvent_toRemove e = event.casted();
 
                 if(e.getKeyCode() == keyCode) hold.set(false);
             });

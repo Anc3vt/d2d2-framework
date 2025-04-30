@@ -24,7 +24,7 @@ import com.ancevt.d2d2.scene.Playable;
 import com.ancevt.d2d2.scene.Renderer;
 import com.ancevt.d2d2.scene.Scene;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.EventPool;
+import com.ancevt.d2d2.event.dispatch.EventPool;
 
 public class NoRenderRendererStub implements Renderer {
 

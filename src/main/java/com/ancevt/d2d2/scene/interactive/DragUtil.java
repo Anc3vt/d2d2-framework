@@ -20,7 +20,7 @@ package com.ancevt.d2d2.scene.interactive;
 
 import com.ancevt.d2d2.scene.Container;
 import com.ancevt.d2d2.scene.SceneEntity;
-import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -33,8 +33,8 @@ public class DragUtil {
         AtomicReference<Float> oldXHolder = new AtomicReference<>(0f);
         AtomicReference<Float> oldYHolder = new AtomicReference<>(0f);
 
-        interactive.addEventListener(DragUtil.class + sceneEntity.getName(), InteractiveEvent.DOWN, event -> {
-            var e = (InteractiveEvent) event;
+        interactive.addEventListener(DragUtil.class + sceneEntity.getName(), InteractiveEvent_toRemove.DOWN, event -> {
+            var e = (InteractiveEvent_toRemove) event;
             oldXHolder.set(e.getX() + sceneEntity.getX());
             oldYHolder.set(e.getY() + sceneEntity.getY());
             Container parent = sceneEntity.getParent();
@@ -43,8 +43,8 @@ public class DragUtil {
             interactive.focus();
         });
 
-        interactive.addEventListener(DragUtil.class + sceneEntity.getName(), InteractiveEvent.DRAG, event -> {
-            var e = (InteractiveEvent) event;
+        interactive.addEventListener(DragUtil.class + sceneEntity.getName(), InteractiveEvent_toRemove.DRAG, event -> {
+            var e = (InteractiveEvent_toRemove) event;
             final float tx = e.getX() + sceneEntity.getX();
             final float ty = e.getY() + sceneEntity.getY();
 
@@ -60,8 +60,8 @@ public class DragUtil {
     }
 
     public static void disableDrag(SceneEntity sceneEntity, Interactive interactive) {
-        interactive.removeEventListener(DragUtil.class + sceneEntity.getName(), InteractiveEvent.DOWN);
-        interactive.removeEventListener(DragUtil.class + sceneEntity.getName(), InteractiveEvent.DRAG);
+        interactive.removeEventListener(DragUtil.class + sceneEntity.getName(), InteractiveEvent_toRemove.DOWN);
+        interactive.removeEventListener(DragUtil.class + sceneEntity.getName(), InteractiveEvent_toRemove.DRAG);
     }
 
     public static void disableDrag(Interactive interactive) {

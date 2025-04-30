@@ -29,7 +29,7 @@ import com.ancevt.d2d2.scene.Container;
 import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
 import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 import lombok.Getter;
@@ -77,22 +77,22 @@ public class ByteDisplay extends InteractiveContainer {
         text.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         addChild(text, PADDING, 2);
 
-        addEventListener(this, InteractiveEvent.DOWN, this::mouseDown);
-        addEventListener(this, InteractiveEvent.DRAG, this::mouseDrag);
-        addEventListener(this, InteractiveEvent.KEY_DOWN, this::keyDown);
-        addEventListener(this, InteractiveEvent.KEY_REPEAT, this::keyDown);
-        addEventListener(this, InteractiveEvent.WHEEL, this::wheel);
+        addEventListener(this, InteractiveEvent_toRemove.DOWN, this::mouseDown);
+        addEventListener(this, InteractiveEvent_toRemove.DRAG, this::mouseDrag);
+        addEventListener(this, InteractiveEvent_toRemove.KEY_DOWN, this::keyDown);
+        addEventListener(this, InteractiveEvent_toRemove.KEY_REPEAT, this::keyDown);
+        addEventListener(this, InteractiveEvent_toRemove.WHEEL, this::wheel);
 
     }
 
     private void wheel(Event event) {
-        var e = (InteractiveEvent) event;
+        var e = (InteractiveEvent_toRemove) event;
 
         scroll(-e.getDelta() * inline * (e.isControl() ? 10 : 1));
     }
 
     private void keyDown(Event event) {
-        var e = (InteractiveEvent) event;
+        var e = (InteractiveEvent_toRemove) event;
 
         int keyCode = e.getKeyCode();
 
@@ -201,7 +201,7 @@ public class ByteDisplay extends InteractiveContainer {
     }
 
     private void mouseDown(Event event) {
-        var e = (InteractiveEvent) event;
+        var e = (InteractiveEvent_toRemove) event;
 
         mouseButton = e.getMouseButton();
 
@@ -216,7 +216,7 @@ public class ByteDisplay extends InteractiveContainer {
     }
 
     private void mouseDrag(Event event) {
-        var e = (InteractiveEvent) event;
+        var e = (InteractiveEvent_toRemove) event;
 
         if (mouseButton == MouseButton.RIGHT) {
             setSize(e.getX() / getScaleX() + 1, e.getY() / getScaleY() + 1);

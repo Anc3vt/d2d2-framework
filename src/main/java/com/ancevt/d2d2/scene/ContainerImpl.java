@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.EventPool;
+import com.ancevt.d2d2.event.dispatch.EventPool;
 import com.ancevt.d2d2.exception.ContainerException;
 
 import java.util.List;

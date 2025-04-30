@@ -24,7 +24,7 @@ import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Container;
 import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
 import com.ancevt.d2d2.input.MouseButton;
 import lombok.Getter;
 
@@ -48,13 +48,13 @@ public class DraggingContainer extends InteractiveContainer {
         background = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
         addChild(background);
 
-        addEventListener(this, InteractiveEvent.DOWN, this::mouseDown);
-        addEventListener(this, InteractiveEvent.DRAG, this::mouseDrag);
+        addEventListener(this, InteractiveEvent_toRemove.DOWN, this::mouseDown);
+        addEventListener(this, InteractiveEvent_toRemove.DRAG, this::mouseDrag);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     private void mouseDown(Event event) {
-        var e = (InteractiveEvent) event;
+        var e = (InteractiveEvent_toRemove) event;
 
         mouseButton = e.getMouseButton();
 
@@ -91,7 +91,7 @@ public class DraggingContainer extends InteractiveContainer {
     }
 
     private void mouseDrag(Event event) {
-        var e = (InteractiveEvent) event;
+        var e = (InteractiveEvent_toRemove) event;
 
         if (mouseButton == MouseButton.RIGHT) {
             setSize(e.getX() / getScaleX() + 1, e.getY() / getScaleY() + 1);

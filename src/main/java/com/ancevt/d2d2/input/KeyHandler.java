@@ -18,8 +18,8 @@
 
 package com.ancevt.d2d2.input;
 
-import com.ancevt.d2d2.event.EventDispatcher;
-import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.event.dispatch.EventDispatcher;
+import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
 import lombok.Getter;
 
 import java.util.function.Consumer;
@@ -63,8 +63,8 @@ public class KeyHandler {
         this.enabled = enabled;
 
         if (enabled) {
-            eventDispatcher.addEventListener(this, InteractiveEvent.KEY_DOWN, event -> {
-                InteractiveEvent e = event.casted();
+            eventDispatcher.addEventListener(this, InteractiveEvent_toRemove.KEY_DOWN, event -> {
+                InteractiveEvent_toRemove e = event.casted();
                 if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyDown != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
@@ -79,8 +79,8 @@ public class KeyHandler {
                     onKeyDown.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
                 }
             });
-            eventDispatcher.addEventListener(this, InteractiveEvent.KEY_UP, event -> {
-                InteractiveEvent e = event.casted();
+            eventDispatcher.addEventListener(this, InteractiveEvent_toRemove.KEY_UP, event -> {
+                InteractiveEvent_toRemove e = event.casted();
                 if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyUp != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
@@ -95,8 +95,8 @@ public class KeyHandler {
                     onKeyUp.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
                 }
             });
-            eventDispatcher.addEventListener(this, InteractiveEvent.KEY_REPEAT, event -> {
-                InteractiveEvent e = event.casted();
+            eventDispatcher.addEventListener(this, InteractiveEvent_toRemove.KEY_REPEAT, event -> {
+                InteractiveEvent_toRemove e = event.casted();
                 if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyRepeat != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
@@ -111,8 +111,8 @@ public class KeyHandler {
                     onKeyRepeat.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
                 }
             });
-            eventDispatcher.addEventListener(this, InteractiveEvent.KEY_TYPE, event -> {
-                InteractiveEvent e = event.casted();
+            eventDispatcher.addEventListener(this, InteractiveEvent_toRemove.KEY_TYPE, event -> {
+                InteractiveEvent_toRemove e = event.casted();
                 if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyType != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
@@ -128,10 +128,10 @@ public class KeyHandler {
                 }
             });
         } else {
-            eventDispatcher.removeEventListener(this, InteractiveEvent.KEY_DOWN);
-            eventDispatcher.removeEventListener(this, InteractiveEvent.KEY_UP);
-            eventDispatcher.removeEventListener(this, InteractiveEvent.KEY_REPEAT);
-            eventDispatcher.removeEventListener(this, InteractiveEvent.KEY_TYPE);
+            eventDispatcher.removeEventListener(this, InteractiveEvent_toRemove.KEY_DOWN);
+            eventDispatcher.removeEventListener(this, InteractiveEvent_toRemove.KEY_UP);
+            eventDispatcher.removeEventListener(this, InteractiveEvent_toRemove.KEY_REPEAT);
+            eventDispatcher.removeEventListener(this, InteractiveEvent_toRemove.KEY_TYPE);
         }
     }
 
