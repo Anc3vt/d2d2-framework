@@ -25,40 +25,40 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-public abstract class SceneEvent<S> extends Event<S> {
+public abstract class SceneEvent extends Event {
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class LoopUpdate<S> extends SceneEvent<S> {
+    static final class LoopUpdate extends SceneEvent {
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class ExitFrame<S> extends SceneEvent<S> {
+    static final class ExitFrame extends SceneEvent {
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class EnterFrame<S> extends SceneEvent<S> {
+    static final class EnterFrame extends SceneEvent {
     }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class Add<S> extends SceneEvent<S> {
+    static final class Add extends SceneEvent {
         private Container parent;
     }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class Remove<S> extends SceneEvent<S> {
+    static final class Remove extends SceneEvent {
         private Container parent;
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class AddToScene<S> extends SceneEvent<S> {
+    static final class AddToScene extends SceneEvent {
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class RemoveFromScene<S> extends SceneEvent<S> {
+    static final class RemoveFromScene extends SceneEvent {
     }
 }
 

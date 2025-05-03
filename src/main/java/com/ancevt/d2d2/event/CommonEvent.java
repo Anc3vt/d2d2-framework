@@ -24,28 +24,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-public abstract class CommonEvent<S> extends Event<S> {
+public abstract class CommonEvent extends Event {
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class Start<S> extends CommonEvent<S> {
+    static final class Start extends CommonEvent {
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class Change<S> extends CommonEvent<S> {
+    static final class Change extends CommonEvent {
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class Complete<S> extends CommonEvent<S> {
+    static final class Complete extends CommonEvent {
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class Action<S> extends CommonEvent<S> {
+    static final class Action extends CommonEvent {
     }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class Resize<S> extends CommonEvent<S> {
+    static final class Resize extends CommonEvent {
         private int width;
         private int height;
     }
@@ -53,7 +53,7 @@ public abstract class CommonEvent<S> extends Event<S> {
     @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class Error<S> extends CommonEvent<S> {
+    static final class Error extends CommonEvent {
         private Throwable throwable;
     }
 }

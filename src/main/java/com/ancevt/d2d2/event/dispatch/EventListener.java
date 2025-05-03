@@ -18,9 +18,7 @@
 
 package com.ancevt.d2d2.event.dispatch;
 
-import com.ancevt.d2d2.event.Event;
-
 @FunctionalInterface
-public interface EventListener<T extends Event<?>> {
+public interface EventListener<T> {
     void onEvent(T event);
 }

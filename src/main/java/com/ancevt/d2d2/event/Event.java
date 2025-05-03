@@ -18,11 +18,12 @@
 
 package com.ancevt.d2d2.event;
 
+import com.ancevt.d2d2.event.dispatch.EventDispatcher;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public abstract class Event<S> {
-    private S target;
+public abstract class Event {
+    private EventDispatcher target;
 }
