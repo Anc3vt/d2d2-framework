@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,18 +18,17 @@
 
 package com.ancevt.d2d2.event;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-public abstract class InputEvent<S> extends Event<S> {
+public abstract class InputEvent extends Event {
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class MouseDown<S> extends InputEvent<S> {
+    public static final class MouseDown extends InputEvent {
         private int x;
         private int y;
         private int button;
@@ -38,10 +37,10 @@ public abstract class InputEvent<S> extends Event<S> {
         private boolean middle;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class MouseUp<S> extends InputEvent<S> {
+    public static final class MouseUp extends InputEvent {
         private int x;
         private int y;
         private int button;
@@ -50,93 +49,106 @@ public abstract class InputEvent<S> extends Event<S> {
         private boolean middle;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class MouseMove<S> extends InputEvent<S> {
+    public static final class MouseMove extends InputEvent {
         private int x;
         private int y;
         private boolean onArea;
+        private boolean alt;
+        private boolean control;
+        private boolean shift;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class MouseWheel<S> extends InputEvent<S> {
+    public static final class MouseWheel extends InputEvent {
         private int delta;
         private int x;
         private int y;
+        private boolean alt;
+        private boolean control;
+        private boolean shift;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class KeyDown<S> extends InputEvent<S> {
+    public static final class KeyDown extends InputEvent {
         private int keyCode;
         private boolean alt;
         private boolean control;
         private boolean shift;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class KeyRepeat<S> extends InputEvent<S> {
+    public static final class KeyRepeat extends InputEvent {
         private int keyCode;
         private boolean alt;
         private boolean control;
         private boolean shift;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class KeyUp<S> extends InputEvent<S> {
+    public static final class KeyUp extends InputEvent {
         private int keyCode;
         private boolean alt;
         private boolean control;
         private boolean shift;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class KeyType<S> extends InputEvent<S> {
+    public static final class KeyType extends InputEvent {
+        private int keyCode;
+        private boolean alt;
+        private boolean control;
+        private boolean shift;
         private char character;
         private int codepoint;
         private String keyType;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class MouseHover<S> extends InputEvent<S> {
+    public static final class MouseHover extends InputEvent {
         private int x;
         private int y;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class MouseOut<S> extends InputEvent<S> {
+    public static final class MouseOut extends InputEvent {
         private int x;
         private int y;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class MouseDrag<S> extends InputEvent<S> {
+    public static final class MouseDrag extends InputEvent {
         private int x;
         private int y;
         private int button;
+        private boolean left;
+        private boolean right;
+        private boolean middle;
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class FocusIn<S> extends InputEvent<S> {
+    @NoArgsConstructor(staticName = "create")
+    public static final class FocusIn extends InputEvent {
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class FocusOut<S> extends InputEvent<S> {
+    @NoArgsConstructor(staticName = "create")
+    public static final class FocusOut extends InputEvent {
     }
 }

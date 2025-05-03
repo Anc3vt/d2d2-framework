@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,13 +19,12 @@
 
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Container;
 import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
-import com.ancevt.d2d2.input.MouseButton;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
 import lombok.Getter;
 
 public class DraggingContainer extends InteractiveContainer {
@@ -48,18 +47,16 @@ public class DraggingContainer extends InteractiveContainer {
         background = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
         addChild(background);
 
-        addEventListener(this, InteractiveEvent_toRemove.DOWN, this::mouseDown);
-        addEventListener(this, InteractiveEvent_toRemove.DRAG, this::mouseDrag);
+        addEventListener(this, InputEvent.MouseDown.class, this::mouseDown);
+        addEventListener(this, InputEvent.MouseDrag.class, this::mouseDrag);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    private void mouseDown(Event event) {
-        var e = (InteractiveEvent_toRemove) event;
+    private void mouseDown(InputEvent.MouseDown e) {
+        mouseButton = e.button();
 
-        mouseButton = e.getMouseButton();
-
-        oldX = (int) (e.getX() + getX());
-        oldY = (int) (e.getY() + getY());
+        oldX = (int) (e.x() + getX());
+        oldY = (int) (e.y() + getY());
 
         Container parent = getParent();
         parent.removeChild(this);
@@ -90,11 +87,9 @@ public class DraggingContainer extends InteractiveContainer {
         return contains(background);
     }
 
-    private void mouseDrag(Event event) {
-        var e = (InteractiveEvent_toRemove) event;
-
+    private void mouseDrag(InputEvent.MouseDrag e) {
         if (mouseButton == MouseButton.RIGHT) {
-            setSize(e.getX() / getScaleX() + 1, e.getY() / getScaleY() + 1);
+            setSize(e.x() / getScaleX() + 1, e.y() / getScaleY() + 1);
 
             if (getWidth() < MIN_WIDTH) {
                 setWidth(MIN_WIDTH);
@@ -105,8 +100,8 @@ public class DraggingContainer extends InteractiveContainer {
             return;
         }
 
-        final int tx = (int) (e.getX() + getX());
-        final int ty = (int) (e.getY() + getY());
+        final int tx = (int) (e.x() + getX());
+        final int ty = (int) (e.y() + getY());
 
         move(tx - oldX, ty - oldY);
 

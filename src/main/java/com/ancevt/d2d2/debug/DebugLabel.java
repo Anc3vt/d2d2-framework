@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,9 +20,9 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.SceneEntity;
 import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.event.Event;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,7 +51,7 @@ public class DebugLabel extends Text {
 
         setMulticolor(true);
 
-        target.addEventListener(this, Event.ENTER_FRAME, event -> {
+        target.addEventListener(this, SceneEvent.EnterFrame.class, e -> {
             tick++;
             if (tick % updateRate == 0) {
                 StringBuilder out = new StringBuilder();
@@ -68,8 +68,8 @@ public class DebugLabel extends Text {
     }
 
     public void dispose() {
-        target.removeEventListener(this, Event.ENTER_FRAME);
-        target.removeEventListener(this, Event.REMOVE_FROM_STAGE);
+        target.removeEventListener(this, SceneEvent.EnterFrame.class);
+        target.removeEventListener(this, SceneEvent.RemoveFromScene.class);
         this.removeFromParent();
         labels.remove(this);
     }
@@ -91,7 +91,7 @@ public class DebugLabel extends Text {
             labels.get(target).dispose();
         }
         DebugLabel result = new DebugLabel(target, func, updateRate);
-        target.addEventListener(result, Event.REMOVE_FROM_STAGE, event -> {
+        target.addEventListener(result, SceneEvent.RemoveFromScene.class, e -> {
             result.dispose();
         });
         return result;

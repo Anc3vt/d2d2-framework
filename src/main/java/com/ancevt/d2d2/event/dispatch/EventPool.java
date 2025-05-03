@@ -22,7 +22,7 @@ import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.scene.Container;
 
 public class EventPool {
-
+/*
     private static final Event SIMPLE_EVENT_SINGLETON = Event.builder().build();
 
     public static Event createEvent(String type, Container parent) {
@@ -37,5 +37,5 @@ public class EventPool {
         SIMPLE_EVENT_SINGLETON.type = type;
         SIMPLE_EVENT_SINGLETON.source = source;
         return SIMPLE_EVENT_SINGLETON;
-    }
+    }*/
 }

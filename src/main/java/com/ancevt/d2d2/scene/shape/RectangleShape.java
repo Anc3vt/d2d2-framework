@@ -18,11 +18,11 @@
 
 package com.ancevt.d2d2.scene.shape;
 
-import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.scene.AbstractSceneEntity;
+import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Colored;
 import com.ancevt.d2d2.scene.Resizable;
-import com.ancevt.d2d2.event.Event;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -49,19 +49,19 @@ public class RectangleShape extends AbstractSceneEntity implements Shape, Resiza
     public void setSize(float width, float height) {
         this.width = width;
         this.height = height;
-        dispatchEvent(Event.builder().type(Event.RESIZE).build());
+        dispatchEvent(CommonEvent.Resize.create(width, height));
     }
 
     @Override
     public void setWidth(float value) {
         this.width = value;
-        dispatchEvent(Event.builder().type(Event.RESIZE).build());
+        dispatchEvent(CommonEvent.Resize.create(width, height));
     }
 
     @Override
     public void setHeight(float value) {
         this.height = value;
-        dispatchEvent(Event.builder().type(Event.RESIZE).build());
+        dispatchEvent(CommonEvent.Resize.create(width, height));
     }
 
     @Override

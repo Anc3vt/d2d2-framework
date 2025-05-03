@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,6 @@
 
 package com.ancevt.d2d2.event;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,34 +25,40 @@ import lombok.experimental.Accessors;
 
 public abstract class CommonEvent extends Event {
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class Start extends CommonEvent {
+    @NoArgsConstructor(staticName = "create")
+    static public final class Start extends CommonEvent {
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class Change extends CommonEvent {
+    @NoArgsConstructor(staticName = "create")
+    static public final class Stop extends CommonEvent {
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class Complete extends CommonEvent {
+    @NoArgsConstructor(staticName = "create")
+    static public final class Change extends CommonEvent {
+
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class Action extends CommonEvent {
+    @NoArgsConstructor(staticName = "create")
+    static public final class Complete extends CommonEvent {
+
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @NoArgsConstructor(staticName = "create")
+    static public final class Action extends CommonEvent {
+    }
+
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class Resize extends CommonEvent {
-        private int width;
-        private int height;
+    static public final class Resize extends CommonEvent {
+        private float width;
+        private float height;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class Error extends CommonEvent {
+    static public final class Error extends CommonEvent {
         private Throwable throwable;
     }
 }

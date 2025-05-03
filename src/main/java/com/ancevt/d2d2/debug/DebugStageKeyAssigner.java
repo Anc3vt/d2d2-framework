@@ -20,8 +20,8 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,31 +34,24 @@ public class DebugStageKeyAssigner {
     public static void onKeyDown(int keyCode, Runnable action) {
 
         if (!actions.containsKey(keyCode)) {
-            D2D2.stage().addEventListener(InteractiveEvent_toRemove.KEY_DOWN, event -> {
-                InteractiveEvent_toRemove e = event.casted();
-
-                if (e.getKeyCode() == keyCode) action.run();
+            D2D2.stage().addEventListener(InputEvent.KeyDown.class, e -> {
+                if (e.keyCode() == keyCode) action.run();
             });
             actions.put(keyCode, action);
         }
     }
 
     public static void onKeyHold(int keyCode, Runnable action) {
-
         AtomicBoolean hold = new AtomicBoolean();
 
         if (!actions.containsKey(keyCode)) {
-            D2D2.stage().addEventListener(InteractiveEvent_toRemove.KEY_DOWN, event -> {
-                InteractiveEvent_toRemove e = event.casted();
-
-                if(e.getKeyCode() == keyCode) hold.set(true);
+            D2D2.stage().addEventListener(InputEvent.KeyDown.class, e -> {
+                if(e.keyCode() == keyCode) hold.set(true);
             });
-            D2D2.stage().addEventListener(InteractiveEvent_toRemove.KEY_UP, event -> {
-                InteractiveEvent_toRemove e = event.casted();
-
-                if(e.getKeyCode() == keyCode) hold.set(false);
+            D2D2.stage().addEventListener(InputEvent.KeyUp.class, e -> {
+                if(e.keyCode() == keyCode) hold.set(false);
             });
-            D2D2.stage().addEventListener(Event.LOOP_UPDATE, event -> {
+            D2D2.stage().addEventListener(SceneEvent.LoopUpdate.class, e -> {
                 if (hold.get()) action.run();
             });
             actions.put(keyCode, action);

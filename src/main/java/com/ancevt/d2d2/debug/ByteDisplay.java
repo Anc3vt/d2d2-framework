@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,15 +23,14 @@ import com.ancevt.commons.io.ByteInput;
 import com.ancevt.commons.io.ByteOutput;
 import com.ancevt.commons.io.InputStreamFork;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.KeyCode;
+import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Container;
 import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
-import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.input.MouseButton;
 import lombok.Getter;
 
 import java.io.IOException;
@@ -77,24 +76,28 @@ public class ByteDisplay extends InteractiveContainer {
         text.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         addChild(text, PADDING, 2);
 
-        addEventListener(this, InteractiveEvent_toRemove.DOWN, this::mouseDown);
-        addEventListener(this, InteractiveEvent_toRemove.DRAG, this::mouseDrag);
-        addEventListener(this, InteractiveEvent_toRemove.KEY_DOWN, this::keyDown);
-        addEventListener(this, InteractiveEvent_toRemove.KEY_REPEAT, this::keyDown);
-        addEventListener(this, InteractiveEvent_toRemove.WHEEL, this::wheel);
+        addEventListener(this, InputEvent.MouseDown.class, this::mouseDown);
+        addEventListener(this, InputEvent.MouseDrag.class, this::mouseDrag);
+        addEventListener(this, InputEvent.KeyDown.class, this::keyDown);
+        addEventListener(this, InputEvent.KeyRepeat.class, this::keyDown);
+        addEventListener(this, InputEvent.MouseWheel.class, this::wheel);
 
     }
 
-    private void wheel(Event event) {
-        var e = (InteractiveEvent_toRemove) event;
-
-        scroll(-e.getDelta() * inline * (e.isControl() ? 10 : 1));
+    private void wheel(InputEvent.MouseWheel e) {
+        scroll(-e.delta() * inline * (e.delta() > 0 ? 10 : 1));
     }
 
-    private void keyDown(Event event) {
-        var e = (InteractiveEvent_toRemove) event;
+    private void keyDown(InputEvent e) {
+        int keyCode = 0;
 
-        int keyCode = e.getKeyCode();
+        if (e instanceof InputEvent.KeyDown kde) {
+            keyCode = kde.keyCode();
+        } else if (e instanceof InputEvent.KeyRepeat kdr) {
+            keyCode = kdr.keyCode();
+        } else {
+            return;
+        }
 
         switch (keyCode) {
             case KeyCode.A, KeyCode.LEFT -> {
@@ -200,13 +203,11 @@ public class ByteDisplay extends InteractiveContainer {
         text.setSize(width, height);
     }
 
-    private void mouseDown(Event event) {
-        var e = (InteractiveEvent_toRemove) event;
+    private void mouseDown(InputEvent.MouseDown e) {
+        mouseButton = e.button();
 
-        mouseButton = e.getMouseButton();
-
-        oldX = (int) (e.getX() + getX());
-        oldY = (int) (e.getY() + getY());
+        oldX = (int) (e.x() + getX());
+        oldY = (int) (e.y() + getY());
 
         Container parent = getParent();
         parent.removeChild(this);
@@ -215,19 +216,17 @@ public class ByteDisplay extends InteractiveContainer {
         focus();
     }
 
-    private void mouseDrag(Event event) {
-        var e = (InteractiveEvent_toRemove) event;
-
+    private void mouseDrag(InputEvent.MouseDrag e) {
         if (mouseButton == MouseButton.RIGHT) {
-            setSize(e.getX() / getScaleX() + 1, e.getY() / getScaleY() + 1);
+            setSize(e.x() / getScaleX() + 1, e.y() / getScaleY() + 1);
             if (getWidth() < 320f) setWidth(320f);
             if (getHeight() < 100f) setHeight(100f);
             render();
             return;
         }
 
-        final int tx = (int) (e.getX() + getX());
-        final int ty = (int) (e.getY() + getY());
+        final int tx = (int) (e.x() + getX());
+        final int ty = (int) (e.y() + getY());
 
         move(tx - oldX, ty - oldY);
 
@@ -379,11 +378,11 @@ public class ByteDisplay extends InteractiveContainer {
         String totalSize = bytes != null ? bytes.length + "" : "-";
 
         s
-            .append("position: ")
-            .append(position)
-            .append(" of ")
-            .append(totalSize)
-            .append("; ");
+                .append("position: ")
+                .append(position)
+                .append(" of ")
+                .append(totalSize)
+                .append("; ");
 
         if (isHex) {
             s.append("HEXADECIMAL ");
@@ -399,8 +398,8 @@ public class ByteDisplay extends InteractiveContainer {
 
         if (gotoIndexString != null) {
             s
-                .append("<CCCCCC>")
-                .append(gotoIndexString);
+                    .append("<CCCCCC>")
+                    .append(gotoIndexString);
         }
 
         s.append("\n");

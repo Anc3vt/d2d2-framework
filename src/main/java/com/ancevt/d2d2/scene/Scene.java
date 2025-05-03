@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,10 +18,9 @@
 
 package com.ancevt.d2d2.scene;
 
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.dispatch.EventPool;
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import lombok.Getter;
-
 
 public class Scene extends ContainerImpl implements Resizable {
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
@@ -60,22 +59,22 @@ public class Scene extends ContainerImpl implements Resizable {
     public void setSize(float width, float height) {
         this.width = width;
         this.height = height;
-        dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
+        dispatchEvent(CommonEvent.Resize.create(width, height));
     }
 
     public void setWidth(float width) {
         this.width = width;
-        dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
+        dispatchEvent(CommonEvent.Resize.create(width, height));
     }
 
     public void setHeight(float height) {
         this.height = height;
-        dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
+        dispatchEvent(CommonEvent.Resize.create(width, height));
     }
 
     static void dispatchAddToStage(SceneEntity sceneEntity) {
         if (sceneEntity.isOnScreen()) {
-            sceneEntity.dispatchEvent(EventPool.createEvent(Event.ADD_TO_STAGE));
+            sceneEntity.dispatchEvent(SceneEvent.AddToScene.create());
             if (sceneEntity instanceof Container container) {
                 for (int i = 0; i < container.getNumChildren(); i++) {
                     dispatchAddToStage(container.getChild(i));
@@ -86,7 +85,7 @@ public class Scene extends ContainerImpl implements Resizable {
 
     static void dispatchRemoveFromStage(SceneEntity sceneEntity) {
         if (sceneEntity.isOnScreen()) {
-            sceneEntity.dispatchEvent(EventPool.createEvent(Event.REMOVE_FROM_STAGE));
+            sceneEntity.dispatchEvent(SceneEvent.RemoveFromScene.create());
 
             if (sceneEntity instanceof Container container) {
                 for (int i = 0; i < container.getNumChildren(); i++) {

@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,16 +20,16 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.shape.BorderedRectangle;
-import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.SceneEntity;
 import com.ancevt.d2d2.scene.Scene;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
-import com.ancevt.d2d2.input.KeyCode;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -112,14 +112,14 @@ public class DebugDisplayObjectViewer {
             SceneEntity o = container.getChild(i);
 
             if ((typesIncluded.isEmpty() || typesIncluded.contains(o.getClass())) &&
-                (typesExcluded.isEmpty() || !typesExcluded.contains(o.getClass()))) {
+                    (typesExcluded.isEmpty() || !typesExcluded.contains(o.getClass()))) {
                 Color color = Color.createVisibleRandomColor();
 
                 BorderedRectangle borderedRectangle = new BorderedRectangle(
-                    o.getWidth() * o.getAbsoluteScaleX(),
-                    o.getHeight() * o.getAbsoluteY(),
-                    null,
-                    color);
+                        o.getWidth() * o.getAbsoluteScaleX(),
+                        o.getHeight() * o.getAbsoluteY(),
+                        null,
+                        color);
                 D2D2.stage().addChild(borderedRectangle, o.getAbsoluteX(), o.getAbsoluteY());
 
                 Text text = new Text(o.getName());
@@ -131,7 +131,7 @@ public class DebugDisplayObjectViewer {
                 sceneEntities.add(borderedRectangle);
                 sceneEntities.add(text);
 
-                borderedRectangle.addEventListener(Event.ENTER_FRAME, event -> {
+                borderedRectangle.addEventListener(SceneEvent.EnterFrame.class, e -> {
                     borderedRectangle.setSize(o.getWidth() * o.getAbsoluteScaleX(), o.getHeight() * o.getAbsoluteScaleY());
                     borderedRectangle.setXY(o.getAbsoluteX(), o.getAbsoluteY());
                     text.setXY(borderedRectangle.getX(), borderedRectangle.getY());
@@ -159,14 +159,13 @@ public class DebugDisplayObjectViewer {
 
         Scene s = D2D2.stage();
 
-        s.removeEventListener(this, InteractiveEvent_toRemove.KEY_DOWN);
-        s.removeEventListener(this, InteractiveEvent_toRemove.KEY_UP);
+        s.removeEventListener(this, InputEvent.KeyDown.class);
+        s.removeEventListener(this, InputEvent.KeyUp.class);
 
         if (b) {
-            s.addEventListener(this, InteractiveEvent_toRemove.KEY_DOWN, event -> {
-                InteractiveEvent_toRemove e = event.casted();
-                if (e.isShift() && e.isControl()) {
-                    switch (e.getKeyCode()) {
+            s.addEventListener(this, InputEvent.KeyDown.class, e -> {
+                if (e.shift() && e.control()) {
+                    switch (e.keyCode()) {
                         case KeyCode.F1 -> {
                             show();
                         }
@@ -174,9 +173,8 @@ public class DebugDisplayObjectViewer {
                 }
             });
 
-            s.addEventListener(this, InteractiveEvent_toRemove.KEY_UP, event -> {
-                InteractiveEvent_toRemove e = event.casted();
-                switch (e.getKeyCode()) {
+            s.addEventListener(this, InputEvent.KeyUp.class, e -> {
+                switch (e.keyCode()) {
                     case KeyCode.F1 -> {
                         clear();
                     }

@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,8 +19,8 @@
 package com.ancevt.d2d2.scene.texture;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.event.TextureLoaderEvent;
 import com.ancevt.d2d2.event.dispatch.EventDispatcherImpl;
-import com.ancevt.d2d2.event.TextureUrlLoaderEvent;
 
 import java.io.ByteArrayInputStream;
 import java.net.URI;
@@ -42,9 +42,7 @@ public class TextureUrlLoader extends EventDispatcherImpl {
 
     public void load() {
         if (url == null) throw new NullPointerException();
-        dispatchEvent(TextureUrlLoaderEvent.builder()
-                .type(TextureUrlLoaderEvent.TEXTURE_LOAD_START)
-                .build());
+        dispatchEvent(TextureLoaderEvent.Start.create());
         loadBytes(url);
     }
 
@@ -66,11 +64,7 @@ public class TextureUrlLoader extends EventDispatcherImpl {
 
     private byte[] createTexture(byte[] bytes) {
         this.lastLoadedTexture = D2D2.textureManager().loadTexture(new ByteArrayInputStream(bytes));
-        dispatchEvent(TextureUrlLoaderEvent.builder()
-                .type(TextureUrlLoaderEvent.TEXTURE_LOAD_COMPLETE)
-                .bytes(bytes)
-                .texture(lastLoadedTexture)
-                .build());
+        dispatchEvent(TextureLoaderEvent.Complete.create(lastLoadedTexture, bytes));
         return bytes;
     }
 

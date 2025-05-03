@@ -19,7 +19,6 @@
 package com.ancevt.d2d2.event;
 
 import com.ancevt.d2d2.scene.Container;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,38 +26,38 @@ import lombok.experimental.Accessors;
 
 public abstract class SceneEvent extends Event {
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class LoopUpdate extends SceneEvent {
+    @NoArgsConstructor(staticName = "create")
+    public static final class LoopUpdate extends SceneEvent {
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class ExitFrame extends SceneEvent {
+    @NoArgsConstructor(staticName = "create")
+    public static final class ExitFrame extends SceneEvent {
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class EnterFrame extends SceneEvent {
+    @NoArgsConstructor(staticName = "create")
+    public static final class EnterFrame extends SceneEvent {
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class Add extends SceneEvent {
+    public static final class Add extends SceneEvent {
         private Container parent;
     }
 
-    @AllArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
+    @AllArgsConstructor(staticName = "create")
     @Getter
     @Accessors(chain = true, fluent = true)
-    static final class Remove extends SceneEvent {
+    public static final class Remove extends SceneEvent {
         private Container parent;
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class AddToScene extends SceneEvent {
+    @NoArgsConstructor(staticName = "create")
+    public static final class AddToScene extends SceneEvent {
     }
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE, staticName = "create")
-    static final class RemoveFromScene extends SceneEvent {
+    @NoArgsConstructor(staticName = "create")
+    public static final class RemoveFromScene extends SceneEvent {
     }
 }
 

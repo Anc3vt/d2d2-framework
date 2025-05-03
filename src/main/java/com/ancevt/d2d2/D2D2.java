@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,18 +18,20 @@
 
 package com.ancevt.d2d2;
 
-import com.ancevt.d2d2.scene.SceneEntity;
-import com.ancevt.d2d2.scene.Scene;
-import com.ancevt.d2d2.scene.text.BitmapFontManager;
-import com.ancevt.d2d2.scene.texture.TextureManager;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.SoundManager;
 import com.ancevt.d2d2.engine.norender.NoRenderEngine;
+import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
 import com.ancevt.d2d2.lifecycle.SystemProperties;
+import com.ancevt.d2d2.scene.Scene;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.text.BitmapFontManager;
+import com.ancevt.d2d2.scene.texture.TextureManager;
 import com.ancevt.util.args.Args;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -166,11 +168,11 @@ public final class D2D2 {
 
         if (cursor != null) {
             Mouse.setVisible(false);
-            cursor.removeEventListener(Mouse.class, Event.LOOP_UPDATE);
-            cursor.addEventListener(Mouse.class, Event.LOOP_UPDATE, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
+            cursor.removeEventListener(Mouse.class, SceneEvent.LoopUpdate.class);
+            cursor.addEventListener(Mouse.class, SceneEvent.LoopUpdate.class, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
         } else {
             Mouse.setVisible(true);
-            D2D2.cursor.removeEventListener(Mouse.class, Event.LOOP_UPDATE);
+            D2D2.cursor.removeEventListener(Mouse.class, SceneEvent.LoopUpdate.class);
         }
         D2D2.cursor = cursor;
     }
@@ -210,9 +212,9 @@ public final class D2D2 {
     public static void setNoScaleMode(boolean noScaleMode) {
         D2D2.noScaleMode = noScaleMode;
 
-        engine().removeEventListener(D2D2.class, Event.RESIZE);
+        engine().removeEventListener(D2D2.class, CommonEvent.Resize.class);
         if (noScaleMode) {
-            engine().addEventListener(D2D2.class, Event.RESIZE, event ->
+            engine().addEventListener(D2D2.class, CommonEvent.Resize.class, e ->
                     stage().setSize(engine().getCanvasWidth(), engine().getCanvasHeight())
             );
         }

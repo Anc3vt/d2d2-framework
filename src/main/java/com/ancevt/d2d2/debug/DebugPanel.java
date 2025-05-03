@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,17 +22,19 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.commons.hash.MD5;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.shape.BorderedRectangle;
-import com.ancevt.d2d2.scene.shape.RectangleShape;
-import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.ContainerImpl;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.scene.text.Text;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
@@ -44,11 +46,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -77,7 +75,7 @@ public class DebugPanel extends ContainerImpl {
         final int height = 300;
 
         this.systemPropertyName = systemPropertyName;
-        addEventListener(Event.EXIT_FRAME, this::this_eachFrame);
+        addEventListener(SceneEvent.ExitFrame.class, this::this_eachFrame);
 
         buttonList = new ArrayList<>();
         buttonMap = new HashMap<>();
@@ -93,10 +91,10 @@ public class DebugPanel extends ContainerImpl {
         addChild(text, 1, 1);
 
         interactiveButton = new InteractiveContainer(width, height);
-        interactiveButton.addEventListener(InteractiveEvent_toRemove.DOWN, this::interactiveButton_down);
-        interactiveButton.addEventListener(InteractiveEvent_toRemove.DRAG, this::interactiveButton_drag);
+        interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);
+        interactiveButton.addEventListener(InputEvent.MouseDrag.class, this::interactiveButton_drag);
 
-        addEventListener(this, Event.ADD_TO_STAGE, this::this_addToStage);
+        addEventListener(this, SceneEvent.AddToScene.class, this::this_addToStage);
 
         addChild(interactiveButton);
 
@@ -132,45 +130,39 @@ public class DebugPanel extends ContainerImpl {
     }
 
     private void this_addToStage(Event event) {
-        removeEventListener(this, Event.ADD_TO_STAGE);
-        D2D2.stage().addEventListener(InteractiveEvent_toRemove.KEY_DOWN, this::root_keyDown);
-        D2D2.stage().addEventListener(InteractiveEvent_toRemove.KEY_UP, this::root_keyUp);
+        removeEventListener(this, SceneEvent.AddToScene.class);
+        D2D2.stage().addEventListener(InputEvent.KeyDown.class, this::root_keyDown);
+        D2D2.stage().addEventListener(InputEvent.KeyUp.class, this::root_keyUp);
     }
 
-    private void root_keyDown(Event event) {
-        var e = (InteractiveEvent_toRemove) event;
-        if (KeyCode.isShift(e.getKeyCode())) {
+    private void root_keyDown(InputEvent.KeyDown e) {
+        if (KeyCode.isShift(e.keyCode())) {
             shiftDown = true;
         }
     }
 
-    private void root_keyUp(Event event) {
-        var e = (InteractiveEvent_toRemove) event;
-        if (KeyCode.isShift(e.getKeyCode())) {
+    private void root_keyUp(InputEvent.KeyUp e) {
+        if (KeyCode.isShift(e.keyCode())) {
             shiftDown = false;
         }
     }
 
-    private void interactiveButton_down(Event event) {
-        var e = (InteractiveEvent_toRemove) event;
+    private void interactiveButton_down(InputEvent.MouseDown e) {
+        mouseButton = e.button();
 
-        mouseButton = e.getMouseButton();
-
-        oldX = (int) (e.getX() + getX());
-        oldY = (int) (e.getY() + getY());
+        oldX = (int) (e.x() + getX());
+        oldY = (int) (e.y() + getY());
 
         Container parent = getParent();
         parent.removeChild(this);
         parent.addChild(this);
 
-        dispatchEvent(event);
+        dispatchEvent(e);
     }
 
-    private void interactiveButton_drag(Event event) {
-        var e = (InteractiveEvent_toRemove) event;
-
+    private void interactiveButton_drag(InputEvent.MouseDrag e) {
         if (mouseButton == MouseButton.RIGHT) {
-            bg.setSize(e.getX() + 1f, e.getY() + 1f);
+            bg.setSize(e.x() + 1f, e.y() + 1f);
             if (bg.getWidth() < 5f) {
                 bg.setWidth(5f);
             }
@@ -181,13 +173,13 @@ public class DebugPanel extends ContainerImpl {
             text.setSize(bg.getWidth(), bg.getHeight());
             interactiveButton.setSize(bg.getWidth(), bg.getHeight());
 
-            dispatchEvent(Event.builder().type(Event.RESIZE).build());
+            dispatchEvent(CommonEvent.Resize.create(getWidth(), getHeight()));
 
             return;
         }
 
-        final int tx = (int) (e.getX() + getX());
-        final int ty = (int) (e.getY() + getY());
+        final int tx = (int) (e.x() + getX());
+        final int ty = (int) (e.y() + getY());
 
         move(tx - oldX, ty - oldY);
 
@@ -270,12 +262,12 @@ public class DebugPanel extends ContainerImpl {
     private static void saveToFile(File file, String string) {
         try {
             Files.writeString(
-                Path.of(file.getAbsolutePath()),
-                string,
-                StandardCharsets.UTF_8,
-                StandardOpenOption.WRITE,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING
+                    Path.of(file.getAbsolutePath()),
+                    string,
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.WRITE,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING
             );
         } catch (IOException e) {
             log.error(e.getMessage(), e);
@@ -294,11 +286,11 @@ public class DebugPanel extends ContainerImpl {
     @SneakyThrows
     private static File directory() {
         File dir = new File(
-            System.getProperty("user.home")
-                + File.separator
-                + ".d2d2-debug-panel"
-                + File.separator
-                + ApplicationMainClassNameExtractor.getMainClassName()
+                System.getProperty("user.home")
+                        + File.separator
+                        + ".d2d2-debug-panel"
+                        + File.separator
+                        + ApplicationMainClassNameExtractor.getMainClassName()
         );
 
         if (!dir.exists()) {
@@ -377,7 +369,7 @@ public class DebugPanel extends ContainerImpl {
             addChild(interactiveButton);
             addChild(bitmapText, 2, -2);
 
-            interactiveButton.addEventListener(InteractiveEvent_toRemove.DOWN, this::interactiveButton_down);
+            interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);
         }
 
         private void interactiveButton_down(Event event) {

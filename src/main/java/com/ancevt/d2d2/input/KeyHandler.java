@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,13 +18,15 @@
 
 package com.ancevt.d2d2.input;
 
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.dispatch.EventDispatcher;
-import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
 import lombok.Getter;
 
 import java.util.function.Consumer;
 
 public class KeyHandler {
+
+    private static final String EMPTY_STRING = "";
 
     private final int keyCode;
     private final int mods;
@@ -63,75 +65,71 @@ public class KeyHandler {
         this.enabled = enabled;
 
         if (enabled) {
-            eventDispatcher.addEventListener(this, InteractiveEvent_toRemove.KEY_DOWN, event -> {
-                InteractiveEvent_toRemove e = event.casted();
-                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyDown != null) {
+            eventDispatcher.addEventListener(this, InputEvent.KeyDown.class, e -> {
+                if ((e.keyCode() == keyCode || e.keyCode() == keyAlias) && onKeyDown != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
                     final boolean alt = (mods & 4) != 0;
 
                     if (keyCode != KeyCode.LEFT_ALT && keyCode != KeyCode.RIGHT_ALT &&
-                        keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
-                        keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
-                        ((e.isShift() && !shift) || (e.isControl() && !control) || (e.isAlt() && !alt) ||
-                            (!e.isShift() && shift) || (!e.isControl() && control) || (!e.isAlt() && alt))) return;
+                            keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
+                            keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
+                            ((e.shift() && !shift) || (e.shift() && !control) || (e.alt() && !alt) ||
+                                    (!e.shift() && shift) || (!e.control() && control) || (!e.alt() && alt))) return;
 
-                    onKeyDown.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
+                    onKeyDown.accept(new Options(e.shift(), e.control(), e.alt(), e.keyCode(), (char) 0, EMPTY_STRING));
                 }
             });
-            eventDispatcher.addEventListener(this, InteractiveEvent_toRemove.KEY_UP, event -> {
-                InteractiveEvent_toRemove e = event.casted();
-                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyUp != null) {
+            eventDispatcher.addEventListener(this, InputEvent.KeyUp.class, e -> {
+                if ((e.keyCode() == keyCode || e.keyCode() == keyAlias) && onKeyUp != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
                     final boolean alt = (mods & 4) != 0;
 
                     if (keyCode != KeyCode.LEFT_ALT && keyCode != KeyCode.RIGHT_ALT &&
-                        keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
-                        keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
-                        ((e.isShift() && !shift) || (e.isControl() && !control) || (e.isAlt() && !alt) ||
-                            (!e.isShift() && shift) || (!e.isControl() && control) || (!e.isAlt() && alt))) return;
+                            keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
+                            keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
+                            ((e.shift() && !shift) || (e.control() && !control) || (e.alt() && !alt) ||
+                                    (!e.shift() && shift) || (!e.control() && control) || (!e.alt() && alt))) return;
 
-                    onKeyUp.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
+                    onKeyUp.accept(new Options(e.shift(), e.control(), e.alt(), e.keyCode(), (char) 0, EMPTY_STRING));
                 }
             });
-            eventDispatcher.addEventListener(this, InteractiveEvent_toRemove.KEY_REPEAT, event -> {
-                InteractiveEvent_toRemove e = event.casted();
-                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyRepeat != null) {
+            eventDispatcher.addEventListener(this, InputEvent.KeyRepeat.class, e -> {
+                if ((e.keyCode() == keyCode || e.keyCode() == keyAlias) && onKeyRepeat != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
                     final boolean alt = (mods & 4) != 0;
 
                     if (keyCode != KeyCode.LEFT_ALT && keyCode != KeyCode.RIGHT_ALT &&
-                        keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
-                        keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
-                        ((e.isShift() && !shift) || (e.isControl() && !control) || (e.isAlt() && !alt) ||
-                            (!e.isShift() && shift) || (!e.isControl() && control) || (!e.isAlt() && alt))) return;
+                            keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
+                            keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
+                            ((e.shift() && !shift) || (e.control() && !control) || (e.alt() && !alt) ||
+                                    (!e.shift() && shift) || (!e.control() && control) || (!e.alt() && alt))) return;
 
-                    onKeyRepeat.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
+                    onKeyRepeat.accept(new Options(e.shift(), e.control(), e.alt(), e.keyCode(), (char) 0, EMPTY_STRING));
                 }
             });
-            eventDispatcher.addEventListener(this, InteractiveEvent_toRemove.KEY_TYPE, event -> {
-                InteractiveEvent_toRemove e = event.casted();
-                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyType != null) {
+            eventDispatcher.addEventListener(this, InputEvent.KeyType.class, e -> {
+                if ((e.keyCode() == keyCode || e.keyCode() == keyAlias) && onKeyType != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
                     final boolean alt = (mods & 4) != 0;
 
                     if (keyCode != KeyCode.LEFT_ALT && keyCode != KeyCode.RIGHT_ALT &&
-                        keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
-                        keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
-                        ((e.isShift() && !shift) || (e.isControl() && !control) || (e.isAlt() && !alt) ||
-                            (!e.isShift() && shift) || (!e.isControl() && control) || (!e.isAlt() && alt))) return;
+                            keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
+                            keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
+                            ((e.shift() && !shift) || (e.control() && !control) || (e.alt() && !alt) ||
+                                    (!e.shift() && shift) || (!e.control() && control) || (!e.alt() && alt))) return;
 
-                    onKeyType.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
+                    onKeyType.accept(new Options(e.shift(), e.control(), e.alt(), e.keyCode(), e.character(), e.keyType()));
                 }
             });
         } else {
-            eventDispatcher.removeEventListener(this, InteractiveEvent_toRemove.KEY_DOWN);
-            eventDispatcher.removeEventListener(this, InteractiveEvent_toRemove.KEY_UP);
-            eventDispatcher.removeEventListener(this, InteractiveEvent_toRemove.KEY_REPEAT);
-            eventDispatcher.removeEventListener(this, InteractiveEvent_toRemove.KEY_TYPE);
+            eventDispatcher.removeEventListener(this, InputEvent.KeyDown.class);
+            eventDispatcher.removeEventListener(this, InputEvent.KeyUp.class);
+            eventDispatcher.removeEventListener(this, InputEvent.KeyRepeat.class);
+            eventDispatcher.removeEventListener(this, InputEvent.KeyType.class);
         }
     }
 
@@ -161,12 +159,12 @@ public class KeyHandler {
     }
 
     public record Options(
-        boolean shift,
-        boolean control,
-        boolean alt,
-        int keyCode,
-        char character,
-        String keyType
+            boolean shift,
+            boolean control,
+            boolean alt,
+            int keyCode,
+            char character,
+            String keyType
     ) {
     }
 

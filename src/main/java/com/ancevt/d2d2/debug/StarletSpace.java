@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,9 +19,10 @@
 
 package com.ancevt.d2d2.debug;
 
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent_toRemove;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -59,13 +60,12 @@ public class StarletSpace extends com.ancevt.d2d2.scene.ContainerImpl {
         StarletSpace starletSpace = new StarletSpace(100);
         if (logo) starletSpace.addChild(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
         stage.addChild(starletSpace);
-        stage.addEventListener(Event.RESIZE, event -> {
+        stage.addEventListener(CommonEvent.Resize.class, e -> {
             d2d2Title.setXY((stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
         });
-        stage.addEventListener(InteractiveEvent_toRemove.MOVE, event -> {
-            var e = (InteractiveEvent_toRemove) event;
+        stage.addEventListener(InputEvent.MouseMove.class, e -> {
             float center = stage.getWidth() / 2;
-            starletSpace.velocityX = center - e.getX();
+            starletSpace.velocityX = center - e.x();
         });
         return starletSpace;
     }
@@ -112,7 +112,7 @@ public class StarletSpace extends com.ancevt.d2d2.scene.ContainerImpl {
 
                 if (x % starletSpace.someVal == 0) {
                     com.ancevt.d2d2.scene.SpriteImpl plume = sprite.cloneSprite();
-                    plume.addEventListener(Event.LOOP_UPDATE, event -> {
+                    plume.addEventListener(SceneEvent.LoopUpdate.class, e -> {
                         plume.setAlpha(plume.getAlpha() - 0.01f);
                         plume.moveY(0.05f);
                         plume.rotate(1f);

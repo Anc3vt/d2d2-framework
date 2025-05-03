@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,19 +19,18 @@
 package com.ancevt.d2d2.engine.norender;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.Renderer;
-import com.ancevt.d2d2.scene.Scene;
-import com.ancevt.d2d2.scene.text.Font;
-import com.ancevt.d2d2.scene.text.TrueTypeFontBuilder;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.ShaderFactory;
 import com.ancevt.d2d2.engine.SoundManager;
+import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.dispatch.EventDispatcherImpl;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.dispatch.EventPool;
 import com.ancevt.d2d2.exception.NotImplementedException;
 import com.ancevt.d2d2.input.Mouse;
+import com.ancevt.d2d2.scene.Renderer;
+import com.ancevt.d2d2.scene.Scene;
+import com.ancevt.d2d2.scene.text.Font;
+import com.ancevt.d2d2.scene.text.TrueTypeFontBuilder;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
@@ -80,7 +79,7 @@ public class NoRenderEngine extends EventDispatcherImpl implements Engine {
         canvasWidth = width;
         canvasHeight = height;
 
-        dispatchEvent(EventPool.simpleEventSingleton(Event.RESIZE, this));
+        dispatchEvent(CommonEvent.Resize.create(width, height));
     }
 
     @Override
@@ -137,17 +136,9 @@ public class NoRenderEngine extends EventDispatcherImpl implements Engine {
     @Override
     public void start() {
         running = true;
-        scene.dispatchEvent(
-            LifecycleEvent.builder()
-                .type(LifecycleEvent.START_MAIN_LOOP)
-                .build()
-        );
+        scene.dispatchEvent(CommonEvent.Start.create());
         startNoRenderLoop();
-        scene.dispatchEvent(
-            LifecycleEvent.builder()
-                .type(LifecycleEvent.EXIT_MAIN_LOOP)
-                .build()
-        );
+        scene.dispatchEvent(CommonEvent.Stop.create());
     }
 
     @Override

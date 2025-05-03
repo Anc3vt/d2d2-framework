@@ -26,4 +26,10 @@ import lombok.Setter;
 @Getter
 public abstract class Event {
     private EventDispatcher target;
+
+    @SuppressWarnings("unchecked")
+    public <T> T targetAs(Class<T> type) {
+        if (type.isInstance(target)) return (T) target;
+        throw new ClassCastException("Expected target of type " + type.getName());
+    }
 }

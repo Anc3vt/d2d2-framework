@@ -18,9 +18,8 @@
 
 package com.ancevt.d2d2.scene;
 
+import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.scene.texture.TextureClip;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.dispatch.EventPool;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -94,12 +93,12 @@ public class PlayableSprite extends SpriteImpl implements Playable {
         if (this.currentFrameIndex >= frameTextureClips.length) {
             if (loop) {
                 this.currentFrameIndex = 0;
-                dispatchEvent(EventPool.createEvent(Event.COMPLETE));
+                dispatchEvent(CommonEvent.Complete.create());
                 play();
             } else {
                 this.currentFrameIndex--;
                 stop();
-                dispatchEvent(EventPool.createEvent(Event.COMPLETE));
+                dispatchEvent(CommonEvent.Complete.create());
             }
         }
 

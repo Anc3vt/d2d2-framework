@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,8 +19,10 @@
 package com.ancevt.d2d2.motion;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.dispatch.EventDispatcherImpl;
+import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.dispatch.EventDispatcherImpl;
 import lombok.Getter;
 
 import java.util.function.Consumer;
@@ -60,14 +62,14 @@ public class Motion<N extends Number> extends EventDispatcherImpl {
     }
 
     public void start() {
-        D2D2.stage().removeEventListener(this, Event.LOOP_UPDATE);
-        D2D2.stage().addEventListener(this, Event.LOOP_UPDATE, this::stage_loopUpdate);
-        dispatchEvent(Event.builder().type(Event.START).build());
+        D2D2.stage().removeEventListener(this, SceneEvent.LoopUpdate.class);
+        D2D2.stage().addEventListener(this, SceneEvent.LoopUpdate.class, this::stage_loopUpdate);
+        dispatchEvent(CommonEvent.Start.create());
         state = IN_PROCESS;
     }
 
     public void stop() {
-        D2D2.stage().removeEventListener(this, Event.LOOP_UPDATE);
+        D2D2.stage().removeEventListener(this, SceneEvent.LoopUpdate.class);
     }
 
     private void stage_loopUpdate(Event event) {
@@ -102,7 +104,7 @@ public class Motion<N extends Number> extends EventDispatcherImpl {
     private void complete() {
         stop();
         state = COMPLETE;
-        dispatchEvent(Event.builder().type(Event.COMPLETE).build());
+        dispatchEvent(CommonEvent.Complete.create());
     }
 
     @Override

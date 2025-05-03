@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,15 +20,12 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.common.Disposable;
-import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.ContainerImpl;
-import com.ancevt.d2d2.scene.Colored;
-import com.ancevt.d2d2.scene.SceneEntity;
-import com.ancevt.d2d2.scene.Resizable;
-import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.scene.*;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.scene.text.Text;
 
 public class DebugBorder extends ContainerImpl implements Resizable, Colored, Disposable {
 
@@ -43,9 +40,9 @@ public class DebugBorder extends ContainerImpl implements Resizable, Colored, Di
 
         this.sceneEntity = sceneEntity;
         borderedRectangle = new BorderedRectangle(sceneEntity.getWidth(),
-            sceneEntity.getHeight(),
-            Color.NO_COLOR,
-            color
+                sceneEntity.getHeight(),
+                Color.NO_COLOR,
+                color
         );
 
         addChild(borderedRectangle);
@@ -55,8 +52,8 @@ public class DebugBorder extends ContainerImpl implements Resizable, Colored, Di
         label.setAutosize(true);
         addChild(label, 2, -label.getHeight());
 
-        sceneEntity.addEventListener(this, Event.ADD_TO_STAGE, this::displayObject_addToStage);
-        sceneEntity.addEventListener(this, Event.REMOVE_FROM_STAGE, this::displayObject_removeFromStage);
+        sceneEntity.addEventListener(this, SceneEvent.AddToScene.class, this::displayObject_addToStage);
+        sceneEntity.addEventListener(this, SceneEvent.RemoveFromScene.class, this::displayObject_removeFromStage);
     }
 
     private void displayObject_removeFromStage(Event event) {
@@ -103,8 +100,8 @@ public class DebugBorder extends ContainerImpl implements Resizable, Colored, Di
 
     @Override
     public void dispose() {
-        sceneEntity.removeEventListener(this, Event.ADD_TO_STAGE);
-        sceneEntity.removeEventListener(this, Event.REMOVE_FROM_STAGE);
+        sceneEntity.removeEventListener(this, SceneEvent.AddToScene.class);
+        sceneEntity.removeEventListener(this, SceneEvent.RemoveFromScene.class);
         removeFromParent();
         disposed = true;
     }
