@@ -18,47 +18,75 @@
 
 package com.ancevt.d2d2.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+import com.ancevt.d2d2.event.dispatch.Event;
+import com.ancevt.d2d2.event.dispatch.EventPool;
+import com.ancevt.d2d2.event.dispatch.EventPooled;
 
 public abstract class CommonEvent extends Event {
 
-    @NoArgsConstructor(staticName = "create")
-    static public final class Start extends CommonEvent {
+    @EventPooled
+    public static final class Start extends CommonEvent {
+        public static Start create() {
+            return EventPool.obtain(Start.class);
+        }
     }
 
-    @NoArgsConstructor(staticName = "create")
-    static public final class Stop extends CommonEvent {
+    @EventPooled
+    public static final class Stop extends CommonEvent {
+        public static Stop create() {
+            return EventPool.obtain(Stop.class);
+        }
     }
 
-    @NoArgsConstructor(staticName = "create")
-    static public final class Change extends CommonEvent {
-
+    @EventPooled
+    public static final class Change extends CommonEvent {
+        public static Change create() {
+            return EventPool.obtain(Change.class);
+        }
     }
 
-    @NoArgsConstructor(staticName = "create")
-    static public final class Complete extends CommonEvent {
-
+    @EventPooled
+    public static final class Update extends CommonEvent {
+        public static Update create() {
+            return EventPool.obtain(Update.class);
+        }
     }
 
-    @NoArgsConstructor(staticName = "create")
-    static public final class Action extends CommonEvent {
+    @EventPooled
+    public static final class Complete extends CommonEvent {
+        public static Complete create() {
+            return EventPool.obtain(Complete.class);
+        }
     }
 
-    @AllArgsConstructor(staticName = "create")
-    @Getter
-    @Accessors(chain = true, fluent = true)
-    static public final class Resize extends CommonEvent {
+    @EventPooled
+    public static final class Action extends CommonEvent {
+        public static Action create() {
+            return EventPool.obtain(Action.class);
+        }
+    }
+
+    @EventPooled
+    public static final class Resize extends SceneEvent {
         private float width;
         private float height;
+
+        public static Resize create(float width, float height) {
+            Resize event = EventPool.obtain(Resize.class);
+            event.width = width;
+            event.height = height;
+            return event;
+        }
     }
 
-    @AllArgsConstructor(staticName = "create")
-    @Getter
-    @Accessors(chain = true, fluent = true)
-    static public final class Error extends CommonEvent {
+    @EventPooled
+    public static final class Error extends CommonEvent {
         private Throwable throwable;
+
+        public static Error create(Throwable throwable) {
+            Error event = EventPool.obtain(Error.class);
+            event.throwable = throwable;
+            return event;
+        }
     }
 }

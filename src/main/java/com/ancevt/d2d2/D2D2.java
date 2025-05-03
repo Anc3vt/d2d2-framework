@@ -23,7 +23,6 @@ import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.SoundManager;
 import com.ancevt.d2d2.engine.norender.NoRenderEngine;
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
@@ -134,6 +133,8 @@ public final class D2D2 {
     }
 
     private static void readPropertyFileIfExist(String propertiesResourceFileName) {
+        if (propertiesResourceFileName == null) return;
+
         InputStream inputStream = D2D2.class
                 .getClassLoader()
                 .getResourceAsStream(propertiesResourceFileName);

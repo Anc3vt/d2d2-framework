@@ -23,7 +23,7 @@ import com.ancevt.commons.hash.MD5;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.dispatch.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;

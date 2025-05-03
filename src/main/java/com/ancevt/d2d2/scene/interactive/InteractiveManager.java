@@ -216,7 +216,8 @@ public class InteractiveManager {
                         mouseButton,
                         leftMouseButton,
                         rightMouseButton,
-                        middleMouseButton
+                        middleMouseButton,
+                        alt, control, shift
                 ));
 
                 pressedInteractive.setDragging(true);
@@ -246,7 +247,10 @@ public class InteractiveManager {
                                 mouseButton,
                                 leftMouseButton,
                                 rightMouseButton,
-                                middleMouseButton
+                                middleMouseButton,
+                                alt,
+                                shift,
+                                control
                         ));
                         interactive.setDragging(false);
                     }
@@ -304,6 +308,9 @@ public class InteractiveManager {
                             leftMouseButton ? MouseButton.LEFT :
                                     rightMouseButton ? MouseButton.RIGHT :
                                             middleMouseButton ? MouseButton.MIDDLE : -1,
+                            leftMouseButton,
+                            rightMouseButton,
+                            middleMouseButton,
                             alt,
                             control,
                             shift
@@ -314,7 +321,10 @@ public class InteractiveManager {
                     interactive.setHovering(false);
                     dispatch(interactive, InputEvent.MouseOut.create(
                             (int) (x - tcX),
-                            (int) (y - tcY)
+                            (int) (y - tcY),
+                            alt,
+                            control,
+                            shift
                     ));
                 }
             }
@@ -324,7 +334,10 @@ public class InteractiveManager {
             if (hoveredInteractive != null) {
                 dispatch(hoveredInteractive, InputEvent.MouseOut.create(
                         (int) (x - _tcX),
-                        (int) (y - _tcY)
+                        (int) (y - _tcY),
+                        alt,
+                        control,
+                        shift
                 ));
                 hoveredInteractive.setHovering(false);
             }
@@ -334,7 +347,10 @@ public class InteractiveManager {
 
             dispatch(upperInteractive, InputEvent.MouseHover.create(
                     (int) (x - _tcX),
-                    (int) (y - _tcY)
+                    (int) (y - _tcY),
+                    alt,
+                    control,
+                    shift
             ));
         }
     }
@@ -397,7 +413,7 @@ public class InteractiveManager {
         if (focusedInteractiveIndex >= interactiveList.size()) focusedInteractiveIndex = 0;
 
         if (focusedInteractive != null) {
-            dispatch(focusedInteractive, InputEvent.MouseOut.create(0, 0)); // координаты фиктивные
+            dispatch(focusedInteractive, InputEvent.MouseOut.create(0, 0, alt, control, shift));
         }
 
         setFocused(focusedInteractiveIndex);
@@ -414,7 +430,7 @@ public class InteractiveManager {
         if (focusedInteractiveIndex < 0) focusedInteractiveIndex = interactiveList.size() - 1;
 
         if (focusedInteractive != null) {
-            dispatch(focusedInteractive, InputEvent.MouseOut.create(0, 0)); // опять же — заглушка
+            dispatch(focusedInteractive, InputEvent.MouseOut.create(0, 0, alt, control, shift));
         }
 
         setFocused(focusedInteractiveIndex);
@@ -465,7 +481,7 @@ public class InteractiveManager {
                         if (focusedInteractive != null) {
                             dispatch(focusedInteractive, InputEvent.MouseDown.create(
                                     0, 0, MouseButton.LEFT,
-                                    true, rightMouseButton, middleMouseButton
+                                    true, rightMouseButton, middleMouseButton, alt, control, shift
                             ));
                         }
                     }
@@ -484,7 +500,7 @@ public class InteractiveManager {
                         if (focusedInteractive != null) {
                             dispatch(focusedInteractive, InputEvent.MouseUp.create(
                                     0, 0, MouseButton.LEFT,
-                                    true, rightMouseButton, middleMouseButton
+                                    true, rightMouseButton, middleMouseButton, alt, control, shift
                             ));
                         }
                     }
@@ -505,7 +521,7 @@ public class InteractiveManager {
     public void resetFocus() {
         if (focusedInteractive != null) {
             dispatch(focusedInteractive, InputEvent.FocusOut.create());
-            dispatch(focusedInteractive, InputEvent.MouseOut.create(0, 0)); // Заменяй, если нужны координаты
+            dispatch(focusedInteractive, InputEvent.MouseOut.create(0, 0, alt, control, shift));
         }
 
         focusedInteractiveIndex = -1;

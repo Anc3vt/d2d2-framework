@@ -25,7 +25,6 @@ import com.ancevt.d2d2.scene.AbstractSceneEntity;
 import com.ancevt.d2d2.scene.Colored;
 import com.ancevt.d2d2.scene.Resizable;
 import com.ancevt.d2d2.scene.SpriteImpl;
-import com.ancevt.d2d2.event.Event;
 import lombok.Getter;
 import lombok.Setter;
 

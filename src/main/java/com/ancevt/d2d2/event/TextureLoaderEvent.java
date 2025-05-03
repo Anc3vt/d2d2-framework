@@ -17,31 +17,30 @@
  */
 package com.ancevt.d2d2.event;
 
+import com.ancevt.d2d2.event.dispatch.Event;
 import com.ancevt.d2d2.scene.texture.Texture;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+@Accessors(fluent = true)
 public abstract class TextureLoaderEvent extends Event {
 
     @NoArgsConstructor(staticName = "create")
     @Getter
-    @Accessors(chain = true, fluent = true)
     public static final class Start extends TextureLoaderEvent {
     }
 
     @AllArgsConstructor(staticName = "create")
     @Getter
-    @Accessors(chain = true, fluent = true)
-    public static final class Complete extends TextureLoaderEvent {
+    public static final class LoadComplete extends TextureLoaderEvent {
         private Texture texture;
         private byte[] bytes;
     }
 
     @AllArgsConstructor(staticName = "create")
     @Getter
-    @Accessors(chain = true, fluent = true)
     public static final class Error extends TextureLoaderEvent {
         private Throwable throwable;
     }

@@ -20,7 +20,7 @@ package com.ancevt.d2d2.motion;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.dispatch.Event;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.event.dispatch.EventDispatcherImpl;
 import lombok.Getter;

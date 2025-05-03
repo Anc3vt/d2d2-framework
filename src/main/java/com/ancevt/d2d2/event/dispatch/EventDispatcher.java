@@ -18,8 +18,6 @@
 
 package com.ancevt.d2d2.event.dispatch;
 
-import com.ancevt.d2d2.event.Event;
-
 public interface EventDispatcher {
 
     <T extends Event> void addEventListener(Class<T> eventType, EventListener<T> listener);

@@ -18,8 +18,6 @@
 
 package com.ancevt.d2d2.event.dispatch;
 
-import com.ancevt.d2d2.event.Event;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -94,7 +92,7 @@ public class EventDispatcherImpl implements EventDispatcher {
 
     @Override
     public <T extends Event> void dispatchEvent(T event) {
-        if (event.getTarget() == null) {
+        if (event.target() == null) {
             event.setTarget(this);
         }
 

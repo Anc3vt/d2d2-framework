@@ -21,7 +21,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.Disposable;
-import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.dispatch.Event;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.*;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
