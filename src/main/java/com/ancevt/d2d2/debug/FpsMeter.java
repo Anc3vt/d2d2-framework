@@ -20,7 +20,7 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.dispatch.Event;
+import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.text.Font;

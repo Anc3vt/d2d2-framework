@@ -16,21 +16,22 @@
  * limitations under the License.
  */
 
-package com.ancevt.d2d2.event.dispatch;
+package com.ancevt.d2d2.event.core;
 
-public interface EventDispatcher {
+public abstract class Event {
+    private EventDispatcher target;
 
-    <T extends Event> void addEventListener(Class<T> eventType, EventListener<T> listener);
+    void setTarget(EventDispatcher target) {
+        this.target = target;
+    }
 
-    <T extends Event> void addEventListener(Object key, Class<T> eventType, EventListener<T> listener);
+    public EventDispatcher target() {
+        return target;
+    }
 
-    <T extends Event> void removeEventListener(Class<T> eventType, EventListener<T> listener);
-
-    <T extends Event> void removeEventListener(Object key, Class<T> eventType);
-
-    void removeAllEventListeners();
-
-    void removeAllEventListenersByKey(Object key);
-
-    <T extends Event> void dispatchEvent(T event);
+    @SuppressWarnings("unchecked")
+    public <T> T targetAs(Class<T> type) {
+        if (type.isInstance(target)) return (T) target;
+        throw new ClassCastException("Expected target of type " + type.getName());
+    }
 }

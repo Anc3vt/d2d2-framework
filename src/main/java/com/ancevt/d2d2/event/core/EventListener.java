@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.ancevt.d2d2.event.dispatch;
+package com.ancevt.d2d2.event.core;
 
 @FunctionalInterface
 public interface EventListener<T> {

@@ -18,9 +18,10 @@
 
 package com.ancevt.d2d2.event;
 
-import com.ancevt.d2d2.event.dispatch.Event;
-import com.ancevt.d2d2.event.dispatch.EventPool;
-import com.ancevt.d2d2.event.dispatch.EventPooled;
+import com.ancevt.d2d2.event.core.Event;
+import com.ancevt.d2d2.event.core.EventPool;
+import com.ancevt.d2d2.event.core.EventPooled;
+import lombok.Getter;
 
 public abstract class CommonEvent extends Event {
 
@@ -67,6 +68,7 @@ public abstract class CommonEvent extends Event {
     }
 
     @EventPooled
+    @Getter
     public static final class Resize extends SceneEvent {
         private float width;
         private float height;
@@ -76,6 +78,20 @@ public abstract class CommonEvent extends Event {
             event.width = width;
             event.height = height;
             return event;
+        }
+    }
+
+    @EventPooled
+    public static final class Activate extends CommonEvent {
+        public static Activate create() {
+            return EventPool.obtain(Activate.class);
+        }
+    }
+
+    @EventPooled
+    public static final class Deactivate extends CommonEvent {
+        public static Deactivate create() {
+            return EventPool.obtain(Deactivate.class);
         }
     }
 

@@ -24,7 +24,7 @@ import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.ShaderFactory;
 import com.ancevt.d2d2.engine.SoundManager;
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.dispatch.EventDispatcherImpl;
+import com.ancevt.d2d2.event.core.EventDispatcherImpl;
 import com.ancevt.d2d2.exception.NotImplementedException;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.scene.Renderer;

@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.scene.shader.ShaderProgram;
-import com.ancevt.d2d2.event.dispatch.EventDispatcher;
+import com.ancevt.d2d2.event.core.EventDispatcher;
 
 public interface SceneEntity extends EventDispatcher {
 

@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.event;
 
-import com.ancevt.d2d2.event.dispatch.Event;
+import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.scene.texture.Texture;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.ancevt.d2d2.event.dispatch;
+package com.ancevt.d2d2.event.core;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

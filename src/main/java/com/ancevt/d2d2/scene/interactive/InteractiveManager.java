@@ -62,6 +62,7 @@ public class InteractiveManager {
             if (focused != null) {
                 dispatch(focused, InputEvent.KeyDown.create(
                         e.keyCode(),
+                        e.character(),
                         e.alt(),
                         e.control(),
                         e.shift()
@@ -248,6 +249,7 @@ public class InteractiveManager {
                                 leftMouseButton,
                                 rightMouseButton,
                                 middleMouseButton,
+                                onArea,
                                 alt,
                                 shift,
                                 control
@@ -373,7 +375,7 @@ public class InteractiveManager {
             focusedInteractiveIndex = index;
 
             // Параноик-версия: если хочешь сохранить byMouseDown, нужно завести FocusIn с полем
-            dispatch(focusedInteractive, InputEvent.FocusIn.create());
+            dispatch(focusedInteractive, InputEvent.FocusIn.create(byMouseDown));
         }
     }
 
@@ -398,7 +400,7 @@ public class InteractiveManager {
 
         focusedInteractive = newFocus;
 
-        dispatch(focusedInteractive, InputEvent.FocusIn.create());
+        dispatch(focusedInteractive, InputEvent.FocusIn.create(false));
     }
 
 
@@ -500,7 +502,7 @@ public class InteractiveManager {
                         if (focusedInteractive != null) {
                             dispatch(focusedInteractive, InputEvent.MouseUp.create(
                                     0, 0, MouseButton.LEFT,
-                                    true, rightMouseButton, middleMouseButton, alt, control, shift
+                                    true, rightMouseButton, middleMouseButton, true, alt, control, shift
                             ));
                         }
                     }

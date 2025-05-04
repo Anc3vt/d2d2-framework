@@ -20,7 +20,7 @@ package com.ancevt.d2d2.scene.texture;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.TextureLoaderEvent;
-import com.ancevt.d2d2.event.dispatch.EventDispatcherImpl;
+import com.ancevt.d2d2.event.core.EventDispatcherImpl;
 
 import java.io.ByteArrayInputStream;
 import java.net.URI;

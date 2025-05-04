@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.input;
 
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.dispatch.EventDispatcher;
+import com.ancevt.d2d2.event.core.EventDispatcher;
 import lombok.Getter;
 
 import java.util.function.Consumer;

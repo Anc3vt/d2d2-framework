@@ -18,9 +18,9 @@
 
 package com.ancevt.d2d2.event;
 
-import com.ancevt.d2d2.event.dispatch.Event;
-import com.ancevt.d2d2.event.dispatch.EventPool;
-import com.ancevt.d2d2.event.dispatch.EventPooled;
+import com.ancevt.d2d2.event.core.Event;
+import com.ancevt.d2d2.event.core.EventPool;
+import com.ancevt.d2d2.event.core.EventPooled;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -72,6 +72,7 @@ public abstract class InputEvent extends Event {
         private boolean left;
         private boolean right;
         private boolean middle;
+        private boolean onArea;
         private boolean alt;
         private boolean control;
         private boolean shift;
@@ -82,6 +83,7 @@ public abstract class InputEvent extends Event {
                                      boolean left,
                                      boolean right,
                                      boolean middle,
+                                     boolean onArea,
                                      boolean alt,
                                      boolean control,
                                      boolean shift) {
@@ -92,6 +94,7 @@ public abstract class InputEvent extends Event {
             e.left = left;
             e.right = right;
             e.middle = middle;
+            e.onArea = onArea;
             e.alt = alt;
             e.control = control;
             e.shift = shift;
@@ -157,16 +160,19 @@ public abstract class InputEvent extends Event {
     @Getter
     public static final class KeyDown extends InputEvent {
         private int keyCode;
+        private char character;
         private boolean alt;
         private boolean control;
         private boolean shift;
 
         public static KeyDown create(int keyCode,
+                                     char character,
                                      boolean alt,
                                      boolean control,
                                      boolean shift) {
             KeyDown e = EventPool.obtain(KeyDown.class);
             e.keyCode = keyCode;
+            e.character = character;
             e.alt = alt;
             e.control = control;
             e.shift = shift;
@@ -331,9 +337,14 @@ public abstract class InputEvent extends Event {
     }
 
     @EventPooled
+    @Getter
     public static final class FocusIn extends InputEvent {
-        public static FocusIn create() {
-            return EventPool.obtain(FocusIn.class);
+        private boolean byMouseDown;
+
+        public static FocusIn create(boolean byMouseDown) {
+            var e = EventPool.obtain(FocusIn.class);
+            e.byMouseDown = byMouseDown;
+            return e;
         }
     }
 

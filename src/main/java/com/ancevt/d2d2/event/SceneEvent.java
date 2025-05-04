@@ -18,9 +18,9 @@
 
 package com.ancevt.d2d2.event;
 
-import com.ancevt.d2d2.event.dispatch.Event;
-import com.ancevt.d2d2.event.dispatch.EventPool;
-import com.ancevt.d2d2.event.dispatch.EventPooled;
+import com.ancevt.d2d2.event.core.Event;
+import com.ancevt.d2d2.event.core.EventPool;
+import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Container;
 import lombok.Getter;
 import lombok.experimental.Accessors;
