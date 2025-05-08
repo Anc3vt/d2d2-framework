@@ -33,4 +33,6 @@ public interface EventDispatcher {
     void removeAllEventListenersByKey(Object key);
 
     <T extends Event> void dispatchEvent(T event);
+
+    <T extends Event> EventHandleRegistration on(Class<T>  eventType, EventListener<T> listener);
 }

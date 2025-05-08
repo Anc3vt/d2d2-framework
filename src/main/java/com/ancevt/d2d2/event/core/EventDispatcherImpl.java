@@ -117,7 +117,6 @@ public class EventDispatcherImpl implements EventDispatcher {
         }
     }
 
-
     private static class ListenerBinding<T extends Event> {
         final Class<T> eventType;
         final EventListener<T> listener;
@@ -130,5 +129,10 @@ public class EventDispatcherImpl implements EventDispatcher {
         void unregister(EventDispatcher dispatcher) {
             dispatcher.removeEventListener(eventType, listener);
         }
+    }
+
+    @Override
+    public <T extends Event> EventHandleRegistration<T> on(Class<T> eventType, EventListener<T> listener) {
+        return new EventHandleRegistration<>(this, eventType, listener);
     }
 }

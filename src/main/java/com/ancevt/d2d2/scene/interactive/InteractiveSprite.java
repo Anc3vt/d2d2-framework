@@ -19,7 +19,10 @@
 package com.ancevt.d2d2.scene.interactive;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.core.EventHandleRegistration;
+import com.ancevt.d2d2.event.core.EventListener;
 import com.ancevt.d2d2.exception.InteractiveException;
 import com.ancevt.d2d2.scene.SpriteImpl;
 import com.ancevt.d2d2.scene.shape.FreeShape;
@@ -208,4 +211,5 @@ public class InteractiveSprite extends SpriteImpl implements Interactive {
     public boolean isDisposed() {
         return disposed;
     }
+
 }
