@@ -18,6 +18,7 @@
 
 package com.ancevt.d2d2.scene.interactive;
 
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.exception.InteractiveException;
 import com.ancevt.d2d2.scene.SpriteImpl;
@@ -46,7 +47,7 @@ public class InteractiveSprite extends SpriteImpl implements Interactive {
     }
 
     public InteractiveSprite(TextureClip textureClip) {
-        super(textureClip);
+        setTextureClip(textureClip);
         interactiveArea = new InteractiveArea(0, 0, textureClip.getWidth(), textureClip.getHeight());
         enabled = true;
         pushEventUp = true;
@@ -54,12 +55,8 @@ public class InteractiveSprite extends SpriteImpl implements Interactive {
         setDefaultName();
     }
 
-    public InteractiveSprite(String texture) {
-        super(texture);
-        interactiveArea = new InteractiveArea(0, 0, getTextureClip().getWidth(), getTextureClip().getHeight());
-        enabled = true;
-        pushEventUp = true;
-        InteractiveManager.getInstance().registerInteractive(this);
+    public InteractiveSprite(String assetPathToImage) {
+        this(D2D2.textureManager().loadTexture(assetPathToImage).createTextureClip());
     }
 
     @Override

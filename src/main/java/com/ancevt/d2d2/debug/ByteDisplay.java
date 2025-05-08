@@ -415,7 +415,7 @@ public class ByteDisplay extends InteractiveGroup {
     public static ByteDisplay show(byte[] bytes) {
         ByteDisplay result = new ByteDisplay();
         result.setBytes(bytes);
-        D2D2.stage().addChild(result, 100 + new Random().nextInt(100), 100 + new Random().nextInt(100));
+        D2D2.root().addChild(result, 100 + new Random().nextInt(100), 100 + new Random().nextInt(100));
         return result;
     }
 

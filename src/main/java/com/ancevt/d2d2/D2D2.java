@@ -178,7 +178,7 @@ public final class D2D2 {
         D2D2.cursor = cursor;
     }
 
-    public static Root stage() {
+    public static Root root() {
         return engine.stage();
     }
 
@@ -216,7 +216,7 @@ public final class D2D2 {
         engine().removeEventListener(D2D2.class, CommonEvent.Resize.class);
         if (noScaleMode) {
             engine().addEventListener(D2D2.class, CommonEvent.Resize.class, e ->
-                    stage().setSize(engine().getCanvasWidth(), engine().getCanvasHeight())
+                    root().setSize(engine().getCanvasWidth(), engine().getCanvasHeight())
             );
         }
     }

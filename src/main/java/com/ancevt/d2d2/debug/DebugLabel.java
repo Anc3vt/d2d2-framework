@@ -59,11 +59,11 @@ public class DebugLabel extends Text {
                 setText(out.toString());
 
                 setXY(target.getAbsoluteX(), target.getAbsoluteY());
-                D2D2.stage().addChild(this);
+                D2D2.root().addChild(this);
             }
         });
 
-        D2D2.stage().addChild(this);
+        D2D2.root().addChild(this);
         labels.put(target, this);
     }
 

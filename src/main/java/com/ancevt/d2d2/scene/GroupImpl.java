@@ -32,7 +32,7 @@ public class GroupImpl extends AbstractNode implements Group {
 
     final List<Node> children;
 
-    GroupImpl() {
+    public GroupImpl() {
         children = new CopyOnWriteArrayList<>();
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }

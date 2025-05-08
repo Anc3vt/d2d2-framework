@@ -32,34 +32,36 @@ public class SpriteFactory {
     private static final Map<String, TextureClip> textureCacheFiles = new HashMap<>();
 
     public static Sprite createSprite(String assetPath) {
-        return new SpriteImpl(assetPath);
+        return Sprite.create(assetPath);
     }
 
     public static Sprite createSprite(String assetPath, int textureX, int textureY, int textureWidth, int textureHeight) {
-        return new SpriteImpl(
-            textureCacheFiles.computeIfAbsent(
-                "%s_%d".formatted(
-                    assetPath,
-                    Objects.hash(
-                        assetPath,
-                        textureX,
-                        textureY,
-                        textureWidth,
-                        textureHeight
-                    )),
-                key -> D2D2.textureManager()
-                    .loadTexture(assetPath)
-                    .createTextureClip(textureX, textureY, textureWidth, textureHeight)
-            )
+        return Sprite.create(
+                textureCacheFiles.computeIfAbsent(
+                        "%s_%d".formatted(
+                                assetPath,
+                                Objects.hash(
+                                        assetPath,
+                                        textureX,
+                                        textureY,
+                                        textureWidth,
+                                        textureHeight
+                                )),
+                        key -> D2D2.textureManager()
+                                .loadTexture(assetPath)
+                                .createTextureClip(textureX, textureY, textureWidth, textureHeight)
+                )
         );
     }
+    
+    
 
     public static Sprite createSpriteByTextureKey(String textureKey) {
-        return new SpriteImpl(D2D2.textureManager().getTextureClip(textureKey));
+        return Sprite.create(D2D2.textureManager().getTextureClip(textureKey));
     }
 
     public static Sprite createEmptySprite() {
-        return new SpriteImpl();
+        return Sprite.create();
     }
 
     public static void clearCache() {

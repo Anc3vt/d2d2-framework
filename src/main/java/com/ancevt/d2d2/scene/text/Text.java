@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,11 +20,7 @@ package com.ancevt.d2d2.scene.text;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.NodeEvent;
-import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.AbstractNode;
-import com.ancevt.d2d2.scene.Colored;
-import com.ancevt.d2d2.scene.Resizable;
-import com.ancevt.d2d2.scene.SpriteImpl;
+import com.ancevt.d2d2.scene.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -77,7 +73,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
 
     @Getter
     private boolean wordWrap = true;
-    private SpriteImpl sprite;
+    private Sprite sprite;
 
     public Text(final Font font, float width, float height, String text) {
         setFont(font);
@@ -143,7 +139,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
         return cacheAsSprite;
     }
 
-    public SpriteImpl cachedSprite() {
+    public Sprite cachedSprite() {
         return sprite;
     }
 
@@ -197,8 +193,8 @@ public class Text extends AbstractNode implements Colored, Resizable {
         updateCachedSprite();
     }
 
-    public SpriteImpl toSprite() {
-        SpriteImpl result = new SpriteImpl(D2D2.textureManager().bitmapTextToTexture(this).createTextureClip());
+    public Sprite toSprite() {
+        Sprite result = Sprite.create(D2D2.textureManager().bitmapTextToTexture(this).createTextureClip());
         result.setXY(getX(), getY());
         result.setScale(getScaleX(), getScaleY());
         result.setRotation(getRotation());
@@ -430,14 +426,14 @@ public class Text extends AbstractNode implements Colored, Resizable {
     @Override
     public String toString() {
         return "BitmapText{" +
-            "text='" + text + '\'' +
-            ", color=" + color +
-            ", bitmapFont=" + font +
-            ", lineSpacing=" + lineSpacing +
-            ", spacing=" + spacing +
-            ", boundWidth=" + width +
-            ", boundHeight=" + height +
-            '}';
+                "text='" + text + '\'' +
+                ", color=" + color +
+                ", bitmapFont=" + font +
+                ", lineSpacing=" + lineSpacing +
+                ", spacing=" + spacing +
+                ", boundWidth=" + width +
+                ", boundHeight=" + height +
+                '}';
     }
 
     public static class ColorTextData {
@@ -545,9 +541,9 @@ public class Text extends AbstractNode implements Colored, Resizable {
             @Override
             public String toString() {
                 return "Letter{" +
-                    "character=" + character +
-                    ", color=" + color +
-                    '}';
+                        "character=" + character +
+                        ", color=" + color +
+                        '}';
             }
         }
 

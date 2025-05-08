@@ -34,7 +34,7 @@ public class DebugStageKeyAssigner {
     public static void onKeyDown(int keyCode, Runnable action) {
 
         if (!actions.containsKey(keyCode)) {
-            D2D2.stage().addEventListener(InputEvent.KeyDown.class, e -> {
+            D2D2.root().addEventListener(InputEvent.KeyDown.class, e -> {
                 if (e.keyCode() == keyCode) action.run();
             });
             actions.put(keyCode, action);
@@ -45,13 +45,13 @@ public class DebugStageKeyAssigner {
         AtomicBoolean hold = new AtomicBoolean();
 
         if (!actions.containsKey(keyCode)) {
-            D2D2.stage().addEventListener(InputEvent.KeyDown.class, e -> {
+            D2D2.root().addEventListener(InputEvent.KeyDown.class, e -> {
                 if(e.keyCode() == keyCode) hold.set(true);
             });
-            D2D2.stage().addEventListener(InputEvent.KeyUp.class, e -> {
+            D2D2.root().addEventListener(InputEvent.KeyUp.class, e -> {
                 if(e.keyCode() == keyCode) hold.set(false);
             });
-            D2D2.stage().addEventListener(NodeEvent.LoopUpdate.class, e -> {
+            D2D2.root().addEventListener(NodeEvent.LoopUpdate.class, e -> {
                 if (hold.get()) action.run();
             });
             actions.put(keyCode, action);

@@ -24,6 +24,8 @@ import com.ancevt.d2d2.scene.texture.TextureClip;
 
 public interface Sprite extends Node, Colored, Repeatable {
 
+    Color DEFAULT_COLOR = Color.WHITE;
+
     static Sprite create() {
         Sprite sprite = new SpriteImpl();
         sprite.setColor(SpriteImpl.DEFAULT_COLOR);
@@ -32,14 +34,14 @@ public interface Sprite extends Node, Colored, Repeatable {
         return sprite;
     }
 
-    static Sprite create(String assetPathToImage) {
-        TextureClip textureClip = D2D2.textureManager().loadTexture(assetPathToImage).createTextureClip();
+    static Sprite create(String assetPath) {
+        TextureClip textureClip = D2D2.textureManager().loadTexture(assetPath).createTextureClip();
         return create(textureClip);
     }
 
-    static Sprite create(String assetPathToImage, int textureX, int textureY, int textureWidth, int textureHeight) {
+    static Sprite create(String assetPath, int textureX, int textureY, int textureWidth, int textureHeight) {
         TextureClip textureClip = D2D2.textureManager()
-                .loadTexture(assetPathToImage)
+                .loadTexture(assetPath)
                 .createTextureClip(textureX, textureY, textureWidth, textureHeight);
         return create(textureClip);
     }
@@ -55,7 +57,6 @@ public interface Sprite extends Node, Colored, Repeatable {
     static Sprite create(Texture texture) {
         return create(texture.createTextureClip());
     }
-
 
     TextureClip getTextureClip();
 

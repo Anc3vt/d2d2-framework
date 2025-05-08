@@ -61,7 +61,7 @@ public class DebugBorder extends GroupImpl implements Resizable, Colored, Dispos
     }
 
     private void displayObject_addToStage(Event event) {
-        D2D2.stage().addChild(this);
+        D2D2.root().addChild(this);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class DebugBorder extends GroupImpl implements Resizable, Colored, Dispos
     public static DebugBorder create(Node node) {
         DebugBorder debugBorder = new DebugBorder(node);
         if (node.isOnScreen()) {
-            D2D2.stage().addChild(debugBorder);
+            D2D2.root().addChild(debugBorder);
         }
         return debugBorder;
     }

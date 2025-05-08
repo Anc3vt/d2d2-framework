@@ -92,14 +92,14 @@ public class DebugDisplayObjectViewer {
     }
 
     public Group getTargetGroup() {
-        if (targetGroup == null) targetGroup = D2D2.stage();
+        if (targetGroup == null) targetGroup = D2D2.root();
         return targetGroup;
     }
 
     public void show() {
-        RectangleShape rectangleShape = new RectangleShape(D2D2.stage().getWidth(), D2D2.stage().getHeight(), Color.BLACK);
+        RectangleShape rectangleShape = new RectangleShape(D2D2.root().getWidth(), D2D2.root().getHeight(), Color.BLACK);
         rectangleShape.setAlpha(0.5f);
-        D2D2.stage().addChild(rectangleShape);
+        D2D2.root().addChild(rectangleShape);
         sceneEntities.add(rectangleShape);
 
         show(getTargetGroup(), -1);
@@ -120,13 +120,13 @@ public class DebugDisplayObjectViewer {
                         o.getHeight() * o.getAbsoluteY(),
                         null,
                         color);
-                D2D2.stage().addChild(borderedRectangle, o.getAbsoluteX(), o.getAbsoluteY());
+                D2D2.root().addChild(borderedRectangle, o.getAbsoluteX(), o.getAbsoluteY());
 
                 Text text = new Text(o.getName());
                 text.setColor(color);
                 text.setRotation(-20);
 
-                D2D2.stage().addChild(text, o.getAbsoluteX(), o.getAbsoluteY());
+                D2D2.root().addChild(text, o.getAbsoluteX(), o.getAbsoluteY());
 
                 sceneEntities.add(borderedRectangle);
                 sceneEntities.add(text);
@@ -157,7 +157,7 @@ public class DebugDisplayObjectViewer {
         if (keyListenerEnabled == b) return this;
         keyListenerEnabled = b;
 
-        Root s = D2D2.stage();
+        Root s = D2D2.root();
 
         s.removeEventListener(this, InputEvent.KeyDown.class);
         s.removeEventListener(this, InputEvent.KeyUp.class);

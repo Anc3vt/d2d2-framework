@@ -60,7 +60,7 @@ public class Grid extends GroupImpl implements Colored {
 
 
     public Grid() {
-        this(D2D2.stage().getWidth(), D2D2.stage().getHeight(), 16);
+        this(D2D2.root().getWidth(), D2D2.root().getHeight(), 16);
     }
 
     public void setCellSize(float cellSize) {

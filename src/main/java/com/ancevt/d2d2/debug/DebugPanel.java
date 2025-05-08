@@ -131,8 +131,8 @@ public class DebugPanel extends GroupImpl {
 
     private void this_addToStage(Event event) {
         removeEventListener(this, NodeEvent.AddToScene.class);
-        D2D2.stage().addEventListener(InputEvent.KeyDown.class, this::root_keyDown);
-        D2D2.stage().addEventListener(InputEvent.KeyUp.class, this::root_keyUp);
+        D2D2.root().addEventListener(InputEvent.KeyDown.class, this::root_keyDown);
+        D2D2.root().addEventListener(InputEvent.KeyUp.class, this::root_keyUp);
     }
 
     private void root_keyDown(InputEvent.KeyDown e) {
@@ -334,7 +334,7 @@ public class DebugPanel extends GroupImpl {
                 debugPanel = new DebugPanel(propertyName);
             }
 
-            D2D2.stage().addChild(debugPanel);
+            D2D2.root().addChild(debugPanel);
             if (propertyName != null) {
                 System.setProperty(propertyName, String.valueOf(value));
             }
