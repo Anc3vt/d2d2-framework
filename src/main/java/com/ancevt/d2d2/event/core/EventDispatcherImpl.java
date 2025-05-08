@@ -98,17 +98,17 @@ public class EventDispatcherImpl implements EventDispatcher {
 
         List<EventListener<? extends Event>> exactListeners = listeners.get(event.getClass());
         if (exactListeners != null) {
-            for (EventListener<? extends Event> listener : exactListeners) {
+            for (EventListener<? extends Event> listener : new ArrayList<>(exactListeners)) {
                 @SuppressWarnings("unchecked")
                 EventListener<T> casted = (EventListener<T>) listener;
                 casted.onEvent(event);
             }
         }
 
-        for (Map.Entry<Class<? extends Event>, List<EventListener<? extends Event>>> entry : listeners.entrySet()) {
+        for (Map.Entry<Class<? extends Event>, List<EventListener<? extends Event>>> entry : new HashMap<>(listeners).entrySet()) {
             Class<? extends Event> type = entry.getKey();
             if (type.isInstance(event) && !type.equals(event.getClass())) {
-                for (EventListener<? extends Event> listener : entry.getValue()) {
+                for (EventListener<? extends Event> listener : new ArrayList<>(entry.getValue())) {
                     @SuppressWarnings("unchecked")
                     EventListener<T> casted = (EventListener<T>) listener;
                     casted.onEvent(event);
@@ -116,6 +116,7 @@ public class EventDispatcherImpl implements EventDispatcher {
             }
         }
     }
+
 
     private static class ListenerBinding<T extends Event> {
         final Class<T> eventType;
