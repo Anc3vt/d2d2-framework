@@ -25,7 +25,7 @@ import com.ancevt.d2d2.scene.SpriteImpl;
 import com.ancevt.d2d2.scene.texture.TextureClip;
 import lombok.Getter;
 
-public class Combined9Sprites extends InteractiveContainer implements Colored {
+public class Combined9Sprites extends InteractiveGroup implements Colored {
 
     private final SpriteImpl topLeft;
     private final SpriteImpl top;

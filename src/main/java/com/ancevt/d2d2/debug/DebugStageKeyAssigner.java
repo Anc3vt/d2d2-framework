@@ -21,7 +21,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +51,7 @@ public class DebugStageKeyAssigner {
             D2D2.stage().addEventListener(InputEvent.KeyUp.class, e -> {
                 if(e.keyCode() == keyCode) hold.set(false);
             });
-            D2D2.stage().addEventListener(SceneEvent.LoopUpdate.class, e -> {
+            D2D2.stage().addEventListener(NodeEvent.LoopUpdate.class, e -> {
                 if (hold.get()) action.run();
             });
             actions.put(keyCode, action);

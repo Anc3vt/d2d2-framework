@@ -21,18 +21,18 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.core.Event;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Colored;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.GroupImpl;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grid extends ContainerImpl implements Colored {
+public class Grid extends GroupImpl implements Colored {
 
     public static final int DEFAULT_COLOR = 0xFFFFFF;
 
@@ -124,11 +124,11 @@ public class Grid extends ContainerImpl implements Colored {
             this.grid = grid;
             setOrientation(orientation);
 
-            addEventListener(SceneEvent.ExitFrame.class, this::eachFrame);
+            addEventListener(NodeEvent.ExitFrame.class, this::eachFrame);
         }
 
         private void eachFrame(Event event) {
-            Container parent = getParent();
+            Group parent = getParent();
             switch (orientation) {
                 case HORIZONTAL:
                     setScaleY(1.0f / parent.getAbsoluteScaleY());

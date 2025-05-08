@@ -19,9 +19,9 @@
 package com.ancevt.d2d2.scene.shape;
 
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.GroupImpl;
 
-public class BorderedRectangleScalable extends ContainerImpl {
+public class BorderedRectangleScalable extends GroupImpl {
 	private static final Color DEFAULT_FILL_COLOR = Color.WHITE;
 	private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
 

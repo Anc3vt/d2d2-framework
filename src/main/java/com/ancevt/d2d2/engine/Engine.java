@@ -19,14 +19,14 @@
 package com.ancevt.d2d2.engine;
 
 import com.ancevt.d2d2.scene.Renderer;
-import com.ancevt.d2d2.scene.Scene;
+import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.text.Font;
 import com.ancevt.d2d2.scene.text.TrueTypeFontBuilder;
 import com.ancevt.d2d2.event.core.EventDispatcher;
 
 public interface Engine extends EventDispatcher {
 
-    Scene stage();
+    Root stage();
 
     void setAlwaysOnTop(boolean b);
 

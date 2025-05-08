@@ -21,29 +21,29 @@ package com.ancevt.d2d2.event;
 import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
-import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.scene.Group;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
-public abstract class SceneEvent extends Event {
+public abstract class NodeEvent extends Event {
 
     @EventPooled
-    public static final class LoopUpdate extends SceneEvent {
+    public static final class LoopUpdate extends NodeEvent {
         public static LoopUpdate create() {
             return EventPool.obtain(LoopUpdate.class);
         }
     }
 
     @EventPooled
-    public static final class ExitFrame extends SceneEvent {
+    public static final class ExitFrame extends NodeEvent {
         public static ExitFrame create() {
             return EventPool.obtain(ExitFrame.class);
         }
     }
 
     @EventPooled
-    public static final class EnterFrame extends SceneEvent {
+    public static final class EnterFrame extends NodeEvent {
         public static EnterFrame create() {
             return EventPool.obtain(EnterFrame.class);
         }
@@ -51,10 +51,10 @@ public abstract class SceneEvent extends Event {
 
     @EventPooled
     @Getter
-    public static final class Add extends SceneEvent {
-        private Container parent;
+    public static final class Add extends NodeEvent {
+        private Group parent;
 
-        public static Add create(Container parent) {
+        public static Add create(Group parent) {
             Add e = EventPool.obtain(Add.class);
             e.parent = parent;
             return e;
@@ -63,10 +63,10 @@ public abstract class SceneEvent extends Event {
 
     @EventPooled
     @Getter
-    public static final class Remove extends SceneEvent {
-        private Container parent;
+    public static final class Remove extends NodeEvent {
+        private Group parent;
 
-        public static Remove create(Container parent) {
+        public static Remove create(Group parent) {
             Remove e = EventPool.obtain(Remove.class);
             e.parent = parent;
             return e;
@@ -74,14 +74,14 @@ public abstract class SceneEvent extends Event {
     }
 
     @EventPooled
-    public static final class AddToScene extends SceneEvent {
+    public static final class AddToScene extends NodeEvent {
         public static AddToScene create() {
             return EventPool.obtain(AddToScene.class);
         }
     }
 
     @EventPooled
-    public static final class RemoveFromScene extends SceneEvent {
+    public static final class RemoveFromScene extends NodeEvent {
         public static RemoveFromScene create() {
             return EventPool.obtain(RemoveFromScene.class);
         }

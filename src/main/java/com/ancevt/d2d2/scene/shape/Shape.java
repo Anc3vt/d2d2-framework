@@ -19,9 +19,9 @@
 package com.ancevt.d2d2.scene.shape;
 
 import com.ancevt.d2d2.scene.Colored;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Node;
 
-public interface Shape extends SceneEntity, Colored {
+public interface Shape extends Node, Colored {
 
 
 }

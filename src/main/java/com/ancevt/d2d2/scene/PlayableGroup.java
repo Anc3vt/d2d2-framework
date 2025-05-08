@@ -20,7 +20,7 @@ package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.event.CommonEvent;
 
-public class PlayableContainer extends ContainerImpl implements Playable {
+public class PlayableGroup extends GroupImpl implements Playable {
 
     private Sprite[] frames;
 
@@ -32,11 +32,11 @@ public class PlayableContainer extends ContainerImpl implements Playable {
     private Sprite currentSprite;
     private boolean backward;
 
-    public PlayableContainer() {
+    public PlayableGroup() {
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
     }
 
-    public PlayableContainer(Sprite[] frameSprites) {
+    public PlayableGroup(Sprite[] frameSprites) {
         this();
         setFrameSprites(frameSprites);
     }

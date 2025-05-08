@@ -19,14 +19,14 @@
 package com.ancevt.d2d2.scene.shape;
 
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.scene.AbstractSceneEntity;
+import com.ancevt.d2d2.scene.AbstractNode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Colored;
 import com.ancevt.d2d2.scene.Resizable;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class RectangleShape extends AbstractSceneEntity implements Shape, Resizable, Colored {
+public class RectangleShape extends AbstractNode implements Shape, Resizable, Colored {
 
     private float width = 100f;
     private float height = 100f;

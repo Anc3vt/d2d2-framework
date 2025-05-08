@@ -20,8 +20,8 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.SceneEvent;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.text.Text;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,10 +34,10 @@ public class DebugLabel extends Text {
 
     private static final int DEFAULT_UPDATE_RATE = 10;
 
-    private static final Map<SceneEntity, DebugLabel> labels = new HashMap<>();
+    private static final Map<Node, DebugLabel> labels = new HashMap<>();
 
     @Getter
-    private final SceneEntity target;
+    private final Node target;
 
     @Getter
     @Setter
@@ -45,13 +45,13 @@ public class DebugLabel extends Text {
 
     private int tick;
 
-    public DebugLabel(SceneEntity target, BiConsumer<SceneEntity, StringBuilder> func, int updateRate) {
+    public DebugLabel(Node target, BiConsumer<Node, StringBuilder> func, int updateRate) {
         this.target = target;
         this.updateRate = updateRate;
 
         setMulticolor(true);
 
-        target.addEventListener(this, SceneEvent.EnterFrame.class, e -> {
+        target.addEventListener(this, NodeEvent.EnterFrame.class, e -> {
             tick++;
             if (tick % updateRate == 0) {
                 StringBuilder out = new StringBuilder();
@@ -68,13 +68,13 @@ public class DebugLabel extends Text {
     }
 
     public void dispose() {
-        target.removeEventListener(this, SceneEvent.EnterFrame.class);
-        target.removeEventListener(this, SceneEvent.RemoveFromScene.class);
+        target.removeEventListener(this, NodeEvent.EnterFrame.class);
+        target.removeEventListener(this, NodeEvent.RemoveFromScene.class);
         this.removeFromParent();
         labels.remove(this);
     }
 
-    public static DebugLabel clear(SceneEntity target) {
+    public static DebugLabel clear(Node target) {
         DebugLabel debugLabel = labels.get(target);
         if (debugLabel != null) {
             debugLabel.dispose();
@@ -86,18 +86,18 @@ public class DebugLabel extends Text {
         new HashMap<>(labels).forEach((k, v) -> v.dispose());
     }
 
-    public static DebugLabel createLabel(SceneEntity target, BiConsumer<SceneEntity, StringBuilder> func, int updateRate) {
+    public static DebugLabel createLabel(Node target, BiConsumer<Node, StringBuilder> func, int updateRate) {
         if (labels.containsKey(target)) {
             labels.get(target).dispose();
         }
         DebugLabel result = new DebugLabel(target, func, updateRate);
-        target.addEventListener(result, SceneEvent.RemoveFromScene.class, e -> {
+        target.addEventListener(result, NodeEvent.RemoveFromScene.class, e -> {
             result.dispose();
         });
         return result;
     }
 
-    public static DebugLabel createLabel(SceneEntity target, BiConsumer<SceneEntity, StringBuilder> func) {
+    public static DebugLabel createLabel(Node target, BiConsumer<Node, StringBuilder> func) {
         return createLabel(target, func, DEFAULT_UPDATE_RATE);
     }
 

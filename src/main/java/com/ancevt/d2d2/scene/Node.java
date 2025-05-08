@@ -21,7 +21,7 @@ package com.ancevt.d2d2.scene;
 import com.ancevt.d2d2.scene.shader.ShaderProgram;
 import com.ancevt.d2d2.event.core.EventDispatcher;
 
-public interface SceneEntity extends EventDispatcher {
+public interface Node extends EventDispatcher {
 
     void setShaderProgram(ShaderProgram shaderProgram);
 
@@ -29,7 +29,7 @@ public interface SceneEntity extends EventDispatcher {
 
     default void centerX() {
         if (hasParent()) {
-            Container parent = getParent();
+            Group parent = getParent();
             setX((parent.getWidth() - getWidth()) / 2);
         } else {
             setX(-getWidth() / 2);
@@ -38,7 +38,7 @@ public interface SceneEntity extends EventDispatcher {
 
     default void centerY() {
         if (hasParent()) {
-            Container parent = getParent();
+            Group parent = getParent();
             setY((parent.getHeight() - getHeight()) / 2);
         } else {
             setX(-getWidth() / 2);
@@ -56,7 +56,7 @@ public interface SceneEntity extends EventDispatcher {
 
     void setName(String value);
 
-    Container getParent();
+    Group getParent();
 
     boolean hasParent();
 
@@ -72,8 +72,8 @@ public interface SceneEntity extends EventDispatcher {
 
     void setY(float value);
 
-    default void setXYAs(SceneEntity sceneEntity) {
-        setXY(sceneEntity.getX(), sceneEntity.getY());
+    default void setXYAs(Node node) {
+        setXY(node.getX(), node.getY());
     }
 
     float getX();

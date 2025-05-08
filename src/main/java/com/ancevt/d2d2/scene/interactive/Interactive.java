@@ -19,10 +19,10 @@
 package com.ancevt.d2d2.scene.interactive;
 
 import com.ancevt.d2d2.common.Disposable;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.shape.FreeShape;
 
-public interface Interactive extends SceneEntity, Disposable {
+public interface Interactive extends Node, Disposable {
 
     void setPushEventsUp(boolean pushEventUp);
 

@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.scene;
 
-public interface Colored extends SceneEntity {
+public interface Colored extends Node {
     void setColor(Color color);
 
     default void setColor(int rgb) {

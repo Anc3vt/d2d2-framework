@@ -23,7 +23,7 @@ import com.ancevt.d2d2.scene.shader.ShaderProgram;
 import com.ancevt.d2d2.scene.texture.Texture;
 import com.ancevt.d2d2.scene.texture.TextureClip;
 
-public class SpriteImpl extends AbstractSceneEntity implements Sprite {
+public class SpriteImpl extends AbstractNode implements Sprite {
 
     public static final Color DEFAULT_COLOR = Color.WHITE;
 
@@ -35,38 +35,10 @@ public class SpriteImpl extends AbstractSceneEntity implements Sprite {
     private double textureBleedingFix = 0d;
     private ShaderProgram shaderProgram;
 
-    public SpriteImpl() {
+    SpriteImpl() {
         setColor(DEFAULT_COLOR);
         setRepeat(1, 1);
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
-    }
-
-    public SpriteImpl(String assetPathToImage) {
-        this(D2D2.textureManager().loadTexture(assetPathToImage).createTextureClip());
-    }
-
-    public SpriteImpl(String assetPathToImage, int textureX, int textureY, int textureWidth, int textureHeight) {
-        this(
-            D2D2.textureManager()
-                .loadTexture(assetPathToImage)
-                .createTextureClip(
-                    textureX,
-                    textureY,
-                    textureWidth,
-                    textureHeight
-                )
-        );
-    }
-
-    public SpriteImpl(TextureClip textureClip) {
-        setTextureClip(textureClip);
-
-        setColor(DEFAULT_COLOR);
-        setRepeat(1, 1);
-    }
-
-    public SpriteImpl(Texture texture) {
-        this(texture.createTextureClip());
     }
 
     @Override
@@ -154,8 +126,8 @@ public class SpriteImpl extends AbstractSceneEntity implements Sprite {
     }
 
     @Override
-    public SpriteImpl cloneSprite() {
-        SpriteImpl result = new SpriteImpl(getTextureClip());
+    public Sprite cloneSprite() {
+        Sprite result = Sprite.create(getTextureClip());
         result.setXY(getX(), getY());
         result.setRepeat(getRepeatX(), getRepeatY());
         result.setScale(getScaleX(), getScaleY());

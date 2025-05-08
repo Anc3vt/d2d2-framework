@@ -18,16 +18,16 @@
 
 package com.ancevt.d2d2.engine.norender;
 
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.scene.*;
 
 public class NoRenderRendererStub implements Renderer {
 
-    private final Scene scene;
+    private final Root root;
     private int zOrderCounter;
 
-    public NoRenderRendererStub(Scene scene) {
-        this.scene = scene;
+    public NoRenderRendererStub(Root root) {
+        this.root = root;
     }
 
     @Override
@@ -43,33 +43,33 @@ public class NoRenderRendererStub implements Renderer {
     @Override
     public void renderFrame() {
         zOrderCounter = 0;
-        renderDisplayObject(scene);
+        renderDisplayObject(root);
     }
 
-    private void renderDisplayObject(SceneEntity sceneEntity) {
-        if (!sceneEntity.isVisible()) return;
+    private void renderDisplayObject(Node node) {
+        if (!node.isVisible()) return;
 
-        sceneEntity.onEnterFrame();
-        sceneEntity.dispatchEvent(SceneEvent.EnterFrame.create());
+        node.onEnterFrame();
+        node.dispatchEvent(NodeEvent.EnterFrame.create());
 
-        sceneEntity.onLoopUpdate();
-        sceneEntity.dispatchEvent(SceneEvent.LoopUpdate.create());
+        node.onLoopUpdate();
+        node.dispatchEvent(NodeEvent.LoopUpdate.create());
 
         zOrderCounter++;
-        sceneEntity.setAbsoluteZOrderIndex(zOrderCounter);
+        node.setAbsoluteZOrderIndex(zOrderCounter);
 
-        if (sceneEntity instanceof Container container) {
-            for (int i = 0; i < container.getNumChildren(); i++) {
-                renderDisplayObject(container.getChild(i));
+        if (node instanceof Group group) {
+            for (int i = 0; i < group.getNumChildren(); i++) {
+                renderDisplayObject(group.getChild(i));
             }
         }
 
-        if (sceneEntity instanceof Playable) {
-            ((Playable) sceneEntity).processFrame();
+        if (node instanceof Playable) {
+            ((Playable) node).processFrame();
         }
 
-        sceneEntity.onExitFrame();
-        sceneEntity.dispatchEvent(SceneEvent.ExitFrame.create());
+        node.onExitFrame();
+        node.dispatchEvent(NodeEvent.ExitFrame.create());
     }
 
 }

@@ -19,13 +19,13 @@
 package com.ancevt.d2d2.scene.interactive;
 
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.exception.InteractiveException;
-import com.ancevt.d2d2.scene.ContainerImpl;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.shape.FreeShape;
 
-public class InteractiveContainer extends ContainerImpl implements Interactive {
+public class InteractiveGroup extends GroupImpl implements Interactive {
 
     private static final float DEFAULT_WIDTH = 1f;
     private static final float DEFAULT_HEIGHT = 1f;
@@ -39,7 +39,7 @@ public class InteractiveContainer extends ContainerImpl implements Interactive {
 
     private FreeShape interactiveFreeShape;
 
-    public InteractiveContainer(float width, float height) {
+    public InteractiveGroup(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
         enabled = true;
@@ -47,14 +47,14 @@ public class InteractiveContainer extends ContainerImpl implements Interactive {
         InteractiveManager.getInstance().registerInteractive(this);
     }
 
-    public InteractiveContainer() {
+    public InteractiveGroup() {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    public InteractiveContainer(SceneEntity wrappingSceneEntity) {
+    public InteractiveGroup(Node wrappingNode) {
         this();
-        addChild(wrappingSceneEntity);
-        setSize(wrappingSceneEntity.getWidth(), wrappingSceneEntity.getHeight());
+        addChild(wrappingNode);
+        setSize(wrappingNode.getWidth(), wrappingNode.getHeight());
     }
 
     @Override
@@ -193,7 +193,7 @@ public class InteractiveContainer extends ContainerImpl implements Interactive {
         InteractiveManager.getInstance().unregisterInteractive(this);
         removeAllEventListeners();
         removeFromParent();
-        addEventListener(SceneEvent.Add.class, e -> {
+        addEventListener(NodeEvent.Add.class, e -> {
             throw new InteractiveException("Unable to add disposed interactive display object %s".formatted(this.toString()));
         });
     }

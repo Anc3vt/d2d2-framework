@@ -22,25 +22,25 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.Disposable;
 import com.ancevt.d2d2.event.core.Event;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.scene.*;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.text.Text;
 
-public class DebugBorder extends ContainerImpl implements Resizable, Colored, Disposable {
+public class DebugBorder extends GroupImpl implements Resizable, Colored, Disposable {
 
     private final BorderedRectangle borderedRectangle;
-    private final SceneEntity sceneEntity;
+    private final Node node;
     private final Text label;
 
     private boolean disposed;
 
-    private DebugBorder(SceneEntity sceneEntity) {
+    private DebugBorder(Node node) {
         Color color = Color.createVisibleRandomColor();
 
-        this.sceneEntity = sceneEntity;
-        borderedRectangle = new BorderedRectangle(sceneEntity.getWidth(),
-                sceneEntity.getHeight(),
+        this.node = node;
+        borderedRectangle = new BorderedRectangle(node.getWidth(),
+                node.getHeight(),
                 Color.NO_COLOR,
                 color
         );
@@ -48,12 +48,12 @@ public class DebugBorder extends ContainerImpl implements Resizable, Colored, Di
         addChild(borderedRectangle);
 
         label = new Text();
-        label.setText(sceneEntity.getDisplayObjectId() + " " + sceneEntity.getName());
+        label.setText(node.getDisplayObjectId() + " " + node.getName());
         label.setAutosize(true);
         addChild(label, 2, -label.getHeight());
 
-        sceneEntity.addEventListener(this, SceneEvent.AddToScene.class, this::displayObject_addToStage);
-        sceneEntity.addEventListener(this, SceneEvent.RemoveFromScene.class, this::displayObject_removeFromStage);
+        node.addEventListener(this, NodeEvent.AddToScene.class, this::displayObject_addToStage);
+        node.addEventListener(this, NodeEvent.RemoveFromScene.class, this::displayObject_removeFromStage);
     }
 
     private void displayObject_removeFromStage(Event event) {
@@ -92,16 +92,16 @@ public class DebugBorder extends ContainerImpl implements Resizable, Colored, Di
 
     @Override
     public void onEnterFrame() {
-        setXY(sceneEntity.getAbsoluteX(), sceneEntity.getAbsoluteY());
-        setSize(sceneEntity.getWidth(), sceneEntity.getHeight());
-        setScale(sceneEntity.getAbsoluteScaleX(), sceneEntity.getAbsoluteScaleY());
-        setRotation(sceneEntity.getAbsoluteRotation());
+        setXY(node.getAbsoluteX(), node.getAbsoluteY());
+        setSize(node.getWidth(), node.getHeight());
+        setScale(node.getAbsoluteScaleX(), node.getAbsoluteScaleY());
+        setRotation(node.getAbsoluteRotation());
     }
 
     @Override
     public void dispose() {
-        sceneEntity.removeEventListener(this, SceneEvent.AddToScene.class);
-        sceneEntity.removeEventListener(this, SceneEvent.RemoveFromScene.class);
+        node.removeEventListener(this, NodeEvent.AddToScene.class);
+        node.removeEventListener(this, NodeEvent.RemoveFromScene.class);
         removeFromParent();
         disposed = true;
     }
@@ -111,9 +111,9 @@ public class DebugBorder extends ContainerImpl implements Resizable, Colored, Di
         return disposed;
     }
 
-    public static DebugBorder create(SceneEntity sceneEntity) {
-        DebugBorder debugBorder = new DebugBorder(sceneEntity);
-        if (sceneEntity.isOnScreen()) {
+    public static DebugBorder create(Node node) {
+        DebugBorder debugBorder = new DebugBorder(node);
+        if (node.isOnScreen()) {
             D2D2.stage().addChild(debugBorder);
         }
         return debugBorder;

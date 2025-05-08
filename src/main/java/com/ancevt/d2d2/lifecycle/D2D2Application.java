@@ -18,10 +18,10 @@
 
 package com.ancevt.d2d2.lifecycle;
 
-import com.ancevt.d2d2.scene.Scene;
+import com.ancevt.d2d2.scene.Root;
 
 public interface D2D2Application {
-    void onCreate(Scene scene);
+    void onCreate(Root root);
 
     default void onDispose() {}
 }

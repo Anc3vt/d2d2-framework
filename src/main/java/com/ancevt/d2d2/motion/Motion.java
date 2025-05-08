@@ -21,7 +21,7 @@ package com.ancevt.d2d2.motion;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.core.Event;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.event.core.EventDispatcherImpl;
 import lombok.Getter;
 
@@ -62,14 +62,14 @@ public class Motion<N extends Number> extends EventDispatcherImpl {
     }
 
     public void start() {
-        D2D2.stage().removeEventListener(this, SceneEvent.LoopUpdate.class);
-        D2D2.stage().addEventListener(this, SceneEvent.LoopUpdate.class, this::stage_loopUpdate);
+        D2D2.stage().removeEventListener(this, NodeEvent.LoopUpdate.class);
+        D2D2.stage().addEventListener(this, NodeEvent.LoopUpdate.class, this::stage_loopUpdate);
         dispatchEvent(CommonEvent.Start.create());
         state = IN_PROCESS;
     }
 
     public void stop() {
-        D2D2.stage().removeEventListener(this, SceneEvent.LoopUpdate.class);
+        D2D2.stage().removeEventListener(this, NodeEvent.LoopUpdate.class);
     }
 
     private void stage_loopUpdate(Event event) {

@@ -20,8 +20,8 @@ package com.ancevt.d2d2.scene.svg;
 
 import com.ancevt.d2d2.asset.Assets;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.GroupImpl;
 import com.ancevt.d2d2.scene.shape.FreeShape;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -56,11 +56,11 @@ public class SvgShapeParser {
         }
     }
 
-    public Container parseAsset(String assetPath) {
+    public Group parseAsset(String assetPath) {
         return parse(Assets.getAsset(assetPath));
     }
 
-    public Container parse(InputStream inputStream) {
+    public Group parse(InputStream inputStream) {
         try {
             return parseSvg(inputStream);
         } catch (Exception e) {
@@ -68,8 +68,8 @@ public class SvgShapeParser {
         }
     }
 
-    private Container parseSvg(InputStream inputStream) throws Exception {
-        Container result = new ContainerImpl();
+    private Group parseSvg(InputStream inputStream) throws Exception {
+        Group result = new GroupImpl();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -126,7 +126,7 @@ public class SvgShapeParser {
         return styleMap;
     }
 
-    private void drawPathData(String d, Color color, Container container) {
+    private void drawPathData(String d, Color color, Group group) {
         List<Command> commands = parsePathData(d);
 
         FreeShape shape = null;
@@ -137,7 +137,7 @@ public class SvgShapeParser {
                 case "M", "m" -> {
                     if (shape != null) {
                         shape.commit();
-                        container.addChild(shape);
+                        group.addChild(shape);
                     }
                     shape = new FreeShape();
                     shape.setColor(color);
@@ -155,7 +155,7 @@ public class SvgShapeParser {
         }
 
         shape.commit();
-        container.addChild(shape);
+        group.addChild(shape);
     }
 
     private void curveTo(FreeShape shape, List<Coords> coordsList, boolean relative) {

@@ -21,14 +21,16 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.Root;
 import lombok.Getter;
 import lombok.Setter;
 
 import static com.ancevt.d2d2.D2D2.stage;
 
-public class StarletSpace extends com.ancevt.d2d2.scene.ContainerImpl {
+public class StarletSpace extends GroupImpl {
 
     private float velocityX = 30f;
     @Getter
@@ -53,7 +55,7 @@ public class StarletSpace extends com.ancevt.d2d2.scene.ContainerImpl {
     }
 
     public static StarletSpace haveFun(boolean logo) {
-        com.ancevt.d2d2.scene.Scene stage = stage();
+        Root stage = stage();
         stage.setBackgroundColor(Color.of(0x000510));
         com.ancevt.d2d2.scene.SpriteImpl d2d2Title = new com.ancevt.d2d2.scene.SpriteImpl("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
         d2d2Title.setColor(Color.LIGHT_GRAY);
@@ -70,7 +72,7 @@ public class StarletSpace extends com.ancevt.d2d2.scene.ContainerImpl {
         return starletSpace;
     }
 
-    private static class Starlet extends com.ancevt.d2d2.scene.ContainerImpl {
+    private static class Starlet extends GroupImpl {
 
         private final com.ancevt.d2d2.scene.SpriteImpl sprite;
         private float t;
@@ -112,7 +114,7 @@ public class StarletSpace extends com.ancevt.d2d2.scene.ContainerImpl {
 
                 if (x % starletSpace.someVal == 0) {
                     com.ancevt.d2d2.scene.SpriteImpl plume = sprite.cloneSprite();
-                    plume.addEventListener(SceneEvent.LoopUpdate.class, e -> {
+                    plume.addEventListener(NodeEvent.LoopUpdate.class, e -> {
                         plume.setAlpha(plume.getAlpha() - 0.01f);
                         plume.moveY(0.05f);
                         plume.rotate(1f);

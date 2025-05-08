@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.scene;
 
-public interface Resizable extends SceneEntity {
+public interface Resizable extends Node {
     void setSize(float width, float height);
 
     void setWidth(float value);

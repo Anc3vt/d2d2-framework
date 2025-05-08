@@ -27,8 +27,8 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.text.Text;
 import lombok.Getter;
@@ -38,7 +38,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
-public class ByteDisplay extends InteractiveContainer {
+public class ByteDisplay extends InteractiveGroup {
 
     private static final float DEFAULT_WIDTH = 580.0f;
     private static final float DEFAULT_HEIGHT = 400.0f;
@@ -209,7 +209,7 @@ public class ByteDisplay extends InteractiveContainer {
         oldX = (int) (e.x() + getX());
         oldY = (int) (e.y() + getY());
 
-        Container parent = getParent();
+        Group parent = getParent();
         parent.removeChild(this);
         parent.addChild(this);
 

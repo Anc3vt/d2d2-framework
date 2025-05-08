@@ -28,7 +28,7 @@ import com.ancevt.d2d2.event.core.EventDispatcherImpl;
 import com.ancevt.d2d2.exception.NotImplementedException;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.scene.Renderer;
-import com.ancevt.d2d2.scene.Scene;
+import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.text.Font;
 import com.ancevt.d2d2.scene.text.TrueTypeFontBuilder;
 import com.ancevt.d2d2.time.Timer;
@@ -39,7 +39,7 @@ public class NoRenderEngine extends EventDispatcherImpl implements Engine {
 
     private final int initialWidth;
     private final int initialHeight;
-    private Scene scene;
+    private Root root;
     private String title;
     private Renderer renderer;
     private boolean running;
@@ -128,22 +128,22 @@ public class NoRenderEngine extends EventDispatcherImpl implements Engine {
 
     @Override
     public void create() {
-        scene = new Scene();
-        scene.setSize(initialWidth, initialHeight);
-        renderer = new NoRenderRendererStub(scene);
+        root = new Root();
+        root.setSize(initialWidth, initialHeight);
+        renderer = new NoRenderRendererStub(root);
     }
 
     @Override
     public void start() {
         running = true;
-        scene.dispatchEvent(CommonEvent.Start.create());
+        root.dispatchEvent(CommonEvent.Start.create());
         startNoRenderLoop();
-        scene.dispatchEvent(CommonEvent.Stop.create());
+        root.dispatchEvent(CommonEvent.Stop.create());
     }
 
     @Override
-    public Scene stage() {
-        return scene;
+    public Root stage() {
+        return root;
     }
 
     @Override

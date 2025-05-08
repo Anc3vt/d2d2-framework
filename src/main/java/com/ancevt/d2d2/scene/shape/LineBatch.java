@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.scene.shape;
 
-import com.ancevt.d2d2.scene.AbstractSceneEntity;
+import com.ancevt.d2d2.scene.AbstractNode;
 import com.ancevt.d2d2.scene.Color;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ToString
-public class LineBatch extends AbstractSceneEntity implements Shape {
+public class LineBatch extends AbstractNode implements Shape {
 
     private Color color = Color.WHITE;
 

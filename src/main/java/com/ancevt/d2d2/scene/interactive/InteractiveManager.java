@@ -20,7 +20,7 @@ package com.ancevt.d2d2.scene.interactive;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.scene.shape.FreeShape;
@@ -136,7 +136,7 @@ public class InteractiveManager {
 
     public void registerInteractive(final Interactive interactive) {
         if (!interactiveList.contains(interactive)) {
-            interactive.addEventListener(this, SceneEvent.RemoveFromScene.class, e -> {
+            interactive.addEventListener(this, NodeEvent.RemoveFromScene.class, e -> {
                 if (interactive.isFocused()) {
                     resetFocus();
                 }
@@ -147,7 +147,7 @@ public class InteractiveManager {
 
     public final void unregisterInteractive(final Interactive interactive) {
         interactiveList.remove(interactive);
-        interactive.removeEventListener(this, SceneEvent.RemoveFromScene.class);
+        interactive.removeEventListener(this, NodeEvent.RemoveFromScene.class);
     }
 
     public final void clear() {
@@ -467,7 +467,7 @@ public class InteractiveManager {
                             focusNext();
                             keyHoldTabDirection = 1;
                         }
-                        D2D2.stage().addEventListener(this, SceneEvent.ExitFrame.class, exite -> {
+                        D2D2.stage().addEventListener(this, NodeEvent.ExitFrame.class, exite -> {
                             keyHoldTime--;
                             if (keyHoldTime < 0) {
                                 keyHoldTime = 3;
@@ -496,7 +496,7 @@ public class InteractiveManager {
                     case KeyCode.TAB -> {
                         keyHoldTime = KEY_HOLD_TIME;
                         keyHoldTabDirection = 0;
-                        D2D2.stage().removeEventListener(this, SceneEvent.ExitFrame.class);
+                        D2D2.stage().removeEventListener(this, NodeEvent.ExitFrame.class);
                     }
                     case KeyCode.ENTER -> {
                         if (focusedInteractive != null) {
@@ -511,7 +511,7 @@ public class InteractiveManager {
         } else {
             D2D2.stage().removeEventListener(this, InputEvent.KeyDown.class);
             D2D2.stage().removeEventListener(this, InputEvent.KeyUp.class);
-            D2D2.stage().removeEventListener(this, SceneEvent.ExitFrame.class);
+            D2D2.stage().removeEventListener(this, NodeEvent.ExitFrame.class);
         }
     }
 

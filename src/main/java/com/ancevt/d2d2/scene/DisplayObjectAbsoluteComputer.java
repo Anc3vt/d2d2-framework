@@ -23,12 +23,12 @@ final class DisplayObjectAbsoluteComputer {
 
     private DisplayObjectAbsoluteComputer() {}
 
-    static float getAbsoluteX(AbstractSceneEntity displayObject) {
+    static float getAbsoluteX(AbstractNode displayObject) {
         float result = displayObject.getX();
 
-        Container parent = displayObject.getParent();
+        Group parent = displayObject.getParent();
 
-        while (parent != null && !(parent instanceof Scene)) {
+        while (parent != null && !(parent instanceof Root)) {
             result *= parent.getScaleX();
             result += parent.getX();
             parent = parent.getParent();
@@ -37,12 +37,12 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    static float getAbsoluteY(final AbstractSceneEntity displayObject) {
+    static float getAbsoluteY(final AbstractNode displayObject) {
         float result = displayObject.getY();
 
-        Container parent = displayObject.getParent();
+        Group parent = displayObject.getParent();
 
-        while (parent != null && !(parent instanceof Scene)) {
+        while (parent != null && !(parent instanceof Root)) {
             result *= parent.getScaleY();
             result += parent.getY();
             parent = parent.getParent();
@@ -51,12 +51,12 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    static float getAbsoluteScaleX(final AbstractSceneEntity displayObject) {
+    static float getAbsoluteScaleX(final AbstractNode displayObject) {
         float result = displayObject.getScaleX();
 
-        Container parent = displayObject.getParent();
+        Group parent = displayObject.getParent();
 
-        while (parent != null && !(parent instanceof Scene)) {
+        while (parent != null && !(parent instanceof Root)) {
             result *= parent.getScaleX();
             parent = parent.getParent();
         }
@@ -64,12 +64,12 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    static float getAbsoluteScaleY(final AbstractSceneEntity displayObject) {
+    static float getAbsoluteScaleY(final AbstractNode displayObject) {
         float result = displayObject.getScaleY();
 
-        Container parent = displayObject.getParent();
+        Group parent = displayObject.getParent();
 
-        while (parent != null && !(parent instanceof Scene)) {
+        while (parent != null && !(parent instanceof Root)) {
             result *= parent.getScaleY();
             parent = parent.getParent();
         }
@@ -77,12 +77,12 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    static float getAbsoluteAlpha(final AbstractSceneEntity displayObject) {
+    static float getAbsoluteAlpha(final AbstractNode displayObject) {
         float result = displayObject.getAlpha();
 
-        Container parent = displayObject.getParent();
+        Group parent = displayObject.getParent();
 
-        while (parent != null && !(parent instanceof Scene)) {
+        while (parent != null && !(parent instanceof Root)) {
             result *= parent.getAlpha();
             parent = parent.getParent();
         }
@@ -90,12 +90,12 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    static float getAbsoluteRotation(final AbstractSceneEntity displayObject) {
+    static float getAbsoluteRotation(final AbstractNode displayObject) {
         float result = displayObject.getRotation();
 
-        Container parent = displayObject.getParent();
+        Group parent = displayObject.getParent();
 
-        while (parent != null && !(parent instanceof Scene)) {
+        while (parent != null && !(parent instanceof Root)) {
             result += parent.getRotation();
             parent = parent.getParent();
         }
@@ -103,12 +103,12 @@ final class DisplayObjectAbsoluteComputer {
         return result;
     }
 
-    public static boolean isAbsoluteVisible(AbstractSceneEntity displayObject) {
-        Container parent = displayObject.getParent();
+    public static boolean isAbsoluteVisible(AbstractNode displayObject) {
+        Group parent = displayObject.getParent();
 
         if (!displayObject.isVisible()) return false;
 
-        while (parent != null && !(parent instanceof Scene)) {
+        while (parent != null && !(parent instanceof Root)) {
             if (!parent.isVisible()) return false;
             parent = parent.getParent();
         }

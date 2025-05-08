@@ -22,12 +22,12 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import lombok.Getter;
 
-public class DraggingContainer extends InteractiveContainer {
+public class DraggingGroup extends InteractiveGroup {
 
     private static final int DEFAULT_WIDTH = 100;
     private static final int DEFAULT_HEIGHT = 100;
@@ -43,7 +43,7 @@ public class DraggingContainer extends InteractiveContainer {
     @Getter
     private final RectangleShape background;
 
-    public DraggingContainer() {
+    public DraggingGroup() {
         background = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
         addChild(background);
 
@@ -58,7 +58,7 @@ public class DraggingContainer extends InteractiveContainer {
         oldX = (int) (e.x() + getX());
         oldY = (int) (e.y() + getY());
 
-        Container parent = getParent();
+        Group parent = getParent();
         parent.removeChild(this);
         parent.addChild(this);
 

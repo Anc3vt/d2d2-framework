@@ -19,9 +19,9 @@
 package com.ancevt.d2d2.scene.text;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.AbstractSceneEntity;
+import com.ancevt.d2d2.scene.AbstractNode;
 import com.ancevt.d2d2.scene.Colored;
 import com.ancevt.d2d2.scene.Resizable;
 import com.ancevt.d2d2.scene.SpriteImpl;
@@ -33,7 +33,7 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class Text extends AbstractSceneEntity implements Colored, Resizable {
+public class Text extends AbstractNode implements Colored, Resizable {
 
     protected static final String DEFAULT_TEXT = "";
 
@@ -148,8 +148,8 @@ public class Text extends AbstractSceneEntity implements Colored, Resizable {
     }
 
     public void disposeOnRemoveFromStage() {
-        addEventListener(this, SceneEvent.RemoveFromScene.class, e -> {
-            removeEventListener(Text.class, SceneEvent.RemoveFromScene.class);
+        addEventListener(this, NodeEvent.RemoveFromScene.class, e -> {
+            removeEventListener(Text.class, NodeEvent.RemoveFromScene.class);
             if (sprite != null && sprite.getTextureClip() != null) {
                 D2D2.textureManager().unloadTexture(sprite.getTextureClip().getTexture());
             }

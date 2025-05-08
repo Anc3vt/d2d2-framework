@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.scene.shape;
 
-import com.ancevt.d2d2.scene.AbstractSceneEntity;
+import com.ancevt.d2d2.scene.AbstractNode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Colored;
 import com.ancevt.d2d2.scene.texture.Texture;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class FreeShape extends AbstractSceneEntity implements Shape, Colored {
+public class FreeShape extends AbstractNode implements Shape, Colored {
 
     @Getter
     private List<Vertex> vertices = new ArrayList<>();

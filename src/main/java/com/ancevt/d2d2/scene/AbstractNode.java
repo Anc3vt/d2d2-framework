@@ -21,12 +21,12 @@ package com.ancevt.d2d2.scene;
 import com.ancevt.d2d2.scene.shader.ShaderProgram;
 import com.ancevt.d2d2.event.core.EventDispatcherImpl;
 
-public abstract class AbstractSceneEntity extends EventDispatcherImpl implements SceneEntity {
+public abstract class AbstractNode extends EventDispatcherImpl implements Node {
 
     private static int displayObjectIdCounter;
     private final int displayObjectId;
     private String name;
-    private ContainerImpl parent;
+    private GroupImpl parent;
     private float x;
     private float y;
     private float scaleX = 1.0f;
@@ -39,7 +39,7 @@ public abstract class AbstractSceneEntity extends EventDispatcherImpl implements
 
     private ShaderProgram shaderProgram;
 
-    protected AbstractSceneEntity() {
+    protected AbstractNode() {
         displayObjectId = displayObjectIdCounter++;
         name = "_" + getClass().getSimpleName() + getDisplayObjectId();
     }
@@ -78,12 +78,12 @@ public abstract class AbstractSceneEntity extends EventDispatcherImpl implements
         return zOrderIndex;
     }
 
-    final void setParent(final ContainerImpl container) {
+    final void setParent(final GroupImpl container) {
         this.parent = container;
     }
 
     @Override
-    public Container getParent() {
+    public Group getParent() {
         return parent;
     }
 
@@ -146,10 +146,10 @@ public abstract class AbstractSceneEntity extends EventDispatcherImpl implements
 
     @Override
     public boolean isOnScreen() {
-        Container currentParent = getParent();
+        Group currentParent = getParent();
 
         while (currentParent != null) {
-            if (currentParent instanceof Scene) return true;
+            if (currentParent instanceof Root) return true;
             currentParent = currentParent.getParent();
         }
 

@@ -19,10 +19,10 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import lombok.Getter;
 
-public class Scene extends ContainerImpl implements Resizable {
+public class Root extends GroupImpl implements Resizable {
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
 
     @Getter
@@ -34,7 +34,7 @@ public class Scene extends ContainerImpl implements Resizable {
     @Getter
     private Color backgroundColor;
 
-    public Scene() {
+    public Root() {
         setName("_" + getClass().getSimpleName() + getDisplayObjectId());
         setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     }
@@ -72,24 +72,24 @@ public class Scene extends ContainerImpl implements Resizable {
         dispatchEvent(CommonEvent.Resize.create(width, height));
     }
 
-    static void dispatchAddToStage(SceneEntity sceneEntity) {
-        if (sceneEntity.isOnScreen()) {
-            sceneEntity.dispatchEvent(SceneEvent.AddToScene.create());
-            if (sceneEntity instanceof Container container) {
-                for (int i = 0; i < container.getNumChildren(); i++) {
-                    dispatchAddToStage(container.getChild(i));
+    static void dispatchAddToStage(Node node) {
+        if (node.isOnScreen()) {
+            node.dispatchEvent(NodeEvent.AddToScene.create());
+            if (node instanceof Group group) {
+                for (int i = 0; i < group.getNumChildren(); i++) {
+                    dispatchAddToStage(group.getChild(i));
                 }
             }
         }
     }
 
-    static void dispatchRemoveFromStage(SceneEntity sceneEntity) {
-        if (sceneEntity.isOnScreen()) {
-            sceneEntity.dispatchEvent(SceneEvent.RemoveFromScene.create());
+    static void dispatchRemoveFromStage(Node node) {
+        if (node.isOnScreen()) {
+            node.dispatchEvent(NodeEvent.RemoveFromScene.create());
 
-            if (sceneEntity instanceof Container container) {
-                for (int i = 0; i < container.getNumChildren(); i++) {
-                    dispatchRemoveFromStage(container.getChild(i));
+            if (node instanceof Group group) {
+                for (int i = 0; i < group.getNumChildren(); i++) {
+                    dispatchRemoveFromStage(group.getChild(i));
                 }
             }
         }

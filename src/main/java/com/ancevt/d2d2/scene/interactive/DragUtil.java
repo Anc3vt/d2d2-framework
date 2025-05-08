@@ -19,8 +19,8 @@
 package com.ancevt.d2d2.scene.interactive;
 
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.Node;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -29,24 +29,24 @@ import java.util.concurrent.atomic.AtomicReference;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DragUtil {
 
-    public static void enableDrag(SceneEntity sceneEntity, Interactive interactive) {
+    public static void enableDrag(Node node, Interactive interactive) {
         AtomicReference<Float> oldXHolder = new AtomicReference<>(0f);
         AtomicReference<Float> oldYHolder = new AtomicReference<>(0f);
 
-        interactive.addEventListener(DragUtil.class + sceneEntity.getName(), InputEvent.MouseDown.class, e -> {
-            oldXHolder.set(e.x() + sceneEntity.getX());
-            oldYHolder.set(e.y() + sceneEntity.getY());
-            Container parent = sceneEntity.getParent();
-            parent.removeChild(sceneEntity);
-            parent.addChild(sceneEntity);
+        interactive.addEventListener(DragUtil.class + node.getName(), InputEvent.MouseDown.class, e -> {
+            oldXHolder.set(e.x() + node.getX());
+            oldYHolder.set(e.y() + node.getY());
+            Group parent = node.getParent();
+            parent.removeChild(node);
+            parent.addChild(node);
             interactive.focus();
         });
 
-        interactive.addEventListener(DragUtil.class + sceneEntity.getName(), InputEvent.MouseDrag.class, e -> {
-            final float tx = e.x() + sceneEntity.getX();
-            final float ty = e.y() + sceneEntity.getY();
+        interactive.addEventListener(DragUtil.class + node.getName(), InputEvent.MouseDrag.class, e -> {
+            final float tx = e.x() + node.getX();
+            final float ty = e.y() + node.getY();
 
-            sceneEntity.move(tx - oldXHolder.get(), ty - oldYHolder.get());
+            node.move(tx - oldXHolder.get(), ty - oldYHolder.get());
 
             oldXHolder.set(tx);
             oldYHolder.set(ty);
@@ -57,9 +57,9 @@ public class DragUtil {
         enableDrag(interactive, interactive);
     }
 
-    public static void disableDrag(SceneEntity sceneEntity, Interactive interactive) {
-        interactive.removeEventListener(DragUtil.class + sceneEntity.getName(), InputEvent.MouseDown.class);
-        interactive.removeEventListener(DragUtil.class + sceneEntity.getName(), InputEvent.MouseDrag.class);
+    public static void disableDrag(Node node, Interactive interactive) {
+        interactive.removeEventListener(DragUtil.class + node.getName(), InputEvent.MouseDown.class);
+        interactive.removeEventListener(DragUtil.class + node.getName(), InputEvent.MouseDrag.class);
     }
 
     public static void disableDrag(Interactive interactive) {

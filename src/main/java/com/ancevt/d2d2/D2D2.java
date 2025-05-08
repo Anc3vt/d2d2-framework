@@ -23,12 +23,12 @@ import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.SoundManager;
 import com.ancevt.d2d2.engine.norender.NoRenderEngine;
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
 import com.ancevt.d2d2.lifecycle.SystemProperties;
-import com.ancevt.d2d2.scene.Scene;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Root;
+import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.text.BitmapFontManager;
 import com.ancevt.d2d2.scene.texture.TextureManager;
 import com.ancevt.util.args.Args;
@@ -53,7 +53,7 @@ public final class D2D2 {
     private static BitmapFontManager bitmapFontManager;
 
     @Getter
-    private static SceneEntity cursor;
+    private static Node cursor;
     private static Engine engine;
 
     @Getter
@@ -94,9 +94,9 @@ public final class D2D2 {
         int height = convert(p.getProperty(SystemProperties.D2D2_WINDOW_HEIGHT, "600")).toInt();
         Engine engine = createEngine(engineClassName, width, height, titleText);
 
-        Scene scene = D2D2.createStage(engine);
+        Root root = D2D2.createStage(engine);
         D2D2Application entryPoint = createMain(d2d2EntryPointClass);
-        entryPoint.onCreate(scene);
+        entryPoint.onCreate(root);
         D2D2.loop();
         entryPoint.onDispose();
     }
@@ -105,7 +105,7 @@ public final class D2D2 {
         properties.forEach(System::setProperty);
     }
 
-    public static Scene createStage(Engine engine) {
+    public static Root createStage(Engine engine) {
         bitmapFontManager = new BitmapFontManager();
         D2D2.engine = engine;
         engine.create();
@@ -164,21 +164,21 @@ public final class D2D2 {
         }
     }
 
-    public static void setCursor(SceneEntity cursor) {
+    public static void setCursor(Node cursor) {
         if (cursor == D2D2.cursor) return;
 
         if (cursor != null) {
             Mouse.setVisible(false);
-            cursor.removeEventListener(Mouse.class, SceneEvent.LoopUpdate.class);
-            cursor.addEventListener(Mouse.class, SceneEvent.LoopUpdate.class, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
+            cursor.removeEventListener(Mouse.class, NodeEvent.LoopUpdate.class);
+            cursor.addEventListener(Mouse.class, NodeEvent.LoopUpdate.class, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
         } else {
             Mouse.setVisible(true);
-            D2D2.cursor.removeEventListener(Mouse.class, SceneEvent.LoopUpdate.class);
+            D2D2.cursor.removeEventListener(Mouse.class, NodeEvent.LoopUpdate.class);
         }
         D2D2.cursor = cursor;
     }
 
-    public static Scene stage() {
+    public static Root stage() {
         return engine.stage();
     }
 

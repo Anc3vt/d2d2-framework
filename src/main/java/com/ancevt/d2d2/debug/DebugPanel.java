@@ -25,13 +25,13 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.ContainerImpl;
-import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Text;
@@ -50,7 +50,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 @Slf4j
-public class DebugPanel extends ContainerImpl {
+public class DebugPanel extends GroupImpl {
 
     private static final Map<String, DebugPanel> debugPanels = new HashMap<>();
     private static boolean enabled;
@@ -59,7 +59,7 @@ public class DebugPanel extends ContainerImpl {
     private final Text text;
     private final String systemPropertyName;
     private final RectangleShape bg;
-    private final InteractiveContainer interactiveButton;
+    private final InteractiveGroup interactiveButton;
     private int oldX;
     private int oldY;
     private boolean shiftDown;
@@ -75,7 +75,7 @@ public class DebugPanel extends ContainerImpl {
         final int height = 300;
 
         this.systemPropertyName = systemPropertyName;
-        addEventListener(SceneEvent.ExitFrame.class, this::this_eachFrame);
+        addEventListener(NodeEvent.ExitFrame.class, this::this_eachFrame);
 
         buttonList = new ArrayList<>();
         buttonMap = new HashMap<>();
@@ -90,11 +90,11 @@ public class DebugPanel extends ContainerImpl {
         text.setSize(width, height);
         addChild(text, 1, 1);
 
-        interactiveButton = new InteractiveContainer(width, height);
+        interactiveButton = new InteractiveGroup(width, height);
         interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);
         interactiveButton.addEventListener(InputEvent.MouseDrag.class, this::interactiveButton_drag);
 
-        addEventListener(this, SceneEvent.AddToScene.class, this::this_addToStage);
+        addEventListener(this, NodeEvent.AddToScene.class, this::this_addToStage);
 
         addChild(interactiveButton);
 
@@ -130,7 +130,7 @@ public class DebugPanel extends ContainerImpl {
     }
 
     private void this_addToStage(Event event) {
-        removeEventListener(this, SceneEvent.AddToScene.class);
+        removeEventListener(this, NodeEvent.AddToScene.class);
         D2D2.stage().addEventListener(InputEvent.KeyDown.class, this::root_keyDown);
         D2D2.stage().addEventListener(InputEvent.KeyUp.class, this::root_keyUp);
     }
@@ -153,7 +153,7 @@ public class DebugPanel extends ContainerImpl {
         oldX = (int) (e.x() + getX());
         oldY = (int) (e.y() + getY());
 
-        Container parent = getParent();
+        Group parent = getParent();
         parent.removeChild(this);
         parent.addChild(this);
 
@@ -356,14 +356,14 @@ public class DebugPanel extends ContainerImpl {
         private static final float DEFAULT_WIDTH = 50f;
         private static final float DEFAULT_HEIGHT = 12f;
 
-        private final InteractiveContainer interactiveButton;
+        private final InteractiveGroup interactiveButton;
 
         private Runnable pressFunction;
 
         public Button(Object text) {
             super(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK, Color.WHITE);
             setBorderWidth(0.2f);
-            interactiveButton = new InteractiveContainer(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            interactiveButton = new InteractiveGroup(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             Text bitmapText = new Text(String.valueOf(text));
 
             addChild(interactiveButton);

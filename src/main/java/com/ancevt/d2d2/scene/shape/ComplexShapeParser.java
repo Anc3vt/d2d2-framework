@@ -20,8 +20,8 @@ package com.ancevt.d2d2.scene.shape;
 
 import com.ancevt.d2d2.asset.Assets;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.GroupImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,11 +34,11 @@ import java.util.stream.Collectors;
 
 public class ComplexShapeParser {
 
-    public static Container parseAsset(String assetPath) {
+    public static Group parseAsset(String assetPath) {
         return parse(Assets.getAsset(assetPath));
     }
 
-    public static Container parse(InputStream inputStream) {
+    public static Group parse(InputStream inputStream) {
         try {
             return parse(convertInputStreamToString(inputStream));
         } catch (IOException e) {
@@ -46,8 +46,8 @@ public class ComplexShapeParser {
         }
     }
 
-    private static Container parse(String string) {
-        Container result = new ContainerImpl();
+    private static Group parse(String string) {
+        Group result = new GroupImpl();
 
         AtomicReference<FreeShape> shape = new AtomicReference<>();
 

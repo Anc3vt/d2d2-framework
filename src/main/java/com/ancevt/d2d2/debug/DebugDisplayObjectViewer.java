@@ -21,12 +21,12 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.Scene;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.Root;
+import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Text;
@@ -37,13 +37,13 @@ import java.util.List;
 
 public class DebugDisplayObjectViewer {
 
-    private final List<SceneEntity> sceneEntities = new ArrayList<>();
+    private final List<Node> sceneEntities = new ArrayList<>();
 
     @Getter
-    private List<Class<? extends SceneEntity>> typesIncluded = new ArrayList<>();
+    private List<Class<? extends Node>> typesIncluded = new ArrayList<>();
     @Getter
-    private List<Class<? extends SceneEntity>> typesExcluded = new ArrayList<>();
-    private Container targetContainer;
+    private List<Class<? extends Node>> typesExcluded = new ArrayList<>();
+    private Group targetGroup;
     private boolean keyListenerEnabled;
 
     private int depth = -1;
@@ -56,23 +56,23 @@ public class DebugDisplayObjectViewer {
         setKeyListenerEnabled(keyListenerEnabled);
     }
 
-    public DebugDisplayObjectViewer(Container targetContainer, boolean keyListenerEnabled, int depth) {
-        setTargetContainer(targetContainer);
+    public DebugDisplayObjectViewer(Group targetGroup, boolean keyListenerEnabled, int depth) {
+        setTargetGroup(targetGroup);
         setKeyListenerEnabled(keyListenerEnabled);
         setDepth(depth);
     }
 
-    public DebugDisplayObjectViewer(Container targetContainer, boolean keyListenerEnabled) {
-        setTargetContainer(targetContainer);
+    public DebugDisplayObjectViewer(Group targetGroup, boolean keyListenerEnabled) {
+        setTargetGroup(targetGroup);
         setKeyListenerEnabled(keyListenerEnabled);
     }
 
-    public DebugDisplayObjectViewer setTypesExcluded(List<Class<? extends SceneEntity>> typesExcluded) {
+    public DebugDisplayObjectViewer setTypesExcluded(List<Class<? extends Node>> typesExcluded) {
         this.typesExcluded = typesExcluded;
         return this;
     }
 
-    public DebugDisplayObjectViewer setTypesIncluded(List<Class<? extends SceneEntity>> typesIncluded) {
+    public DebugDisplayObjectViewer setTypesIncluded(List<Class<? extends Node>> typesIncluded) {
         this.typesIncluded = typesIncluded;
         return this;
     }
@@ -86,14 +86,14 @@ public class DebugDisplayObjectViewer {
         return depth;
     }
 
-    public DebugDisplayObjectViewer setTargetContainer(Container targetContainer) {
-        this.targetContainer = targetContainer;
+    public DebugDisplayObjectViewer setTargetGroup(Group targetGroup) {
+        this.targetGroup = targetGroup;
         return this;
     }
 
-    public Container getTargetContainer() {
-        if (targetContainer == null) targetContainer = D2D2.stage();
-        return targetContainer;
+    public Group getTargetGroup() {
+        if (targetGroup == null) targetGroup = D2D2.stage();
+        return targetGroup;
     }
 
     public void show() {
@@ -102,14 +102,14 @@ public class DebugDisplayObjectViewer {
         D2D2.stage().addChild(rectangleShape);
         sceneEntities.add(rectangleShape);
 
-        show(getTargetContainer(), -1);
+        show(getTargetGroup(), -1);
     }
 
-    public void show(Container container, int deep) {
+    public void show(Group group, int deep) {
         int counter = 0;
 
-        for (int i = 0; i < container.getNumChildren(); i++) {
-            SceneEntity o = container.getChild(i);
+        for (int i = 0; i < group.getNumChildren(); i++) {
+            Node o = group.getChild(i);
 
             if ((typesIncluded.isEmpty() || typesIncluded.contains(o.getClass())) &&
                     (typesExcluded.isEmpty() || !typesExcluded.contains(o.getClass()))) {
@@ -131,14 +131,14 @@ public class DebugDisplayObjectViewer {
                 sceneEntities.add(borderedRectangle);
                 sceneEntities.add(text);
 
-                borderedRectangle.addEventListener(SceneEvent.EnterFrame.class, e -> {
+                borderedRectangle.addEventListener(NodeEvent.EnterFrame.class, e -> {
                     borderedRectangle.setSize(o.getWidth() * o.getAbsoluteScaleX(), o.getHeight() * o.getAbsoluteScaleY());
                     borderedRectangle.setXY(o.getAbsoluteX(), o.getAbsoluteY());
                     text.setXY(borderedRectangle.getX(), borderedRectangle.getY());
                 });
             }
 
-            if (o instanceof Container oc && (deep >= 1 || deep == -1)) {
+            if (o instanceof Group oc && (deep >= 1 || deep == -1)) {
                 show(oc, deep - 1);
             }
 
@@ -157,7 +157,7 @@ public class DebugDisplayObjectViewer {
         if (keyListenerEnabled == b) return this;
         keyListenerEnabled = b;
 
-        Scene s = D2D2.stage();
+        Root s = D2D2.stage();
 
         s.removeEventListener(this, InputEvent.KeyDown.class);
         s.removeEventListener(this, InputEvent.KeyUp.class);
