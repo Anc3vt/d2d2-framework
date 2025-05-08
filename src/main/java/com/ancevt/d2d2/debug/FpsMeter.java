@@ -33,13 +33,13 @@ public class FpsMeter extends Text {
 
     public FpsMeter(Font font) {
         super(font);
-        addEventListener(NodeEvent.ExitFrame.class, this::eachFrame);
+        addEventListener(NodeEvent.AfterRenderFrame.class, this::eachFrame);
 
     }
 
     public FpsMeter() {
         super();
-        addEventListener(NodeEvent.ExitFrame.class, this::eachFrame);
+        addEventListener(NodeEvent.AfterRenderFrame.class, this::eachFrame);
     }
 
     public int getFps() {

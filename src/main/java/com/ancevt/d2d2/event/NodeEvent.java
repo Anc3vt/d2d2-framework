@@ -36,16 +36,16 @@ public abstract class NodeEvent extends Event {
     }
 
     @EventPooled
-    public static final class ExitFrame extends NodeEvent {
-        public static ExitFrame create() {
-            return EventPool.obtain(ExitFrame.class);
+    public static final class AfterRenderFrame extends NodeEvent {
+        public static AfterRenderFrame create() {
+            return EventPool.obtain(AfterRenderFrame.class);
         }
     }
 
     @EventPooled
-    public static final class EnterFrame extends NodeEvent {
-        public static EnterFrame create() {
-            return EventPool.obtain(EnterFrame.class);
+    public static final class BeforeRenderFrame extends NodeEvent {
+        public static BeforeRenderFrame create() {
+            return EventPool.obtain(BeforeRenderFrame.class);
         }
     }
 

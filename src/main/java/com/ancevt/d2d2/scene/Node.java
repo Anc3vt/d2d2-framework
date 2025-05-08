@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,8 +18,11 @@
 
 package com.ancevt.d2d2.scene;
 
-import com.ancevt.d2d2.scene.shader.ShaderProgram;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.event.core.EventDispatcher;
+import com.ancevt.d2d2.event.core.EventHandleRegistration;
+import com.ancevt.d2d2.event.core.EventListener;
+import com.ancevt.d2d2.scene.shader.ShaderProgram;
 
 public interface Node extends EventDispatcher {
 
@@ -156,9 +159,28 @@ public interface Node extends EventDispatcher {
 
     String toString();
 
-    default void onExitFrame() {}
+    default void onExitFrame() {
+    }
 
-    default void onEnterFrame() {}
+    default void onEnterFrame() {
+    }
 
-    default void onLoopUpdate() {}
+    default void onLoopUpdate() {
+    }
+
+    @SuppressWarnings("unchecked")
+    default EventHandleRegistration<NodeEvent.LoopUpdate> onLoopUpdate(EventListener<NodeEvent.LoopUpdate> listener) {
+        return (EventHandleRegistration<NodeEvent.LoopUpdate>) on(NodeEvent.LoopUpdate.class, listener);
+    }
+
+    @SuppressWarnings("unchecked")
+    default EventHandleRegistration<NodeEvent.BeforeRenderFrame> onEnterFrame(EventListener<NodeEvent.BeforeRenderFrame> listener) {
+        return (EventHandleRegistration<NodeEvent.BeforeRenderFrame>) on(NodeEvent.BeforeRenderFrame.class, listener);
+    }
+
+    @SuppressWarnings("unchecked")
+    default EventHandleRegistration<NodeEvent.AfterRenderFrame> onExitFrame(EventListener<NodeEvent.AfterRenderFrame> listener) {
+        return (EventHandleRegistration<NodeEvent.AfterRenderFrame>) on(NodeEvent.AfterRenderFrame.class, listener);
+    }
+
 }

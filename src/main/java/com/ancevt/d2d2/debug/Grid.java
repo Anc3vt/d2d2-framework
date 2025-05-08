@@ -124,7 +124,7 @@ public class Grid extends GroupImpl implements Colored {
             this.grid = grid;
             setOrientation(orientation);
 
-            addEventListener(NodeEvent.ExitFrame.class, this::eachFrame);
+            addEventListener(NodeEvent.AfterRenderFrame.class, this::eachFrame);
         }
 
         private void eachFrame(Event event) {

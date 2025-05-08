@@ -50,7 +50,7 @@ public class NoRenderRendererStub implements Renderer {
         if (!node.isVisible()) return;
 
         node.onEnterFrame();
-        node.dispatchEvent(NodeEvent.EnterFrame.create());
+        node.dispatchEvent(NodeEvent.BeforeRenderFrame.create());
 
         node.onLoopUpdate();
         node.dispatchEvent(NodeEvent.LoopUpdate.create());
@@ -69,7 +69,7 @@ public class NoRenderRendererStub implements Renderer {
         }
 
         node.onExitFrame();
-        node.dispatchEvent(NodeEvent.ExitFrame.create());
+        node.dispatchEvent(NodeEvent.AfterRenderFrame.create());
     }
 
 }

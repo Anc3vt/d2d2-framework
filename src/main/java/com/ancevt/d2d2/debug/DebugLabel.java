@@ -51,7 +51,7 @@ public class DebugLabel extends Text {
 
         setMulticolor(true);
 
-        target.addEventListener(this, NodeEvent.EnterFrame.class, e -> {
+        target.addEventListener(this, NodeEvent.BeforeRenderFrame.class, e -> {
             tick++;
             if (tick % updateRate == 0) {
                 StringBuilder out = new StringBuilder();
@@ -68,7 +68,7 @@ public class DebugLabel extends Text {
     }
 
     public void dispose() {
-        target.removeEventListener(this, NodeEvent.EnterFrame.class);
+        target.removeEventListener(this, NodeEvent.BeforeRenderFrame.class);
         target.removeEventListener(this, NodeEvent.RemoveFromScene.class);
         this.removeFromParent();
         labels.remove(this);

@@ -40,7 +40,7 @@ public class DebugSpriteColorTryOn {
             r.set(p);
             p.setY(10);
             p.setSize(100, 50);
-            p.addEventListener(NodeEvent.ExitFrame.class, e -> {
+            p.addEventListener(NodeEvent.AfterRenderFrame.class, e -> {
                 p.setText(p.getX() + " " + sprite.getColor().toHexString());
             });
         });
@@ -49,7 +49,7 @@ public class DebugSpriteColorTryOn {
             g.set(p);
             p.setY(100);
             p.setSize(100, 50);
-            p.addEventListener(NodeEvent.ExitFrame.class, e -> {
+            p.addEventListener(NodeEvent.AfterRenderFrame.class, e -> {
                 p.setText(p.getX() + " " + sprite.getColor().toHexString());
             });
         });
@@ -58,7 +58,7 @@ public class DebugSpriteColorTryOn {
             b.set(p);
             p.setY(190);
             p.setSize(100, 50);
-            p.addEventListener(NodeEvent.ExitFrame.class, e -> {
+            p.addEventListener(NodeEvent.AfterRenderFrame.class, e -> {
                 p.setText(p.getX() + " " + sprite.getColor().toHexString());
             });
         });

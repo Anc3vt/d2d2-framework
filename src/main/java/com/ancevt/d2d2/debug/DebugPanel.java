@@ -75,7 +75,7 @@ public class DebugPanel extends GroupImpl {
         final int height = 300;
 
         this.systemPropertyName = systemPropertyName;
-        addEventListener(NodeEvent.ExitFrame.class, this::this_eachFrame);
+        addEventListener(NodeEvent.AfterRenderFrame.class, this::this_eachFrame);
 
         buttonList = new ArrayList<>();
         buttonMap = new HashMap<>();

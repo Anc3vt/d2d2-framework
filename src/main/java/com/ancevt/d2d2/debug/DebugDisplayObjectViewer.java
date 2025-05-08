@@ -131,7 +131,7 @@ public class DebugDisplayObjectViewer {
                 sceneEntities.add(borderedRectangle);
                 sceneEntities.add(text);
 
-                borderedRectangle.addEventListener(NodeEvent.EnterFrame.class, e -> {
+                borderedRectangle.addEventListener(NodeEvent.BeforeRenderFrame.class, e -> {
                     borderedRectangle.setSize(o.getWidth() * o.getAbsoluteScaleX(), o.getHeight() * o.getAbsoluteScaleY());
                     borderedRectangle.setXY(o.getAbsoluteX(), o.getAbsoluteY());
                     text.setXY(borderedRectangle.getX(), borderedRectangle.getY());

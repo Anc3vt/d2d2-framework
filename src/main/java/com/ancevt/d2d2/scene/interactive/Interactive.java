@@ -130,6 +130,9 @@ public interface Interactive extends Node, Disposable {
 
     default EventHandleRegistration<InputEvent.MouseUp> onClick(EventListener<InputEvent.MouseUp> listener) {
         return onMouseUp(e -> {
+
+            System.out.println("left: " + e.left());
+
             if (e.onArea()) {
                 listener.onEvent(e);
             }
