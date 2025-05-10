@@ -18,9 +18,9 @@
 
 package com.ancevt.d2d2.scene;
 
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.event.core.EventDispatcher;
-import com.ancevt.d2d2.event.core.EventHandleRegistration;
+import com.ancevt.d2d2.event.core.EventLink;
 import com.ancevt.d2d2.event.core.EventListener;
 import com.ancevt.d2d2.scene.shader.ShaderProgram;
 
@@ -44,7 +44,7 @@ public interface Node extends EventDispatcher {
             Group parent = getParent();
             setY((parent.getHeight() - getHeight()) / 2);
         } else {
-            setX(-getWidth() / 2);
+            setY(-getHeight() / 2);
         }
     }
 
@@ -69,15 +69,11 @@ public interface Node extends EventDispatcher {
 
     void toAlpha(float value);
 
-    void setXY(float x, float y);
+    void setPosition(float x, float y);
 
     void setX(float value);
 
     void setY(float value);
-
-    default void setXYAs(Node node) {
-        setXY(node.getX(), node.getY());
-    }
 
     float getX();
 
@@ -133,23 +129,23 @@ public interface Node extends EventDispatcher {
 
     float getScaledHeight();
 
-    float getAbsoluteX();
+    float getGlobalX();
 
-    float getAbsoluteY();
+    float getGlobalY();
 
-    float getAbsoluteScaleX();
+    float getGlobalScaleX();
 
-    float getAbsoluteScaleY();
+    float getGlobalScaleY();
 
-    float getAbsoluteAlpha();
+    float getGlobalAlpha();
 
-    float getAbsoluteRotation();
+    float getGlobalRotation();
 
-    boolean isAbsoluteVisible();
+    boolean isGloballyVisible();
 
-    void setAbsoluteZOrderIndex(int zOrder);
+    void setGlobalZOrderIndex(int zOrder);
 
-    int getAbsoluteZOrderIndex();
+    int getGlobalZOrderIndex();
 
     void removeFromParent();
 
@@ -159,28 +155,51 @@ public interface Node extends EventDispatcher {
 
     String toString();
 
-    default void onExitFrame() {
+    default void onPostFrame() {
     }
 
-    default void onEnterFrame() {
+    default void onPreFrame() {
     }
 
-    default void onLoopUpdate() {
-    }
-
-    @SuppressWarnings("unchecked")
-    default EventHandleRegistration<NodeEvent.LoopUpdate> onLoopUpdate(EventListener<NodeEvent.LoopUpdate> listener) {
-        return (EventHandleRegistration<NodeEvent.LoopUpdate>) on(NodeEvent.LoopUpdate.class, listener);
+    default void onTick() {
     }
 
     @SuppressWarnings("unchecked")
-    default EventHandleRegistration<NodeEvent.BeforeRenderFrame> onEnterFrame(EventListener<NodeEvent.BeforeRenderFrame> listener) {
-        return (EventHandleRegistration<NodeEvent.BeforeRenderFrame>) on(NodeEvent.BeforeRenderFrame.class, listener);
+    default EventLink<SceneEvent.Tick> onTick(EventListener<SceneEvent.Tick> listener) {
+        return (EventLink<SceneEvent.Tick>) on(SceneEvent.Tick.class, listener);
     }
 
     @SuppressWarnings("unchecked")
-    default EventHandleRegistration<NodeEvent.AfterRenderFrame> onExitFrame(EventListener<NodeEvent.AfterRenderFrame> listener) {
-        return (EventHandleRegistration<NodeEvent.AfterRenderFrame>) on(NodeEvent.AfterRenderFrame.class, listener);
+    default EventLink<SceneEvent.PreFrame> onPreFrame(EventListener<SceneEvent.PreFrame> listener) {
+        return (EventLink<SceneEvent.PreFrame>) on(SceneEvent.PreFrame.class, listener);
     }
+
+    @SuppressWarnings("unchecked")
+    default EventLink<SceneEvent.PostFrame> onPostFrame(EventListener<SceneEvent.PostFrame> listener) {
+        return (EventLink<SceneEvent.PostFrame>) on(SceneEvent.PostFrame.class, listener);
+    }
+
+    @SuppressWarnings("unchecked")
+    default EventLink<SceneEvent.Add> onAdd(EventListener<SceneEvent.Add> listener) {
+        return on(SceneEvent.Add.class, listener);
+    }
+
+    @SuppressWarnings("unchecked")
+    default EventLink<SceneEvent.Remove> onRemove(EventListener<SceneEvent.Remove> listener) {
+        return on(SceneEvent.Remove.class, listener);
+    }
+
+    @SuppressWarnings("unchecked")
+    default EventLink<SceneEvent.AddToScene> onAddToScene(EventListener<SceneEvent.AddToScene> listener) {
+        return on(SceneEvent.AddToScene.class, listener);
+    }
+
+    @SuppressWarnings("unchecked")
+    default EventLink<SceneEvent.RemoveFromScene> onRemoveFromScene(EventListener<SceneEvent.RemoveFromScene> listener) {
+        return on(SceneEvent.RemoveFromScene.class, listener);
+    }
+
 
 }
+
+

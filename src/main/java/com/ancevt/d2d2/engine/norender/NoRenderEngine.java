@@ -142,7 +142,7 @@ public class NoRenderEngine extends EventDispatcherImpl implements Engine {
     }
 
     @Override
-    public Root stage() {
+    public Root root() {
         return root;
     }
 

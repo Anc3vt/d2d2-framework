@@ -21,7 +21,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
@@ -116,25 +116,25 @@ public class DebugDisplayObjectViewer {
                 Color color = Color.createVisibleRandomColor();
 
                 BorderedRectangle borderedRectangle = new BorderedRectangle(
-                        o.getWidth() * o.getAbsoluteScaleX(),
-                        o.getHeight() * o.getAbsoluteY(),
+                        o.getWidth() * o.getGlobalScaleX(),
+                        o.getHeight() * o.getGlobalY(),
                         null,
                         color);
-                D2D2.root().addChild(borderedRectangle, o.getAbsoluteX(), o.getAbsoluteY());
+                D2D2.root().addChild(borderedRectangle, o.getGlobalX(), o.getGlobalY());
 
                 Text text = new Text(o.getName());
                 text.setColor(color);
                 text.setRotation(-20);
 
-                D2D2.root().addChild(text, o.getAbsoluteX(), o.getAbsoluteY());
+                D2D2.root().addChild(text, o.getGlobalX(), o.getGlobalY());
 
                 sceneEntities.add(borderedRectangle);
                 sceneEntities.add(text);
 
-                borderedRectangle.addEventListener(NodeEvent.BeforeRenderFrame.class, e -> {
-                    borderedRectangle.setSize(o.getWidth() * o.getAbsoluteScaleX(), o.getHeight() * o.getAbsoluteScaleY());
-                    borderedRectangle.setXY(o.getAbsoluteX(), o.getAbsoluteY());
-                    text.setXY(borderedRectangle.getX(), borderedRectangle.getY());
+                borderedRectangle.addEventListener(SceneEvent.PreFrame.class, e -> {
+                    borderedRectangle.setSize(o.getWidth() * o.getGlobalScaleX(), o.getHeight() * o.getGlobalScaleY());
+                    borderedRectangle.setPosition(o.getGlobalX(), o.getGlobalY());
+                    text.setPosition(borderedRectangle.getX(), borderedRectangle.getY());
                 });
             }
 

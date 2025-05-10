@@ -21,7 +21,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.core.Event;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.text.Font;
 import com.ancevt.d2d2.scene.text.Text;
@@ -33,13 +33,13 @@ public class FpsMeter extends Text {
 
     public FpsMeter(Font font) {
         super(font);
-        addEventListener(NodeEvent.AfterRenderFrame.class, this::eachFrame);
+        addEventListener(SceneEvent.PostFrame.class, this::eachFrame);
 
     }
 
     public FpsMeter() {
         super();
-        addEventListener(NodeEvent.AfterRenderFrame.class, this::eachFrame);
+        addEventListener(SceneEvent.PostFrame.class, this::eachFrame);
     }
 
     public int getFps() {

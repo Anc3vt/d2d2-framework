@@ -26,7 +26,7 @@ import com.ancevt.d2d2.event.core.EventDispatcher;
 
 public interface Engine extends EventDispatcher {
 
-    Root stage();
+    Root root();
 
     void setAlwaysOnTop(boolean b);
 

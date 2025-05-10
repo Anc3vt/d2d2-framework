@@ -196,14 +196,14 @@ public class Combined9Sprites extends InteractiveGroup implements Colored {
     }
 
     private void rebuild() {
-        topRight.setXY(getWidth() - topRight.getWidth(), 0);
-        bottomLeft.setXY(0, getHeight() - bottomLeft.getHeight());
-        bottomRight.setXY(getWidth() - bottomRight.getWidth(), getHeight() - bottomRight.getHeight());
+        topRight.setPosition(getWidth() - topRight.getWidth(), 0);
+        bottomLeft.setPosition(0, getHeight() - bottomLeft.getHeight());
+        bottomRight.setPosition(getWidth() - bottomRight.getWidth(), getHeight() - bottomRight.getHeight());
         top.setX(topLeft.getWidth());
-        bottom.setXY(bottomLeft.getWidth(), getHeight() - bottom.getHeight());
+        bottom.setPosition(bottomLeft.getWidth(), getHeight() - bottom.getHeight());
         left.setY(topLeft.getHeight());
-        right.setXY(getWidth() - right.getWidth(), topRight.getHeight());
-        center.setXY(topLeft.getWidth(), topLeft.getHeight());
+        right.setPosition(getWidth() - right.getWidth(), topRight.getHeight());
+        center.setPosition(topLeft.getWidth(), topLeft.getHeight());
 
         if (repeatsEnabled) {
             int textureLength;

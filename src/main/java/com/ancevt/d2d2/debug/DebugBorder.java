@@ -22,7 +22,7 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.Disposable;
 import com.ancevt.d2d2.event.core.Event;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.*;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.text.Text;
@@ -52,8 +52,8 @@ public class DebugBorder extends GroupImpl implements Resizable, Colored, Dispos
         label.setAutosize(true);
         addChild(label, 2, -label.getHeight());
 
-        node.addEventListener(this, NodeEvent.AddToScene.class, this::displayObject_addToStage);
-        node.addEventListener(this, NodeEvent.RemoveFromScene.class, this::displayObject_removeFromStage);
+        node.addEventListener(this, SceneEvent.AddToScene.class, this::displayObject_addToStage);
+        node.addEventListener(this, SceneEvent.RemoveFromScene.class, this::displayObject_removeFromStage);
     }
 
     private void displayObject_removeFromStage(Event event) {
@@ -91,17 +91,17 @@ public class DebugBorder extends GroupImpl implements Resizable, Colored, Dispos
     }
 
     @Override
-    public void onEnterFrame() {
-        setXY(node.getAbsoluteX(), node.getAbsoluteY());
+    public void onPreFrame() {
+        setPosition(node.getGlobalX(), node.getGlobalY());
         setSize(node.getWidth(), node.getHeight());
-        setScale(node.getAbsoluteScaleX(), node.getAbsoluteScaleY());
-        setRotation(node.getAbsoluteRotation());
+        setScale(node.getGlobalScaleX(), node.getGlobalScaleY());
+        setRotation(node.getGlobalRotation());
     }
 
     @Override
     public void dispose() {
-        node.removeEventListener(this, NodeEvent.AddToScene.class);
-        node.removeEventListener(this, NodeEvent.RemoveFromScene.class);
+        node.removeEventListener(this, SceneEvent.AddToScene.class);
+        node.removeEventListener(this, SceneEvent.RemoveFromScene.class);
         removeFromParent();
         disposed = true;
     }

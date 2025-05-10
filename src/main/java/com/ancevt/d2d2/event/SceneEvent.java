@@ -26,32 +26,32 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
-public abstract class NodeEvent extends Event {
+public abstract class SceneEvent extends Event {
 
     @EventPooled
-    public static final class LoopUpdate extends NodeEvent {
-        public static LoopUpdate create() {
-            return EventPool.obtain(LoopUpdate.class);
+    public static final class Tick extends SceneEvent {
+        public static Tick create() {
+            return EventPool.obtain(Tick.class);
         }
     }
 
     @EventPooled
-    public static final class AfterRenderFrame extends NodeEvent {
-        public static AfterRenderFrame create() {
-            return EventPool.obtain(AfterRenderFrame.class);
+    public static final class PostFrame extends SceneEvent {
+        public static PostFrame create() {
+            return EventPool.obtain(PostFrame.class);
         }
     }
 
     @EventPooled
-    public static final class BeforeRenderFrame extends NodeEvent {
-        public static BeforeRenderFrame create() {
-            return EventPool.obtain(BeforeRenderFrame.class);
+    public static final class PreFrame extends SceneEvent {
+        public static PreFrame create() {
+            return EventPool.obtain(PreFrame.class);
         }
     }
 
     @EventPooled
     @Getter
-    public static final class Add extends NodeEvent {
+    public static final class Add extends SceneEvent {
         private Group parent;
 
         public static Add create(Group parent) {
@@ -63,7 +63,7 @@ public abstract class NodeEvent extends Event {
 
     @EventPooled
     @Getter
-    public static final class Remove extends NodeEvent {
+    public static final class Remove extends SceneEvent {
         private Group parent;
 
         public static Remove create(Group parent) {
@@ -74,14 +74,14 @@ public abstract class NodeEvent extends Event {
     }
 
     @EventPooled
-    public static final class AddToScene extends NodeEvent {
+    public static final class AddToScene extends SceneEvent {
         public static AddToScene create() {
             return EventPool.obtain(AddToScene.class);
         }
     }
 
     @EventPooled
-    public static final class RemoveFromScene extends NodeEvent {
+    public static final class RemoveFromScene extends SceneEvent {
         public static RemoveFromScene create() {
             return EventPool.obtain(RemoveFromScene.class);
         }

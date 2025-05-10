@@ -177,8 +177,8 @@ public class ByteDisplay extends InteractiveGroup {
     }
 
     @Override
-    public void onExitFrame() {
-        super.onExitFrame();
+    public void onPostFrame() {
+        super.onPostFrame();
         focus();
     }
 

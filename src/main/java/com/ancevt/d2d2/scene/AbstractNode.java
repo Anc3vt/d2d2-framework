@@ -69,12 +69,12 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
     }
 
     @Override
-    public void setAbsoluteZOrderIndex(int zOrder) {
+    public void setGlobalZOrderIndex(int zOrder) {
         this.zOrderIndex = zOrder;
     }
 
     @Override
-    public int getAbsoluteZOrderIndex() {
+    public int getGlobalZOrderIndex() {
         return zOrderIndex;
     }
 
@@ -93,7 +93,7 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
     }
 
     @Override
-    public void setXY(float x, float y) {
+    public void setPosition(float x, float y) {
         setX(x);
         setY(y);
     }
@@ -234,38 +234,38 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
     }
 
     @Override
-    public float getAbsoluteX() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteX(this);
+    public float getGlobalX() {
+        return GlobalMetrics.getGlobalX(this);
     }
 
     @Override
-    public float getAbsoluteY() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteY(this);
+    public float getGlobalY() {
+        return GlobalMetrics.getGlobalY(this);
     }
 
     @Override
-    public float getAbsoluteScaleX() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteScaleX(this);
+    public float getGlobalScaleX() {
+        return GlobalMetrics.getGlobalScaleX(this);
     }
 
     @Override
-    public float getAbsoluteScaleY() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteScaleY(this);
+    public float getGlobalScaleY() {
+        return GlobalMetrics.getGlobalScaleY(this);
     }
 
     @Override
-    public float getAbsoluteAlpha() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteAlpha(this);
+    public float getGlobalAlpha() {
+        return GlobalMetrics.getGlobalAlpha(this);
     }
 
     @Override
-    public float getAbsoluteRotation() {
-        return DisplayObjectAbsoluteComputer.getAbsoluteRotation(this);
+    public float getGlobalRotation() {
+        return GlobalMetrics.getGlobalRotation(this);
     }
 
     @Override
-    public boolean isAbsoluteVisible() {
-        return DisplayObjectAbsoluteComputer.isAbsoluteVisible(this);
+    public boolean isGloballyVisible() {
+        return GlobalMetrics.isGloballyVisible(this);
     }
 
     @Override

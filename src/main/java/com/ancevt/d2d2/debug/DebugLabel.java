@@ -20,7 +20,7 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.text.Text;
 import lombok.Getter;
@@ -51,14 +51,14 @@ public class DebugLabel extends Text {
 
         setMulticolor(true);
 
-        target.addEventListener(this, NodeEvent.BeforeRenderFrame.class, e -> {
+        target.addEventListener(this, SceneEvent.PreFrame.class, e -> {
             tick++;
             if (tick % updateRate == 0) {
                 StringBuilder out = new StringBuilder();
                 func.accept(target, out);
                 setText(out.toString());
 
-                setXY(target.getAbsoluteX(), target.getAbsoluteY());
+                setPosition(target.getGlobalX(), target.getGlobalY());
                 D2D2.root().addChild(this);
             }
         });
@@ -68,8 +68,8 @@ public class DebugLabel extends Text {
     }
 
     public void dispose() {
-        target.removeEventListener(this, NodeEvent.BeforeRenderFrame.class);
-        target.removeEventListener(this, NodeEvent.RemoveFromScene.class);
+        target.removeEventListener(this, SceneEvent.PreFrame.class);
+        target.removeEventListener(this, SceneEvent.RemoveFromScene.class);
         this.removeFromParent();
         labels.remove(this);
     }
@@ -91,7 +91,7 @@ public class DebugLabel extends Text {
             labels.get(target).dispose();
         }
         DebugLabel result = new DebugLabel(target, func, updateRate);
-        target.addEventListener(result, NodeEvent.RemoveFromScene.class, e -> {
+        target.addEventListener(result, SceneEvent.RemoveFromScene.class, e -> {
             result.dispose();
         });
         return result;

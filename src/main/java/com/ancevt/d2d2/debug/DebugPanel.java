@@ -25,7 +25,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.scene.Color;
@@ -75,7 +75,7 @@ public class DebugPanel extends GroupImpl {
         final int height = 300;
 
         this.systemPropertyName = systemPropertyName;
-        addEventListener(NodeEvent.AfterRenderFrame.class, this::this_eachFrame);
+        addEventListener(SceneEvent.PostFrame.class, this::this_eachFrame);
 
         buttonList = new ArrayList<>();
         buttonMap = new HashMap<>();
@@ -94,7 +94,7 @@ public class DebugPanel extends GroupImpl {
         interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);
         interactiveButton.addEventListener(InputEvent.MouseDrag.class, this::interactiveButton_drag);
 
-        addEventListener(this, NodeEvent.AddToScene.class, this::this_addToStage);
+        addEventListener(this, SceneEvent.AddToScene.class, this::this_addToStage);
 
         addChild(interactiveButton);
 
@@ -130,7 +130,7 @@ public class DebugPanel extends GroupImpl {
     }
 
     private void this_addToStage(Event event) {
-        removeEventListener(this, NodeEvent.AddToScene.class);
+        removeEventListener(this, SceneEvent.AddToScene.class);
         D2D2.root().addEventListener(InputEvent.KeyDown.class, this::root_keyDown);
         D2D2.root().addEventListener(InputEvent.KeyUp.class, this::root_keyUp);
     }
@@ -241,7 +241,7 @@ public class DebugPanel extends GroupImpl {
             text.setSize(w, h);
             interactiveButton.setSize(w, h);
             text.setText(data);
-            setXY(x, y);
+            setPosition(x, y);
         }
     }
 

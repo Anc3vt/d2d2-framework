@@ -119,14 +119,14 @@ public class SpriteImpl extends AbstractNode implements Sprite {
     }
 
     @Override
-    public void onExitFrame() {
+    public void onPostFrame() {
         // For overriding
     }
 
     @Override
     public Sprite cloneSprite() {
         Sprite result = Sprite.create(getTextureClip());
-        result.setXY(getX(), getY());
+        result.setPosition(getX(), getY());
         result.setRepeat(getRepeatX(), getRepeatY());
         result.setScale(getScaleX(), getScaleY());
         result.setAlpha(getAlpha());

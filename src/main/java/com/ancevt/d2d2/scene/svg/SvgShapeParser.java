@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,9 +39,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * WORK IN PROGRESS
- */
+//TODO: move to another artifact
 public class SvgShapeParser {
 
     private float step = 8;
@@ -231,7 +229,7 @@ public class SvgShapeParser {
 
         for (int i = 0; i < path.length(); i++) {
             char c = path.charAt(i);
-            char n = i != path.length() -1 ? path.charAt(i + 1) : '\0';
+            char n = i != path.length() - 1 ? path.charAt(i + 1) : '\0';
 
             if (p != ',' && (Character.isLetter(c) || c == '-') && n != ' ' && p != ' ') {
                 builder.append(' ');

@@ -21,7 +21,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.GroupImpl;
 import com.ancevt.d2d2.scene.Root;
@@ -46,7 +46,7 @@ public class StarletSpace extends GroupImpl {
 
     private Starlet createStarlet() {
         Starlet starlet = new Starlet(this);
-        starlet.setXY(root().getWidth() + 16, (float) (Math.random() * root().getHeight()));
+        starlet.setPosition(root().getWidth() + 16, (float) (Math.random() * root().getHeight()));
         addChild(starlet);
         return starlet;
     }
@@ -64,7 +64,7 @@ public class StarletSpace extends GroupImpl {
         if (logo) starletSpace.addChild(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
         stage.addChild(starletSpace);
         stage.addEventListener(CommonEvent.Resize.class, e -> {
-            d2d2Title.setXY((stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
+            d2d2Title.setPosition((stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
         });
         stage.addEventListener(InputEvent.MouseMove.class, e -> {
             float center = stage.getWidth() / 2;
@@ -83,7 +83,7 @@ public class StarletSpace extends GroupImpl {
         public Starlet(StarletSpace starletSpace) {
             this.starletSpace = starletSpace;
             sprite = Sprite.create("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
-            sprite.setXY(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
+            sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
             addChild(sprite);
 
             Color color = new Color(0x88, 0x88, (int) (0x80 + (Math.random() * 0x80)));
@@ -96,7 +96,7 @@ public class StarletSpace extends GroupImpl {
         }
 
         @Override
-        public void onLoopUpdate() {
+        public void onTick() {
             setAlpha(getAlpha() + t);
             t -= 0.01f;
             if (getAlpha() <= 0.0f) t += 0.1f;
@@ -113,7 +113,7 @@ public class StarletSpace extends GroupImpl {
 
                 if (x % starletSpace.someVal == 0) {
                     Sprite plume = sprite.cloneSprite();
-                    plume.addEventListener(NodeEvent.LoopUpdate.class, e -> {
+                    plume.addEventListener(SceneEvent.Tick.class, e -> {
                         plume.setAlpha(plume.getAlpha() - 0.01f);
                         plume.moveY(0.05f);
                         plume.rotate(1f);
@@ -121,7 +121,7 @@ public class StarletSpace extends GroupImpl {
                         if (plume.getAlpha() <= 0) plume.removeFromParent();
                     });
                     plume.setColor(Color.WHITE);
-                    plume.setXY(x, getY());
+                    plume.setPosition(x, getY());
                     plume.setAlpha(0.1f);
                     plume.move((-sprite.getWidth() / 2) * getScaleX(), (-sprite.getHeight() / 2) * getScaleY());
                     plume.setScale(getScaleX(), getScaleY());

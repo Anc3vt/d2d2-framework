@@ -34,5 +34,5 @@ public interface EventDispatcher {
 
     <T extends Event> void dispatchEvent(T event);
 
-    <T extends Event> EventHandleRegistration on(Class<T>  eventType, EventListener<T> listener);
+    <T extends Event> EventLink on(Class<T>  eventType, EventListener<T> listener);
 }

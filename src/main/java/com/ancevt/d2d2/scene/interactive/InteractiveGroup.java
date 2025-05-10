@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene.interactive;
 
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.exception.InteractiveException;
 import com.ancevt.d2d2.scene.GroupImpl;
 import com.ancevt.d2d2.scene.Node;
@@ -134,10 +134,10 @@ public class InteractiveGroup extends GroupImpl implements Interactive {
     }
 
     @Override
-    public void setXY(float x, float y) {
+    public void setPosition(float x, float y) {
         setX(x);
         setY(y);
-        super.setXY(x, y);
+        super.setPosition(x, y);
     }
 
     @Override
@@ -193,7 +193,7 @@ public class InteractiveGroup extends GroupImpl implements Interactive {
         InteractiveManager.getInstance().unregisterInteractive(this);
         removeAllEventListeners();
         removeFromParent();
-        addEventListener(NodeEvent.Add.class, e -> {
+        addEventListener(SceneEvent.Add.class, e -> {
             throw new InteractiveException("Unable to add disposed interactive display object %s".formatted(this.toString()));
         });
     }

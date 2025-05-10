@@ -23,12 +23,12 @@ import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.SoundManager;
 import com.ancevt.d2d2.engine.norender.NoRenderEngine;
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
 import com.ancevt.d2d2.lifecycle.SystemProperties;
-import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.Node;
+import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.text.BitmapFontManager;
 import com.ancevt.d2d2.scene.texture.TextureManager;
 import com.ancevt.util.args.Args;
@@ -57,23 +57,28 @@ public final class D2D2 {
     private static Engine engine;
 
     @Getter
+    private static D2D2Application application;
+    @Getter
     private static Args args;
 
     private static boolean noScaleMode;
 
-    public static void init(Class<? extends D2D2Application> d2d2EntryPointClass, String[] args) {
-        init(d2d2EntryPointClass, args, DEFAULT_PROPERTIES_FILE_NAME, Map.of());
+    public static void init(D2D2Application application, String[] args) {
+        init(application, args, DEFAULT_PROPERTIES_FILE_NAME, Map.of());
     }
 
-    public static void init(Class<? extends D2D2Application> d2d2EntryPointClass, String[] args, String propertiesResourceFileName) {
-        init(d2d2EntryPointClass, args, propertiesResourceFileName, Map.of());
+    public static void init(D2D2Application application,
+                            String[] args,
+                            String propertiesResourceFileName) {
+        init(application, args, propertiesResourceFileName, Map.of());
     }
 
-    public static void init(Class<? extends D2D2Application> d2d2EntryPointClass,
+    public static void init(D2D2Application application,
                             String[] args,
                             String propertiesResourceFileName,
                             Map<String, String> properties
     ) {
+        D2D2.application = application;
         D2D2.args = Args.of(args);
 
         readPropertyFileIfExist(propertiesResourceFileName);
@@ -95,32 +100,23 @@ public final class D2D2 {
         Engine engine = createEngine(engineClassName, width, height, titleText);
 
         Root root = D2D2.createStage(engine);
-        D2D2Application entryPoint = createMain(d2d2EntryPointClass);
-        entryPoint.onCreate(root);
-        D2D2.loop();
-        entryPoint.onDispose();
+        application.start(root);
+        D2D2.startMainLoop();
+        application.shutdown();
     }
 
     private static void addPropertiesToSystemProperties(Map<String, String> properties) {
         properties.forEach(System::setProperty);
     }
 
-    public static Root createStage(Engine engine) {
+    private static Root createStage(Engine engine) {
         bitmapFontManager = new BitmapFontManager();
         D2D2.engine = engine;
         engine.create();
-        return engine.stage();
+        return engine.root();
     }
 
-    public static D2D2Application createMain(Class<? extends D2D2Application> clazz) {
-        try {
-            return clazz.getConstructor().newInstance();
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public static Engine createEngine(String engineClassName, int width, int height, String titleText) {
+    private static Engine createEngine(String engineClassName, int width, int height, String titleText) {
         try {
             Engine engine = (Engine) Class.forName(engineClassName)
                     .getConstructor(int.class, int.class, String.class)
@@ -169,20 +165,20 @@ public final class D2D2 {
 
         if (cursor != null) {
             Mouse.setVisible(false);
-            cursor.removeEventListener(Mouse.class, NodeEvent.LoopUpdate.class);
-            cursor.addEventListener(Mouse.class, NodeEvent.LoopUpdate.class, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
+            cursor.removeEventListener(Mouse.class, SceneEvent.Tick.class);
+            cursor.addEventListener(Mouse.class, SceneEvent.Tick.class, event -> cursor.setPosition(Mouse.getX(), Mouse.getY()));
         } else {
             Mouse.setVisible(true);
-            D2D2.cursor.removeEventListener(Mouse.class, NodeEvent.LoopUpdate.class);
+            D2D2.cursor.removeEventListener(Mouse.class, SceneEvent.Tick.class);
         }
         D2D2.cursor = cursor;
     }
 
     public static Root root() {
-        return engine.stage();
+        return engine.root();
     }
 
-    public static void loop() {
+    private static void startMainLoop() {
         engine.start();
     }
 

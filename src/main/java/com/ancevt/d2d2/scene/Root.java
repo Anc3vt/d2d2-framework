@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import lombok.Getter;
 
 public class Root extends GroupImpl implements Resizable {
@@ -74,7 +74,7 @@ public class Root extends GroupImpl implements Resizable {
 
     static void dispatchAddToStage(Node node) {
         if (node.isOnScreen()) {
-            node.dispatchEvent(NodeEvent.AddToScene.create());
+            node.dispatchEvent(SceneEvent.AddToScene.create());
             if (node instanceof Group group) {
                 for (int i = 0; i < group.getNumChildren(); i++) {
                     dispatchAddToStage(group.getChild(i));
@@ -85,7 +85,7 @@ public class Root extends GroupImpl implements Resizable {
 
     static void dispatchRemoveFromStage(Node node) {
         if (node.isOnScreen()) {
-            node.dispatchEvent(NodeEvent.RemoveFromScene.create());
+            node.dispatchEvent(SceneEvent.RemoveFromScene.create());
 
             if (node instanceof Group group) {
                 for (int i = 0; i < group.getNumChildren(); i++) {

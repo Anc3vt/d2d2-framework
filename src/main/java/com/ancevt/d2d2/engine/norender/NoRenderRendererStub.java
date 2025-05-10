@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.engine.norender;
 
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.*;
 
 public class NoRenderRendererStub implements Renderer {
@@ -49,14 +49,14 @@ public class NoRenderRendererStub implements Renderer {
     private void renderDisplayObject(Node node) {
         if (!node.isVisible()) return;
 
-        node.onEnterFrame();
-        node.dispatchEvent(NodeEvent.BeforeRenderFrame.create());
+        node.onPreFrame();
+        node.dispatchEvent(SceneEvent.PreFrame.create());
 
-        node.onLoopUpdate();
-        node.dispatchEvent(NodeEvent.LoopUpdate.create());
+        node.onTick();
+        node.dispatchEvent(SceneEvent.Tick.create());
 
         zOrderCounter++;
-        node.setAbsoluteZOrderIndex(zOrderCounter);
+        node.setGlobalZOrderIndex(zOrderCounter);
 
         if (node instanceof Group group) {
             for (int i = 0; i < group.getNumChildren(); i++) {
@@ -68,8 +68,8 @@ public class NoRenderRendererStub implements Renderer {
             ((Playable) node).processFrame();
         }
 
-        node.onExitFrame();
-        node.dispatchEvent(NodeEvent.AfterRenderFrame.create());
+        node.onPostFrame();
+        node.dispatchEvent(SceneEvent.PostFrame.create());
     }
 
 }

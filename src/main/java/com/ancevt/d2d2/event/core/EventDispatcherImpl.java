@@ -132,7 +132,7 @@ public class EventDispatcherImpl implements EventDispatcher {
     }
 
     @Override
-    public <T extends Event> EventHandleRegistration<T> on(Class<T> eventType, EventListener<T> listener) {
-        return new EventHandleRegistration<>(this, eventType, listener);
+    public <T extends Event> EventLink<T> on(Class<T> eventType, EventListener<T> listener) {
+        return new EventLink<>(this, eventType, listener);
     }
 }

@@ -20,7 +20,7 @@ package com.ancevt.d2d2.scene.interactive;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.scene.shape.FreeShape;
@@ -136,7 +136,7 @@ public class InteractiveManager {
 
     public void registerInteractive(final Interactive interactive) {
         if (!interactiveList.contains(interactive)) {
-            interactive.addEventListener(this, NodeEvent.RemoveFromScene.class, e -> {
+            interactive.addEventListener(this, SceneEvent.RemoveFromScene.class, e -> {
                 if (interactive.isFocused()) {
                     resetFocus();
                 }
@@ -147,7 +147,7 @@ public class InteractiveManager {
 
     public final void unregisterInteractive(final Interactive interactive) {
         interactiveList.remove(interactive);
-        interactive.removeEventListener(this, NodeEvent.RemoveFromScene.class);
+        interactive.removeEventListener(this, SceneEvent.RemoveFromScene.class);
     }
 
     public final void clear() {
@@ -178,26 +178,26 @@ public class InteractiveManager {
             for (Interactive interactive : interactiveList) {
                 if (interactive.getInteractiveFreeShape() != null) {
                     FreeShape freeShape = interactive.getInteractiveFreeShape();
-                    int index = interactive.getAbsoluteZOrderIndex();
+                    int index = interactive.getGlobalZOrderIndex();
                     if (interactive.isOnScreen() &&
                             freeShape.isPointInsideFreeShape(
-                                    (x - interactive.getAbsoluteX()) / interactive.getAbsoluteScaleX(),
-                                    (y - interactive.getAbsoluteY()) / interactive.getAbsoluteScaleY()
+                                    (x - interactive.getGlobalX()) / interactive.getGlobalScaleX(),
+                                    (y - interactive.getGlobalY()) / interactive.getGlobalScaleY()
                             ) && index > maxIndex) {
                         maxIndex = index;
-                        _tcX = interactive.getAbsoluteX();
-                        _tcY = interactive.getAbsoluteY();
+                        _tcX = interactive.getGlobalX();
+                        _tcY = interactive.getGlobalY();
                         pressedInteractive = interactive;
                     }
 
                 } else {
-                    final float tcX = interactive.getAbsoluteX();
-                    final float tcY = interactive.getAbsoluteY();
-                    final float tcW = interactive.getInteractiveArea().getWidth() * interactive.getAbsoluteScaleX();
-                    final float tcH = interactive.getInteractiveArea().getHeight() * interactive.getAbsoluteScaleY();
+                    final float tcX = interactive.getGlobalX();
+                    final float tcY = interactive.getGlobalY();
+                    final float tcW = interactive.getInteractiveArea().getWidth() * interactive.getGlobalScaleX();
+                    final float tcH = interactive.getInteractiveArea().getHeight() * interactive.getGlobalScaleY();
 
                     if (interactive.isOnScreen() && x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH) {
-                        int index = interactive.getAbsoluteZOrderIndex();
+                        int index = interactive.getGlobalZOrderIndex();
                         if (index >= maxIndex) {
                             pressedInteractive = interactive;
                             maxIndex = index;
@@ -226,17 +226,17 @@ public class InteractiveManager {
         } else {
             for (Interactive interactive : interactiveList) {
                 if (interactive != null && interactive.isOnScreen()) {
-                    final float tcX = interactive.getAbsoluteX();
-                    final float tcY = interactive.getAbsoluteY();
-                    final float tcW = interactive.getInteractiveArea().getWidth() * interactive.getAbsoluteScaleX();
-                    final float tcH = interactive.getInteractiveArea().getHeight() * interactive.getAbsoluteScaleY();
+                    final float tcX = interactive.getGlobalX();
+                    final float tcY = interactive.getGlobalY();
+                    final float tcW = interactive.getInteractiveArea().getWidth() * interactive.getGlobalScaleX();
+                    final float tcH = interactive.getInteractiveArea().getHeight() * interactive.getGlobalScaleY();
 
                     boolean onArea = x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH;
 
                     if (interactive.getInteractiveFreeShape() != null) {
                         onArea = interactive.getInteractiveFreeShape().isPointInsideFreeShape(
-                                (x - interactive.getAbsoluteX()) / interactive.getAbsoluteScaleX(),
-                                (y - interactive.getAbsoluteY()) / interactive.getAbsoluteScaleY()
+                                (x - interactive.getGlobalX()) / interactive.getGlobalScaleX(),
+                                (y - interactive.getGlobalY()) / interactive.getGlobalScaleY()
                         );
                     }
 
@@ -269,24 +269,24 @@ public class InteractiveManager {
         Interactive upperInteractive = null;
 
         for (final Interactive interactive : interactiveList) {
-            final float tcX = interactive.getAbsoluteX();
-            final float tcY = interactive.getAbsoluteY();
-            final float tcW = interactive.getInteractiveArea().getWidth() * interactive.getAbsoluteScaleX();
-            final float tcH = interactive.getInteractiveArea().getHeight() * interactive.getAbsoluteScaleY();
+            final float tcX = interactive.getGlobalX();
+            final float tcY = interactive.getGlobalY();
+            final float tcW = interactive.getInteractiveArea().getWidth() * interactive.getGlobalScaleX();
+            final float tcH = interactive.getInteractiveArea().getHeight() * interactive.getGlobalScaleY();
 
             final boolean onScreen = interactive.isOnScreen();
             boolean onArea = x >= tcX && x <= tcX + tcW && y >= tcY && y <= tcY + tcH;
 
             if (interactive.getInteractiveFreeShape() != null) {
                 onArea = interactive.getInteractiveFreeShape().isPointInsideFreeShape(
-                        (x - interactive.getAbsoluteX()) / interactive.getAbsoluteScaleX(),
-                        (y - interactive.getAbsoluteY()) / interactive.getAbsoluteScaleY()
+                        (x - interactive.getGlobalX()) / interactive.getGlobalScaleX(),
+                        (y - interactive.getGlobalY()) / interactive.getGlobalScaleY()
                 );
             }
 
             if (onScreen) {
                 if (onArea) {
-                    int index = interactive.getAbsoluteZOrderIndex();
+                    int index = interactive.getGlobalZOrderIndex();
                     if (index >= maxIndex) {
                         maxIndex = index;
                         _tcX = tcX;
@@ -468,7 +468,7 @@ public class InteractiveManager {
                             focusNext();
                             keyHoldTabDirection = 1;
                         }
-                        D2D2.root().addEventListener(this, NodeEvent.AfterRenderFrame.class, exite -> {
+                        D2D2.root().addEventListener(this, SceneEvent.PostFrame.class, exite -> {
                             keyHoldTime--;
                             if (keyHoldTime < 0) {
                                 keyHoldTime = 3;
@@ -497,7 +497,7 @@ public class InteractiveManager {
                     case KeyCode.TAB -> {
                         keyHoldTime = KEY_HOLD_TIME;
                         keyHoldTabDirection = 0;
-                        D2D2.root().removeEventListener(this, NodeEvent.AfterRenderFrame.class);
+                        D2D2.root().removeEventListener(this, SceneEvent.PostFrame.class);
                     }
                     case KeyCode.ENTER -> {
                         if (focusedInteractive != null) {
@@ -512,7 +512,7 @@ public class InteractiveManager {
         } else {
             D2D2.root().removeEventListener(this, InputEvent.KeyDown.class);
             D2D2.root().removeEventListener(this, InputEvent.KeyUp.class);
-            D2D2.root().removeEventListener(this, NodeEvent.AfterRenderFrame.class);
+            D2D2.root().removeEventListener(this, SceneEvent.PostFrame.class);
         }
     }
 
@@ -533,7 +533,7 @@ public class InteractiveManager {
 
 
     private static void dispatch(Interactive eventDispatcher, InputEvent event) {
-        if (!eventDispatcher.isEnabled() || !eventDispatcher.isAbsoluteVisible()) return;
+        if (!eventDispatcher.isEnabled() || !eventDispatcher.isGloballyVisible()) return;
 
         eventDispatcher.dispatchEvent(event);
 

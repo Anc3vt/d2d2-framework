@@ -21,7 +21,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.core.Event;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Colored;
 import com.ancevt.d2d2.scene.Group;
@@ -124,17 +124,17 @@ public class Grid extends GroupImpl implements Colored {
             this.grid = grid;
             setOrientation(orientation);
 
-            addEventListener(NodeEvent.AfterRenderFrame.class, this::eachFrame);
+            addEventListener(SceneEvent.PostFrame.class, this::eachFrame);
         }
 
         private void eachFrame(Event event) {
             Group parent = getParent();
             switch (orientation) {
                 case HORIZONTAL:
-                    setScaleY(1.0f / parent.getAbsoluteScaleY());
+                    setScaleY(1.0f / parent.getGlobalScaleY());
                     break;
                 case VERTICAL:
-                    setScaleX(1.0f / parent.getAbsoluteScaleX());
+                    setScaleX(1.0f / parent.getGlobalScaleX());
                     break;
             }
         }

@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene.text;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -106,7 +106,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
 
     public Text cloneBitmapText() {
         Text text = new Text();
-        text.setXY(getX(), getY());
+        text.setPosition(getX(), getY());
         text.setText(getText());
         text.setSize(getWidth(), getHeight());
         text.setAlpha(getAlpha());
@@ -144,8 +144,8 @@ public class Text extends AbstractNode implements Colored, Resizable {
     }
 
     public void disposeOnRemoveFromStage() {
-        addEventListener(this, NodeEvent.RemoveFromScene.class, e -> {
-            removeEventListener(Text.class, NodeEvent.RemoveFromScene.class);
+        addEventListener(this, SceneEvent.RemoveFromScene.class, e -> {
+            removeEventListener(Text.class, SceneEvent.RemoveFromScene.class);
             if (sprite != null && sprite.getTextureClip() != null) {
                 D2D2.textureManager().unloadTexture(sprite.getTextureClip().getTexture());
             }
@@ -195,7 +195,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
 
     public Sprite toSprite() {
         Sprite result = Sprite.create(D2D2.textureManager().bitmapTextToTexture(this).createTextureClip());
-        result.setXY(getX(), getY());
+        result.setPosition(getX(), getY());
         result.setScale(getScaleX(), getScaleY());
         result.setRotation(getRotation());
         result.setColor(getColor());
@@ -419,7 +419,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
     }
 
     @Override
-    public void onExitFrame() {
+    public void onPostFrame() {
         // For overriding
     }
 
