@@ -66,7 +66,7 @@ public class KeyHandler {
 
         if (enabled) {
             eventDispatcher.addEventListener(this, InputEvent.KeyDown.class, e -> {
-                if ((e.keyCode() == keyCode || e.keyCode() == keyAlias) && onKeyDown != null) {
+                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyDown != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
                     final boolean alt = (mods & 4) != 0;
@@ -74,14 +74,15 @@ public class KeyHandler {
                     if (keyCode != KeyCode.LEFT_ALT && keyCode != KeyCode.RIGHT_ALT &&
                             keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
                             keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
-                            ((e.shift() && !shift) || (e.shift() && !control) || (e.alt() && !alt) ||
-                                    (!e.shift() && shift) || (!e.control() && control) || (!e.alt() && alt))) return;
+                            ((e.isShift() && !shift) || (e.isShift() && !control) || (e.isAlt() && !alt) ||
+                                    (!e.isShift() && shift) || (!e.isControl() && control) || (!e.isAlt() && alt)))
+                        return;
 
-                    onKeyDown.accept(new Options(e.shift(), e.control(), e.alt(), e.keyCode(), (char) 0, EMPTY_STRING));
+                    onKeyDown.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), (char) 0, EMPTY_STRING));
                 }
             });
             eventDispatcher.addEventListener(this, InputEvent.KeyUp.class, e -> {
-                if ((e.keyCode() == keyCode || e.keyCode() == keyAlias) && onKeyUp != null) {
+                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyUp != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
                     final boolean alt = (mods & 4) != 0;
@@ -89,14 +90,15 @@ public class KeyHandler {
                     if (keyCode != KeyCode.LEFT_ALT && keyCode != KeyCode.RIGHT_ALT &&
                             keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
                             keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
-                            ((e.shift() && !shift) || (e.control() && !control) || (e.alt() && !alt) ||
-                                    (!e.shift() && shift) || (!e.control() && control) || (!e.alt() && alt))) return;
+                            ((e.isShift() && !shift) || (e.isControl() && !control) || (e.isAlt() && !alt) ||
+                                    (!e.isShift() && shift) || (!e.isControl() && control) || (!e.isAlt() && alt)))
+                        return;
 
-                    onKeyUp.accept(new Options(e.shift(), e.control(), e.alt(), e.keyCode(), (char) 0, EMPTY_STRING));
+                    onKeyUp.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), (char) 0, EMPTY_STRING));
                 }
             });
             eventDispatcher.addEventListener(this, InputEvent.KeyRepeat.class, e -> {
-                if ((e.keyCode() == keyCode || e.keyCode() == keyAlias) && onKeyRepeat != null) {
+                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyRepeat != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
                     final boolean alt = (mods & 4) != 0;
@@ -104,14 +106,15 @@ public class KeyHandler {
                     if (keyCode != KeyCode.LEFT_ALT && keyCode != KeyCode.RIGHT_ALT &&
                             keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
                             keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
-                            ((e.shift() && !shift) || (e.control() && !control) || (e.alt() && !alt) ||
-                                    (!e.shift() && shift) || (!e.control() && control) || (!e.alt() && alt))) return;
+                            ((e.isShift() && !shift) || (e.isControl() && !control) || (e.isAlt() && !alt) ||
+                                    (!e.isShift() && shift) || (!e.isControl() && control) || (!e.isAlt() && alt)))
+                        return;
 
-                    onKeyRepeat.accept(new Options(e.shift(), e.control(), e.alt(), e.keyCode(), (char) 0, EMPTY_STRING));
+                    onKeyRepeat.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), (char) 0, EMPTY_STRING));
                 }
             });
             eventDispatcher.addEventListener(this, InputEvent.KeyType.class, e -> {
-                if ((e.keyCode() == keyCode || e.keyCode() == keyAlias) && onKeyType != null) {
+                if ((e.getKeyCode() == keyCode || e.getKeyCode() == keyAlias) && onKeyType != null) {
                     final boolean shift = (mods & 1) != 0;
                     final boolean control = (mods & 2) != 0;
                     final boolean alt = (mods & 4) != 0;
@@ -119,10 +122,11 @@ public class KeyHandler {
                     if (keyCode != KeyCode.LEFT_ALT && keyCode != KeyCode.RIGHT_ALT &&
                             keyCode != KeyCode.LEFT_SHIFT && keyCode != KeyCode.RIGHT_SHIFT &&
                             keyCode != KeyCode.LEFT_CONTROL && keyCode != KeyCode.RIGHT_CONTROL &&
-                            ((e.shift() && !shift) || (e.control() && !control) || (e.alt() && !alt) ||
-                                    (!e.shift() && shift) || (!e.control() && control) || (!e.alt() && alt))) return;
+                            ((e.isShift() && !shift) || (e.isControl() && !control) || (e.isAlt() && !alt) ||
+                                    (!e.isShift() && shift) || (!e.isControl() && control) || (!e.isAlt() && alt)))
+                        return;
 
-                    onKeyType.accept(new Options(e.shift(), e.control(), e.alt(), e.keyCode(), e.character(), e.keyType()));
+                    onKeyType.accept(new Options(e.isShift(), e.isControl(), e.isAlt(), e.getKeyCode(), e.getCharacter(), e.getKeyType()));
                 }
             });
         } else {

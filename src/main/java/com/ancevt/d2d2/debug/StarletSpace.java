@@ -68,7 +68,7 @@ public class StarletSpace extends GroupImpl {
         });
         stage.addEventListener(InputEvent.MouseMove.class, e -> {
             float center = stage.getWidth() / 2;
-            starletSpace.velocityX = center - e.x();
+            starletSpace.velocityX = center - e.getX();
         });
         return starletSpace;
     }

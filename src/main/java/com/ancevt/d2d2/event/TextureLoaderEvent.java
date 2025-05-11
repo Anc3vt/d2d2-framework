@@ -22,9 +22,7 @@ import com.ancevt.d2d2.scene.texture.Texture;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
-@Accessors(fluent = true)
 public abstract class TextureLoaderEvent extends Event {
 
     @NoArgsConstructor(staticName = "create")

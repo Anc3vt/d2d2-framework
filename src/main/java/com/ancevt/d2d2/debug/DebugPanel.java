@@ -23,9 +23,9 @@ import com.ancevt.commons.hash.MD5;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.scene.Color;
@@ -136,22 +136,22 @@ public class DebugPanel extends GroupImpl {
     }
 
     private void root_keyDown(InputEvent.KeyDown e) {
-        if (KeyCode.isShift(e.keyCode())) {
+        if (KeyCode.isShift(e.getKeyCode())) {
             shiftDown = true;
         }
     }
 
     private void root_keyUp(InputEvent.KeyUp e) {
-        if (KeyCode.isShift(e.keyCode())) {
+        if (KeyCode.isShift(e.getKeyCode())) {
             shiftDown = false;
         }
     }
 
     private void interactiveButton_down(InputEvent.MouseDown e) {
-        mouseButton = e.button();
+        mouseButton = e.getButton();
 
-        oldX = (int) (e.x() + getX());
-        oldY = (int) (e.y() + getY());
+        oldX = (int) (e.getX() + getX());
+        oldY = (int) (e.getY() + getY());
 
         Group parent = getParent();
         parent.removeChild(this);
@@ -162,7 +162,7 @@ public class DebugPanel extends GroupImpl {
 
     private void interactiveButton_drag(InputEvent.MouseDrag e) {
         if (mouseButton == MouseButton.RIGHT) {
-            bg.setSize(e.x() + 1f, e.y() + 1f);
+            bg.setSize(e.getX() + 1f, e.getY() + 1f);
             if (bg.getWidth() < 5f) {
                 bg.setWidth(5f);
             }
@@ -178,8 +178,8 @@ public class DebugPanel extends GroupImpl {
             return;
         }
 
-        final int tx = (int) (e.x() + getX());
-        final int ty = (int) (e.y() + getY());
+        final int tx = (int) (e.getX() + getX());
+        final int ty = (int) (e.getY() + getY());
 
         move(tx - oldX, ty - oldY);
 

@@ -61,26 +61,26 @@ public class InteractiveManager {
             Interactive focused = getFocused();
             if (focused != null) {
                 dispatch(focused, InputEvent.KeyDown.create(
-                        e.keyCode(),
-                        e.character(),
-                        e.alt(),
-                        e.control(),
-                        e.shift()
+                        e.getKeyCode(),
+                        e.getCharacter(),
+                        e.isAlt(),
+                        e.isControl(),
+                        e.isShift()
                 ));
             }
-            alt = e.alt();
-            control = e.control();
-            shift = e.shift();
+            alt = e.isAlt();
+            control = e.isControl();
+            shift = e.isShift();
         });
 
         D2D2.root().addEventListener(InputEvent.KeyRepeat.class, e -> {
             Interactive focused = getFocused();
             if (focused != null) {
                 dispatch(focused, InputEvent.KeyRepeat.create(
-                        e.keyCode(),
-                        e.alt(),
-                        e.control(),
-                        e.shift()
+                        e.getKeyCode(),
+                        e.isAlt(),
+                        e.isControl(),
+                        e.isShift()
                 ));
             }
         });
@@ -89,15 +89,15 @@ public class InteractiveManager {
             Interactive focused = getFocused();
             if (focused != null) {
                 dispatch(focused, InputEvent.KeyUp.create(
-                        e.keyCode(),
-                        e.alt(),
-                        e.control(),
-                        e.shift()
+                        e.getKeyCode(),
+                        e.isAlt(),
+                        e.isControl(),
+                        e.isShift()
                 ));
             }
-            alt = e.alt();
-            control = e.control();
-            shift = e.shift();
+            alt = e.isAlt();
+            control = e.isControl();
+            shift = e.isShift();
         });
 
         D2D2.root().addEventListener(InputEvent.MouseWheel.class, e -> {
@@ -107,12 +107,12 @@ public class InteractiveManager {
 
             if (interactive != null) {
                 dispatch(interactive, InputEvent.MouseWheel.create(
-                        e.delta(),
-                        e.x(),
-                        e.y(),
-                        e.alt(),
-                        e.control(),
-                        e.shift()
+                        e.getDelta(),
+                        e.getX(),
+                        e.getY(),
+                        e.isAlt(),
+                        e.isControl(),
+                        e.isShift()
                 ));
             }
         });
@@ -121,13 +121,13 @@ public class InteractiveManager {
             Interactive focused = getFocused();
             if (focused != null) {
                 dispatch(focused, InputEvent.KeyType.create(
-                        e.keyCode(),
-                        e.alt(),
-                        e.control(),
-                        e.shift(),
-                        e.character(),
-                        e.codepoint(),
-                        e.keyType()
+                        e.getKeyCode(),
+                        e.isAlt(),
+                        e.isControl(),
+                        e.isShift(),
+                        e.getCharacter(),
+                        e.getCodepoint(),
+                        e.getKeyType()
                 ));
             }
         });
@@ -459,9 +459,9 @@ public class InteractiveManager {
 
         if (tabbingEnabled) {
             D2D2.root().addEventListener(this, InputEvent.KeyDown.class, e -> {
-                switch (e.keyCode()) {
+                switch (e.getKeyCode()) {
                     case KeyCode.TAB -> {
-                        if (e.shift()) {
+                        if (e.isShift()) {
                             focusPrevious();
                             keyHoldTabDirection = -1;
                         } else {
@@ -493,7 +493,7 @@ public class InteractiveManager {
             });
 
             D2D2.root().addEventListener(this, InputEvent.KeyUp.class, e -> {
-                switch (e.keyCode()) {
+                switch (e.getKeyCode()) {
                     case KeyCode.TAB -> {
                         keyHoldTime = KEY_HOLD_TIME;
                         keyHoldTabDirection = 0;

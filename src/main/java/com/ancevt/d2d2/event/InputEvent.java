@@ -22,9 +22,7 @@ import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
 import lombok.Getter;
-import lombok.experimental.Accessors;
 
-@Accessors(fluent = true)
 public abstract class InputEvent extends Event {
 
     @EventPooled

@@ -53,10 +53,10 @@ public class DraggingGroup extends InteractiveGroup {
     }
 
     private void mouseDown(InputEvent.MouseDown e) {
-        mouseButton = e.button();
+        mouseButton = e.getButton();
 
-        oldX = (int) (e.x() + getX());
-        oldY = (int) (e.y() + getY());
+        oldX = (int) (e.getX() + getX());
+        oldY = (int) (e.getY() + getY());
 
         Group parent = getParent();
         parent.removeChild(this);
@@ -89,7 +89,7 @@ public class DraggingGroup extends InteractiveGroup {
 
     private void mouseDrag(InputEvent.MouseDrag e) {
         if (mouseButton == MouseButton.RIGHT) {
-            setSize(e.x() / getScaleX() + 1, e.y() / getScaleY() + 1);
+            setSize(e.getX() / getScaleX() + 1, e.getY() / getScaleY() + 1);
 
             if (getWidth() < MIN_WIDTH) {
                 setWidth(MIN_WIDTH);
@@ -100,8 +100,8 @@ public class DraggingGroup extends InteractiveGroup {
             return;
         }
 
-        final int tx = (int) (e.x() + getX());
-        final int ty = (int) (e.y() + getY());
+        final int tx = (int) (e.getX() + getX());
+        final int ty = (int) (e.getY() + getY());
 
         move(tx - oldX, ty - oldY);
 

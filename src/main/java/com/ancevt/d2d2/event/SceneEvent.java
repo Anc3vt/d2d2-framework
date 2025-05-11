@@ -23,9 +23,7 @@ import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Group;
 import lombok.Getter;
-import lombok.experimental.Accessors;
 
-@Accessors(fluent = true)
 public abstract class SceneEvent extends Event {
 
     @EventPooled

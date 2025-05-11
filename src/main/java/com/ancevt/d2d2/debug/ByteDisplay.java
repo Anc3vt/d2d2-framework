@@ -85,16 +85,16 @@ public class ByteDisplay extends InteractiveGroup {
     }
 
     private void wheel(InputEvent.MouseWheel e) {
-        scroll(-e.delta() * inline * (e.delta() > 0 ? 10 : 1));
+        scroll(-e.getDelta() * inline * (e.getDelta() > 0 ? 10 : 1));
     }
 
     private void keyDown(InputEvent e) {
         int keyCode = 0;
 
         if (e instanceof InputEvent.KeyDown kde) {
-            keyCode = kde.keyCode();
+            keyCode = kde.getKeyCode();
         } else if (e instanceof InputEvent.KeyRepeat kdr) {
-            keyCode = kdr.keyCode();
+            keyCode = kdr.getKeyCode();
         } else {
             return;
         }
@@ -204,10 +204,10 @@ public class ByteDisplay extends InteractiveGroup {
     }
 
     private void mouseDown(InputEvent.MouseDown e) {
-        mouseButton = e.button();
+        mouseButton = e.getButton();
 
-        oldX = (int) (e.x() + getX());
-        oldY = (int) (e.y() + getY());
+        oldX = (int) (e.getX() + getX());
+        oldY = (int) (e.getY() + getY());
 
         Group parent = getParent();
         parent.removeChild(this);
@@ -218,15 +218,15 @@ public class ByteDisplay extends InteractiveGroup {
 
     private void mouseDrag(InputEvent.MouseDrag e) {
         if (mouseButton == MouseButton.RIGHT) {
-            setSize(e.x() / getScaleX() + 1, e.y() / getScaleY() + 1);
+            setSize(e.getX() / getScaleX() + 1, e.getY() / getScaleY() + 1);
             if (getWidth() < 320f) setWidth(320f);
             if (getHeight() < 100f) setHeight(100f);
             render();
             return;
         }
 
-        final int tx = (int) (e.x() + getX());
-        final int ty = (int) (e.y() + getY());
+        final int tx = (int) (e.getX() + getX());
+        final int ty = (int) (e.getY() + getY());
 
         move(tx - oldX, ty - oldY);
 

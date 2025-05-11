@@ -34,8 +34,8 @@ public class DragUtil {
         AtomicReference<Float> oldYHolder = new AtomicReference<>(0f);
 
         interactive.addEventListener(DragUtil.class + node.getName(), InputEvent.MouseDown.class, e -> {
-            oldXHolder.set(e.x() + node.getX());
-            oldYHolder.set(e.y() + node.getY());
+            oldXHolder.set(e.getX() + node.getX());
+            oldYHolder.set(e.getY() + node.getY());
             Group parent = node.getParent();
             parent.removeChild(node);
             parent.addChild(node);
@@ -43,8 +43,8 @@ public class DragUtil {
         });
 
         interactive.addEventListener(DragUtil.class + node.getName(), InputEvent.MouseDrag.class, e -> {
-            final float tx = e.x() + node.getX();
-            final float ty = e.y() + node.getY();
+            final float tx = e.getX() + node.getX();
+            final float ty = e.getY() + node.getY();
 
             node.move(tx - oldXHolder.get(), ty - oldYHolder.get());
 

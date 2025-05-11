@@ -25,8 +25,8 @@ import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
-import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.Node;
+import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Text;
@@ -164,8 +164,8 @@ public class DebugDisplayObjectViewer {
 
         if (b) {
             s.addEventListener(this, InputEvent.KeyDown.class, e -> {
-                if (e.shift() && e.control()) {
-                    switch (e.keyCode()) {
+                if (e.isShift() && e.isControl()) {
+                    switch (e.getKeyCode()) {
                         case KeyCode.F1 -> {
                             show();
                         }
@@ -174,7 +174,7 @@ public class DebugDisplayObjectViewer {
             });
 
             s.addEventListener(this, InputEvent.KeyUp.class, e -> {
-                switch (e.keyCode()) {
+                switch (e.getKeyCode()) {
                     case KeyCode.F1 -> {
                         clear();
                     }
