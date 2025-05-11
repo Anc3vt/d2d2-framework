@@ -22,13 +22,8 @@ import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.event.core.EventDispatcher;
 import com.ancevt.d2d2.event.core.EventLink;
 import com.ancevt.d2d2.event.core.EventListener;
-import com.ancevt.d2d2.scene.shader.ShaderProgram;
 
 public interface Node extends EventDispatcher {
-
-    void setShaderProgram(ShaderProgram shaderProgram);
-
-    ShaderProgram getShaderProgram();
 
     default void centerX() {
         if (hasParent()) {
@@ -53,7 +48,7 @@ public interface Node extends EventDispatcher {
         centerY();
     }
 
-    int getDisplayObjectId();
+    int getNodeId();
 
     String getName();
 

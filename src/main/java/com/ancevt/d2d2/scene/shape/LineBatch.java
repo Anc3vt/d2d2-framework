@@ -63,7 +63,7 @@ public class LineBatch extends AbstractNode implements Shape {
     private Line currentLine = null;
 
     public LineBatch() {
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
+        setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
     public void moveTo(float x, float y) {

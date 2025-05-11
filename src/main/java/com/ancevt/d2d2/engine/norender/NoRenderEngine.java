@@ -21,11 +21,9 @@ package com.ancevt.d2d2.engine.norender;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.engine.ShaderFactory;
 import com.ancevt.d2d2.engine.SoundManager;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.core.EventDispatcherImpl;
-import com.ancevt.d2d2.exception.NotImplementedException;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.scene.Renderer;
 import com.ancevt.d2d2.scene.Root;
@@ -80,12 +78,6 @@ public class NoRenderEngine extends EventDispatcherImpl implements Engine {
         canvasHeight = height;
 
         dispatchEvent(CommonEvent.Resize.create(width, height));
-    }
-
-    @Override
-    public ShaderFactory shaderFactory() {
-        // TODO: implement stub
-        throw new NotImplementedException();
     }
 
     @Override

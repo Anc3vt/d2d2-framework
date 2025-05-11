@@ -33,7 +33,7 @@ public class PlayableGroup extends GroupImpl implements Playable {
     private boolean backward;
 
     public PlayableGroup() {
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
+        setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
     public PlayableGroup(Sprite[] frameSprites) {

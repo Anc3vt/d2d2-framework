@@ -30,7 +30,7 @@ public interface Sprite extends Node, Colored, Repeatable {
         Sprite sprite = new SpriteImpl();
         sprite.setColor(SpriteImpl.DEFAULT_COLOR);
         sprite.setRepeat(1, 1);
-        sprite.setName("_" + sprite.getClass().getSimpleName() + sprite.getDisplayObjectId());
+        sprite.setName("_" + sprite.getClass().getSimpleName() + sprite.getNodeId());
         return sprite;
     }
 

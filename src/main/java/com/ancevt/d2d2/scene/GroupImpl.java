@@ -34,7 +34,7 @@ public class GroupImpl extends AbstractNode implements Group {
 
     public GroupImpl() {
         children = new CopyOnWriteArrayList<>();
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
+        setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
     private void addChildInternal(Node child, int index, Float x, Float y, PlaceBy placeBy) {

@@ -51,7 +51,7 @@ public class PlayableSprite extends SpriteImpl implements Playable {
     }
 
     public PlayableSprite() {
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
+        setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
     @Override

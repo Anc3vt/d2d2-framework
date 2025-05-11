@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,13 +18,12 @@
 
 package com.ancevt.d2d2.scene;
 
-import com.ancevt.d2d2.scene.shader.ShaderProgram;
 import com.ancevt.d2d2.event.core.EventDispatcherImpl;
 
 public abstract class AbstractNode extends EventDispatcherImpl implements Node {
 
     private static int displayObjectIdCounter;
-    private final int displayObjectId;
+    private final int nodeId;
     private String name;
     private GroupImpl parent;
     private float x;
@@ -37,25 +36,14 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
     private int zOrderIndex;
     private boolean integerPixelAlignmentEnabled = true;
 
-    private ShaderProgram shaderProgram;
-
     protected AbstractNode() {
-        displayObjectId = displayObjectIdCounter++;
-        name = "_" + getClass().getSimpleName() + getDisplayObjectId();
-    }
-
-    public ShaderProgram getShaderProgram() {
-        return shaderProgram;
+        nodeId = displayObjectIdCounter++;
+        name = "_" + getClass().getSimpleName() + getNodeId();
     }
 
     @Override
-    public void setShaderProgram(ShaderProgram shaderProgram) {
-        this.shaderProgram = shaderProgram;
-    }
-
-    @Override
-    public int getDisplayObjectId() {
-        return displayObjectId;
+    public int getNodeId() {
+        return nodeId;
     }
 
     @Override
@@ -302,6 +290,6 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + "displayObjectId=" + displayObjectId + ", name='" + name + "'}";
+        return getClass().getSimpleName() + "{" + "displayObjectId=" + nodeId + ", name='" + name + "'}";
     }
 }

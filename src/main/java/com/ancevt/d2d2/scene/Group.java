@@ -32,7 +32,7 @@ public interface Group extends Node {
     static <T extends Node> Optional<T> findDisplayObjectById(Group fromRoot, int id) {
         return (Optional<T>) listDisplayObjects(fromRoot, new ArrayList<>())
                 .stream()
-                .filter(o -> o.getDisplayObjectId() == id)
+                .filter(o -> o.getNodeId() == id)
                 .findAny();
     }
 

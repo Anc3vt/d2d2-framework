@@ -79,7 +79,7 @@ public class InteractiveSprite extends SpriteImpl implements Interactive {
     }
 
     private void setDefaultName() {
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
+        setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
     @Override

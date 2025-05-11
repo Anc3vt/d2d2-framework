@@ -81,7 +81,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
         setWidth(width);
         setHeight(height);
         setText(text);
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
+        setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
     public Text(final Font font, float boundWidth, float boundHeight) {

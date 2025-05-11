@@ -41,7 +41,7 @@ public class InteractiveGroup extends GroupImpl implements Interactive {
 
     public InteractiveGroup(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
+        setName("_" + getClass().getSimpleName() + getNodeId());
         enabled = true;
         pushEventsUp = true;
         InteractiveManager.getInstance().registerInteractive(this);

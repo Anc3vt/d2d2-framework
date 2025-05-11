@@ -72,5 +72,4 @@ public interface Engine extends EventDispatcher {
 
     int getCanvasHeight();
 
-    ShaderFactory shaderFactory();
 }

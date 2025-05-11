@@ -48,7 +48,7 @@ public class DebugBorder extends GroupImpl implements Resizable, Colored, Dispos
         addChild(borderedRectangle);
 
         label = new Text();
-        label.setText(node.getDisplayObjectId() + " " + node.getName());
+        label.setText(node.getNodeId() + " " + node.getName());
         label.setAutosize(true);
         addChild(label, 2, -label.getHeight());
 

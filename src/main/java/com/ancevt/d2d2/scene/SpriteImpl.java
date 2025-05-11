@@ -19,11 +19,9 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.shader.ShaderProgram;
 import com.ancevt.d2d2.scene.texture.TextureClip;
 
 public class SpriteImpl extends AbstractNode implements Sprite {
-
 
     private float repeatX;
     private float repeatY;
@@ -31,22 +29,11 @@ public class SpriteImpl extends AbstractNode implements Sprite {
     private TextureClip textureClip;
     private double vertexBleedingFix = 0d;
     private double textureBleedingFix = 0d;
-    private ShaderProgram shaderProgram;
 
     public SpriteImpl() {
         setColor(DEFAULT_COLOR);
         setRepeat(1, 1);
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
-    }
-
-    @Override
-    public ShaderProgram getShaderProgram() {
-        return shaderProgram;
-    }
-
-    @Override
-    public void setShaderProgram(ShaderProgram shaderProgram) {
-        this.shaderProgram = shaderProgram;
+        setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
     @Override

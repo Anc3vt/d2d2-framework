@@ -35,7 +35,7 @@ public class Root extends GroupImpl implements Resizable {
     private Color backgroundColor;
 
     public Root() {
-        setName("_" + getClass().getSimpleName() + getDisplayObjectId());
+        setName("_" + getClass().getSimpleName() + getNodeId());
         setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     }
 
