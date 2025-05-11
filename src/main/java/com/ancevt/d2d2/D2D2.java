@@ -53,6 +53,10 @@ public final class D2D2 {
 
     @Getter
     private static D2D2Application application;
+
+    @Getter
+    private static D2D2Config config;
+
     @Getter
     private static Args args;
 
@@ -73,6 +77,7 @@ public final class D2D2 {
 
     public static void init(D2D2Application application, D2D2Config config) {
         D2D2.application = application;
+        D2D2.config = config;
         addPropertiesToSystemProperties(config.asMap());
 
         int width = config.getOrDefault(D2D2Config.WIDTH, 800);

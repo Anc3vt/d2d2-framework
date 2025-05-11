@@ -55,13 +55,17 @@ public class D2D2Config {
         return prop(TITLE, title);
     }
 
+
     public D2D2Config noScaleMode(boolean noScaleMode) {
         return prop(NO_SCALE_MODE, String.valueOf(noScaleMode));
     }
 
+    /*
     public D2D2Config fullscreen(boolean fullscreen) {
         return prop(FULLSCREEN, String.valueOf(fullscreen));
     }
+
+     */
 
     public D2D2Config alwaysOnTop(boolean onTop) {
         return prop(ALWAYS_ON_TOP, String.valueOf(onTop));
@@ -91,10 +95,15 @@ public class D2D2Config {
 
     public D2D2Config fromArgs(String[] args) {
         for (String arg : args) {
+            String[] split;
             if (arg.startsWith("-D") && arg.contains("=")) {
-                String[] split = arg.substring(2).split("=", 2);
-                prop(split[0], split[1]);
+                split = arg.substring(2).split("=", 2);
+            } else if (arg.startsWith("--") && arg.contains("=")) {
+                split = arg.substring(2).split("=", 2);
+            } else {
+                continue;
             }
+            prop(split[0], split[1]);
         }
         return this;
     }

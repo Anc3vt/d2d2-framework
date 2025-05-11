@@ -2,23 +2,24 @@ package com.ancevt.d2d2.event.core;
 
 import com.ancevt.d2d2.time.Timer;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class EventLink<T extends Event> {
 
-    private static final Map<String, ArrayList<EventLink<?>>> TAG_REGISTRY =
-            new HashMap<>();
+    private static final Map<String, Set<WeakReference<EventLink<?>>>> TAG_REGISTRY = new WeakHashMap<>();
 
     private final EventDispatcher dispatcher;
     private final Class<T> eventType;
     private final EventListener<T> listener;
 
     private boolean paused = false;
-    private int remaining = -1; // -1 означает бесконечную подписку
+    private int remaining = -1;
     private Consumer<Throwable> errorHandler = Throwable::printStackTrace;
     private String tag;
+    private Timer timeoutTimer;
 
     public EventLink(EventDispatcher dispatcher,
                      Class<T> eventType,
@@ -31,6 +32,11 @@ public class EventLink<T extends Event> {
 
     private void handle(T event) {
         if (paused || (remaining == 0)) return;
+
+        if (timeoutTimer != null) {
+            timeoutTimer.stop();
+            timeoutTimer = null;
+        }
 
         if (remaining > 0) remaining--;
 
@@ -70,23 +76,27 @@ public class EventLink<T extends Event> {
     public EventLink<T> tag(String tag) {
         this.tag = Objects.requireNonNull(tag, "tag");
         TAG_REGISTRY
-                .computeIfAbsent(tag, t -> new ArrayList<>())
-                .add(this);
+                .computeIfAbsent(tag, t -> Collections.newSetFromMap(new WeakHashMap<>()))
+                .add(new WeakReference<>(this));
         return this;
     }
 
     public static void unregisterByTag(String tag) {
-        List<EventLink<?>> regs = TAG_REGISTRY.remove(tag);
-        if (regs != null) {
-            regs.forEach(EventLink::unregister);
+        Set<WeakReference<EventLink<?>>> refs = TAG_REGISTRY.get(tag);
+        if (refs != null) {
+            refs.forEach(ref -> {
+                EventLink<?> link = ref.get();
+                if (link != null) link.unregister();
+            });
+            refs.clear();
         }
     }
 
+    /**
+     * Experimental
+     */
     public <R> EventLink<T> map(Function<? super T, ? extends R> mapper,
                                 EventListener<? super R> newListener) {
-        Objects.requireNonNull(mapper);
-        Objects.requireNonNull(newListener);
-
         EventListener<T> wrappedListener = event -> {
             try {
                 R mappedEvent = mapper.apply(event);
@@ -95,8 +105,6 @@ public class EventLink<T extends Event> {
                 errorHandler.accept(ex);
             }
         };
-
-        dispatcher.removeEventListener(this, eventType);
         dispatcher.addEventListener(this, eventType, wrappedListener);
         return this;
     }
@@ -104,8 +112,12 @@ public class EventLink<T extends Event> {
     public EventLink<T> withTimeout(long timeoutMillis, Runnable onTimeout) {
         Objects.requireNonNull(onTimeout, "onTimeout");
 
-        // Используем твой таймер вместо потоков
-        Timer.setTimeout(timeoutMillis, timer -> {
+        // Если уже есть таймер, отменяем
+        if (timeoutTimer != null) {
+            timeoutTimer.stop();
+        }
+
+        timeoutTimer = Timer.setTimeout(timeoutMillis, timer -> {
             unregister();
             try {
                 onTimeout.run();
@@ -120,10 +132,14 @@ public class EventLink<T extends Event> {
     public void unregister() {
         dispatcher.removeEventListener(this, eventType);
         if (tag != null) {
-            TAG_REGISTRY.computeIfPresent(tag, (t, list) -> {
-                list.remove(this);
-                return list.isEmpty() ? null : list;
+            TAG_REGISTRY.computeIfPresent(tag, (t, set) -> {
+                set.removeIf(ref -> ref.get() == this);
+                return set.isEmpty() ? null : set;
             });
+        }
+        if (timeoutTimer != null) {
+            timeoutTimer.stop();
+            timeoutTimer = null;
         }
     }
 
