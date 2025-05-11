@@ -21,12 +21,10 @@ package com.ancevt.d2d2;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.SoundManager;
-import com.ancevt.d2d2.engine.norender.NoRenderEngine;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
-import com.ancevt.d2d2.lifecycle.SystemProperties;
 import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.text.BitmapFontManager;
@@ -38,11 +36,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
-
-import static com.ancevt.commons.string.ConvertableString.convert;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class D2D2 {
@@ -63,6 +58,7 @@ public final class D2D2 {
 
     private static boolean noScaleMode;
 
+    /*
     public static void init(D2D2Application application, String[] args) {
         init(application, args, DEFAULT_PROPERTIES_FILE_NAME, Map.of());
     }
@@ -73,6 +69,28 @@ public final class D2D2 {
         init(application, args, propertiesResourceFileName, Map.of());
     }
 
+     */
+
+    public static void init(D2D2Application application, D2D2Config config) {
+        D2D2.application = application;
+        addPropertiesToSystemProperties(config.asMap());
+
+        int width = config.getOrDefault(D2D2Config.WIDTH, 800);
+        int height = config.getOrDefault(D2D2Config.HEIGHT, 600);
+        String title = config.getOrDefault(D2D2Config.TITLE, "D2D2 Application");
+        boolean noScaleMode = config.getOrDefault(D2D2Config.NO_SCALE_MODE, false);
+        String engineClassName = config.getOrDefault(D2D2Config.ENGINE, "com.ancevt.d2d2.engine.lwjgl.LwjglEngine");
+
+        Engine engine = createEngine(engineClassName, width, height, title);
+        Root root = createRoot(engine);
+
+        setNoScaleMode(noScaleMode);
+        application.start(root);
+        startMainLoop();
+        application.shutdown();
+    }
+
+    /*
     public static void init(D2D2Application application,
                             String[] args,
                             String propertiesResourceFileName,
@@ -93,23 +111,27 @@ public final class D2D2 {
         }
 
         Properties p = System.getProperties();
-        String engineClassName = p.getProperty(SystemProperties.D2D2_ENGINE, NoRenderEngine.class.getName());
-        String titleText = p.getProperty(SystemProperties.D2D2_WINDOW_TITLE, "D2D2 Application");
-        int width = convert(p.getProperty(SystemProperties.D2D2_WINDOW_WIDTH, "800")).toInt();
-        int height = convert(p.getProperty(SystemProperties.D2D2_WINDOW_HEIGHT, "600")).toInt();
+        String engineClassName = p.getProperty(D2D2PropertyConstants.D2D2_ENGINE, NoRenderEngine.class.getName());
+        String titleText = p.getProperty(D2D2PropertyConstants.D2D2_TITLE, "D2D2 Application");
+        int width = convert(p.getProperty(D2D2PropertyConstants.D2D2_WIDTH, "800")).toInt();
+        int height = convert(p.getProperty(D2D2PropertyConstants.D2D2_HEIGHT, "600")).toInt();
         Engine engine = createEngine(engineClassName, width, height, titleText);
 
-        Root root = D2D2.createStage(engine);
+        Root root = D2D2.createRoot(engine);
         application.start(root);
         D2D2.startMainLoop();
         application.shutdown();
     }
+     */
 
     private static void addPropertiesToSystemProperties(Map<String, String> properties) {
-        properties.forEach(System::setProperty);
+        properties.forEach((key, value) -> {
+            System.setProperty(key, value);
+            System.err.printf("D2D2: %s=%s%n", key, value);
+        });
     }
 
-    private static Root createStage(Engine engine) {
+    private static Root createRoot(Engine engine) {
         bitmapFontManager = new BitmapFontManager();
         D2D2.engine = engine;
         engine.create();
@@ -220,4 +242,6 @@ public final class D2D2 {
     public static boolean isNoScaleMode() {
         return noScaleMode;
     }
+
+
 }

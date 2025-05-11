@@ -32,7 +32,7 @@ public class SpriteFactory {
     private static final Map<String, TextureClip> textureCacheFiles = new HashMap<>();
 
     public static Sprite createSprite(String assetPath) {
-        return Sprite.create(assetPath);
+        return Sprite.load(assetPath);
     }
 
     public static Sprite createSprite(String assetPath, int textureX, int textureY, int textureWidth, int textureHeight) {

@@ -119,7 +119,7 @@ public class SpriteImpl extends AbstractNode implements Sprite {
     }
 
     @Override
-    public void onPostFrame() {
+    public void postFrame() {
         // For overriding
     }
 

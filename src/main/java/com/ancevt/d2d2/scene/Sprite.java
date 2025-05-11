@@ -34,18 +34,6 @@ public interface Sprite extends Node, Colored, Repeatable {
         return sprite;
     }
 
-    static Sprite create(String assetPath) {
-        TextureClip textureClip = D2D2.textureManager().loadTexture(assetPath).createTextureClip();
-        return create(textureClip);
-    }
-
-    static Sprite create(String assetPath, int textureX, int textureY, int textureWidth, int textureHeight) {
-        TextureClip textureClip = D2D2.textureManager()
-                .loadTexture(assetPath)
-                .createTextureClip(textureX, textureY, textureWidth, textureHeight);
-        return create(textureClip);
-    }
-
     static Sprite create(TextureClip textureClip) {
         Sprite sprite = new SpriteImpl();
         sprite.setTextureClip(textureClip);
@@ -56,6 +44,18 @@ public interface Sprite extends Node, Colored, Repeatable {
 
     static Sprite create(Texture texture) {
         return create(texture.createTextureClip());
+    }
+
+    static Sprite load(String assetPath) {
+        TextureClip textureClip = D2D2.textureManager().loadTexture(assetPath).createTextureClip();
+        return create(textureClip);
+    }
+
+    static Sprite load(String assetPath, int textureX, int textureY, int textureWidth, int textureHeight) {
+        TextureClip textureClip = D2D2.textureManager()
+                .loadTexture(assetPath)
+                .createTextureClip(textureX, textureY, textureWidth, textureHeight);
+        return create(textureClip);
     }
 
     TextureClip getTextureClip();

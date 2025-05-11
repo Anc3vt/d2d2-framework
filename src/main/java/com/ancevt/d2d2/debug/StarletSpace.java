@@ -58,7 +58,7 @@ public class StarletSpace extends GroupImpl {
     public static StarletSpace haveFun(boolean logo) {
         Root stage = root();
         stage.setBackgroundColor(Color.of(0x000510));
-        Sprite d2d2Title = Sprite.create("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
+        Sprite d2d2Title = Sprite.load("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
         d2d2Title.setColor(Color.LIGHT_GRAY);
         StarletSpace starletSpace = new StarletSpace(100);
         if (logo) starletSpace.addChild(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
@@ -82,7 +82,7 @@ public class StarletSpace extends GroupImpl {
 
         public Starlet(StarletSpace starletSpace) {
             this.starletSpace = starletSpace;
-            sprite = Sprite.create("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
+            sprite = Sprite.load("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
             sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
             addChild(sprite);
 
@@ -96,7 +96,7 @@ public class StarletSpace extends GroupImpl {
         }
 
         @Override
-        public void onTick() {
+        public void tick() {
             setAlpha(getAlpha() + t);
             t -= 0.01f;
             if (getAlpha() <= 0.0f) t += 0.1f;

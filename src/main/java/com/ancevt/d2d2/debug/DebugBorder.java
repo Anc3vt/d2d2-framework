@@ -91,7 +91,7 @@ public class DebugBorder extends GroupImpl implements Resizable, Colored, Dispos
     }
 
     @Override
-    public void onPreFrame() {
+    public void preFrame() {
         setPosition(node.getGlobalX(), node.getGlobalY());
         setSize(node.getWidth(), node.getHeight());
         setScale(node.getGlobalScaleX(), node.getGlobalScaleY());

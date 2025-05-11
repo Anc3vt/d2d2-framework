@@ -419,7 +419,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
     }
 
     @Override
-    public void onPostFrame() {
+    public void postFrame() {
         // For overriding
     }
 

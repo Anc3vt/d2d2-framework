@@ -23,7 +23,6 @@ import com.ancevt.d2d2.scene.Root;
 public interface D2D2Application {
     void start(Root root);
 
-    default void tick(){};
-
-    default void shutdown(){};
+    default void shutdown() {
+    }
 }

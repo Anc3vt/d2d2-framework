@@ -49,10 +49,10 @@ public class NoRenderRendererStub implements Renderer {
     private void renderDisplayObject(Node node) {
         if (!node.isVisible()) return;
 
-        node.onPreFrame();
+        node.preFrame();
         node.dispatchEvent(SceneEvent.PreFrame.create());
 
-        node.onTick();
+        node.tick();
         node.dispatchEvent(SceneEvent.Tick.create());
 
         zOrderCounter++;
@@ -68,7 +68,7 @@ public class NoRenderRendererStub implements Renderer {
             ((Playable) node).processFrame();
         }
 
-        node.onPostFrame();
+        node.postFrame();
         node.dispatchEvent(SceneEvent.PostFrame.create());
     }
 
