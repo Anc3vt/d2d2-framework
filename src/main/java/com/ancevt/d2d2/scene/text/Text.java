@@ -75,7 +75,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
     private boolean wordWrap = true;
     private Sprite sprite;
 
-    public Text(final Font font, float width, float height, String text) {
+    private Text(final Font font, float width, float height, String text) {
         setFont(font);
         setColor(DEFAULT_COLOR);
         setWidth(width);
@@ -84,24 +84,28 @@ public class Text extends AbstractNode implements Colored, Resizable {
         setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
-    public Text(final Font font, float boundWidth, float boundHeight) {
+    private Text(final Font font, float boundWidth, float boundHeight) {
         this(font, boundWidth, boundHeight, DEFAULT_TEXT);
     }
 
-    public Text(String text) {
+    private Text(String text) {
         this(D2D2.bitmapFontManager().getDefaultFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
     }
 
-    public Text(final Font font) {
+    private Text(final Font font) {
         this(font, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
     }
 
-    public Text(float boundWidth, float boundHeight) {
+    private Text(float boundWidth, float boundHeight) {
         this(D2D2.bitmapFontManager().getDefaultFont(), boundWidth, boundHeight, DEFAULT_TEXT);
     }
 
     public Text() {
         this(D2D2.bitmapFontManager().getDefaultFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
+    }
+
+    public static Text create() {
+        return new Text();
     }
 
     public Text cloneBitmapText() {

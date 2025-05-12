@@ -22,7 +22,6 @@ import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.exception.InteractiveException;
 import com.ancevt.d2d2.scene.GroupImpl;
-import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.shape.FreeShape;
 
 public class InteractiveGroup extends GroupImpl implements Interactive {
@@ -39,7 +38,11 @@ public class InteractiveGroup extends GroupImpl implements Interactive {
 
     private FreeShape interactiveFreeShape;
 
-    public InteractiveGroup(float width, float height) {
+    public InteractiveGroup() {
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+
+    private InteractiveGroup(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
         setName("_" + getClass().getSimpleName() + getNodeId());
         enabled = true;
@@ -47,14 +50,12 @@ public class InteractiveGroup extends GroupImpl implements Interactive {
         InteractiveManager.getInstance().registerInteractive(this);
     }
 
-    public InteractiveGroup() {
-        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    public static InteractiveGroup create() {
+        return new InteractiveGroup();
     }
 
-    public InteractiveGroup(Node wrappingNode) {
-        this();
-        addChild(wrappingNode);
-        setSize(wrappingNode.getWidth(), wrappingNode.getHeight());
+    public static InteractiveGroup create(float width, float height) {
+        return new InteractiveGroup(width, height);
     }
 
     @Override

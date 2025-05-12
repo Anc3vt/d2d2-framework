@@ -122,7 +122,8 @@ public class DebugDisplayObjectViewer {
                         color);
                 D2D2.root().addChild(borderedRectangle, o.getGlobalX(), o.getGlobalY());
 
-                Text text = new Text(o.getName());
+                Text text = Text.create();
+                text.setText(o.getName());
                 text.setColor(color);
                 text.setRotation(-20);
 

@@ -30,11 +30,10 @@ public class FpsMeter extends Text {
 
     private long time = System.currentTimeMillis();
 
-
     public FpsMeter(Font font) {
-        super(font);
+        super();
+        setFont(font);
         addEventListener(SceneEvent.PostFrame.class, this::eachFrame);
-
     }
 
     public FpsMeter() {

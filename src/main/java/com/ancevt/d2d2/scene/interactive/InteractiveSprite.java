@@ -46,7 +46,7 @@ public class InteractiveSprite extends SpriteImpl implements Interactive {
         setDefaultName();
     }
 
-    public InteractiveSprite(TextureClip textureClip) {
+    private InteractiveSprite(TextureClip textureClip) {
         setTextureClip(textureClip);
         interactiveArea = new InteractiveArea(0, 0, textureClip.getWidth(), textureClip.getHeight());
         enabled = true;
@@ -55,8 +55,20 @@ public class InteractiveSprite extends SpriteImpl implements Interactive {
         setDefaultName();
     }
 
-    public InteractiveSprite(String assetPathToImage) {
-        this(D2D2.textureManager().loadTexture(assetPathToImage).createTextureClip());
+    private InteractiveSprite(String assetPath) {
+        this(D2D2.textureManager().loadTexture(assetPath).createTextureClip());
+    }
+
+    public static InteractiveSprite create() {
+        return new InteractiveSprite();
+    }
+
+    public static InteractiveSprite create(TextureClip textureClip) {
+        return new InteractiveSprite(textureClip);
+    }
+
+    public static InteractiveSprite load(String assetPathToImage) {
+        return new InteractiveSprite(assetPathToImage);
     }
 
     @Override

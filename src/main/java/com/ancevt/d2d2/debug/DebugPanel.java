@@ -19,8 +19,6 @@
 
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.commons.hash.MD5;
-import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
@@ -37,6 +35,8 @@ import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Text;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,7 +45,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.function.Supplier;
 
@@ -90,7 +93,7 @@ public class DebugPanel extends GroupImpl {
         text.setSize(width, height);
         addChild(text, 1, 1);
 
-        interactiveButton = new InteractiveGroup(width, height);
+        interactiveButton = InteractiveGroup.create(width, height);
         interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);
         interactiveButton.addEventListener(InputEvent.MouseDrag.class, this::interactiveButton_drag);
 
@@ -363,8 +366,9 @@ public class DebugPanel extends GroupImpl {
         public Button(Object text) {
             super(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK, Color.WHITE);
             setBorderWidth(0.2f);
-            interactiveButton = new InteractiveGroup(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            Text bitmapText = new Text(String.valueOf(text));
+            interactiveButton = InteractiveGroup.create(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            Text bitmapText = new Text();
+            bitmapText.setText(String.valueOf(text));
 
             addChild(interactiveButton);
             addChild(bitmapText, 2, -2);
@@ -381,5 +385,76 @@ public class DebugPanel extends GroupImpl {
 
     }
 
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class ApplicationMainClassNameExtractor {
+        /**
+         * Retrieves the fully qualified name of the main class of the application.
+         *
+         * @return The fully qualified name of the main class.
+         * @throws ApplicationMainClassNameExtractor.MainClassNameExtractorException if the main class name cannot be extracted reliably.
+         */
+        public static String getMainClassName() throws ApplicationMainClassNameExtractor.MainClassNameExtractorException {
+            Map<Thread, StackTraceElement[]> map = Thread.getAllStackTraces();
+            for (Map.Entry<Thread, StackTraceElement[]> entry : map.entrySet()) {
+                Thread thread = entry.getKey();
+                if (thread.getId() == 1) {
+                    StackTraceElement[] stackTraceElements = entry.getValue();
+                    for (int i = stackTraceElements.length - 1; i >= 0; i--) {
+                        StackTraceElement stackTraceElement = stackTraceElements[i];
+                        if (stackTraceElement.getMethodName().equals("main")) {
+                            return stackTraceElement.getClassName();
+                        }
+                    }
+                }
+            }
+            throw new ApplicationMainClassNameExtractor.MainClassNameExtractorException("Unable to extract application main class name");
+        }
+
+        public static class MainClassNameExtractorException extends RuntimeException {
+
+            public MainClassNameExtractorException(String message) {
+                super(message);
+            }
+        }
+    }
+
+
+    public class MD5 {
+        public static byte[] hash(byte[] bytes) {
+            try {
+                return MessageDigest.getInstance("MD5").digest(bytes);
+            } catch (NoSuchAlgorithmException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+
+        public static String hash(String string) {
+            return bytesToHex(hash(string.getBytes(StandardCharsets.UTF_8)));
+        }
+
+        public static String hashFile(String path) {
+            try {
+                return bytesToHex(hash(Files.readAllBytes(Paths.get(path))));
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public static String hashFile(Path file) {
+            try {
+                return bytesToHex(hash(Files.readAllBytes(file)));
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public static String bytesToHex(byte[] bytes) {
+            StringBuilder sb = new StringBuilder();
+            for (byte b : bytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        }
+    }
 
 }

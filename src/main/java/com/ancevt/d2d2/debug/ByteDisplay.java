@@ -19,9 +19,6 @@
 
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.commons.io.ByteInput;
-import com.ancevt.commons.io.ByteOutput;
-import com.ancevt.commons.io.InputStreamFork;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -33,9 +30,11 @@ import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.text.Text;
 import lombok.Getter;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ByteDisplay extends InteractiveGroup {
@@ -66,7 +65,8 @@ public class ByteDisplay extends InteractiveGroup {
     private int inline, line;
 
     public ByteDisplay() {
-        super(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        super();
+        setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         bgRect = new BorderedRectangle(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
         addChild(bgRect);
 
@@ -426,6 +426,522 @@ public class ByteDisplay extends InteractiveGroup {
             return show(bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static class InputStreamFork {
+
+        @Getter
+        private final List<InputStream> inputStreams = new ArrayList<>();
+
+        public int size() {
+            return inputStreams.size();
+        }
+
+        public InputStream left() {
+            return inputStreams.get(0);
+        }
+
+        public InputStream right() {
+            if(inputStreams.size() > 1) {
+                return inputStreams.get(1);
+            } else {
+                throw new IllegalStateException("");
+            }
+
+        }
+
+        public static InputStreamFork fork(InputStream inputStream) {
+            return fork(inputStream, 2);
+        }
+
+        public static InputStreamFork fork(InputStream inputStream, int count) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            try {
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = inputStream.read(buffer)) > -1) {
+                    baos.write(buffer, 0, len);
+                }
+                baos.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            InputStreamFork result = new InputStreamFork();
+
+            for (int i = 0; i < count; i++) {
+                result.inputStreams.add(new ByteArrayInputStream(baos.toByteArray()));
+            }
+
+            return result;
+        }
+
+
+    }
+
+    public static class ByteOutput {
+
+        private final ByteArrayOutputStream byteArrayOutputStream;
+        private final DataOutputStream dataOutputStream;
+
+        private ByteOutput(int initialSize) {
+            byteArrayOutputStream = new ByteArrayOutputStream(initialSize);
+            dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+        }
+
+        private ByteOutput() {
+            byteArrayOutputStream = new ByteArrayOutputStream();
+            dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+        }
+
+        private void handleIOException(IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+
+        public byte[] toArray() {
+            return byteArrayOutputStream.toByteArray();
+        }
+
+        public boolean hasData() {
+            return byteArrayOutputStream.size() > 0;
+        }
+
+        public ByteOutput writeUtf(Class<?> lengthType, String string) {
+            try {
+                byte[] stringBytes = string.getBytes(StandardCharsets.UTF_8);
+
+                if(lengthType == byte.class) {
+                    dataOutputStream.writeByte(stringBytes.length);
+                } else if (lengthType == short.class) {
+                    dataOutputStream.writeShort(stringBytes.length);
+                } else if (lengthType == int.class) {
+                    dataOutputStream.writeInt(stringBytes.length);
+                }
+                dataOutputStream.write(stringBytes);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput write(int b) {
+            try {
+                dataOutputStream.write(b);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput write(byte[] b) {
+            try {
+                dataOutputStream.write(b);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput write(byte[] b, int off, int len) {
+            try {
+                dataOutputStream.write(b, off, len);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeBoolean(boolean v) {
+            try {
+                dataOutputStream.writeBoolean(v);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeByte(int v) {
+            try {
+                dataOutputStream.writeByte(v);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeShort(int v) {
+            try {
+                dataOutputStream.writeShort(v);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeChar(int v) {
+            try {
+                dataOutputStream.writeChar(v);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeInt(int v) {
+            try {
+                dataOutputStream.writeInt(v);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeLong(long v) {
+            try {
+                dataOutputStream.writeLong(v);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeFloat(float v) {
+            try {
+                dataOutputStream.writeFloat(v);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeDouble(double v) {
+            try {
+                dataOutputStream.writeDouble(v);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeBytes(String s) {
+            try {
+                dataOutputStream.writeBytes(s);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeChars(String s) {
+            try {
+                dataOutputStream.writeChars(s);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public ByteOutput writeUtf(String s) {
+            try {
+                dataOutputStream.writeUTF(s);
+                return this;
+            } catch (IOException e) {
+                handleIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public static ByteOutput newInstance(int length) {
+            return new ByteOutput(length);
+        }
+
+        public static ByteOutput newInstance() {
+            return new ByteOutput();
+        }
+    }
+
+    public static class ByteInput implements DataInput {
+
+        private static final int MAX_BUFFER_SIZE = Integer.MAX_VALUE - 8;
+        private static final int DEFAULT_BUFFER_SIZE = 8192;
+
+        private final DataInputStream dataInputStream;
+        private final ByteArrayInputStream byteArrayInputStream;
+
+        private final byte[] bytes;
+
+        private ByteInput(byte[] bytes) {
+            this.bytes = bytes;
+            dataInputStream = new DataInputStream(
+                byteArrayInputStream = new ByteArrayInputStream(bytes)
+            );
+        }
+
+        public byte[] getBytes() {
+            return bytes;
+        }
+
+        private void handleIfIOException(IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+
+        public boolean hasNextData() {
+            return byteArrayInputStream.available() > 0;
+        }
+
+        public String readUtf(Class<?> lengthType) {
+            int len = 0;
+            if (lengthType == byte.class) {
+                len = readUnsignedByte();
+            } else if (lengthType == short.class) {
+                len = readUnsignedShort();
+            } else if (lengthType == int.class) {
+                len = readInt();
+            }
+            return readUtf(len);
+        }
+
+        public byte[] readBytes(int length) {
+            try {
+                return readNBytes(dataInputStream, length);
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        private byte[] readNBytes(InputStream is, int len) throws IOException {
+            if (len < 0) {
+                throw new IllegalArgumentException("len < 0");
+            }
+
+            List<byte[]> bufs = null;
+            byte[] result = null;
+            int total = 0;
+            int remaining = len;
+            int n;
+            do {
+                byte[] buf = new byte[Math.min(remaining, DEFAULT_BUFFER_SIZE)];
+                int nread = 0;
+
+                // read to EOF which may read more or less than buffer size
+                while ((n = is.read(buf, nread,
+                    Math.min(buf.length - nread, remaining))) > 0) {
+                    nread += n;
+                    remaining -= n;
+                }
+
+                if (nread > 0) {
+                    if (MAX_BUFFER_SIZE - total < nread) {
+                        throw new OutOfMemoryError("Required array size too large");
+                    }
+                    total += nread;
+                    if (result == null) {
+                        result = buf;
+                    } else {
+                        if (bufs == null) {
+                            bufs = new ArrayList<>();
+                            bufs.add(result);
+                        }
+                        bufs.add(buf);
+                    }
+                }
+                // if the last call to read returned -1 or the number of bytes
+                // requested have been read then break
+            } while (n >= 0 && remaining > 0);
+
+            if (bufs == null) {
+                if (result == null) {
+                    return new byte[0];
+                }
+                return result.length == total ?
+                    result : Arrays.copyOf(result, total);
+            }
+
+            result = new byte[total];
+            int offset = 0;
+            remaining = total;
+            for (byte[] b : bufs) {
+                int count = Math.min(b.length, remaining);
+                System.arraycopy(b, 0, result, offset, count);
+                offset += count;
+                remaining -= count;
+            }
+
+            return result;
+        }
+
+
+        public String readUtf(int length) {
+            byte[] b = new byte[length];
+            readFully(b);
+            return new String(b, StandardCharsets.UTF_8);
+        }
+
+        @Override
+        public void readFully(byte[] b) {
+            try {
+                dataInputStream.readFully(b);
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public void readFully(byte[] b, int off, int len) {
+            try {
+                dataInputStream.readFully(b, off, len);
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public int skipBytes(int n) {
+            try {
+                return dataInputStream.skipBytes(n);
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public boolean readBoolean() {
+            try {
+                return dataInputStream.readBoolean();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public byte readByte() {
+            try {
+                return dataInputStream.readByte();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public int readUnsignedByte() {
+            try {
+                return dataInputStream.readUnsignedByte();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public short readShort() {
+            try {
+                return dataInputStream.readShort();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public int readUnsignedShort() {
+            try {
+                return dataInputStream.readUnsignedShort();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public char readChar() {
+            try {
+                return dataInputStream.readChar();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public int readInt() {
+            try {
+                return dataInputStream.readInt();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public long readLong() {
+            try {
+                return dataInputStream.readLong();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public float readFloat() {
+            try {
+                return dataInputStream.readFloat();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        public double readDouble() {
+            try {
+                return dataInputStream.readDouble();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
+        @Deprecated
+        public String readLine() {
+            throw new IllegalStateException("not implemented");
+        }
+
+        @Override
+        public String readUTF() {
+            try {
+                return dataInputStream.readUTF();
+            } catch (IOException e) {
+                handleIfIOException(e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public static ByteInput newInstance(byte[] bytes) {
+            return new ByteInput(bytes);
         }
     }
 }

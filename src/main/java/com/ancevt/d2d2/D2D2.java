@@ -29,7 +29,7 @@ import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.text.BitmapFontManager;
 import com.ancevt.d2d2.scene.texture.TextureManager;
-import com.ancevt.util.args.Args;
+import com.ancevt.d2d2.util.Args;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
