@@ -38,7 +38,6 @@ import com.google.gson.JsonParser;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +51,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.function.Supplier;
 
-@Slf4j
 public class DebugPanel extends GroupImpl {
 
     private static final Map<String, DebugPanel> debugPanels = new HashMap<>();
@@ -273,7 +271,7 @@ public class DebugPanel extends GroupImpl {
                     StandardOpenOption.TRUNCATE_EXISTING
             );
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -281,7 +279,6 @@ public class DebugPanel extends GroupImpl {
         try {
             return Files.readString(Path.of(file.getAbsolutePath()), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }

@@ -25,6 +25,7 @@ import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
+import com.ancevt.d2d2.log.Log;
 import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.text.BitmapFontManager;
@@ -62,18 +63,7 @@ public final class D2D2 {
 
     private static boolean noScaleMode;
 
-    /*
-    public static void init(D2D2Application application, String[] args) {
-        init(application, args, DEFAULT_PROPERTIES_FILE_NAME, Map.of());
-    }
-
-    public static void init(D2D2Application application,
-                            String[] args,
-                            String propertiesResourceFileName) {
-        init(application, args, propertiesResourceFileName, Map.of());
-    }
-
-     */
+    public static Log log;
 
     public static void init(D2D2Application application, D2D2Config config) {
         D2D2.application = application;
@@ -87,6 +77,11 @@ public final class D2D2 {
         String engineClassName = config.getOrDefault(D2D2Config.ENGINE, "com.ancevt.d2d2.engine.lwjgl.LwjglEngine");
 
         Engine engine = createEngine(engineClassName, width, height, title);
+
+        log = engine.log();
+
+        log.info(D2D2.class, "D2D2 initialized with engine: <b>%s<>".formatted(engine.getClass().getName()));
+
         Root root = createRoot(engine);
 
         setNoScaleMode(noScaleMode);
@@ -94,40 +89,6 @@ public final class D2D2 {
         startMainLoop();
         application.shutdown();
     }
-
-    /*
-    public static void init(D2D2Application application,
-                            String[] args,
-                            String propertiesResourceFileName,
-                            Map<String, String> properties
-    ) {
-        D2D2.application = application;
-        D2D2.args = Args.of(args);
-
-        readPropertyFileIfExist(propertiesResourceFileName);
-        addCliArgsToSystemProperties(args);
-        addPropertiesToSystemProperties(properties);
-
-        if (Arrays.asList(args).contains("--lwjgl")) {
-            System.setProperty("d2d2.engine", "com.ancevt.d2d2.engine.lwjgl.LwjglEngine");
-            System.setProperty("d2d2.window.width", "1168");
-            System.setProperty("d2d2.window.height", "1000");
-            System.err.println("D2D2: `--lwjgl` default engine and window properties preset is set");
-        }
-
-        Properties p = System.getProperties();
-        String engineClassName = p.getProperty(D2D2PropertyConstants.D2D2_ENGINE, NoRenderEngine.class.getName());
-        String titleText = p.getProperty(D2D2PropertyConstants.D2D2_TITLE, "D2D2 Application");
-        int width = convert(p.getProperty(D2D2PropertyConstants.D2D2_WIDTH, "800")).toInt();
-        int height = convert(p.getProperty(D2D2PropertyConstants.D2D2_HEIGHT, "600")).toInt();
-        Engine engine = createEngine(engineClassName, width, height, titleText);
-
-        Root root = D2D2.createRoot(engine);
-        application.start(root);
-        D2D2.startMainLoop();
-        application.shutdown();
-    }
-     */
 
     private static void addPropertiesToSystemProperties(Map<String, String> properties) {
         properties.forEach((key, value) -> {
