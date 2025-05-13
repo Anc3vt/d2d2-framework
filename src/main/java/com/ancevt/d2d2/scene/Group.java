@@ -29,37 +29,37 @@ public interface Group extends Node {
     }
 
     @SuppressWarnings("unchecked")
-    static <T extends Node> Optional<T> findDisplayObjectById(Group fromRoot, int id) {
-        return (Optional<T>) listDisplayObjects(fromRoot, new ArrayList<>())
+    static <T extends Node> Optional<T> findNodeById(Group fromRoot, int id) {
+        return (Optional<T>) listNodes(fromRoot, new ArrayList<>())
                 .stream()
                 .filter(o -> o.getNodeId() == id)
                 .findAny();
     }
 
     @SuppressWarnings("unchecked")
-    static <T extends Node> Optional<T> findDisplayObjectByName(Group fromRoot, String name) {
-        return (Optional<T>) listDisplayObjects(fromRoot, new ArrayList<>())
+    static <T extends Node> Optional<T> findNodeByName(Group fromRoot, String name) {
+        return (Optional<T>) listNodes(fromRoot, new ArrayList<>())
                 .stream()
                 .filter(o -> Objects.equals(o.getName(), name))
                 .findFirst();
     }
 
-    static List<Node> listDisplayObjects(Node o, List<Node> list) {
+    static List<Node> listNodes(Node o, List<Node> list) {
         list.add(o);
 
         if (o instanceof Group c) {
-            c.children().forEach(child -> listDisplayObjects(child, list));
+            c.children().forEach(child -> listNodes(child, list));
         }
 
         return list;
     }
 
-    default <T extends Node> Optional<T> findDisplayObjectById(int id) {
-        return findDisplayObjectById(this, id);
+    default <T extends Node> Optional<T> findNodeById(int id) {
+        return findNodeById(this, id);
     }
 
-    default <T extends Node> Optional<T> findDisplayObjectByName(String name) {
-        return findDisplayObjectByName(this, name);
+    default <T extends Node> Optional<T> findNodeByName(String name) {
+        return findNodeByName(this, name);
     }
 
     void addChild(Node child);

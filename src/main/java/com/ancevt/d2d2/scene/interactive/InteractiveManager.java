@@ -241,8 +241,6 @@ public class InteractiveManager {
                     }
 
                     if (interactive.isDragging()) {
-                        System.out.println("1 leftMouseButton: " + leftMouseButton);
-
                         dispatch(interactive, InputEvent.MouseUp.create(
                                 (int) (x - tcX),
                                 (int) (y - tcY),

@@ -33,10 +33,13 @@ import static com.ancevt.d2d2.D2D2.root;
 
 public class StarletSpace extends GroupImpl {
 
+    private static StarletSpace starletSpace;
     private float velocityX = 30f;
     @Getter
     @Setter
     private int someVal = 5;
+
+    public static int count = 100;
 
     public StarletSpace(int count) {
         for (int i = 0; i < count; i++) {
@@ -56,11 +59,13 @@ public class StarletSpace extends GroupImpl {
     }
 
     public static StarletSpace haveFun(boolean logo) {
+        if (starletSpace != null) starletSpace.removeFromParent();
+
         Root stage = root();
         stage.setBackgroundColor(Color.of(0x000510));
         Sprite d2d2Title = Sprite.load("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
         d2d2Title.setColor(Color.LIGHT_GRAY);
-        StarletSpace starletSpace = new StarletSpace(100);
+        starletSpace = new StarletSpace(count);
         if (logo) starletSpace.addChild(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
         stage.addChild(starletSpace);
         stage.addEventListener(CommonEvent.Resize.class, e -> {
