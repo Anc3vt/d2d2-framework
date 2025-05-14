@@ -23,7 +23,7 @@ import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.exception.InteractiveException;
 import com.ancevt.d2d2.scene.SpriteImpl;
 import com.ancevt.d2d2.scene.shape.FreeShape;
-import com.ancevt.d2d2.scene.texture.TextureClip;
+import com.ancevt.d2d2.scene.texture.TextureRegion;
 
 public class InteractiveSprite extends SpriteImpl implements Interactive {
 
@@ -46,9 +46,9 @@ public class InteractiveSprite extends SpriteImpl implements Interactive {
         setDefaultName();
     }
 
-    private InteractiveSprite(TextureClip textureClip) {
-        setTextureClip(textureClip);
-        interactiveArea = new InteractiveArea(0, 0, textureClip.getWidth(), textureClip.getHeight());
+    private InteractiveSprite(TextureRegion textureRegion) {
+        setTextureRegion(textureRegion);
+        interactiveArea = new InteractiveArea(0, 0, textureRegion.getWidth(), textureRegion.getHeight());
         enabled = true;
         pushEventUp = true;
         InteractiveManager.getInstance().registerInteractive(this);
@@ -56,15 +56,15 @@ public class InteractiveSprite extends SpriteImpl implements Interactive {
     }
 
     private InteractiveSprite(String assetPath) {
-        this(D2D2.textureManager().loadTexture(assetPath).createTextureClip());
+        this(D2D2.textureManager().loadTexture(assetPath).createTextureRegion());
     }
 
     public static InteractiveSprite create() {
         return new InteractiveSprite();
     }
 
-    public static InteractiveSprite create(TextureClip textureClip) {
-        return new InteractiveSprite(textureClip);
+    public static InteractiveSprite create(TextureRegion textureRegion) {
+        return new InteractiveSprite(textureRegion);
     }
 
     public static InteractiveSprite load(String assetPathToImage) {
@@ -124,11 +124,11 @@ public class InteractiveSprite extends SpriteImpl implements Interactive {
     }
 
     @Override
-    public void setTextureClip(TextureClip value) {
-        super.setTextureClip(value);
+    public void setTextureRegion(TextureRegion value) {
+        super.setTextureRegion(value);
         if (interactiveArea != null) {
-            interactiveArea.setWidth(getTextureClip().getWidth());
-            interactiveArea.setHeight(getTextureClip().getHeight());
+            interactiveArea.setWidth(getTextureRegion().getWidth());
+            interactiveArea.setHeight(getTextureRegion().getHeight());
         }
     }
 
@@ -162,13 +162,13 @@ public class InteractiveSprite extends SpriteImpl implements Interactive {
     @Override
     public void setScaleX(float value) {
         super.setScaleX(value);
-        interactiveArea.setWidth(value / getTextureClip().getWidth());
+        interactiveArea.setWidth(value / getTextureRegion().getWidth());
     }
 
     @Override
     public void setScaleY(float value) {
         super.setScaleY(value);
-        interactiveArea.setHeight(value / getTextureClip().getHeight());
+        interactiveArea.setHeight(value / getTextureRegion().getHeight());
     }
 
     @Override

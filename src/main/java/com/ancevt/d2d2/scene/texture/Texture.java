@@ -42,25 +42,25 @@ public class Texture implements Disposable {
         this.height = height;
     }
 
-    public TextureClip createTextureClip() {
-        return createTextureClip(0, 0, getWidth(), getHeight());
+    public TextureRegion createTextureRegion() {
+        return createTextureRegion(0, 0, getWidth(), getHeight());
     }
 
-    public TextureClip createTextureClip(int x, int y, int width, int height) {
-        return new TextureClip(this, x, y, width, height);
+    public TextureRegion createTextureRegion(int x, int y, int width, int height) {
+        return new TextureRegion(this, x, y, width, height);
     }
 
     /**
      * 16,16,48,48
      *
-     * @param textureClipCoords
+     * @param coords
      * @return
      */
-    public TextureClip createTextureClip(String textureClipCoords) {
-        if (textureClipCoords.contains(";")) {
-            textureClipCoords = textureClipCoords.split(";")[0];
+    public TextureRegion createTextureRegion(String coords) {
+        if (coords.contains(";")) {
+            coords = coords.split(";")[0];
         }
-        var a = Args.of(textureClipCoords, ',');
+        var a = Args.of(coords, ',');
 
         int x = a.get(int.class, 0);
         int y = a.get(int.class, 1);
@@ -77,20 +77,20 @@ public class Texture implements Disposable {
 
         int h = Integer.parseInt(hString);
 
-        return new TextureClip(this, x, y, w, h);
+        return new TextureRegion(this, x, y, w, h);
     }
 
-    public static String convertCoords(String textureClipCoords) {
-        if (textureClipCoords.contains("h")) {
-            StringTokenizer stringTokenizer = new StringTokenizer(textureClipCoords, "h");
+    private static String convertCoords(String coords) {
+        if (coords.contains("h")) {
+            StringTokenizer stringTokenizer = new StringTokenizer(coords, "h");
             String firstToken = stringTokenizer.nextToken().trim();
             int count = parseInt(stringTokenizer.nextToken().trim());
-            int[] textureClipCoordsInts = get4Values(firstToken);
+            int[] coordsInts = get4Values(firstToken);
             StringBuilder stringBuilder = new StringBuilder();
-            int x = textureClipCoordsInts[0];
-            int y = textureClipCoordsInts[1];
-            int width = textureClipCoordsInts[2];
-            int height = textureClipCoordsInts[3];
+            int x = coordsInts[0];
+            int y = coordsInts[1];
+            int width = coordsInts[2];
+            int height = coordsInts[3];
 
             int currentX = 0;
             for (int i = 0; i < count; i++) {
@@ -106,17 +106,17 @@ public class Texture implements Disposable {
                 currentX += width;
             }
 
-            textureClipCoords = stringBuilder.toString();
-        } else if (textureClipCoords.contains("v")) {
-            StringTokenizer stringTokenizer = new StringTokenizer(textureClipCoords, "v");
+            coords = stringBuilder.toString();
+        } else if (coords.contains("v")) {
+            StringTokenizer stringTokenizer = new StringTokenizer(coords, "v");
             String firstToken = stringTokenizer.nextToken().trim();
             int count = parseInt(stringTokenizer.nextToken().trim());
-            int[] textureClipCoordsInts = get4Values(firstToken);
+            int[] coordsInts = get4Values(firstToken);
             StringBuilder stringBuilder = new StringBuilder();
-            int x = textureClipCoordsInts[0];
-            int y = textureClipCoordsInts[1];
-            int width = textureClipCoordsInts[2];
-            int height = textureClipCoordsInts[3];
+            int x = coordsInts[0];
+            int y = coordsInts[1];
+            int width = coordsInts[2];
+            int height = coordsInts[3];
 
             int currentY = 0;
             for (int i = 0; i < count; i++) {
@@ -132,10 +132,10 @@ public class Texture implements Disposable {
                 currentY += height;
             }
 
-            textureClipCoords = stringBuilder.toString();
+            coords = stringBuilder.toString();
         }
 
-        return textureClipCoords;
+        return coords;
     }
 
     /**
@@ -143,35 +143,35 @@ public class Texture implements Disposable {
      * or
      * 16,16,48,48h3
      */
-    public TextureClip[] createTextureClips(String textureClipCoords) {
-        textureClipCoords = convertCoords(textureClipCoords);
-        if (textureClipCoords.endsWith(";")) {
-            textureClipCoords = textureClipCoords.substring(0, textureClipCoords.length() - 2);
+    public TextureRegion[] createTextureRegions(String coords) {
+        coords = convertCoords(coords);
+        if (coords.endsWith(";")) {
+            coords = coords.substring(0, coords.length() - 2);
         }
-        StringTokenizer stringTokenizer = new StringTokenizer(textureClipCoords, ";");
-        TextureClip[] textureClips = new TextureClip[stringTokenizer.countTokens()];
-        for (int i = 0; i < textureClips.length; i++) {
-            textureClips[i] = createTextureClip(stringTokenizer.nextToken().trim());
+        StringTokenizer stringTokenizer = new StringTokenizer(coords, ";");
+        TextureRegion[] textureRegions = new TextureRegion[stringTokenizer.countTokens()];
+        for (int i = 0; i < textureRegions.length; i++) {
+            textureRegions[i] = createTextureRegion(stringTokenizer.nextToken().trim());
         }
 
-        return textureClips;
+        return textureRegions;
     }
 
-    public TextureClip[] createTexturesClipsHor(int x, int y, int w, int h, int count) {
-        TextureClip[] result = new TextureClip[count];
+    public TextureRegion[] createTextureRegionsHor(int x, int y, int w, int h, int count) {
+        TextureRegion[] result = new TextureRegion[count];
 
         for (int i = 0; i < result.length; i++) {
-            result[i] = new TextureClip(this, x + (i * w), y, w, h);
+            result[i] = new TextureRegion(this, x + (i * w), y, w, h);
         }
 
         return result;
     }
 
-    public TextureClip[] createTextureClipsVert(int x, int y, int w, int h, int count) {
-        TextureClip[] result = new TextureClip[count];
+    public TextureRegion[] createTextureRegionsVert(int x, int y, int w, int h, int count) {
+        TextureRegion[] result = new TextureRegion[count];
 
         for (int i = 0; i < result.length; i++) {
-            result[i] = new TextureClip(this, x, y + (i * h), w, h);
+            result[i] = new TextureRegion(this, x, y + (i * h), w, h);
         }
 
         return result;

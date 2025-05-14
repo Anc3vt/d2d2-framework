@@ -19,14 +19,14 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.scene.texture.TextureClip;
+import com.ancevt.d2d2.scene.texture.TextureRegion;
 import lombok.Getter;
 import lombok.Setter;
 
 public class PlayableSprite extends SpriteImpl implements Playable {
 
     @Getter
-    private TextureClip[] frameTextureClips;
+    private TextureRegion[] frameTextureRegions;
 
     @Getter
     private boolean playing;
@@ -45,9 +45,9 @@ public class PlayableSprite extends SpriteImpl implements Playable {
     @Setter
     private boolean backward;
 
-    public PlayableSprite(TextureClip[] textureClips) {
+    public PlayableSprite(TextureRegion[] textureRegions) {
         this();
-        setFrameTextureClips(textureClips);
+        setFrameTextureRegions(textureRegions);
     }
 
     public PlayableSprite() {
@@ -90,7 +90,7 @@ public class PlayableSprite extends SpriteImpl implements Playable {
         this.currentFrameIndex = frameIndex;
         slowingCounter = 0;
 
-        if (this.currentFrameIndex >= frameTextureClips.length) {
+        if (this.currentFrameIndex >= frameTextureRegions.length) {
             if (loop) {
                 this.currentFrameIndex = 0;
                 dispatchEvent(CommonEvent.Complete.create());
@@ -112,7 +112,7 @@ public class PlayableSprite extends SpriteImpl implements Playable {
 
     @Override
     public int getNumFrames() {
-        return frameTextureClips.length;
+        return frameTextureRegions.length;
     }
 
     @Override
@@ -125,19 +125,19 @@ public class PlayableSprite extends SpriteImpl implements Playable {
         playing = false;
     }
 
-    public void setFrameTextureClips(TextureClip[] textureClips) {
-        this.frameTextureClips = textureClips;
-        if (textureClips.length > 0) {
+    public void setFrameTextureRegions(TextureRegion[] textureRegions) {
+        this.frameTextureRegions = textureRegions;
+        if (textureRegions.length > 0) {
             setFrame(0);
         }
     }
 
     private void drawCurrentFrame() {
-        super.setTextureClip(frameTextureClips[currentFrameIndex]);
+        super.setTextureRegion(frameTextureRegions[currentFrameIndex]);
     }
 
     @Override
-    public void setTextureClip(TextureClip value) {
+    public void setTextureRegion(TextureRegion value) {
         throw new IllegalStateException("Unable to set texture directly. Use setFrameTextures([]) instead");
     }
 }

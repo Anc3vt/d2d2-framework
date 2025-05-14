@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,41 +25,41 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextureClipCombiner {
-    private final List<TextureClipCombinerCell> cells;
+public class TextureRegionCombiner {
+    private final List<TextureRegionCombinerCell> cells;
     @Getter
     private final int width;
     @Getter
     private final int height;
     private int cellIdCounter;
 
-    public TextureClipCombiner(final int width, final int height) {
+    public TextureRegionCombiner(final int width, final int height) {
         this.width = width;
         this.height = height;
         cells = new ArrayList<>();
     }
 
-    public TextureClipCombiner(float width, float height) {
+    public TextureRegionCombiner(float width, float height) {
         this((int) width, (int) height);
     }
 
-    public final TextureClipCombinerCell append(
-        final TextureClip textureClip,
-        final int x,
-        final int y,
-        final Color color,
-        final float scaleX,
-        final float scaleY,
-        final float alpha,
-        final float rotation,
-        final float repeatX,
-        final float repeatY) {
+    public final TextureRegionCombinerCell append(
+            final TextureRegion textureRegion,
+            final int x,
+            final int y,
+            final Color color,
+            final float scaleX,
+            final float scaleY,
+            final float alpha,
+            final float rotation,
+            final float repeatX,
+            final float repeatY) {
 
-        final TextureClipCombinerCell cell = new TextureClipCombinerCell();
+        final TextureRegionCombinerCell cell = new TextureRegionCombinerCell();
         cell.setX(x);
         cell.setY(y);
         cell.setColor(color);
-        cell.setTextureClip(textureClip);
+        cell.setTextureRegion(textureRegion);
         cell.setScaleX(scaleX);
         cell.setScaleY(scaleY);
         cell.setAlpha(alpha);
@@ -73,17 +73,16 @@ public class TextureClipCombiner {
     }
 
 
-
-    public final TextureClipCombinerCell append(
-        final TextureClip textureClip,
-        final int x,
-        final int y,
-        final float scaleX,
-        final float scaleY) {
-        final TextureClipCombinerCell cell = new TextureClipCombinerCell();
+    public final TextureRegionCombinerCell append(
+            final TextureRegion textureRegion,
+            final int x,
+            final int y,
+            final float scaleX,
+            final float scaleY) {
+        final TextureRegionCombinerCell cell = new TextureRegionCombinerCell();
         cell.setX(x);
         cell.setY(y);
-        cell.setTextureClip(textureClip);
+        cell.setTextureRegion(textureRegion);
         cell.setScaleX(scaleX);
         cell.setScaleY(scaleY);
         cell.setId(cellIdCounter++);
@@ -91,16 +90,16 @@ public class TextureClipCombiner {
         return cell;
     }
 
-    public final TextureClipCombinerCell append(
-        final TextureClip textureClip,
-        final int x,
-        final int y,
-        final int repeatX,
-        final int repeatY) {
-        final TextureClipCombinerCell cell = new TextureClipCombinerCell();
+    public final TextureRegionCombinerCell append(
+            final TextureRegion textureRegion,
+            final int x,
+            final int y,
+            final int repeatX,
+            final int repeatY) {
+        final TextureRegionCombinerCell cell = new TextureRegionCombinerCell();
         cell.setX(x);
         cell.setY(y);
-        cell.setTextureClip(textureClip);
+        cell.setTextureRegion(textureRegion);
         cell.setRepeatX(repeatX);
         cell.setRepeatY(repeatY);
         cell.setId(cellIdCounter++);
@@ -109,28 +108,28 @@ public class TextureClipCombiner {
         return cell;
     }
 
-    public final TextureClipCombinerCell append(
-        final TextureClip textureClip,
-        final int x,
-        final int y) {
-        final TextureClipCombinerCell cell = new TextureClipCombinerCell();
+    public final TextureRegionCombinerCell append(
+            final TextureRegion textureRegion,
+            final int x,
+            final int y) {
+        final TextureRegionCombinerCell cell = new TextureRegionCombinerCell();
         cell.setX(x);
         cell.setY(y);
-        cell.setTextureClip(textureClip);
+        cell.setTextureRegion(textureRegion);
         cell.setId(cellIdCounter++);
         cells.add(cell);
 
         return cell;
     }
 
-    public final void remove(TextureClipCombinerCell cell) {
+    public final void remove(TextureRegionCombinerCell cell) {
         cells.remove(cell);
     }
 
     public final void remove(final int cellId) {
         final int count = cells.size();
         for (int i = 0; i < count; i++) {
-            final TextureClipCombinerCell cell = cells.get(i);
+            final TextureRegionCombinerCell cell = cells.get(i);
             if (cell.getId() == cellId) {
                 cells.remove(cell);
                 return;
@@ -140,7 +139,7 @@ public class TextureClipCombiner {
 
     public final Texture createTexture() {
         return D2D2.textureManager().getTextureEngine().
-            createTexture(width, height, cells.toArray(new TextureClipCombinerCell[]{}));
+                createTexture(width, height, cells.toArray(new TextureRegionCombinerCell[]{}));
     }
 
 }

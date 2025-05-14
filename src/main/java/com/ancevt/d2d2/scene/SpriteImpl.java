@@ -19,14 +19,14 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.texture.TextureClip;
+import com.ancevt.d2d2.scene.texture.TextureRegion;
 
 public class SpriteImpl extends AbstractNode implements Sprite {
 
     private float repeatX;
     private float repeatY;
     private Color color;
-    private TextureClip textureClip;
+    private TextureRegion textureRegion;
     private double vertexBleedingFix = 0d;
     private double textureBleedingFix = 0d;
 
@@ -78,31 +78,31 @@ public class SpriteImpl extends AbstractNode implements Sprite {
     }
 
     @Override
-    public TextureClip getTextureClip() {
-        return textureClip;
+    public TextureRegion getTextureRegion() {
+        return textureRegion;
     }
 
     @Override
-    public void setTextureClip(TextureClip value) {
-        this.textureClip = value;
-        if (textureClip != null && textureClip.getTexture().isDisposed()) {
-            throw new IllegalStateException("Texture " + textureClip.getTexture().getId() + " is disposed");
+    public void setTextureRegion(TextureRegion value) {
+        this.textureRegion = value;
+        if (textureRegion != null && textureRegion.getTexture().isDisposed()) {
+            throw new IllegalStateException("Texture " + textureRegion.getTexture().getId() + " is disposed");
         }
     }
 
     @Override
-    public void setTextureClip(String textureClipKey) {
-        setTextureClip(D2D2.textureManager().getTextureClip(textureClipKey));
+    public void setTextureRegion(String textureRegionKey) {
+        setTextureRegion(D2D2.textureManager().getTextureRegion(textureRegionKey));
     }
 
     @Override
     public float getWidth() {
-        return textureClip == null ? 0f : textureClip.getWidth();
+        return textureRegion == null ? 0f : textureRegion.getWidth();
     }
 
     @Override
     public float getHeight() {
-        return textureClip == null ? 0f : textureClip.getHeight();
+        return textureRegion == null ? 0f : textureRegion.getHeight();
     }
 
     @Override
@@ -112,7 +112,7 @@ public class SpriteImpl extends AbstractNode implements Sprite {
 
     @Override
     public Sprite cloneSprite() {
-        Sprite result = Sprite.create(getTextureClip());
+        Sprite result = Sprite.create(getTextureRegion());
         result.setPosition(getX(), getY());
         result.setRepeat(getRepeatX(), getRepeatY());
         result.setScale(getScaleX(), getScaleY());

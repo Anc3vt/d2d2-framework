@@ -150,15 +150,15 @@ public class Text extends AbstractNode implements Colored, Resizable {
     public void disposeOnRemoveFromStage() {
         addEventListener(this, SceneEvent.RemoveFromScene.class, e -> {
             removeEventListener(Text.class, SceneEvent.RemoveFromScene.class);
-            if (sprite != null && sprite.getTextureClip() != null) {
-                D2D2.textureManager().unloadTexture(sprite.getTextureClip().getTexture());
+            if (sprite != null && sprite.getTextureRegion() != null) {
+                D2D2.textureManager().unloadTexture(sprite.getTextureRegion().getTexture());
             }
         });
     }
 
     private void updateCachedSprite() {
-        if (sprite != null && sprite.getTextureClip() != null) {
-            D2D2.textureManager().unloadTexture(sprite.getTextureClip().getTexture());
+        if (sprite != null && sprite.getTextureRegion() != null) {
+            D2D2.textureManager().unloadTexture(sprite.getTextureRegion().getTexture());
         }
 
         if (isCacheAsSprite()) sprite = toSprite();
@@ -198,7 +198,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
     }
 
     public Sprite toSprite() {
-        Sprite result = Sprite.create(D2D2.textureManager().bitmapTextToTexture(this).createTextureClip());
+        Sprite result = Sprite.create(D2D2.textureManager().bitmapTextToTexture(this).createTextureRegion());
         result.setPosition(getX(), getY());
         result.setScale(getScaleX(), getScaleY());
         result.setRotation(getRotation());

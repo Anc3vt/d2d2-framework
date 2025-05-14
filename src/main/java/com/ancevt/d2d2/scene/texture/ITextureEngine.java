@@ -35,7 +35,7 @@ public interface ITextureEngine {
 
     Texture createTexture(String assetPath);
 
-    Texture createTexture(int width, int height, TextureClipCombinerCell[] cells);
+    Texture createTexture(int width, int height, TextureRegionCombinerCell[] cells);
 
     void unloadTexture(Texture texture);
 

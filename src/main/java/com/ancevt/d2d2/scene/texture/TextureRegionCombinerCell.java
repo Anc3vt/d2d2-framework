@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,7 @@ package com.ancevt.d2d2.scene.texture;
 
 import com.ancevt.d2d2.scene.Color;
 
-public class TextureClipCombinerCell {
+public class TextureRegionCombinerCell {
     private Color color;
 
     private int id;
@@ -34,7 +34,7 @@ public class TextureClipCombinerCell {
     private float alpha = 1.0f;
     private float rotation = 0.0f;
 
-    private TextureClip textureClip;
+    private TextureRegion textureRegion;
 
     public Color getColor() {
         return color;
@@ -116,28 +116,28 @@ public class TextureClipCombinerCell {
         this.rotation = rotation;
     }
 
-    public TextureClip getTextureClip() {
-        return textureClip;
+    public TextureRegion getTextureRegion() {
+        return textureRegion;
     }
 
-    public void setTextureClip(TextureClip textureClip) {
-        this.textureClip = textureClip;
+    public void setTextureRegion(TextureRegion textureRegion) {
+        this.textureRegion = textureRegion;
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
-            "color=" + color +
-            ", id=" + id +
-            ", x=" + x +
-            ", y=" + y +
-            ", repeatX=" + repeatX +
-            ", repeatY=" + repeatY +
-            ", scaleX=" + scaleX +
-            ", scaleY=" + scaleY +
-            ", alpha=" + alpha +
-            ", rotation=" + rotation +
-            ", texture=" + textureClip +
-            '}';
+                "color=" + color +
+                ", id=" + id +
+                ", x=" + x +
+                ", y=" + y +
+                ", repeatX=" + repeatX +
+                ", repeatY=" + repeatY +
+                ", scaleX=" + scaleX +
+                ", scaleY=" + scaleY +
+                ", alpha=" + alpha +
+                ", rotation=" + rotation +
+                ", textureRegion=" + textureRegion +
+                '}';
     }
 }

@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.texture.TextureClip;
+import com.ancevt.d2d2.scene.texture.TextureRegion;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -29,7 +29,7 @@ import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SpriteFactory {
-    private static final Map<String, TextureClip> textureCacheFiles = new HashMap<>();
+    private static final Map<String, TextureRegion> textureCacheFiles = new HashMap<>();
 
     public static Sprite createSprite(String assetPath) {
         return Sprite.load(assetPath);
@@ -49,7 +49,7 @@ public class SpriteFactory {
                                 )),
                         key -> D2D2.textureManager()
                                 .loadTexture(assetPath)
-                                .createTextureClip(textureX, textureY, textureWidth, textureHeight)
+                                .createTextureRegion(textureX, textureY, textureWidth, textureHeight)
                 )
         );
     }
@@ -57,7 +57,7 @@ public class SpriteFactory {
     
 
     public static Sprite createSpriteByTextureKey(String textureKey) {
-        return Sprite.create(D2D2.textureManager().getTextureClip(textureKey));
+        return Sprite.create(D2D2.textureManager().getTextureRegion(textureKey));
     }
 
     public static Sprite createEmptySprite() {

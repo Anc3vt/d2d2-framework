@@ -20,7 +20,7 @@ package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.scene.texture.Texture;
-import com.ancevt.d2d2.scene.texture.TextureClip;
+import com.ancevt.d2d2.scene.texture.TextureRegion;
 
 public interface Sprite extends Node, Colored, Repeatable {
 
@@ -34,35 +34,35 @@ public interface Sprite extends Node, Colored, Repeatable {
         return sprite;
     }
 
-    static Sprite create(TextureClip textureClip) {
+    static Sprite create(TextureRegion textureRegion) {
         Sprite sprite = new SpriteImpl();
-        sprite.setTextureClip(textureClip);
+        sprite.setTextureRegion(textureRegion);
         sprite.setColor(SpriteImpl.DEFAULT_COLOR);
         sprite.setRepeat(1, 1);
         return sprite;
     }
 
     static Sprite create(Texture texture) {
-        return create(texture.createTextureClip());
+        return create(texture.createTextureRegion());
     }
 
     static Sprite load(String assetPath) {
-        TextureClip textureClip = D2D2.textureManager().loadTexture(assetPath).createTextureClip();
-        return create(textureClip);
+        TextureRegion textureRegion = D2D2.textureManager().loadTexture(assetPath).createTextureRegion();
+        return create(textureRegion);
     }
 
     static Sprite load(String assetPath, int textureX, int textureY, int textureWidth, int textureHeight) {
-        TextureClip textureClip = D2D2.textureManager()
+        TextureRegion textureRegion = D2D2.textureManager()
                 .loadTexture(assetPath)
-                .createTextureClip(textureX, textureY, textureWidth, textureHeight);
-        return create(textureClip);
+                .createTextureRegion(textureX, textureY, textureWidth, textureHeight);
+        return create(textureRegion);
     }
 
-    TextureClip getTextureClip();
+    TextureRegion getTextureRegion();
 
-    void setTextureClip(TextureClip value);
+    void setTextureRegion(TextureRegion value);
 
-    void setTextureClip(String textureClipKey);
+    void setTextureRegion(String textureRegionKey);
 
     void setTextureBleedingFix(double v);
 

@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,14 +35,14 @@ public class TextureManager {
 
     private final Map<String, Texture> textureCache;
 
-    private final Map<String, TextureClip> textureClips;
+    private final Map<String, TextureRegion> textureRegions;
 
     @Getter
     @Setter
     private ITextureEngine textureEngine;
 
     public TextureManager() {
-        textureClips = new HashMap<>();
+        textureRegions = new HashMap<>();
         textures = new ArrayList<>();
         textureCache = new HashMap<>();
     }
@@ -96,14 +96,14 @@ public class TextureManager {
         return textures.get(index);
     }
 
-    public void addTextureClip(String key, TextureClip textureClip) {
-        textureClips.put(key, textureClip);
+    public void addTextureRegion(String key, TextureRegion textureRegion) {
+        textureRegions.put(key, textureRegion);
     }
 
-    public TextureClip getTextureClip(String key) {
-        TextureClip result = textureClips.get(key);
+    public TextureRegion getTextureRegion(String key) {
+        TextureRegion result = textureRegions.get(key);
         if (result == null) {
-            throw new IllegalArgumentException("No such texture clip key: " + key);
+            throw new IllegalArgumentException("No such texture region key: " + key);
         }
         return result;
     }
