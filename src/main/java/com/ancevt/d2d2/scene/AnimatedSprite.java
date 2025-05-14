@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- * <p>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,36 +19,39 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.scene.texture.TextureRegion;
+import lombok.Getter;
+import lombok.Setter;
 
-public class PlayableGroup extends GroupImpl implements Playable {
+public class AnimatedSprite extends SpriteImpl implements Animated {
 
-    private Sprite[] frames;
+    @Getter
+    private TextureRegion[] frameTextureRegions;
 
+    @Getter
     private boolean playing;
+
+    @Getter
+    @Setter
     private boolean loop;
+
+    @Getter
+    @Setter
     private int slowing = DEFAULT_SLOWING;
     private int slowingCounter;
     private int currentFrameIndex;
-    private Sprite currentSprite;
+
+    @Getter
+    @Setter
     private boolean backward;
 
-    public PlayableGroup() {
-        setName("_" + getClass().getSimpleName() + getNodeId());
-    }
-
-    public PlayableGroup(Sprite[] frameSprites) {
+    public AnimatedSprite(TextureRegion[] textureRegions) {
         this();
-        setFrameSprites(frameSprites);
+        setFrameTextureRegions(textureRegions);
     }
 
-    @Override
-    public void setBackward(boolean backward) {
-        this.backward = backward;
-    }
-
-    @Override
-    public boolean isBackward() {
-        return backward;
+    public AnimatedSprite() {
+        setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
     @Override
@@ -61,26 +64,6 @@ public class PlayableGroup extends GroupImpl implements Playable {
             if (backward) prevFrame();
             else nextFrame();
         }
-    }
-
-    @Override
-    public void setLoop(boolean b) {
-        this.loop = b;
-    }
-
-    @Override
-    public boolean isLoop() {
-        return loop;
-    }
-
-    @Override
-    public void setSlowing(int slowing) {
-        this.slowing = slowing;
-    }
-
-    @Override
-    public int getSlowing() {
-        return slowing;
     }
 
     @Override
@@ -105,8 +88,9 @@ public class PlayableGroup extends GroupImpl implements Playable {
     @Override
     public void setFrame(int frameIndex) {
         this.currentFrameIndex = frameIndex;
+        slowingCounter = 0;
 
-        if (this.currentFrameIndex >= frames.length) {
+        if (this.currentFrameIndex >= frameTextureRegions.length) {
             if (loop) {
                 this.currentFrameIndex = 0;
                 dispatchEvent(CommonEvent.Complete.create());
@@ -121,31 +105,14 @@ public class PlayableGroup extends GroupImpl implements Playable {
         drawCurrentFrame();
     }
 
-    private void drawCurrentFrame() {
-        if (currentSprite != null && currentSprite.getParent() != null) {
-            currentSprite.removeFromParent();
-        }
-
-        currentSprite = frames[currentFrameIndex];
-        if (currentSprite != null) {
-            this.addChild(currentSprite);
-        }
+    @Override
+    public int getCurrentFrameIndex() {
+        return currentFrameIndex;
     }
 
     @Override
-    public boolean isPlaying() {
-        return playing;
-    }
-
-    public void setFrameSprites(Sprite[] sprites) {
-        frames = sprites;
-        if (sprites.length > 0) {
-            setFrame(0);
-        }
-    }
-
-    public Sprite[] getFrameSprites() {
-        return frames;
+    public int getNumFrames() {
+        return frameTextureRegions.length;
     }
 
     @Override
@@ -158,23 +125,25 @@ public class PlayableGroup extends GroupImpl implements Playable {
         playing = false;
     }
 
-    @Override
-    public int getCurrentFrameIndex() {
-        return currentFrameIndex;
+    public void setFrameTextureRegions(TextureRegion[] textureRegions) {
+        this.frameTextureRegions = textureRegions;
+        if (textureRegions.length > 0) {
+            setFrame(0);
+        }
+    }
+
+    private void drawCurrentFrame() {
+        super.setTextureRegion(frameTextureRegions[currentFrameIndex]);
     }
 
     @Override
-    public int getNumFrames() {
-        return frames.length;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" +
-                "playing=" + playing +
-                ", loop=" + loop +
-                ", slowing=" + slowing +
-                ", frameIndex=" + currentFrameIndex +
-                '}';
+    public void setTextureRegion(TextureRegion value) {
+        throw new IllegalStateException("Unable to set texture directly. Use setFrameTextures([]) instead");
     }
 }
+
+
+
+
+
+

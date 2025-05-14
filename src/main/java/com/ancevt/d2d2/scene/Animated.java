@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.scene;
 
-public interface Playable extends Node {
+public interface Animated extends Node {
     int DEFAULT_SLOWING = 5;
 
     void processFrame();
