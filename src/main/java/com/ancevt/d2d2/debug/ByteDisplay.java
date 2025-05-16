@@ -27,7 +27,8 @@ import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
 import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
+import com.ancevt.d2d2.util.InputStreamFork;
 import lombok.Getter;
 
 import java.io.*;
@@ -50,7 +51,7 @@ public class ByteDisplay extends InteractiveGroup {
 
     private final BorderedRectangle bgRect;
     @Getter
-    private final Text text;
+    private final BitmapText bitmapText;
 
     private int oldX;
     private int oldY;
@@ -70,11 +71,11 @@ public class ByteDisplay extends InteractiveGroup {
         bgRect = new BorderedRectangle(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BG_COLOR, DEFAULT_BORDER_COLOR);
         addChild(bgRect);
 
-        text = new Text();
-        text.setText("#<FFFF00>ready");
-        text.setMulticolor(true);
-        text.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        addChild(text, PADDING, 2);
+        bitmapText = new BitmapText();
+        bitmapText.setText("#<FFFF00>ready");
+        bitmapText.setMulticolor(true);
+        bitmapText.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        addChild(bitmapText, PADDING, 2);
 
         addEventListener(this, InputEvent.MouseDown.class, this::mouseDown);
         addEventListener(this, InputEvent.MouseDrag.class, this::mouseDrag);
@@ -186,21 +187,21 @@ public class ByteDisplay extends InteractiveGroup {
     public void setWidth(float width) {
         super.setWidth(width);
         bgRect.setWidth(width);
-        text.setWidth(width);
+        bitmapText.setWidth(width);
     }
 
     @Override
     public void setHeight(float height) {
         super.setHeight(height);
         bgRect.setHeight(height);
-        text.setHeight(height);
+        bitmapText.setHeight(height);
     }
 
     @Override
     public void setSize(float width, float height) {
         super.setSize(width, height);
         bgRect.setSize(width, height);
-        text.setSize(width, height);
+        bitmapText.setSize(width, height);
     }
 
     private void mouseDown(InputEvent.MouseDown e) {
@@ -282,7 +283,7 @@ public class ByteDisplay extends InteractiveGroup {
 
         s.append(utfString);
 
-        text.setText(s.toString());
+        bitmapText.setText(s.toString());
     }
 
     private void renderTextRepresentation(StringBuilder s) {
@@ -341,11 +342,11 @@ public class ByteDisplay extends InteractiveGroup {
     }
 
     private int getWidthInChars() {
-        return (int) ((getWidth() / text.getCharWidth()) - 4);
+        return (int) ((getWidth() / bitmapText.getCharWidth()) - 4);
     }
 
     private int getHeightInChars() {
-        return (int) (getHeight() / text.getCharHeight());
+        return (int) (getHeight() / bitmapText.getCharHeight());
     }
 
     private static String indent(Object o) {
@@ -406,7 +407,7 @@ public class ByteDisplay extends InteractiveGroup {
     }
 
     private void renderDecorLine(StringBuilder s) {
-        float cw = text.getCharWidth();
+        float cw = bitmapText.getCharWidth();
         int charCount = (int) ((getWidth() - PADDING * 2) / cw);
         String line = "<FFFFFF>%s".formatted("-".repeat(charCount));
         s.append(line).append("\n");
@@ -427,58 +428,6 @@ public class ByteDisplay extends InteractiveGroup {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static class InputStreamFork {
-
-        @Getter
-        private final List<InputStream> inputStreams = new ArrayList<>();
-
-        public int size() {
-            return inputStreams.size();
-        }
-
-        public InputStream left() {
-            return inputStreams.get(0);
-        }
-
-        public InputStream right() {
-            if(inputStreams.size() > 1) {
-                return inputStreams.get(1);
-            } else {
-                throw new IllegalStateException("");
-            }
-
-        }
-
-        public static InputStreamFork fork(InputStream inputStream) {
-            return fork(inputStream, 2);
-        }
-
-        public static InputStreamFork fork(InputStream inputStream, int count) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            try {
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = inputStream.read(buffer)) > -1) {
-                    baos.write(buffer, 0, len);
-                }
-                baos.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            InputStreamFork result = new InputStreamFork();
-
-            for (int i = 0; i < count; i++) {
-                result.inputStreams.add(new ByteArrayInputStream(baos.toByteArray()));
-            }
-
-            return result;
-        }
-
-
     }
 
     public static class ByteOutput {

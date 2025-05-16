@@ -32,7 +32,7 @@ import com.ancevt.d2d2.scene.GroupImpl;
 import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.AccessLevel;
@@ -57,7 +57,7 @@ public class DebugPanel extends GroupImpl {
     private static boolean enabled;
     private static float scale = 1;
 
-    private final Text text;
+    private final BitmapText bitmapText;
     private final String systemPropertyName;
     private final RectangleShape bg;
     private final InteractiveGroup interactiveButton;
@@ -85,11 +85,11 @@ public class DebugPanel extends GroupImpl {
         bg.setAlpha(0.75f);
         addChild(bg);
 
-        text = new Text();
+        bitmapText = new BitmapText();
         //text.setBitmapFont(BitmapFont.loadBitmapFont("open-sans/OpenSans-14-Regular"));
-        text.setColor(Color.WHITE);
-        text.setSize(width, height);
-        addChild(text, 1, 1);
+        bitmapText.setColor(Color.WHITE);
+        bitmapText.setSize(width, height);
+        addChild(bitmapText, 1, 1);
 
         interactiveButton = InteractiveGroup.create(width, height);
         interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);
@@ -171,7 +171,7 @@ public class DebugPanel extends GroupImpl {
                 bg.setHeight(5f);
             }
 
-            text.setSize(bg.getWidth(), bg.getHeight());
+            bitmapText.setSize(bg.getWidth(), bg.getHeight());
             interactiveButton.setSize(bg.getWidth(), bg.getHeight());
 
             dispatchEvent(CommonEvent.Resize.create(getWidth(), getHeight()));
@@ -190,13 +190,13 @@ public class DebugPanel extends GroupImpl {
 
     public void setWidth(float v) {
         bg.setWidth(v);
-        text.setWidth(bg.getWidth());
+        bitmapText.setWidth(bg.getWidth());
         interactiveButton.setWidth(bg.getWidth());
     }
 
     public void setHeight(float v) {
         bg.setHeight(v);
-        text.setHeight(bg.getHeight());
+        bitmapText.setHeight(bg.getHeight());
         interactiveButton.setHeight(bg.getHeight());
     }
 
@@ -220,11 +220,11 @@ public class DebugPanel extends GroupImpl {
 
     private void this_eachFrame(Event event) {
         if (System.getProperty(systemPropertyName) != null) {
-            text.setText("[" + systemPropertyName + "]\n" + System.getProperty(systemPropertyName));
+            bitmapText.setText("[" + systemPropertyName + "]\n" + System.getProperty(systemPropertyName));
         }
 
         if (bg.getWidth() < 10) bg.setWidth(10);
-        if (text.getWidth() < 10) text.setWidth(10);
+        if (bitmapText.getWidth() < 10) bitmapText.setWidth(10);
     }
 
     private void load() {
@@ -239,9 +239,9 @@ public class DebugPanel extends GroupImpl {
             String data = o.get("data").getAsString();
 
             bg.setSize(w, h);
-            text.setSize(w, h);
+            bitmapText.setSize(w, h);
             interactiveButton.setSize(w, h);
-            text.setText(data);
+            bitmapText.setText(data);
             setPosition(x, y);
         }
     }
@@ -252,7 +252,7 @@ public class DebugPanel extends GroupImpl {
         o.addProperty("y", getY());
         o.addProperty("w", getWidth());
         o.addProperty("h", getHeight());
-        o.addProperty("data", text.getText());
+        o.addProperty("data", bitmapText.getText());
         saveToFile(file(), o.toString());
     }
 
@@ -364,7 +364,7 @@ public class DebugPanel extends GroupImpl {
             super(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK, Color.WHITE);
             setBorderWidth(0.2f);
             interactiveButton = InteractiveGroup.create(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            Text bitmapText = new Text();
+            BitmapText bitmapText = new BitmapText();
             bitmapText.setText(String.valueOf(text));
 
             addChild(interactiveButton);

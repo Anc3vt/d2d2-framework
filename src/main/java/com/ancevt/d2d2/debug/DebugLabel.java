@@ -22,7 +22,7 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Node;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class DebugLabel extends Text {
+public class DebugLabel extends BitmapText {
 
     private static final int DEFAULT_UPDATE_RATE = 10;
 

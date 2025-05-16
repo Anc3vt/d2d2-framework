@@ -22,7 +22,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.Disposable;
 import com.ancevt.d2d2.scene.texture.Texture;
 
-public class Font implements Disposable {
+public class BitmapFont implements Disposable {
 
     private final BitmapCharInfo[] charInfos;
     private final Texture texture;
@@ -33,7 +33,7 @@ public class Font implements Disposable {
     private float paddingTop;
     private boolean disposed;
 
-    Font(String name, Texture texture, BitmapCharInfo[] charInfos) {
+    BitmapFont(String name, Texture texture, BitmapCharInfo[] charInfos) {
         this.name = name;
         this.texture = texture;
         this.charInfos = charInfos;

@@ -25,6 +25,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+//TODO: remove
+@Deprecated
 class TextureDataInfoReadHelper {
 
     private TextureDataInfoReadHelper() {
@@ -33,7 +35,7 @@ class TextureDataInfoReadHelper {
     private static Texture currentTexture;
 
     public static void readTextureDataInfoFile(String assetPath) throws IOException {
-        final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Assets.getAsset(assetPath)));
+        final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Assets.getAsset(assetPath).getInputStream()));
 
         String line;
         while ((line = bufferedReader.readLine()) != null) {

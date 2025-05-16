@@ -30,7 +30,6 @@ import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.text.BitmapFontManager;
 import com.ancevt.d2d2.scene.texture.TextureManager;
-import com.ancevt.d2d2.util.Args;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,8 +41,6 @@ import java.util.Properties;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class D2D2 {
-    private static final String DEFAULT_PROPERTIES_FILE_NAME = "application.properties";
-
     private static final TextureManager textureManager = new TextureManager();
 
     private static BitmapFontManager bitmapFontManager;
@@ -57,9 +54,6 @@ public final class D2D2 {
 
     @Getter
     private static D2D2Config config;
-
-    @Getter
-    private static Args args;
 
     private static boolean noScaleMode;
 
@@ -208,6 +202,5 @@ public final class D2D2 {
     public static boolean isNoScaleMode() {
         return noScaleMode;
     }
-
 
 }

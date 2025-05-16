@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.scene.texture;
 
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
 
 import java.io.InputStream;
 
@@ -39,6 +39,6 @@ public interface ITextureEngine {
 
     void unloadTexture(Texture texture);
 
-    Texture bitmapTextToTexture(Text text);
+    Texture bitmapTextToTexture(BitmapText bitmapText);
 
 }

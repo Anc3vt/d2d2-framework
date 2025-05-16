@@ -20,6 +20,7 @@ package com.ancevt.d2d2.scene.texture;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.Disposable;
+import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.util.Args;
 
 import java.util.StringTokenizer;
@@ -31,10 +32,6 @@ public class Texture implements Disposable {
     private final int id;
     private final int width;
     private final int height;
-
-    private Texture(int id) {
-        this(id, 0, 0);
-    }
 
     public Texture(int id, int width, int height) {
         this.id = id;
@@ -201,6 +198,10 @@ public class Texture implements Disposable {
 
     public boolean isDisposed() {
         return !D2D2.textureManager().containsTexture(this);
+    }
+
+    public Sprite createSprite() {
+        return Sprite.create(this);
     }
 
     @Override

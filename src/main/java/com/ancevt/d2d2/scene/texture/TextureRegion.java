@@ -18,6 +18,7 @@
 
 package com.ancevt.d2d2.scene.texture;
 
+import com.ancevt.d2d2.scene.Sprite;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +34,10 @@ public class TextureRegion {
 
     public TextureRegion createSubregion(int x, int y, int width, int height) {
         return getTexture().createTextureRegion(getX() + x, getY() + y, width, height);
+    }
+
+    public Sprite createSprite() {
+        return Sprite.create(this);
     }
 
     public String stringify() {

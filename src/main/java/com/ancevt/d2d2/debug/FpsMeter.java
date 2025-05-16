@@ -23,16 +23,16 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.text.Font;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapFont;
+import com.ancevt.d2d2.scene.text.BitmapText;
 
-public class FpsMeter extends Text {
+public class FpsMeter extends BitmapText {
 
     private long time = System.currentTimeMillis();
 
-    public FpsMeter(Font font) {
+    public FpsMeter(BitmapFont bitmapFont) {
         super();
-        setFont(font);
+        setBitmapFont(bitmapFont);
         addEventListener(SceneEvent.PostFrame.class, this::eachFrame);
     }
 

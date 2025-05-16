@@ -25,13 +25,13 @@ import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.*;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
 
 public class DebugBorder extends GroupImpl implements Resizable, Colored, Disposable {
 
     private final BorderedRectangle borderedRectangle;
     private final Node node;
-    private final Text label;
+    private final BitmapText label;
 
     private boolean disposed;
 
@@ -47,7 +47,7 @@ public class DebugBorder extends GroupImpl implements Resizable, Colored, Dispos
 
         addChild(borderedRectangle);
 
-        label = new Text();
+        label = new BitmapText();
         label.setText(node.getNodeId() + " " + node.getName());
         label.setAutosize(true);
         addChild(label, 2, -label.getHeight());

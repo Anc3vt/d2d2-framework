@@ -148,8 +148,6 @@ public interface Node extends EventDispatcher {
 
     boolean isIntegerPixelAlignmentEnabled();
 
-    String toString();
-
     default void preFrame() {
     }
 

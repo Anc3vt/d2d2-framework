@@ -29,7 +29,7 @@ import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -122,20 +122,20 @@ public class DebugDisplayObjectViewer {
                         color);
                 D2D2.root().addChild(borderedRectangle, o.getGlobalX(), o.getGlobalY());
 
-                Text text = Text.create();
-                text.setText(o.getName());
-                text.setColor(color);
-                text.setRotation(-20);
+                BitmapText bitmapText = BitmapText.create();
+                bitmapText.setText(o.getName());
+                bitmapText.setColor(color);
+                bitmapText.setRotation(-20);
 
-                D2D2.root().addChild(text, o.getGlobalX(), o.getGlobalY());
+                D2D2.root().addChild(bitmapText, o.getGlobalX(), o.getGlobalY());
 
                 sceneEntities.add(borderedRectangle);
-                sceneEntities.add(text);
+                sceneEntities.add(bitmapText);
 
                 borderedRectangle.addEventListener(SceneEvent.PreFrame.class, e -> {
                     borderedRectangle.setSize(o.getWidth() * o.getGlobalScaleX(), o.getHeight() * o.getGlobalScaleY());
                     borderedRectangle.setPosition(o.getGlobalX(), o.getGlobalY());
-                    text.setPosition(borderedRectangle.getX(), borderedRectangle.getY());
+                    bitmapText.setPosition(borderedRectangle.getX(), borderedRectangle.getY());
                 });
             }
 

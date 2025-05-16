@@ -2,6 +2,7 @@ package com.ancevt.d2d2;
 
 import com.ancevt.d2d2.asset.Assets;
 import com.ancevt.d2d2.engine.Engine;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,9 @@ public class D2D2Config {
     public static final String BITMAPFONT_SAVEBMF = "d2d2.bitmapfont.savebmf";
 
     private final Map<String, String> properties = new HashMap<>();
+
+    @Getter
+    private String[] args;
 
     public Map<String, String> asMap() {
         return new HashMap<>(properties);
@@ -72,7 +76,7 @@ public class D2D2Config {
     }
 
     public D2D2Config fromAssets(String propertiesFilename) {
-        InputStream inputStream = Assets.getAsset(propertiesFilename);
+        InputStream inputStream = Assets.getAsset(propertiesFilename).getInputStream();
         try {
             String propertiesString = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
@@ -94,6 +98,7 @@ public class D2D2Config {
     }
 
     public D2D2Config fromArgs(String[] args) {
+        this.args = args;
         for (String arg : args) {
             String[] split;
             if (arg.startsWith("-D") && arg.contains("=")) {

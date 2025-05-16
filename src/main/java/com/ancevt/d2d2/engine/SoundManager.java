@@ -24,9 +24,9 @@ import java.io.InputStream;
 
 public interface SoundManager {
 
-    Sound createSound(InputStream inputStream);
+    Sound loadSound(InputStream inputStream);
 
-    Sound createSoundFromAsset(String assetFileName);
+    Sound loadSound(String assetFileName);
 
     void cleanup();
 }

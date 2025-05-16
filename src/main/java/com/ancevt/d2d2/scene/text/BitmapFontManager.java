@@ -40,15 +40,15 @@ public class BitmapFontManager {
     private static final String BITMAP_FONTS_ASSET_DIR = "bitmapfonts/";
     private static final String DEFAULT_BITMAP_FONT = "terminus/Terminus-12";
 
-    private final Map<String, Font> bitmapFontMap;
+    private final Map<String, BitmapFont> bitmapFontMap;
 
     @Getter
-    private final Font defaultFont;
+    private final BitmapFont defaultBitmapFont;
 
     public BitmapFontManager() {
         bitmapFontMap = new HashMap<>();
 
-        defaultFont = loadBitmapFont(DEFAULT_BITMAP_FONT);
+        defaultBitmapFont = loadBitmapFont(DEFAULT_BITMAP_FONT + ".png", DEFAULT_BITMAP_FONT + ".bmf");
     }
 
     private static String convertToString(InputStream inputStream) throws IOException {
@@ -62,7 +62,7 @@ public class BitmapFontManager {
         return stringBuilder.toString();
     }
 
-    public Font loadBitmapFont(InputStream charsDataInputStream, InputStream pngInputStream, String name) {
+    public BitmapFont loadBitmapFont(InputStream charsDataInputStream, InputStream pngInputStream, String name) {
         BitmapCharInfo[] charInfos = new BitmapCharInfo[MAX_CHARS];
         int spacingX = 0;
         int spacingY = 0;
@@ -107,45 +107,45 @@ public class BitmapFontManager {
             throw new IllegalArgumentException(e);
         }
 
-        Font font = new Font(name, D2D2.textureManager().loadTexture(pngInputStream), charInfos);
+        BitmapFont bitmapFont = new BitmapFont(name, D2D2.textureManager().loadTexture(pngInputStream), charInfos);
 
-        bitmapFontMap.put(name, font);
+        bitmapFontMap.put(name, bitmapFont);
 
-        return font;
+        return bitmapFont;
     }
 
-    public Font loadBitmapFont(String assetWithoutExtension) {
-        return loadBitmapFont(assetWithoutExtension, false);
+    public BitmapFont loadBitmapFont(String pngAssetPath, String bmfAssetPath) {
+        return loadBitmapFont(pngAssetPath, bmfAssetPath, false);
     }
 
-    public Font loadBitmapFont(String assetWithoutExtension, boolean forceUpdate) {
+    private BitmapFont loadBitmapFont(String pngAssetPath, String bmfAssetPath, boolean forceUpdate) {
         if (!forceUpdate) {
-            Font fromCache = bitmapFontMap.get(assetWithoutExtension);
+            BitmapFont fromCache = bitmapFontMap.get(bmfAssetPath);
 
             if (fromCache != null) {
                 return fromCache;
             }
         }
 
-        Font font = loadBitmapFont(
-                Assets.getAsset(BITMAP_FONTS_ASSET_DIR + assetWithoutExtension + ".bmf"),
-                Assets.getAsset(BITMAP_FONTS_ASSET_DIR + assetWithoutExtension + ".png"),
-                assetWithoutExtension
+        BitmapFont bitmapFont = loadBitmapFont(
+                Assets.getAsset(BITMAP_FONTS_ASSET_DIR + bmfAssetPath).getInputStream(),
+                Assets.getAsset(BITMAP_FONTS_ASSET_DIR + pngAssetPath).getInputStream(),
+                bmfAssetPath
         );
 
-        bitmapFontMap.put(assetWithoutExtension, font);
+        bitmapFontMap.put(bmfAssetPath, bitmapFont);
 
-        return font;
+        return bitmapFont;
     }
 
     public void remove(String name) {
-        Font font = bitmapFontMap.remove(name);
-        if (font != null) {
-            font.dispose();
+        BitmapFont bitmapFont = bitmapFontMap.remove(name);
+        if (bitmapFont != null) {
+            bitmapFont.dispose();
         }
     }
 
-    public Map<String, Font> getBitmapFonts() {
+    public Map<String, BitmapFont> getBitmapFonts() {
         return Map.copyOf(bitmapFontMap);
     }
 

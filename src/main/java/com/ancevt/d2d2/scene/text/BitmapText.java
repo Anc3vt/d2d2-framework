@@ -29,7 +29,7 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class Text extends AbstractNode implements Colored, Resizable {
+public class BitmapText extends AbstractNode implements Colored, Resizable {
 
     protected static final String DEFAULT_TEXT = "";
 
@@ -40,7 +40,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
     private String text;
     private Color color;
 
-    private Font font;
+    private BitmapFont bitmapFont;
 
     private float lineSpacing;
     private float spacing;
@@ -75,8 +75,8 @@ public class Text extends AbstractNode implements Colored, Resizable {
     private boolean wordWrap = true;
     private Sprite sprite;
 
-    private Text(final Font font, float width, float height, String text) {
-        setFont(font);
+    private BitmapText(final BitmapFont bitmapFont, float width, float height, String text) {
+        setBitmapFont(bitmapFont);
         setColor(DEFAULT_COLOR);
         setWidth(width);
         setHeight(height);
@@ -84,52 +84,52 @@ public class Text extends AbstractNode implements Colored, Resizable {
         setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
-    private Text(final Font font, float boundWidth, float boundHeight) {
-        this(font, boundWidth, boundHeight, DEFAULT_TEXT);
+    private BitmapText(final BitmapFont bitmapFont, float boundWidth, float boundHeight) {
+        this(bitmapFont, boundWidth, boundHeight, DEFAULT_TEXT);
     }
 
-    private Text(String text) {
-        this(D2D2.bitmapFontManager().getDefaultFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
+    private BitmapText(String text) {
+        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
     }
 
-    private Text(final Font font) {
-        this(font, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
+    private BitmapText(final BitmapFont bitmapFont) {
+        this(bitmapFont, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
     }
 
-    private Text(float boundWidth, float boundHeight) {
-        this(D2D2.bitmapFontManager().getDefaultFont(), boundWidth, boundHeight, DEFAULT_TEXT);
+    private BitmapText(float boundWidth, float boundHeight) {
+        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
     }
 
-    public Text() {
-        this(D2D2.bitmapFontManager().getDefaultFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
+    public BitmapText() {
+        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
     }
 
-    public static Text create() {
-        return new Text();
+    public static BitmapText create() {
+        return new BitmapText();
     }
 
-    public Text cloneBitmapText() {
-        Text text = new Text();
-        text.setPosition(getX(), getY());
-        text.setText(getText());
-        text.setSize(getWidth(), getHeight());
-        text.setAlpha(getAlpha());
-        text.setMulticolor(isMulticolor());
-        text.setFont(getFont());
-        text.setVertexBleedingFix(getVertexBleedingFix());
-        text.setTextureBleedingFix(getTextureBleedingFix());
-        text.setColor(getColor());
-        text.setName(text.getName() + "_copy_" + getName());
-        text.setSpacing(getSpacing());
-        text.setLineSpacing(getLineSpacing());
-        text.setRotation(getRotation());
-        text.setVisible(isVisible());
-        text.setAutosize(isAutosize());
-        text.setMultiline(isMultiline());
-        text.setWordWrap(isWordWrap());
-        text.setCacheAsSprite(isCacheAsSprite());
-        text.setScale(getScaleX(), getScaleY());
-        return text;
+    public BitmapText cloneBitmapText() {
+        BitmapText bitmapText = new BitmapText();
+        bitmapText.setPosition(getX(), getY());
+        bitmapText.setText(getText());
+        bitmapText.setSize(getWidth(), getHeight());
+        bitmapText.setAlpha(getAlpha());
+        bitmapText.setMulticolor(isMulticolor());
+        bitmapText.setBitmapFont(getBitmapFont());
+        bitmapText.setVertexBleedingFix(getVertexBleedingFix());
+        bitmapText.setTextureBleedingFix(getTextureBleedingFix());
+        bitmapText.setColor(getColor());
+        bitmapText.setName(bitmapText.getName() + "_copy_" + getName());
+        bitmapText.setSpacing(getSpacing());
+        bitmapText.setLineSpacing(getLineSpacing());
+        bitmapText.setRotation(getRotation());
+        bitmapText.setVisible(isVisible());
+        bitmapText.setAutosize(isAutosize());
+        bitmapText.setMultiline(isMultiline());
+        bitmapText.setWordWrap(isWordWrap());
+        bitmapText.setCacheAsSprite(isCacheAsSprite());
+        bitmapText.setScale(getScaleX(), getScaleY());
+        return bitmapText;
     }
 
     public void setCacheAsSprite(boolean cacheAsSprite) {
@@ -149,7 +149,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
 
     public void disposeOnRemoveFromStage() {
         addEventListener(this, SceneEvent.RemoveFromScene.class, e -> {
-            removeEventListener(Text.class, SceneEvent.RemoveFromScene.class);
+            removeEventListener(BitmapText.class, SceneEvent.RemoveFromScene.class);
             if (sprite != null && sprite.getTextureRegion() != null) {
                 D2D2.textureManager().unloadTexture(sprite.getTextureRegion().getTexture());
             }
@@ -189,7 +189,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
     }
 
     public float computeTextWidth(String text) {
-        return font.computeTextWidth(text, getSpacing());
+        return bitmapFont.computeTextWidth(text, getSpacing());
     }
 
     public void setMultiline(boolean multiline) {
@@ -198,7 +198,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
     }
 
     public Sprite toSprite() {
-        Sprite result = Sprite.create(D2D2.textureManager().bitmapTextToTexture(this).createTextureRegion());
+        Sprite result = Sprite.create(D2D2.textureManager().bitmapTextToTexture(this));
         result.setPosition(getX(), getY());
         result.setScale(getScaleX(), getScaleY());
         result.setRotation(getRotation());
@@ -251,12 +251,12 @@ public class Text extends AbstractNode implements Colored, Resizable {
         return text == null || text.length() == 0;
     }
 
-    public Font getFont() {
-        return font;
+    public BitmapFont getBitmapFont() {
+        return bitmapFont;
     }
 
-    public void setFont(Font font) {
-        this.font = font;
+    public void setBitmapFont(BitmapFont bitmapFont) {
+        this.bitmapFont = bitmapFont;
         updateCachedSprite();
     }
 
@@ -284,7 +284,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
         final char[] chars = getPlainText().toCharArray();
         float w = 0;
 
-        final Font font = getFont();
+        final BitmapFont bitmapFont = getBitmapFont();
 
         float max = 0;
 
@@ -294,7 +294,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
                 w = 0;
             }
 
-            BitmapCharInfo info = font.getCharInfo(c);
+            BitmapCharInfo info = bitmapFont.getCharInfo(c);
             if (info == null) continue;
 
             w += (int) (info.width() + getSpacing());
@@ -311,7 +311,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
         final char[] chars = getPlainText().toCharArray();
         float w = 0;
 
-        final Font font = getFont();
+        final BitmapFont bitmapFont = getBitmapFont();
 
         float max = 0;
 
@@ -319,11 +319,11 @@ public class Text extends AbstractNode implements Colored, Resizable {
 
         for (final char c : chars) {
             if (c == '\n' || (width > 0 && w > getMaxWidth())) {
-                h += (int) (font.getZeroCharHeight() + getLineSpacing());
+                h += (int) (bitmapFont.getZeroCharHeight() + getLineSpacing());
                 w = 0;
             }
 
-            BitmapCharInfo info = font.getCharInfo(c);
+            BitmapCharInfo info = bitmapFont.getCharInfo(c);
             if (info == null) continue;
 
             w += info.width() + getSpacing();
@@ -331,7 +331,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
             if (w > max) max = w;
         }
 
-        return h + font.getZeroCharHeight();
+        return h + bitmapFont.getZeroCharHeight();
     }
 
     @Override
@@ -348,7 +348,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
     @Override
     public float getHeight() {
         if (!isMultiline()) {
-            return font.getZeroCharHeight();
+            return bitmapFont.getZeroCharHeight();
         }
 
         if (isAutosize()) {
@@ -415,11 +415,11 @@ public class Text extends AbstractNode implements Colored, Resizable {
     }
 
     public float getCharWidth() {
-        return getFont().getCharInfo('0').width();
+        return getBitmapFont().getCharInfo('0').width();
     }
 
     public float getCharHeight() {
-        return getFont().getCharInfo('0').height();
+        return getBitmapFont().getCharInfo('0').height();
     }
 
     @Override
@@ -432,7 +432,7 @@ public class Text extends AbstractNode implements Colored, Resizable {
         return "BitmapText{" +
                 "text='" + text + '\'' +
                 ", color=" + color +
-                ", bitmapFont=" + font +
+                ", bitmapFont=" + bitmapFont +
                 ", lineSpacing=" + lineSpacing +
                 ", spacing=" + spacing +
                 ", boundWidth=" + width +

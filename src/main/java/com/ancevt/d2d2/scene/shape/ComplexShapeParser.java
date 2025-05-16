@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 public class ComplexShapeParser {
 
     public static Group parseAsset(String assetPath) {
-        return parse(Assets.getAsset(assetPath));
+        return parse(Assets.getAsset(assetPath).getInputStream());
     }
 
     public static Group parse(InputStream inputStream) {

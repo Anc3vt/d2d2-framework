@@ -55,7 +55,7 @@ public class SvgShapeParser {
     }
 
     public Group parseAsset(String assetPath) {
-        return parse(Assets.getAsset(assetPath));
+        return parse(Assets.getAsset(assetPath).getInputStream());
     }
 
     public Group parse(InputStream inputStream) {
