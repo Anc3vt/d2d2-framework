@@ -19,10 +19,10 @@
 package com.ancevt.d2d2.scene.shape;
 
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import lombok.Getter;
 
-public class BorderedRectangle extends GroupImpl {
+public class BorderedRectangle extends BasicGroup {
     private static final Color DEFAULT_FILL_COLOR = Color.WHITE;
     private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
 

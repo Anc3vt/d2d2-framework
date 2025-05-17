@@ -22,7 +22,7 @@ import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.SceneEvent;
 import lombok.Getter;
 
-public class Root extends GroupImpl implements Resizable {
+public class Root extends BasicGroup implements Resizable {
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
 
     @Getter

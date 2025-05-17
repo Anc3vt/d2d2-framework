@@ -21,36 +21,36 @@ package com.ancevt.d2d2.scene.interactive;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Colored;
-import com.ancevt.d2d2.scene.SpriteImpl;
+import com.ancevt.d2d2.scene.BasicSprite;
 import com.ancevt.d2d2.scene.texture.TextureRegion;
 import lombok.Getter;
 
 public class Combined9Sprites extends InteractiveGroup implements Colored {
 
-    private final SpriteImpl topLeft;
-    private final SpriteImpl top;
-    private final SpriteImpl topRight;
-    private final SpriteImpl left;
-    private final SpriteImpl center;
-    private final SpriteImpl right;
-    private final SpriteImpl bottomLeft;
-    private final SpriteImpl bottom;
-    private final SpriteImpl bottomRight;
+    private final BasicSprite topLeft;
+    private final BasicSprite top;
+    private final BasicSprite topRight;
+    private final BasicSprite left;
+    private final BasicSprite center;
+    private final BasicSprite right;
+    private final BasicSprite bottomLeft;
+    private final BasicSprite bottom;
+    private final BasicSprite bottomRight;
 
     @Getter
     private boolean repeatsEnabled;
 
 
     public Combined9Sprites() {
-        topLeft = new SpriteImpl();
-        top = new SpriteImpl();
-        topRight = new SpriteImpl();
-        left = new SpriteImpl();
-        center = new SpriteImpl();
-        right = new SpriteImpl();
-        bottomLeft = new SpriteImpl();
-        bottom = new SpriteImpl();
-        bottomRight = new SpriteImpl();
+        topLeft = new BasicSprite();
+        top = new BasicSprite();
+        topRight = new BasicSprite();
+        left = new BasicSprite();
+        center = new BasicSprite();
+        right = new BasicSprite();
+        bottomLeft = new BasicSprite();
+        bottom = new BasicSprite();
+        bottomRight = new BasicSprite();
 
         addChild(topLeft);
         addChild(top);

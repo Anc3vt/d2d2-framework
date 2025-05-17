@@ -423,11 +423,6 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
     }
 
     @Override
-    public void postFrame() {
-        // For overriding
-    }
-
-    @Override
     public String toString() {
         return "BitmapText{" +
                 "text='" + text + '\'' +

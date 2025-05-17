@@ -27,7 +27,7 @@ import com.ancevt.d2d2.scene.*;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.text.BitmapText;
 
-public class DebugBorder extends GroupImpl implements Resizable, Colored, Disposable {
+public class DebugBorder extends BasicGroup implements Resizable, Colored, Disposable {
 
     private final BorderedRectangle borderedRectangle;
     private final Node node;

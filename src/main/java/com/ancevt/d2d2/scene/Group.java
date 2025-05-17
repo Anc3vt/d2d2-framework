@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 public interface Group extends Node {
 
     static Group create() {
-        return new GroupImpl();
+        return new BasicGroup();
     }
 
     @SuppressWarnings("unchecked")

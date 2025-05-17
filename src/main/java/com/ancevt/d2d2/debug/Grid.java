@@ -25,14 +25,14 @@ import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Colored;
 import com.ancevt.d2d2.scene.Group;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grid extends GroupImpl implements Colored {
+public class Grid extends BasicGroup implements Colored {
 
     public static final int DEFAULT_COLOR = 0xFFFFFF;
 

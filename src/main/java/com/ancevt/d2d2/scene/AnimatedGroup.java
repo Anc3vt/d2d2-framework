@@ -20,7 +20,7 @@ package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.event.CommonEvent;
 
-public class AnimatedGroup extends GroupImpl implements Animated {
+public class AnimatedGroup extends BasicGroup implements Animated {
 
     private Sprite[] frames;
 

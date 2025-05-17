@@ -23,7 +23,7 @@ import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.Sprite;
 import lombok.Getter;
@@ -31,7 +31,7 @@ import lombok.Setter;
 
 import static com.ancevt.d2d2.D2D2.root;
 
-public class StarletSpace extends GroupImpl {
+public class StarletSpace extends BasicGroup {
 
     private static StarletSpace starletSpace;
     private float velocityX = 30f;
@@ -78,7 +78,7 @@ public class StarletSpace extends GroupImpl {
         return starletSpace;
     }
 
-    private static class Starlet extends GroupImpl {
+    private static class Starlet extends BasicGroup {
 
         private final Sprite sprite;
         private float t;

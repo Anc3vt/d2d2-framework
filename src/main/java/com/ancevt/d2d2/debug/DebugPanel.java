@@ -28,7 +28,7 @@ import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
@@ -51,7 +51,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class DebugPanel extends GroupImpl {
+public class DebugPanel extends BasicGroup {
 
     private static final Map<String, DebugPanel> debugPanels = new HashMap<>();
     private static boolean enabled;

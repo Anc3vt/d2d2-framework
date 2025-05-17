@@ -25,7 +25,7 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
     private static int displayObjectIdCounter;
     private final int nodeId;
     private String name;
-    private GroupImpl parent;
+    private BasicGroup parent;
     private float x;
     private float y;
     private float scaleX = 1.0f;
@@ -66,7 +66,7 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
         return zOrderIndex;
     }
 
-    final void setParent(final GroupImpl container) {
+    final void setParent(final BasicGroup container) {
         this.parent = container;
     }
 

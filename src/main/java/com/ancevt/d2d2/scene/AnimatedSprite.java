@@ -23,7 +23,7 @@ import com.ancevt.d2d2.scene.texture.TextureRegion;
 import lombok.Getter;
 import lombok.Setter;
 
-public class AnimatedSprite extends SpriteImpl implements Animated {
+public class AnimatedSprite extends BasicSprite implements Animated {
 
     @Getter
     private TextureRegion[] frameTextureRegions;

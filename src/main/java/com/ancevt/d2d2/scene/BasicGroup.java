@@ -25,14 +25,14 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
-public class GroupImpl extends AbstractNode implements Group {
+public class BasicGroup extends AbstractNode implements Group {
 
     static final float MAX_X = Float.MAX_VALUE;
     static final float MAX_Y = Float.MAX_VALUE;
 
     final List<Node> children;
 
-    public GroupImpl() {
+    public BasicGroup() {
         children = new CopyOnWriteArrayList<>();
         setName("_" + getClass().getSimpleName() + getNodeId());
     }

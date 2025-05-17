@@ -21,10 +21,10 @@ package com.ancevt.d2d2.scene.interactive;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.exception.InteractiveException;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.shape.FreeShape;
 
-public class InteractiveGroup extends GroupImpl implements Interactive {
+public class InteractiveGroup extends BasicGroup implements Interactive {
 
     private static final float DEFAULT_WIDTH = 1f;
     private static final float DEFAULT_HEIGHT = 1f;

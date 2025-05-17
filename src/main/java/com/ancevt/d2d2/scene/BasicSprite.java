@@ -21,7 +21,7 @@ package com.ancevt.d2d2.scene;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.scene.texture.TextureRegion;
 
-public class SpriteImpl extends AbstractNode implements Sprite {
+public class BasicSprite extends AbstractNode implements Sprite {
 
     private float repeatX;
     private float repeatY;
@@ -30,7 +30,7 @@ public class SpriteImpl extends AbstractNode implements Sprite {
     private double vertexBleedingFix = 0d;
     private double textureBleedingFix = 0d;
 
-    public SpriteImpl() {
+    public BasicSprite() {
         setColor(DEFAULT_COLOR);
         setRepeat(1, 1);
         setName("_" + getClass().getSimpleName() + getNodeId());
@@ -103,11 +103,6 @@ public class SpriteImpl extends AbstractNode implements Sprite {
     @Override
     public float getHeight() {
         return textureRegion == null ? 0f : textureRegion.getHeight();
-    }
-
-    @Override
-    public void postFrame() {
-        // For overriding
     }
 
     @Override

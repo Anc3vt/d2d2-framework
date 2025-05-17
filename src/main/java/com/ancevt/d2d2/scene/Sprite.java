@@ -27,17 +27,17 @@ public interface Sprite extends Node, Colored, Repeatable {
     Color DEFAULT_COLOR = Color.WHITE;
 
     static Sprite create() {
-        Sprite sprite = new SpriteImpl();
-        sprite.setColor(SpriteImpl.DEFAULT_COLOR);
+        Sprite sprite = new BasicSprite();
+        sprite.setColor(BasicSprite.DEFAULT_COLOR);
         sprite.setRepeat(1, 1);
         sprite.setName("_" + sprite.getClass().getSimpleName() + sprite.getNodeId());
         return sprite;
     }
 
     static Sprite create(TextureRegion textureRegion) {
-        Sprite sprite = new SpriteImpl();
+        Sprite sprite = new BasicSprite();
         sprite.setTextureRegion(textureRegion);
-        sprite.setColor(SpriteImpl.DEFAULT_COLOR);
+        sprite.setColor(BasicSprite.DEFAULT_COLOR);
         sprite.setRepeat(1, 1);
         return sprite;
     }

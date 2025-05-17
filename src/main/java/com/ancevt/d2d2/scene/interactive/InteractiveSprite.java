@@ -21,11 +21,11 @@ package com.ancevt.d2d2.scene.interactive;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.exception.InteractiveException;
-import com.ancevt.d2d2.scene.SpriteImpl;
+import com.ancevt.d2d2.scene.BasicSprite;
 import com.ancevt.d2d2.scene.shape.FreeShape;
 import com.ancevt.d2d2.scene.texture.TextureRegion;
 
-public class InteractiveSprite extends SpriteImpl implements Interactive {
+public class InteractiveSprite extends BasicSprite implements Interactive {
 
     private final InteractiveArea interactiveArea;
 

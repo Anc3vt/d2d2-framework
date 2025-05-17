@@ -21,7 +21,7 @@ package com.ancevt.d2d2.scene.svg;
 import com.ancevt.d2d2.asset.Assets;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.shape.FreeShape;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -67,7 +67,7 @@ public class SvgShapeParser {
     }
 
     private Group parseSvg(InputStream inputStream) throws Exception {
-        Group result = new GroupImpl();
+        Group result = new BasicGroup();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
