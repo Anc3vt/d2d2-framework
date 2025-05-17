@@ -1,65 +1,66 @@
 /**
- * Copyright (C) 2024 the original author or authors.
+ * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
 package com.ancevt.d2d2.debug;
 
-import com.ancevt.commons.hash.MD5;
-import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.shape.BorderedRectangle;
-import com.ancevt.d2d2.display.shape.RectangleShape;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.interactive.InteractiveContainer;
-import com.ancevt.d2d2.display.text.Text;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.input.MouseButton;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.BasicGroup;
+import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.scene.text.BitmapText;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 import java.util.function.Supplier;
 
-@Slf4j
-public class DebugPanel extends SimpleContainer {
+public class DebugPanel extends BasicGroup {
 
     private static final Map<String, DebugPanel> debugPanels = new HashMap<>();
     private static boolean enabled;
     private static float scale = 1;
 
-    private final Text text;
+    private final BitmapText bitmapText;
     private final String systemPropertyName;
     private final RectangleShape bg;
-    private final InteractiveContainer interactiveButton;
+    private final InteractiveGroup interactiveButton;
     private int oldX;
     private int oldY;
     private boolean shiftDown;
@@ -75,7 +76,7 @@ public class DebugPanel extends SimpleContainer {
         final int height = 300;
 
         this.systemPropertyName = systemPropertyName;
-        addEventListener(Event.EXIT_FRAME, this::this_eachFrame);
+        addEventListener(SceneEvent.PostFrame.class, this::this_eachFrame);
 
         buttonList = new ArrayList<>();
         buttonMap = new HashMap<>();
@@ -84,17 +85,17 @@ public class DebugPanel extends SimpleContainer {
         bg.setAlpha(0.75f);
         addChild(bg);
 
-        text = new Text();
+        bitmapText = new BitmapText();
         //text.setBitmapFont(BitmapFont.loadBitmapFont("open-sans/OpenSans-14-Regular"));
-        text.setColor(Color.WHITE);
-        text.setSize(width, height);
-        addChild(text, 1, 1);
+        bitmapText.setColor(Color.WHITE);
+        bitmapText.setSize(width, height);
+        addChild(bitmapText, 1, 1);
 
-        interactiveButton = new InteractiveContainer(width, height);
-        interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
-        interactiveButton.addEventListener(InteractiveEvent.DRAG, this::interactiveButton_drag);
+        interactiveButton = InteractiveGroup.create(width, height);
+        interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);
+        interactiveButton.addEventListener(InputEvent.MouseDrag.class, this::interactiveButton_drag);
 
-        addEventListener(this, Event.ADD_TO_STAGE, this::this_addToStage);
+        addEventListener(this, SceneEvent.AddToScene.class, this::this_addToStage);
 
         addChild(interactiveButton);
 
@@ -130,43 +131,37 @@ public class DebugPanel extends SimpleContainer {
     }
 
     private void this_addToStage(Event event) {
-        removeEventListener(this, Event.ADD_TO_STAGE);
-        D2D2.stage().addEventListener(InteractiveEvent.KEY_DOWN, this::root_keyDown);
-        D2D2.stage().addEventListener(InteractiveEvent.KEY_UP, this::root_keyUp);
+        removeEventListener(this, SceneEvent.AddToScene.class);
+        D2D2.root().addEventListener(InputEvent.KeyDown.class, this::root_keyDown);
+        D2D2.root().addEventListener(InputEvent.KeyUp.class, this::root_keyUp);
     }
 
-    private void root_keyDown(Event event) {
-        var e = (InteractiveEvent) event;
+    private void root_keyDown(InputEvent.KeyDown e) {
         if (KeyCode.isShift(e.getKeyCode())) {
             shiftDown = true;
         }
     }
 
-    private void root_keyUp(Event event) {
-        var e = (InteractiveEvent) event;
+    private void root_keyUp(InputEvent.KeyUp e) {
         if (KeyCode.isShift(e.getKeyCode())) {
             shiftDown = false;
         }
     }
 
-    private void interactiveButton_down(Event event) {
-        var e = (InteractiveEvent) event;
-
-        mouseButton = e.getMouseButton();
+    private void interactiveButton_down(InputEvent.MouseDown e) {
+        mouseButton = e.getButton();
 
         oldX = (int) (e.getX() + getX());
         oldY = (int) (e.getY() + getY());
 
-        Container parent = getParent();
+        Group parent = getParent();
         parent.removeChild(this);
         parent.addChild(this);
 
-        dispatchEvent(event);
+        dispatchEvent(e);
     }
 
-    private void interactiveButton_drag(Event event) {
-        var e = (InteractiveEvent) event;
-
+    private void interactiveButton_drag(InputEvent.MouseDrag e) {
         if (mouseButton == MouseButton.RIGHT) {
             bg.setSize(e.getX() + 1f, e.getY() + 1f);
             if (bg.getWidth() < 5f) {
@@ -176,10 +171,10 @@ public class DebugPanel extends SimpleContainer {
                 bg.setHeight(5f);
             }
 
-            text.setSize(bg.getWidth(), bg.getHeight());
+            bitmapText.setSize(bg.getWidth(), bg.getHeight());
             interactiveButton.setSize(bg.getWidth(), bg.getHeight());
 
-            dispatchEvent(Event.builder().type(Event.RESIZE).build());
+            dispatchEvent(CommonEvent.Resize.create(getWidth(), getHeight()));
 
             return;
         }
@@ -195,13 +190,13 @@ public class DebugPanel extends SimpleContainer {
 
     public void setWidth(float v) {
         bg.setWidth(v);
-        text.setWidth(bg.getWidth());
+        bitmapText.setWidth(bg.getWidth());
         interactiveButton.setWidth(bg.getWidth());
     }
 
     public void setHeight(float v) {
         bg.setHeight(v);
-        text.setHeight(bg.getHeight());
+        bitmapText.setHeight(bg.getHeight());
         interactiveButton.setHeight(bg.getHeight());
     }
 
@@ -225,11 +220,11 @@ public class DebugPanel extends SimpleContainer {
 
     private void this_eachFrame(Event event) {
         if (System.getProperty(systemPropertyName) != null) {
-            text.setText("[" + systemPropertyName + "]\n" + System.getProperty(systemPropertyName));
+            bitmapText.setText("[" + systemPropertyName + "]\n" + System.getProperty(systemPropertyName));
         }
 
         if (bg.getWidth() < 10) bg.setWidth(10);
-        if (text.getWidth() < 10) text.setWidth(10);
+        if (bitmapText.getWidth() < 10) bitmapText.setWidth(10);
     }
 
     private void load() {
@@ -244,10 +239,10 @@ public class DebugPanel extends SimpleContainer {
             String data = o.get("data").getAsString();
 
             bg.setSize(w, h);
-            text.setSize(w, h);
+            bitmapText.setSize(w, h);
             interactiveButton.setSize(w, h);
-            text.setText(data);
-            setXY(x, y);
+            bitmapText.setText(data);
+            setPosition(x, y);
         }
     }
 
@@ -257,7 +252,7 @@ public class DebugPanel extends SimpleContainer {
         o.addProperty("y", getY());
         o.addProperty("w", getWidth());
         o.addProperty("h", getHeight());
-        o.addProperty("data", text.getText());
+        o.addProperty("data", bitmapText.getText());
         saveToFile(file(), o.toString());
     }
 
@@ -268,15 +263,15 @@ public class DebugPanel extends SimpleContainer {
     private static void saveToFile(File file, String string) {
         try {
             Files.writeString(
-                Path.of(file.getAbsolutePath()),
-                string,
-                StandardCharsets.UTF_8,
-                StandardOpenOption.WRITE,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING
+                    Path.of(file.getAbsolutePath()),
+                    string,
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.WRITE,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING
             );
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -284,7 +279,6 @@ public class DebugPanel extends SimpleContainer {
         try {
             return Files.readString(Path.of(file.getAbsolutePath()), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }
@@ -292,11 +286,11 @@ public class DebugPanel extends SimpleContainer {
     @SneakyThrows
     private static File directory() {
         File dir = new File(
-            System.getProperty("user.home")
-                + File.separator
-                + ".d2d2-debug-panel"
-                + File.separator
-                + ApplicationMainClassNameExtractor.getMainClassName()
+                System.getProperty("user.home")
+                        + File.separator
+                        + ".d2d2-debug-panel"
+                        + File.separator
+                        + ApplicationMainClassNameExtractor.getMainClassName()
         );
 
         if (!dir.exists()) {
@@ -340,7 +334,7 @@ public class DebugPanel extends SimpleContainer {
                 debugPanel = new DebugPanel(propertyName);
             }
 
-            D2D2.stage().addChild(debugPanel);
+            D2D2.root().addChild(debugPanel);
             if (propertyName != null) {
                 System.setProperty(propertyName, String.valueOf(value));
             }
@@ -362,20 +356,21 @@ public class DebugPanel extends SimpleContainer {
         private static final float DEFAULT_WIDTH = 50f;
         private static final float DEFAULT_HEIGHT = 12f;
 
-        private final InteractiveContainer interactiveButton;
+        private final InteractiveGroup interactiveButton;
 
         private Runnable pressFunction;
 
         public Button(Object text) {
             super(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK, Color.WHITE);
             setBorderWidth(0.2f);
-            interactiveButton = new InteractiveContainer(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            Text bitmapText = new Text(String.valueOf(text));
+            interactiveButton = InteractiveGroup.create(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            BitmapText bitmapText = new BitmapText();
+            bitmapText.setText(String.valueOf(text));
 
             addChild(interactiveButton);
             addChild(bitmapText, 2, -2);
 
-            interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
+            interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);
         }
 
         private void interactiveButton_down(Event event) {
@@ -387,5 +382,76 @@ public class DebugPanel extends SimpleContainer {
 
     }
 
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class ApplicationMainClassNameExtractor {
+        /**
+         * Retrieves the fully qualified name of the main class of the application.
+         *
+         * @return The fully qualified name of the main class.
+         * @throws ApplicationMainClassNameExtractor.MainClassNameExtractorException if the main class name cannot be extracted reliably.
+         */
+        public static String getMainClassName() throws ApplicationMainClassNameExtractor.MainClassNameExtractorException {
+            Map<Thread, StackTraceElement[]> map = Thread.getAllStackTraces();
+            for (Map.Entry<Thread, StackTraceElement[]> entry : map.entrySet()) {
+                Thread thread = entry.getKey();
+                if (thread.getId() == 1) {
+                    StackTraceElement[] stackTraceElements = entry.getValue();
+                    for (int i = stackTraceElements.length - 1; i >= 0; i--) {
+                        StackTraceElement stackTraceElement = stackTraceElements[i];
+                        if (stackTraceElement.getMethodName().equals("main")) {
+                            return stackTraceElement.getClassName();
+                        }
+                    }
+                }
+            }
+            throw new ApplicationMainClassNameExtractor.MainClassNameExtractorException("Unable to extract application main class name");
+        }
+
+        public static class MainClassNameExtractorException extends RuntimeException {
+
+            public MainClassNameExtractorException(String message) {
+                super(message);
+            }
+        }
+    }
+
+
+    public class MD5 {
+        public static byte[] hash(byte[] bytes) {
+            try {
+                return MessageDigest.getInstance("MD5").digest(bytes);
+            } catch (NoSuchAlgorithmException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+
+        public static String hash(String string) {
+            return bytesToHex(hash(string.getBytes(StandardCharsets.UTF_8)));
+        }
+
+        public static String hashFile(String path) {
+            try {
+                return bytesToHex(hash(Files.readAllBytes(Paths.get(path))));
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public static String hashFile(Path file) {
+            try {
+                return bytesToHex(hash(Files.readAllBytes(file)));
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        public static String bytesToHex(byte[] bytes) {
+            StringBuilder sb = new StringBuilder();
+            for (byte b : bytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        }
+    }
 
 }

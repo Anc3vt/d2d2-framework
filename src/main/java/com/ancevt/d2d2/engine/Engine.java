@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2024 the original author or authors.
+ * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -15,17 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.ancevt.d2d2.engine;
 
-import com.ancevt.d2d2.display.Renderer;
-import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.Font;
-import com.ancevt.d2d2.display.text.TrueTypeFontBuilder;
-import com.ancevt.d2d2.event.EventDispatcher;
+import com.ancevt.d2d2.log.Log;
+import com.ancevt.d2d2.scene.Renderer;
+import com.ancevt.d2d2.scene.Root;
+import com.ancevt.d2d2.scene.text.BitmapFont;
+import com.ancevt.d2d2.scene.text.TrueTypeFontBuilder;
+import com.ancevt.d2d2.event.core.EventDispatcher;
 
 public interface Engine extends EventDispatcher {
 
-    Stage stage();
+    Root root();
 
     void setAlwaysOnTop(boolean b);
 
@@ -53,13 +55,15 @@ public interface Engine extends EventDispatcher {
 
     default boolean isSmoothMode() {return false;}
 
-    Font generateBitmapFont(TrueTypeFontBuilder trueTypeFontBuilder);
+    BitmapFont generateBitmapFont(TrueTypeFontBuilder trueTypeFontBuilder);
 
     void setTimerCheckFrameFrequency(int v);
 
     int getTimerCheckFrameFrequency();
 
     DisplayManager displayManager();
+
+    SoundManager soundManager();
 
     void setCursorXY(int x, int y);
 
@@ -68,4 +72,6 @@ public interface Engine extends EventDispatcher {
     int getCanvasWidth();
 
     int getCanvasHeight();
+
+    Log log();
 }

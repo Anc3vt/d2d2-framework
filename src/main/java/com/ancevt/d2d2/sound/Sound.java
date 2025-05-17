@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2024 the original author or authors.
+ * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -15,13 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.ancevt.d2d2.sound;
 
-import com.ancevt.d2d2.asset.Assets;
+import com.ancevt.d2d2.common.Disposable;
 
-import java.io.InputStream;
-
-public interface Sound {
+public interface Sound extends Disposable {
 
     void play();
 
@@ -36,32 +35,4 @@ public interface Sound {
     void setPan(float pan);
 
     float getPan();
-
-    static Sound loadSound(InputStream inputStream) {
-        return new SampledSound(inputStream);
-    }
-
-
-    static Sound lookupSound(String path) {
-        Sound sound = SoundCache.sounds.get(path);
-        if (sound == null) {
-            sound = new SampledSound(path);
-            SoundCache.sounds.put(path, sound);
-        }
-        return sound;
-    }
-
-    static Sound lookupSoundAsset(String path) {
-        Sound sound = SoundCache.sounds.get(':' + path);
-        if (sound == null) {
-            sound = new SampledSound(Assets.getAsset(path));
-            SoundCache.sounds.put(':' + path, sound);
-        }
-        return sound;
-    }
-
-    static void clearCache() {
-        SoundCache.sounds.clear();
-    }
-
 }

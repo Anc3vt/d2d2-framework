@@ -1,99 +1,108 @@
 /**
- * Copyright (C) 2024 the original author or authors.
+ * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.ancevt.d2d2;
 
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapFontManager;
-import com.ancevt.d2d2.display.texture.TextureManager;
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
-import com.ancevt.d2d2.engine.norender.NoRenderEngine;
-import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.engine.SoundManager;
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
-import com.ancevt.d2d2.lifecycle.SystemProperties;
-import com.ancevt.util.args.Args;
+import com.ancevt.d2d2.log.Log;
+import com.ancevt.d2d2.scene.Node;
+import com.ancevt.d2d2.scene.Root;
+import com.ancevt.d2d2.scene.text.BitmapFontManager;
+import com.ancevt.d2d2.scene.texture.TextureManager;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
-
-import static com.ancevt.commons.string.ConvertableString.convert;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class D2D2 {
-    private static final String PROPERTIES_FILENAME = "application.properties";
-
     private static final TextureManager textureManager = new TextureManager();
 
     private static BitmapFontManager bitmapFontManager;
 
     @Getter
-    private static DisplayObject cursor;
+    private static Node cursor;
     private static Engine engine;
 
     @Getter
-    private static Args args;
+    private static D2D2Application application;
 
-    public static void init(Class<? extends D2D2Application> d2d2EntryPointClass, String[] args) {
-        D2D2.args = Args.of(args);
+    @Getter
+    private static D2D2Config config;
 
-        readPropertyFileIfExist();
-        addCliArgsToSystemProperties(args);
+    private static boolean noScaleMode;
 
-        Properties p = System.getProperties();
-        String engineClassName = p.getProperty(SystemProperties.D2D2_ENGINE, NoRenderEngine.class.getName());
-        String titleText = p.getProperty(SystemProperties.D2D2_WINDOW_TITLE, "D2D2 Application");
-        int width = convert(p.getProperty(SystemProperties.D2D2_WINDOW_WIDTH, "800")).toInt();
-        int height = convert(p.getProperty(SystemProperties.D2D2_WINDOW_HEIGHT, "600")).toInt();
-        Engine engine = createEngine(engineClassName, width, height, titleText);
+    public static Log log;
 
-        Stage stage = D2D2.createStage(engine);
-        D2D2Application entryPoint = createMain(d2d2EntryPointClass);
-        entryPoint.onCreate(stage);
-        D2D2.loop();
-        entryPoint.onDispose();
+    public static void init(D2D2Application application, D2D2Config config) {
+        D2D2.application = application;
+        D2D2.config = config;
+        addPropertiesToSystemProperties(config.asMap());
+
+        int width = config.getOrDefault(D2D2Config.WIDTH, 800);
+        int height = config.getOrDefault(D2D2Config.HEIGHT, 600);
+        String title = config.getOrDefault(D2D2Config.TITLE, "D2D2 Application");
+        boolean noScaleMode = config.getOrDefault(D2D2Config.NO_SCALE_MODE, false);
+        String engineClassName = config.getOrDefault(D2D2Config.ENGINE, "com.ancevt.d2d2.engine.lwjgl.LwjglEngine");
+
+        Engine engine = createEngine(engineClassName, width, height, title);
+
+        log = engine.log();
+
+        log.info(D2D2.class, "D2D2 initialized with engine: <b>%s<>".formatted(engine.getClass().getName()));
+
+        Root root = createRoot(engine);
+
+        setNoScaleMode(noScaleMode);
+        application.start(root);
+        startMainLoop();
+        application.shutdown();
     }
 
-    public static Stage createStage(Engine engine) {
+    private static void addPropertiesToSystemProperties(Map<String, String> properties) {
+        properties.forEach((key, value) -> {
+            System.setProperty(key, value);
+            System.err.printf("D2D2: %s=%s%n", key, value);
+        });
+    }
+
+    private static Root createRoot(Engine engine) {
         bitmapFontManager = new BitmapFontManager();
         D2D2.engine = engine;
         engine.create();
-        return engine.stage();
+        return engine.root();
     }
 
-    public static D2D2Application createMain(Class<? extends D2D2Application> clazz) {
-        try {
-            return clazz.getConstructor().newInstance();
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public static Engine createEngine(String engineClassName, int width, int height, String titleText) {
+    private static Engine createEngine(String engineClassName, int width, int height, String titleText) {
         try {
             Engine engine = (Engine) Class.forName(engineClassName)
-                .getConstructor(int.class, int.class, String.class)
-                .newInstance(width, height, titleText);
+                    .getConstructor(int.class, int.class, String.class)
+                    .newInstance(width, height, titleText);
 
             return engine;
         } catch (ReflectiveOperationException e) {
@@ -101,10 +110,12 @@ public final class D2D2 {
         }
     }
 
-    private static void readPropertyFileIfExist() {
+    private static void readPropertyFileIfExist(String propertiesResourceFileName) {
+        if (propertiesResourceFileName == null) return;
+
         InputStream inputStream = D2D2.class
-            .getClassLoader()
-            .getResourceAsStream(PROPERTIES_FILENAME);
+                .getClassLoader()
+                .getResourceAsStream(propertiesResourceFileName);
 
         if (inputStream != null) {
             try {
@@ -114,6 +125,8 @@ public final class D2D2 {
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }
+        } else {
+            System.err.printf("Property file %s not found%n", propertiesResourceFileName);
         }
     }
 
@@ -129,25 +142,25 @@ public final class D2D2 {
         }
     }
 
-    public static void setCursor(DisplayObject cursor) {
+    public static void setCursor(Node cursor) {
         if (cursor == D2D2.cursor) return;
 
         if (cursor != null) {
             Mouse.setVisible(false);
-            cursor.removeEventListener(Mouse.class, Event.LOOP_UPDATE);
-            cursor.addEventListener(Mouse.class, Event.LOOP_UPDATE, event -> cursor.setXY(Mouse.getX(), Mouse.getY()));
+            cursor.removeEventListener(Mouse.class, SceneEvent.Tick.class);
+            cursor.addEventListener(Mouse.class, SceneEvent.Tick.class, event -> cursor.setPosition(Mouse.getX(), Mouse.getY()));
         } else {
             Mouse.setVisible(true);
-            D2D2.cursor.removeEventListener(Mouse.class, Event.LOOP_UPDATE);
+            D2D2.cursor.removeEventListener(Mouse.class, SceneEvent.Tick.class);
         }
         D2D2.cursor = cursor;
     }
 
-    public static Stage stage() {
-        return engine.stage();
+    public static Root root() {
+        return engine.root();
     }
 
-    public static void loop() {
+    private static void startMainLoop() {
         engine.start();
     }
 
@@ -169,6 +182,25 @@ public final class D2D2 {
 
     public static DisplayManager displayManager() {
         return engine.displayManager();
+    }
+
+    public static SoundManager soundManager() {
+        return engine().soundManager();
+    }
+
+    public static void setNoScaleMode(boolean noScaleMode) {
+        D2D2.noScaleMode = noScaleMode;
+
+        engine().removeEventListener(D2D2.class, CommonEvent.Resize.class);
+        if (noScaleMode) {
+            engine().addEventListener(D2D2.class, CommonEvent.Resize.class, e ->
+                    root().setSize(engine().getCanvasWidth(), engine().getCanvasHeight())
+            );
+        }
+    }
+
+    public static boolean isNoScaleMode() {
+        return noScaleMode;
     }
 
 }

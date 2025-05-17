@@ -1,60 +1,59 @@
 /**
- * Copyright (C) 2024 the original author or authors.
+ * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.shape.BorderedRectangle;
 import com.ancevt.d2d2.common.Disposable;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.Colored;
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.Resizable;
-import com.ancevt.d2d2.display.text.Text;
-import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.core.Event;
+import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.scene.*;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.scene.text.BitmapText;
 
-public class DebugBorder extends SimpleContainer implements Resizable, Colored, Disposable {
+public class DebugBorder extends BasicGroup implements Resizable, Colored, Disposable {
 
     private final BorderedRectangle borderedRectangle;
-    private final DisplayObject displayObject;
-    private final Text label;
+    private final Node node;
+    private final BitmapText label;
 
     private boolean disposed;
 
-    private DebugBorder(DisplayObject displayObject) {
+    private DebugBorder(Node node) {
         Color color = Color.createVisibleRandomColor();
 
-        this.displayObject = displayObject;
-        borderedRectangle = new BorderedRectangle(displayObject.getWidth(),
-            displayObject.getHeight(),
-            Color.NO_COLOR,
-            color
+        this.node = node;
+        borderedRectangle = new BorderedRectangle(node.getWidth(),
+                node.getHeight(),
+                Color.NO_COLOR,
+                color
         );
 
         addChild(borderedRectangle);
 
-        label = new Text();
-        label.setText(displayObject.getDisplayObjectId() + " " + displayObject.getName());
+        label = new BitmapText();
+        label.setText(node.getNodeId() + " " + node.getName());
         label.setAutosize(true);
         addChild(label, 2, -label.getHeight());
 
-        displayObject.addEventListener(this, Event.ADD_TO_STAGE, this::displayObject_addToStage);
-        displayObject.addEventListener(this, Event.REMOVE_FROM_STAGE, this::displayObject_removeFromStage);
+        node.addEventListener(this, SceneEvent.AddToScene.class, this::displayObject_addToStage);
+        node.addEventListener(this, SceneEvent.RemoveFromScene.class, this::displayObject_removeFromStage);
     }
 
     private void displayObject_removeFromStage(Event event) {
@@ -62,7 +61,7 @@ public class DebugBorder extends SimpleContainer implements Resizable, Colored, 
     }
 
     private void displayObject_addToStage(Event event) {
-        D2D2.stage().addChild(this);
+        D2D2.root().addChild(this);
     }
 
     @Override
@@ -92,17 +91,17 @@ public class DebugBorder extends SimpleContainer implements Resizable, Colored, 
     }
 
     @Override
-    public void onEnterFrame() {
-        setXY(displayObject.getAbsoluteX(), displayObject.getAbsoluteY());
-        setSize(displayObject.getWidth(), displayObject.getHeight());
-        setScale(displayObject.getAbsoluteScaleX(), displayObject.getAbsoluteScaleY());
-        setRotation(displayObject.getAbsoluteRotation());
+    public void preFrame() {
+        setPosition(node.getGlobalX(), node.getGlobalY());
+        setSize(node.getWidth(), node.getHeight());
+        setScale(node.getGlobalScaleX(), node.getGlobalScaleY());
+        setRotation(node.getGlobalRotation());
     }
 
     @Override
     public void dispose() {
-        displayObject.removeEventListener(this, Event.ADD_TO_STAGE);
-        displayObject.removeEventListener(this, Event.REMOVE_FROM_STAGE);
+        node.removeEventListener(this, SceneEvent.AddToScene.class);
+        node.removeEventListener(this, SceneEvent.RemoveFromScene.class);
         removeFromParent();
         disposed = true;
     }
@@ -112,10 +111,10 @@ public class DebugBorder extends SimpleContainer implements Resizable, Colored, 
         return disposed;
     }
 
-    public static DebugBorder create(DisplayObject displayObject) {
-        DebugBorder debugBorder = new DebugBorder(displayObject);
-        if (displayObject.isOnScreen()) {
-            D2D2.stage().addChild(debugBorder);
+    public static DebugBorder create(Node node) {
+        DebugBorder debugBorder = new DebugBorder(node);
+        if (node.isOnScreen()) {
+            D2D2.root().addChild(debugBorder);
         }
         return debugBorder;
     }
