@@ -25,7 +25,7 @@ import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
-import com.ancevt.d2d2.log.Log;
+import com.ancevt.d2d2.log.Logger;
 import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.text.BitmapFontManager;
@@ -57,7 +57,7 @@ public final class D2D2 {
 
     private static boolean noScaleMode;
 
-    public static Log log;
+    public static Logger log;
 
     public static void init(D2D2Application application, D2D2Config config) {
         D2D2.application = application;
@@ -72,7 +72,7 @@ public final class D2D2 {
 
         Engine engine = createEngine(engineClassName, width, height, title);
 
-        log = engine.log();
+        log = engine.createLogger();
 
         log.info(D2D2.class, "D2D2 initialized with engine: <b>%s<>".formatted(engine.getClass().getName()));
 

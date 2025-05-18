@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.engine;
 
-import com.ancevt.d2d2.log.Log;
+import com.ancevt.d2d2.log.Logger;
 import com.ancevt.d2d2.scene.Renderer;
 import com.ancevt.d2d2.scene.Root;
 import com.ancevt.d2d2.scene.text.BitmapFont;
@@ -73,5 +73,5 @@ public interface Engine extends EventDispatcher {
 
     int getCanvasHeight();
 
-    Log log();
+    Logger createLogger();
 }

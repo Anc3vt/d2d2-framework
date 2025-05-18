@@ -39,7 +39,7 @@ public class TextureManager {
 
     @Getter
     @Setter
-    private ITextureEngine textureEngine;
+    private TextureEngine textureEngine;
 
     public TextureManager() {
         textureRegions = new HashMap<>();

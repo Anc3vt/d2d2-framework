@@ -23,7 +23,7 @@ import com.ancevt.d2d2.scene.text.BitmapText;
 import java.io.InputStream;
 
 // TODO: refactor and delete this interface
-public interface ITextureEngine {
+public interface TextureEngine {
 
     boolean bind(Texture texture);
 

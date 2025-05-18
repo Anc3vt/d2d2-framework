@@ -49,8 +49,6 @@ public interface DisplayManager {
 
     void focusWindow();
 
-    long getWindowId();
-
     void setMouseVisible(boolean mouseVisible);
 
     boolean isMouseVisible();
