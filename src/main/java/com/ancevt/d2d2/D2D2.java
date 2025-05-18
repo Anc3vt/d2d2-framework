@@ -72,7 +72,7 @@ public final class D2D2 {
 
         Engine engine = createEngine(engineClassName, width, height, title);
 
-        log = engine.createLogger();
+        log = engine.logger();
 
         log.info(D2D2.class, "D2D2 initialized with engine: <b>%s<>".formatted(engine.getClass().getName()));
 

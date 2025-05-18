@@ -73,5 +73,5 @@ public interface Engine extends EventDispatcher {
 
     int getCanvasHeight();
 
-    Logger createLogger();
+    Logger logger();
 }
