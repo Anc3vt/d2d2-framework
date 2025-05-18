@@ -61,7 +61,7 @@ public class BasicGroup extends AbstractNode implements Group {
             placeBy(child, placeBy);
         }
 
-        Root.dispatchAddToStage(child);
+        Stage.dispatchAddToStage(child);
     }
 
 
@@ -110,7 +110,7 @@ public class BasicGroup extends AbstractNode implements Group {
 
     @Override
     public void removeChild(Node child) {
-        Root.dispatchRemoveFromStage(child);
+        Stage.dispatchRemoveFromStage(child);
         if (child instanceof AbstractNode d) d.setParent(null);
         child.dispatchEvent(SceneEvent.Remove.create(this));
         children.remove(child);

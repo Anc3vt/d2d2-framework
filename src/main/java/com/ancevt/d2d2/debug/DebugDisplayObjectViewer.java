@@ -26,7 +26,7 @@ import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
 import com.ancevt.d2d2.scene.Node;
-import com.ancevt.d2d2.scene.Root;
+import com.ancevt.d2d2.scene.Stage;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.BitmapText;
@@ -92,14 +92,14 @@ public class DebugDisplayObjectViewer {
     }
 
     public Group getTargetGroup() {
-        if (targetGroup == null) targetGroup = D2D2.root();
+        if (targetGroup == null) targetGroup = D2D2.stage();
         return targetGroup;
     }
 
     public void show() {
-        RectangleShape rectangleShape = new RectangleShape(D2D2.root().getWidth(), D2D2.root().getHeight(), Color.BLACK);
+        RectangleShape rectangleShape = new RectangleShape(D2D2.stage().getWidth(), D2D2.stage().getHeight(), Color.BLACK);
         rectangleShape.setAlpha(0.5f);
-        D2D2.root().addChild(rectangleShape);
+        D2D2.stage().addChild(rectangleShape);
         sceneEntities.add(rectangleShape);
 
         show(getTargetGroup(), -1);
@@ -120,14 +120,14 @@ public class DebugDisplayObjectViewer {
                         o.getHeight() * o.getGlobalY(),
                         null,
                         color);
-                D2D2.root().addChild(borderedRectangle, o.getGlobalX(), o.getGlobalY());
+                D2D2.stage().addChild(borderedRectangle, o.getGlobalX(), o.getGlobalY());
 
                 BitmapText bitmapText = BitmapText.create();
                 bitmapText.setText(o.getName());
                 bitmapText.setColor(color);
                 bitmapText.setRotation(-20);
 
-                D2D2.root().addChild(bitmapText, o.getGlobalX(), o.getGlobalY());
+                D2D2.stage().addChild(bitmapText, o.getGlobalX(), o.getGlobalY());
 
                 sceneEntities.add(borderedRectangle);
                 sceneEntities.add(bitmapText);
@@ -158,7 +158,7 @@ public class DebugDisplayObjectViewer {
         if (keyListenerEnabled == b) return this;
         keyListenerEnabled = b;
 
-        Root s = D2D2.root();
+        Stage s = D2D2.stage();
 
         s.removeEventListener(this, InputEvent.KeyDown.class);
         s.removeEventListener(this, InputEvent.KeyUp.class);

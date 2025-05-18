@@ -24,12 +24,12 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.BasicGroup;
-import com.ancevt.d2d2.scene.Root;
+import com.ancevt.d2d2.scene.Stage;
 import com.ancevt.d2d2.scene.Sprite;
 import lombok.Getter;
 import lombok.Setter;
 
-import static com.ancevt.d2d2.D2D2.root;
+import static com.ancevt.d2d2.D2D2.stage;
 
 public class StarletSpace extends BasicGroup {
 
@@ -43,13 +43,13 @@ public class StarletSpace extends BasicGroup {
 
     public StarletSpace(int count) {
         for (int i = 0; i < count; i++) {
-            createStarlet().setX((float) (Math.random() * root().getWidth()));
+            createStarlet().setX((float) (Math.random() * stage().getWidth()));
         }
     }
 
     private Starlet createStarlet() {
         Starlet starlet = new Starlet(this);
-        starlet.setPosition(root().getWidth() + 16, (float) (Math.random() * root().getHeight()));
+        starlet.setPosition(stage().getWidth() + 16, (float) (Math.random() * stage().getHeight()));
         addChild(starlet);
         return starlet;
     }
@@ -61,7 +61,7 @@ public class StarletSpace extends BasicGroup {
     public static StarletSpace haveFun(boolean logo) {
         if (starletSpace != null) starletSpace.removeFromParent();
 
-        Root stage = root();
+        Stage stage = stage();
         stage.setBackgroundColor(Color.of(0x000510));
         Sprite d2d2Title = Sprite.load("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
         d2d2Title.setColor(Color.LIGHT_GRAY);
@@ -136,21 +136,21 @@ public class StarletSpace extends BasicGroup {
 
 
             if (getX() < -16.0f) {
-                setX(root().getWidth() + 16);
-                setY((float) (root().getHeight() * Math.random()));
+                setX(stage().getWidth() + 16);
+                setY((float) (stage().getHeight() * Math.random()));
             }
 
-            if (getX() > root().getWidth() + 16.0f) {
+            if (getX() > stage().getWidth() + 16.0f) {
                 setX(-16.0f);
-                setY((float) (root().getHeight() * Math.random()));
+                setY((float) (stage().getHeight() * Math.random()));
             }
             if (getY() < -16.0f) {
-                setY((float) (root().getWidth() * Math.random()));
-                setY(root().getHeight() + 16);
+                setY((float) (stage().getWidth() * Math.random()));
+                setY(stage().getHeight() + 16);
             }
 
-            if (getY() > root().getHeight() + 16.0f) {
-                setY((float) (root().getWidth() * Math.random()));
+            if (getY() > stage().getHeight() + 16.0f) {
+                setY((float) (stage().getWidth() * Math.random()));
                 setY(-16.0f);
             }
         }

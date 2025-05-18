@@ -59,11 +59,11 @@ public class DebugLabel extends BitmapText {
                 setText(out.toString());
 
                 setPosition(target.getGlobalX(), target.getGlobalY());
-                D2D2.root().addChild(this);
+                D2D2.stage().addChild(this);
             }
         });
 
-        D2D2.root().addChild(this);
+        D2D2.stage().addChild(this);
         labels.put(target, this);
     }
 

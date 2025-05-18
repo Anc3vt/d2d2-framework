@@ -28,7 +28,7 @@ final class GlobalMetrics {
         float result = accumulator.apply(null, 0f);
         Group parent = node.getParent();
 
-        while (parent != null && !(parent instanceof Root)) {
+        while (parent != null && !(parent instanceof Stage)) {
             result = accumulator.apply(parent, result);
             parent = parent.getParent();
         }
@@ -83,7 +83,7 @@ final class GlobalMetrics {
 
         if (!node.isVisible()) return false;
 
-        while (parent != null && !(parent instanceof Root)) {
+        while (parent != null && !(parent instanceof Stage)) {
             if (!parent.isVisible()) return false;
             parent = parent.getParent();
         }

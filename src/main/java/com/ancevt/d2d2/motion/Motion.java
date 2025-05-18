@@ -62,14 +62,14 @@ public class Motion<N extends Number> extends EventDispatcherImpl {
     }
 
     public void start() {
-        D2D2.root().removeEventListener(this, SceneEvent.Tick.class);
-        D2D2.root().addEventListener(this, SceneEvent.Tick.class, this::stage_loopUpdate);
+        D2D2.stage().removeEventListener(this, SceneEvent.Tick.class);
+        D2D2.stage().addEventListener(this, SceneEvent.Tick.class, this::stage_loopUpdate);
         dispatchEvent(CommonEvent.Start.create());
         state = IN_PROCESS;
     }
 
     public void stop() {
-        D2D2.root().removeEventListener(this, SceneEvent.Tick.class);
+        D2D2.stage().removeEventListener(this, SceneEvent.Tick.class);
     }
 
     private void stage_loopUpdate(Event event) {

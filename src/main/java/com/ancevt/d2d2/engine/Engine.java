@@ -20,14 +20,14 @@ package com.ancevt.d2d2.engine;
 
 import com.ancevt.d2d2.log.Logger;
 import com.ancevt.d2d2.scene.Renderer;
-import com.ancevt.d2d2.scene.Root;
+import com.ancevt.d2d2.scene.Stage;
 import com.ancevt.d2d2.scene.text.BitmapFont;
-import com.ancevt.d2d2.scene.text.TrueTypeFontBuilder;
+import com.ancevt.d2d2.scene.text.FontBuilder;
 import com.ancevt.d2d2.event.core.EventDispatcher;
 
 public interface Engine extends EventDispatcher {
 
-    Root root();
+    Stage stage();
 
     void setAlwaysOnTop(boolean b);
 
@@ -55,7 +55,7 @@ public interface Engine extends EventDispatcher {
 
     default boolean isSmoothMode() {return false;}
 
-    BitmapFont generateBitmapFont(TrueTypeFontBuilder trueTypeFontBuilder);
+    BitmapFont generateBitmapFont(FontBuilder fontBuilder);
 
     void setTimerCheckFrameFrequency(int v);
 

@@ -132,8 +132,8 @@ public class DebugPanel extends BasicGroup {
 
     private void this_addToStage(Event event) {
         removeEventListener(this, SceneEvent.AddToScene.class);
-        D2D2.root().addEventListener(InputEvent.KeyDown.class, this::root_keyDown);
-        D2D2.root().addEventListener(InputEvent.KeyUp.class, this::root_keyUp);
+        D2D2.stage().addEventListener(InputEvent.KeyDown.class, this::root_keyDown);
+        D2D2.stage().addEventListener(InputEvent.KeyUp.class, this::root_keyUp);
     }
 
     private void root_keyDown(InputEvent.KeyDown e) {
@@ -334,7 +334,7 @@ public class DebugPanel extends BasicGroup {
                 debugPanel = new DebugPanel(propertyName);
             }
 
-            D2D2.root().addChild(debugPanel);
+            D2D2.stage().addChild(debugPanel);
             if (propertyName != null) {
                 System.setProperty(propertyName, String.valueOf(value));
             }

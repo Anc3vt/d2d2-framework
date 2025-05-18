@@ -27,7 +27,7 @@ import java.nio.file.Path;
 
 import static com.ancevt.d2d2.scene.text.CharSource.*;
 
-public class TrueTypeFontBuilder {
+public class FontBuilder {
 
     private static final int DEFAULT_WIDTH = 512;
     private static final int DEFAULT_HEIGHT = 512;
@@ -91,96 +91,96 @@ public class TrueTypeFontBuilder {
             //, CHINESE
     );
 
-    public TrueTypeFontBuilder charSourceString(String charSourceString) {
+    public FontBuilder charSourceString(String charSourceString) {
         this.charSourceString = charSourceString;
         return this;
     }
 
-    public TrueTypeFontBuilder name(String name) {
+    public FontBuilder name(String name) {
         this.name = name;
         return this;
     }
 
-    public TrueTypeFontBuilder bold(boolean bold) {
+    public FontBuilder bold(boolean bold) {
         this.bold = bold;
         return this;
     }
 
-    public TrueTypeFontBuilder offsetX(int offsetX) {
+    public FontBuilder offsetX(int offsetX) {
         this.offsetX = offsetX;
         return this;
     }
 
-    public TrueTypeFontBuilder offsetY(int offsetY) {
+    public FontBuilder offsetY(int offsetY) {
         this.offsetY = offsetY;
         return this;
     }
 
-    public TrueTypeFontBuilder filePath(String filePath) {
+    public FontBuilder filePath(String filePath) {
         return filePath(Path.of(filePath));
     }
 
-    public TrueTypeFontBuilder filePath(Path filePath) {
+    public FontBuilder filePath(Path filePath) {
         this.filePath = filePath;
         return this;
     }
 
-    public TrueTypeFontBuilder atlasWidth(int atlasWidth) {
+    public FontBuilder atlasWidth(int atlasWidth) {
         this.atlasWidth = atlasWidth;
         return this;
     }
 
-    public TrueTypeFontBuilder atlasHeight(int atlasHeight) {
+    public FontBuilder atlasHeight(int atlasHeight) {
         this.atlasHeight = atlasHeight;
         return this;
     }
 
-    public TrueTypeFontBuilder assetPath(String assetPath) {
+    public FontBuilder assetPath(String assetPath) {
         this.assetPath = assetPath;
         return inputStream(Assets.getAsset(assetPath).getInputStream());
     }
 
-    public TrueTypeFontBuilder inputStream(InputStream inputStream) {
+    public FontBuilder inputStream(InputStream inputStream) {
         this.inputStream = inputStream;
         return this;
     }
 
-    public TrueTypeFontBuilder fontSize(int fontSize) {
+    public FontBuilder fontSize(int fontSize) {
         this.fontSize = fontSize;
         return this;
     }
 
-    public TrueTypeFontBuilder textAntialias(boolean textAntialiasOn) {
+    public FontBuilder textAntialias(boolean textAntialiasOn) {
         this.textAntialiasOn = textAntialiasOn;
         return this;
     }
 
-    public TrueTypeFontBuilder withHintTextAntialiasGasp() {
+    public FontBuilder withHintTextAntialiasGasp() {
         this.textAntialiasGasp = true;
         return this;
     }
 
-    public TrueTypeFontBuilder withHintTextAntialiasLcdHrgb() {
+    public FontBuilder withHintTextAntialiasLcdHrgb() {
         this.textAntialiasLcdHrgb = true;
         return this;
     }
 
-    public TrueTypeFontBuilder withHintTextAntialiasLcdHbgr() {
+    public FontBuilder withHintTextAntialiasLcdHbgr() {
         this.textAntialiasLcdHbgr = true;
         return this;
     }
 
-    public TrueTypeFontBuilder withHintTextAntialiasLcdVrgb() {
+    public FontBuilder withHintTextAntialiasLcdVrgb() {
         this.textAntialiasLcdVrgb = true;
         return this;
     }
 
-    public TrueTypeFontBuilder withHintTextAntialiasLcdVbgr() {
+    public FontBuilder withHintTextAntialiasLcdVbgr() {
         this.textAntialiasLcdVbgr = true;
         return this;
     }
 
-    public TrueTypeFontBuilder fractionalMetrics(FractionalMetrics fractionalMetrics) {
+    public FontBuilder fractionalMetrics(FractionalMetrics fractionalMetrics) {
         this.fractionalMetrics = fractionalMetrics;
         return this;
     }
@@ -189,12 +189,12 @@ public class TrueTypeFontBuilder {
         return fractionalMetrics;
     }
 
-    public TrueTypeFontBuilder spacingX(int spacingX) {
+    public FontBuilder spacingX(int spacingX) {
         this.spacingX = spacingX;
         return this;
     }
 
-    public TrueTypeFontBuilder spacingY(int spacingY) {
+    public FontBuilder spacingY(int spacingY) {
         this.spacingY = spacingY;
         return this;
     }

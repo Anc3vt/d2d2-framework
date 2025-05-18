@@ -27,7 +27,7 @@ import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
 import com.ancevt.d2d2.log.Logger;
 import com.ancevt.d2d2.scene.Node;
-import com.ancevt.d2d2.scene.Root;
+import com.ancevt.d2d2.scene.Stage;
 import com.ancevt.d2d2.scene.text.BitmapFontManager;
 import com.ancevt.d2d2.scene.texture.TextureManager;
 import lombok.AccessLevel;
@@ -76,10 +76,10 @@ public final class D2D2 {
 
         log.info(D2D2.class, "D2D2 initialized with engine: <b>%s<>".formatted(engine.getClass().getName()));
 
-        Root root = createRoot(engine);
+        Stage stage = createStage(engine);
 
         setNoScaleMode(noScaleMode);
-        application.start(root);
+        application.start(stage);
         startMainLoop();
         application.shutdown();
     }
@@ -91,20 +91,18 @@ public final class D2D2 {
         });
     }
 
-    private static Root createRoot(Engine engine) {
+    private static Stage createStage(Engine engine) {
         bitmapFontManager = new BitmapFontManager();
         D2D2.engine = engine;
         engine.create();
-        return engine.root();
+        return engine.stage();
     }
 
     private static Engine createEngine(String engineClassName, int width, int height, String titleText) {
         try {
-            Engine engine = (Engine) Class.forName(engineClassName)
+            return (Engine) Class.forName(engineClassName)
                     .getConstructor(int.class, int.class, String.class)
                     .newInstance(width, height, titleText);
-
-            return engine;
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException(e);
         }
@@ -156,8 +154,8 @@ public final class D2D2 {
         D2D2.cursor = cursor;
     }
 
-    public static Root root() {
-        return engine.root();
+    public static Stage stage() {
+        return engine.stage();
     }
 
     private static void startMainLoop() {
@@ -194,7 +192,7 @@ public final class D2D2 {
         engine().removeEventListener(D2D2.class, CommonEvent.Resize.class);
         if (noScaleMode) {
             engine().addEventListener(D2D2.class, CommonEvent.Resize.class, e ->
-                    root().setSize(engine().getCanvasWidth(), engine().getCanvasHeight())
+                    stage().setSize(engine().getCanvasWidth(), engine().getCanvasHeight())
             );
         }
     }

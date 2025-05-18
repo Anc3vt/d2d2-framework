@@ -137,7 +137,7 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
         Group currentParent = getParent();
 
         while (currentParent != null) {
-            if (currentParent instanceof Root) return true;
+            if (currentParent instanceof Stage) return true;
             currentParent = currentParent.getParent();
         }
 

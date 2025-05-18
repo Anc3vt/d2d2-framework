@@ -61,7 +61,7 @@ public class DebugBorder extends BasicGroup implements Resizable, Colored, Dispo
     }
 
     private void displayObject_addToStage(Event event) {
-        D2D2.root().addChild(this);
+        D2D2.stage().addChild(this);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class DebugBorder extends BasicGroup implements Resizable, Colored, Dispo
     public static DebugBorder create(Node node) {
         DebugBorder debugBorder = new DebugBorder(node);
         if (node.isOnScreen()) {
-            D2D2.root().addChild(debugBorder);
+            D2D2.stage().addChild(debugBorder);
         }
         return debugBorder;
     }
