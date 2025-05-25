@@ -86,7 +86,8 @@ public class BasicSprite extends AbstractNode implements Sprite {
     public void setTextureRegion(TextureRegion value) {
         this.textureRegion = value;
         if (textureRegion != null && textureRegion.getTexture().isDisposed()) {
-            throw new IllegalStateException("Texture " + textureRegion.getTexture().getId() + " is disposed");
+            //TODO: uncomment following:
+            //throw new IllegalStateException("Texture " + textureRegion.getTexture().getId() + " is disposed");
         }
     }
 
