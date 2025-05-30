@@ -27,7 +27,9 @@ import com.ancevt.d2d2.event.core.EventDispatcher;
 
 public interface Engine extends EventDispatcher {
 
-    Stage stage();
+    void create();
+
+    Stage getStage();
 
     void setAlwaysOnTop(boolean b);
 
@@ -38,8 +40,6 @@ public interface Engine extends EventDispatcher {
     int getFrameRate();
 
     int getActualFps();
-
-    void create();
 
     void start();
 

@@ -158,17 +158,17 @@ public interface Node extends EventDispatcher {
     }
 
     @SuppressWarnings("unchecked")
-    default EventLink<SceneEvent.Tick> tick(EventListener<SceneEvent.Tick> listener) {
+    default EventLink<SceneEvent.Tick> onTick(EventListener<SceneEvent.Tick> listener) {
         return (EventLink<SceneEvent.Tick>) on(SceneEvent.Tick.class, listener);
     }
 
     @SuppressWarnings("unchecked")
-    default EventLink<SceneEvent.PreFrame> preFrame(EventListener<SceneEvent.PreFrame> listener) {
+    default EventLink<SceneEvent.PreFrame> onPreFrame(EventListener<SceneEvent.PreFrame> listener) {
         return (EventLink<SceneEvent.PreFrame>) on(SceneEvent.PreFrame.class, listener);
     }
 
     @SuppressWarnings("unchecked")
-    default EventLink<SceneEvent.PostFrame> postFrame(EventListener<SceneEvent.PostFrame> listener) {
+    default EventLink<SceneEvent.PostFrame> onPostFrame(EventListener<SceneEvent.PostFrame> listener) {
         return (EventLink<SceneEvent.PostFrame>) on(SceneEvent.PostFrame.class, listener);
     }
 

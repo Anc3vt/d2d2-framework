@@ -42,24 +42,13 @@ public class BitmapFontManager {
 
     private final Map<String, BitmapFont> bitmapFontMap;
 
-    @Getter
-    private final BitmapFont defaultBitmapFont;
+    @Getter //TODO: make final
+    private BitmapFont defaultBitmapFont;
 
     public BitmapFontManager() {
         bitmapFontMap = new HashMap<>();
 
         defaultBitmapFont = loadBitmapFont(DEFAULT_BITMAP_FONT + ".png", DEFAULT_BITMAP_FONT + ".bmf");
-    }
-
-    private static String convertToString(InputStream inputStream) throws IOException {
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        while ((line = bufferedReader.readLine()) != null) {
-            stringBuilder.append(line);
-        }
-        bufferedReader.close();
-        return stringBuilder.toString();
     }
 
     public BitmapFont loadBitmapFont(InputStream charsDataInputStream, InputStream pngInputStream, String name) {
@@ -108,7 +97,6 @@ public class BitmapFontManager {
         }
 
         BitmapFont bitmapFont = new BitmapFont(name, D2D2.textureManager().loadTexture(pngInputStream), charInfos);
-
         bitmapFontMap.put(name, bitmapFont);
 
         return bitmapFont;

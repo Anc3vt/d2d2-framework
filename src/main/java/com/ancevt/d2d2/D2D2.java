@@ -34,10 +34,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
-import java.util.Properties;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class D2D2 {
@@ -95,7 +92,7 @@ public final class D2D2 {
         bitmapFontManager = new BitmapFontManager();
         D2D2.engine = engine;
         engine.create();
-        return engine.stage();
+        return engine.getStage();
     }
 
     private static Engine createEngine(String engineClassName, int width, int height, String titleText) {
@@ -105,38 +102,6 @@ public final class D2D2 {
                     .newInstance(width, height, titleText);
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException(e);
-        }
-    }
-
-    private static void readPropertyFileIfExist(String propertiesResourceFileName) {
-        if (propertiesResourceFileName == null) return;
-
-        InputStream inputStream = D2D2.class
-                .getClassLoader()
-                .getResourceAsStream(propertiesResourceFileName);
-
-        if (inputStream != null) {
-            try {
-                Properties properties = new Properties();
-                properties.load(inputStream);
-                System.getProperties().putAll(properties);
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
-        } else {
-            System.err.printf("Property file %s not found%n", propertiesResourceFileName);
-        }
-    }
-
-    private static void addCliArgsToSystemProperties(String[] args) {
-        for (String arg : args) {
-            if (arg.startsWith("-D")) {
-                arg = arg.substring(2);
-                String[] split = arg.split("=");
-                String key = split[0];
-                String value = split[1];
-                System.setProperty(key, value);
-            }
         }
     }
 
@@ -155,7 +120,7 @@ public final class D2D2 {
     }
 
     public static Stage stage() {
-        return engine.stage();
+        return engine.getStage();
     }
 
     private static void startMainLoop() {

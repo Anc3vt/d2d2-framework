@@ -2,7 +2,7 @@ package com.ancevt.d2d2;
 
 import com.ancevt.d2d2.asset.Assets;
 import com.ancevt.d2d2.engine.Engine;
-import lombok.Getter;
+import com.ancevt.d2d2.util.Args;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,8 +23,19 @@ public class D2D2Config {
 
     private final Map<String, String> properties = new HashMap<>();
 
-    @Getter
-    private String[] args;
+    private Args args;
+
+    private String[] arguments;
+
+    public Args getArgs() {
+        if (args == null) {
+            if (arguments == null) {
+                throw new IllegalStateException("No arguments set");
+            }
+            args = Args.of(arguments);
+        }
+        return args;
+    }
 
     public Map<String, String> asMap() {
         return new HashMap<>(properties);
@@ -58,7 +69,6 @@ public class D2D2Config {
     public D2D2Config title(String title) {
         return prop(TITLE, title);
     }
-
 
     public D2D2Config noScaleMode(boolean noScaleMode) {
         return prop(NO_SCALE_MODE, String.valueOf(noScaleMode));
@@ -98,7 +108,7 @@ public class D2D2Config {
     }
 
     public D2D2Config fromArgs(String[] args) {
-        this.args = args;
+        this.arguments = args;
         for (String arg : args) {
             String[] split;
             if (arg.startsWith("-D") && arg.contains("=")) {
