@@ -48,7 +48,8 @@ public class BitmapFontManager {
     public BitmapFontManager() {
         bitmapFontMap = new HashMap<>();
 
-        defaultBitmapFont = loadBitmapFont(DEFAULT_BITMAP_FONT + ".png", DEFAULT_BITMAP_FONT + ".bmf");
+        //TODO: uncomment
+        //defaultBitmapFont = loadBitmapFont(DEFAULT_BITMAP_FONT + ".png", DEFAULT_BITMAP_FONT + ".bmf");
     }
 
     public BitmapFont loadBitmapFont(InputStream charsDataInputStream, InputStream pngInputStream, String name) {
