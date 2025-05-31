@@ -56,12 +56,12 @@ public class BitmapFontManager {
         }
     }
 
-    public BitmapFont loadBitmapFont(InputStream charsDataInputStream, InputStream pngInputStream, String name) {
+    public BitmapFont loadBitmapFont(InputStream bmfInputStream , InputStream pngInputStream, String name) {
         BitmapCharInfo[] charInfos = new BitmapCharInfo[MAX_CHARS];
         int spacingX = 0;
         int spacingY = 0;
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(charsDataInputStream))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bmfInputStream))) {
 
             String line;
             while ((line = bufferedReader.readLine()) != null) {
