@@ -78,8 +78,7 @@ public class D2D2Config {
     public D2D2Config fullscreen(boolean fullscreen) {
         return prop(FULLSCREEN, String.valueOf(fullscreen));
     }
-
-     */
+    */
 
     public D2D2Config alwaysOnTop(boolean onTop) {
         return prop(ALWAYS_ON_TOP, String.valueOf(onTop));
