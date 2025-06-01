@@ -24,32 +24,11 @@ import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Group;
 import lombok.Getter;
 
-public abstract class SceneEvent extends Event {
-
-    @EventPooled
-    public static final class Tick extends SceneEvent {
-        public static Tick create() {
-            return EventPool.obtain(Tick.class);
-        }
-    }
-
-    @EventPooled
-    public static final class PostFrame extends SceneEvent {
-        public static PostFrame create() {
-            return EventPool.obtain(PostFrame.class);
-        }
-    }
-
-    @EventPooled
-    public static final class PreFrame extends SceneEvent {
-        public static PreFrame create() {
-            return EventPool.obtain(PreFrame.class);
-        }
-    }
+public abstract class NodeEvent extends Event {
 
     @EventPooled
     @Getter
-    public static final class Add extends SceneEvent {
+    public static final class Add extends NodeEvent {
         private Group parent;
 
         public static Add create(Group parent) {
@@ -61,7 +40,7 @@ public abstract class SceneEvent extends Event {
 
     @EventPooled
     @Getter
-    public static final class Remove extends SceneEvent {
+    public static final class Remove extends NodeEvent {
         private Group parent;
 
         public static Remove create(Group parent) {
@@ -72,14 +51,14 @@ public abstract class SceneEvent extends Event {
     }
 
     @EventPooled
-    public static final class AddToScene extends SceneEvent {
+    public static final class AddToScene extends NodeEvent {
         public static AddToScene create() {
             return EventPool.obtain(AddToScene.class);
         }
     }
 
     @EventPooled
-    public static final class RemoveFromScene extends SceneEvent {
+    public static final class RemoveFromScene extends NodeEvent {
         public static RemoveFromScene create() {
             return EventPool.obtain(RemoveFromScene.class);
         }

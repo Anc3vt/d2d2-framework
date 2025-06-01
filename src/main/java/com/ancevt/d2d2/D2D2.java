@@ -22,7 +22,7 @@ import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.SoundManager;
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.StageEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
 import com.ancevt.d2d2.log.Logger;
@@ -110,11 +110,11 @@ public final class D2D2 {
 
         if (cursor != null) {
             Mouse.setVisible(false);
-            cursor.removeEventListener(Mouse.class, SceneEvent.Tick.class);
-            cursor.addEventListener(Mouse.class, SceneEvent.Tick.class, event -> cursor.setPosition(Mouse.getX(), Mouse.getY()));
+            cursor.removeEventListener(Mouse.class, StageEvent.Tick.class);
+            cursor.addEventListener(Mouse.class, StageEvent.Tick.class, event -> cursor.setPosition(Mouse.getX(), Mouse.getY()));
         } else {
             Mouse.setVisible(true);
-            D2D2.cursor.removeEventListener(Mouse.class, SceneEvent.Tick.class);
+            D2D2.cursor.removeEventListener(Mouse.class, StageEvent.Tick.class);
         }
         D2D2.cursor = cursor;
     }

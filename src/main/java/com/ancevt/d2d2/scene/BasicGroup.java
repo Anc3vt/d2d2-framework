@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.scene;
 
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.exception.ContainerException;
 
 import java.util.List;
@@ -48,7 +48,7 @@ public class BasicGroup extends AbstractNode implements Group {
 
         if (child instanceof AbstractNode d) d.setParent(this);
 
-        child.dispatchEvent(SceneEvent.Add.create(this));
+        child.dispatchEvent(NodeEvent.Add.create(this));
 
         children.remove(child);
         if (index != -1) {
@@ -112,7 +112,7 @@ public class BasicGroup extends AbstractNode implements Group {
     public void removeChild(Node child) {
         Stage.dispatchRemoveFromStage(child);
         if (child instanceof AbstractNode d) d.setParent(null);
-        child.dispatchEvent(SceneEvent.Remove.create(this));
+        child.dispatchEvent(NodeEvent.Remove.create(this));
         children.remove(child);
     }
 

@@ -69,7 +69,7 @@ public abstract class CommonEvent extends Event {
 
     @EventPooled
     @Getter
-    public static final class Resize extends SceneEvent {
+    public static final class Resize extends NodeEvent {
         private float width;
         private float height;
 

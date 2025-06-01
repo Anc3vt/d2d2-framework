@@ -18,6 +18,7 @@
 
 package com.ancevt.d2d2.scene;
 
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.core.EventDispatcherImpl;
 
 public abstract class AbstractNode extends EventDispatcherImpl implements Node {
@@ -35,6 +36,8 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
     private boolean visible = true;
     private int zOrderIndex;
     private boolean integerPixelAlignmentEnabled = true;
+
+    protected final Stage stage = D2D2.stage();
 
     protected AbstractNode() {
         nodeId = displayObjectIdCounter++;

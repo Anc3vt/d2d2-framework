@@ -21,7 +21,7 @@ package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.StageEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.Stage;
@@ -79,11 +79,9 @@ public class StarletSpace extends BasicGroup {
     }
 
     private static class Starlet extends BasicGroup {
-
         private final Sprite sprite;
         private float t;
         private final StarletSpace starletSpace;
-
 
         public Starlet(StarletSpace starletSpace) {
             this.starletSpace = starletSpace;
@@ -98,9 +96,10 @@ public class StarletSpace extends BasicGroup {
             float scale = (float) (Math.random() * 3);
             setAlpha((float) Math.random());
             setScale(scale, scale);
+
+            stage.onTick(e -> tick());
         }
 
-        @Override
         public void tick() {
             setAlpha(getAlpha() + t);
             t -= 0.01f;
@@ -118,12 +117,15 @@ public class StarletSpace extends BasicGroup {
 
                 if (x % starletSpace.someVal == 0) {
                     Sprite plume = sprite.cloneSprite();
-                    plume.addEventListener(SceneEvent.Tick.class, e -> {
+                    stage.addEventListener(plume, StageEvent.Tick.class, e -> {
                         plume.setAlpha(plume.getAlpha() - 0.01f);
                         plume.moveY(0.05f);
                         plume.rotate(1f);
                         plume.scaleY(0.99f);
-                        if (plume.getAlpha() <= 0) plume.removeFromParent();
+                        if (plume.getAlpha() <= 0) {
+                            plume.removeFromParent();
+                            stage.removeEventListener(plume, StageEvent.Tick.class);
+                        }
                     });
                     plume.setColor(Color.WHITE);
                     plume.setPosition(x, getY());

@@ -20,8 +20,8 @@
 package com.ancevt.d2d2.debug;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.event.StageEvent;
 import com.ancevt.d2d2.event.core.Event;
-import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.text.BitmapFont;
 import com.ancevt.d2d2.scene.text.BitmapText;
@@ -33,12 +33,12 @@ public class FpsMeter extends BitmapText {
     public FpsMeter(BitmapFont bitmapFont) {
         super();
         setBitmapFont(bitmapFont);
-        addEventListener(SceneEvent.PostFrame.class, this::eachFrame);
+        stage.addEventListener(StageEvent.PostFrame.class, this::eachFrame);
     }
 
     public FpsMeter() {
         super();
-        addEventListener(SceneEvent.PostFrame.class, this::eachFrame);
+        stage.addEventListener(StageEvent.PostFrame.class, this::eachFrame);
     }
 
     public int getFps() {

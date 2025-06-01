@@ -19,7 +19,10 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.StageEvent;
+import com.ancevt.d2d2.event.core.EventLink;
+import com.ancevt.d2d2.event.core.EventListener;
 import lombok.Getter;
 
 public class Stage extends BasicGroup implements Resizable {
@@ -74,7 +77,7 @@ public class Stage extends BasicGroup implements Resizable {
 
     static void dispatchAddToStage(Node node) {
         if (node.isOnScreen()) {
-            node.dispatchEvent(SceneEvent.AddToScene.create());
+            node.dispatchEvent(NodeEvent.AddToScene.create());
             if (node instanceof Group group) {
                 for (int i = 0; i < group.getNumChildren(); i++) {
                     dispatchAddToStage(group.getChild(i));
@@ -85,7 +88,7 @@ public class Stage extends BasicGroup implements Resizable {
 
     static void dispatchRemoveFromStage(Node node) {
         if (node.isOnScreen()) {
-            node.dispatchEvent(SceneEvent.RemoveFromScene.create());
+            node.dispatchEvent(NodeEvent.RemoveFromScene.create());
 
             if (node instanceof Group group) {
                 for (int i = 0; i < group.getNumChildren(); i++) {
@@ -93,5 +96,20 @@ public class Stage extends BasicGroup implements Resizable {
                 }
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventLink<StageEvent.Tick> onTick(EventListener<StageEvent.Tick> listener) {
+        return (EventLink<StageEvent.Tick>) on(StageEvent.Tick.class, listener);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventLink<StageEvent.PreFrame> onPreFrame(EventListener<StageEvent.PreFrame> listener) {
+        return (EventLink<StageEvent.PreFrame>) on(StageEvent.PreFrame.class, listener);
+    }
+
+    @SuppressWarnings("unchecked")
+    public EventLink<StageEvent.PostFrame> onPostFrame(EventListener<StageEvent.PostFrame> listener) {
+        return (EventLink<StageEvent.PostFrame>) on(StageEvent.PostFrame.class, listener);
     }
 }

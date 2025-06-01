@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene.interactive;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.exception.InteractiveException;
 import com.ancevt.d2d2.scene.BasicSprite;
 import com.ancevt.d2d2.scene.shape.FreeShape;
@@ -211,7 +211,7 @@ public class InteractiveSprite extends BasicSprite implements Interactive {
         this.disposed = true;
         InteractiveManager.getInstance().unregisterInteractive(this);
         removeFromParent();
-        addEventListener(SceneEvent.Add.class, e -> {
+        addEventListener(NodeEvent.Add.class, e -> {
             throw new InteractiveException("Unable to add disposed interactive display object %s".formatted(this.toString()));
         });
     }

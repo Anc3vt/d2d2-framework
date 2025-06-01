@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene.text;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.scene.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -148,8 +148,8 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
     }
 
     public void disposeOnRemoveFromStage() {
-        addEventListener(this, SceneEvent.RemoveFromScene.class, e -> {
-            removeEventListener(BitmapText.class, SceneEvent.RemoveFromScene.class);
+        addEventListener(this, NodeEvent.RemoveFromScene.class, e -> {
+            removeEventListener(BitmapText.class, NodeEvent.RemoveFromScene.class);
             if (sprite != null && sprite.getTextureRegion() != null) {
                 D2D2.textureManager().unloadTexture(sprite.getTextureRegion().getTexture());
             }

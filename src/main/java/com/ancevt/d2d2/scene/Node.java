@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.scene;
 
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.event.core.EventDispatcher;
 import com.ancevt.d2d2.event.core.EventLink;
 import com.ancevt.d2d2.event.core.EventListener;
@@ -148,48 +148,24 @@ public interface Node extends EventDispatcher {
 
     boolean isIntegerPixelAlignmentEnabled();
 
-    default void preFrame() {
-    }
-
-    default void postFrame() {
-    }
-
-    default void tick() {
+    @SuppressWarnings("unchecked")
+    default EventLink<NodeEvent.Add> onAdd(EventListener<NodeEvent.Add> listener) {
+        return on(NodeEvent.Add.class, listener);
     }
 
     @SuppressWarnings("unchecked")
-    default EventLink<SceneEvent.Tick> onTick(EventListener<SceneEvent.Tick> listener) {
-        return (EventLink<SceneEvent.Tick>) on(SceneEvent.Tick.class, listener);
+    default EventLink<NodeEvent.Remove> onRemove(EventListener<NodeEvent.Remove> listener) {
+        return on(NodeEvent.Remove.class, listener);
     }
 
     @SuppressWarnings("unchecked")
-    default EventLink<SceneEvent.PreFrame> onPreFrame(EventListener<SceneEvent.PreFrame> listener) {
-        return (EventLink<SceneEvent.PreFrame>) on(SceneEvent.PreFrame.class, listener);
+    default EventLink<NodeEvent.AddToScene> onAddToScene(EventListener<NodeEvent.AddToScene> listener) {
+        return on(NodeEvent.AddToScene.class, listener);
     }
 
     @SuppressWarnings("unchecked")
-    default EventLink<SceneEvent.PostFrame> onPostFrame(EventListener<SceneEvent.PostFrame> listener) {
-        return (EventLink<SceneEvent.PostFrame>) on(SceneEvent.PostFrame.class, listener);
-    }
-
-    @SuppressWarnings("unchecked")
-    default EventLink<SceneEvent.Add> onAdd(EventListener<SceneEvent.Add> listener) {
-        return on(SceneEvent.Add.class, listener);
-    }
-
-    @SuppressWarnings("unchecked")
-    default EventLink<SceneEvent.Remove> onRemove(EventListener<SceneEvent.Remove> listener) {
-        return on(SceneEvent.Remove.class, listener);
-    }
-
-    @SuppressWarnings("unchecked")
-    default EventLink<SceneEvent.AddToScene> onAddToScene(EventListener<SceneEvent.AddToScene> listener) {
-        return on(SceneEvent.AddToScene.class, listener);
-    }
-
-    @SuppressWarnings("unchecked")
-    default EventLink<SceneEvent.RemoveFromScene> onRemoveFromScene(EventListener<SceneEvent.RemoveFromScene> listener) {
-        return on(SceneEvent.RemoveFromScene.class, listener);
+    default EventLink<NodeEvent.RemoveFromScene> onRemoveFromScene(EventListener<NodeEvent.RemoveFromScene> listener) {
+        return on(NodeEvent.RemoveFromScene.class, listener);
     }
 
 
