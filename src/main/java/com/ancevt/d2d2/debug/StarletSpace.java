@@ -29,6 +29,9 @@ import com.ancevt.d2d2.scene.Sprite;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.ancevt.d2d2.D2D2.stage;
 
 public class StarletSpace extends BasicGroup {
@@ -37,51 +40,37 @@ public class StarletSpace extends BasicGroup {
     private float velocityX = 30f;
     @Getter
     @Setter
-    private int someVal = 5;
+    private int someVal = -110;
+
+    private final List<Starlet> starlets = new ArrayList<>();
 
     public static int count = 100;
 
     public StarletSpace(int count) {
         for (int i = 0; i < count; i++) {
-            createStarlet().setX((float) (Math.random() * stage().getWidth()));
+            Starlet starlet = new Starlet(this);
+            starlet.setX((float) (Math.random() * stage().getWidth()));
+            addChild(starlet);
+            starlets.add(starlet);
         }
+
+        stage().onTick(e -> tick()); // centralized tick
     }
 
-    private Starlet createStarlet() {
-        Starlet starlet = new Starlet(this);
-        starlet.setPosition(stage().getWidth() + 16, (float) (Math.random() * stage().getHeight()));
-        addChild(starlet);
-        return starlet;
-    }
-
-    public static StarletSpace haveFun() {
-        return haveFun(true);
-    }
-
-    public static StarletSpace haveFun(boolean logo) {
-        if (starletSpace != null) starletSpace.removeFromParent();
-
-        Stage stage = stage();
-        stage.setBackgroundColor(Color.of(0x000510));
-        Sprite d2d2Title = Sprite.load("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
-        d2d2Title.setColor(Color.LIGHT_GRAY);
-        starletSpace = new StarletSpace(count);
-        if (logo) starletSpace.addChild(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
-        stage.addChild(starletSpace);
-        stage.addEventListener(CommonEvent.Resize.class, e -> {
-            d2d2Title.setPosition((stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
-        });
-        stage.addEventListener(InputEvent.MouseMove.class, e -> {
-            float center = stage.getWidth() / 2;
-            starletSpace.velocityX = center - e.getX();
-        });
-        return starletSpace;
+    private void tick() {
+        for (Starlet starlet : starlets) {
+            starlet.tick();
+        }
     }
 
     private static class Starlet extends BasicGroup {
         private final Sprite sprite;
         private float t;
         private final StarletSpace starletSpace;
+        private final float scale;
+        private final Color color;
+
+        private float plumeDistanceAccumulator = 0f;
 
         public Starlet(StarletSpace starletSpace) {
             this.starletSpace = starletSpace;
@@ -89,15 +78,12 @@ public class StarletSpace extends BasicGroup {
             sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
             addChild(sprite);
 
-            Color color = new Color(0x88, 0x88, (int) (0x80 + (Math.random() * 0x80)));
-
+            color = new Color(0x88, 0x88, (int) (0x80 + (Math.random() * 0x80)));
             sprite.setColor(color);
 
-            float scale = (float) (Math.random() * 3);
+            scale = (float) (Math.random() * 3);
             setAlpha((float) Math.random());
             setScale(scale, scale);
-
-            stage.onTick(e -> tick());
         }
 
         public void tick() {
@@ -105,37 +91,19 @@ public class StarletSpace extends BasicGroup {
             t -= 0.01f;
             if (getAlpha() <= 0.0f) t += 0.1f;
 
-            int oldX = (int) getX();
-            moveX(-getScaleX() * starletSpace.velocityX / 75f);
-            int newX = (int) getX();
+            System.out.println(getAlpha());
 
-            int step = oldX < newX ? 1 : -1;
+            float dx = -getScaleX() * starletSpace.velocityX / 75f;
+            moveX(dx);
 
-            int x = oldX;
-            while (x != newX) {
-                x += step;
+            // ✨ Копим пройденное расстояние
+            plumeDistanceAccumulator += Math.abs(dx);
 
-                if (x % starletSpace.someVal == 0) {
-                    Sprite plume = sprite.cloneSprite();
-                    stage.addEventListener(plume, StageEvent.Tick.class, e -> {
-                        plume.setAlpha(plume.getAlpha() - 0.01f);
-                        plume.moveY(0.05f);
-                        plume.rotate(1f);
-                        plume.scaleY(0.99f);
-                        if (plume.getAlpha() <= 0.025f) {
-                            plume.removeFromParent();
-                            stage.removeEventListener(plume, StageEvent.Tick.class);
-                        }
-                    });
-                    plume.setColor(Color.WHITE);
-                    plume.setPosition(x, getY());
-                    plume.setAlpha(0.1f);
-                    plume.move((-sprite.getWidth() / 2) * getScaleX(), (-sprite.getHeight() / 2) * getScaleY());
-                    plume.setScale(getScaleX(), getScaleY());
-                    getParent().addChild(plume);
-                }
+            // ✨ Каждые someVal пикселей — создаём свечу
+            if (plumeDistanceAccumulator >= starletSpace.someVal) {
+                createPlumeAt(getX(), getY());
+                plumeDistanceAccumulator = 0f;
             }
-
 
             if (getX() < -16.0f) {
                 setX(stage().getWidth() + 16);
@@ -146,16 +114,64 @@ public class StarletSpace extends BasicGroup {
                 setX(-16.0f);
                 setY((float) (stage().getHeight() * Math.random()));
             }
+
             if (getY() < -16.0f) {
-                setY((float) (stage().getWidth() * Math.random()));
                 setY(stage().getHeight() + 16);
             }
 
             if (getY() > stage().getHeight() + 16.0f) {
-                setY((float) (stage().getWidth() * Math.random()));
                 setY(-16.0f);
             }
         }
+
+
+        private void createPlumeAt(float x, float y) {
+            Sprite plume = sprite.cloneSprite();
+            plume.setColor(Color.WHITE);
+            plume.setAlpha(0.1f);
+            plume.setPosition(x, y);
+            plume.move((-sprite.getWidth() / 2) * getScaleX(), (-sprite.getHeight() / 2) * getScaleY());
+            plume.setScale(getScaleX(), getScaleY());
+
+            getParent().addChild(plume);
+
+            stage().onTick(e -> {
+                plume.setAlpha(plume.getAlpha() - 0.01f);
+                plume.moveY(0.05f);
+                plume.rotate(1f);
+                plume.scaleY(0.99f);
+                if (plume.getAlpha() <= 0.025f) {
+                    plume.removeFromParent();
+                    stage().removeEventListener(plume, StageEvent.Tick.class);
+                }
+            });
+        }
     }
 
+    public static StarletSpace haveFun(boolean logo) {
+        if (starletSpace != null) starletSpace.removeFromParent();
+
+        Stage stage = stage();
+        stage.setBackgroundColor(Color.of(0x000510));
+        Sprite d2d2Title = Sprite.load("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
+        d2d2Title.setColor(Color.LIGHT_GRAY);
+
+        starletSpace = new StarletSpace(count);
+        if (logo) starletSpace.addChild(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);
+        stage.addChild(starletSpace);
+
+        stage.addEventListener(CommonEvent.Resize.class, e ->
+                d2d2Title.setPosition((stage.getWidth() - d2d2Title.getWidth()) / 2, 45));
+
+        stage.addEventListener(InputEvent.MouseMove.class, e -> {
+            float center = stage.getWidth() / 2f;
+            starletSpace.velocityX = center - e.getX();
+        });
+
+        return starletSpace;
+    }
+
+    public static StarletSpace haveFun() {
+        return haveFun(true);
+    }
 }
