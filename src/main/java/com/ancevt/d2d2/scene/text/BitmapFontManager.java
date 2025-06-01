@@ -35,17 +35,16 @@ public class BitmapFontManager {
     private static final int MAX_CHARS = 65536;
 
     private static final String BITMAP_FONTS_ASSET_DIR = "bitmapfonts/";
-    private static final String DEFAULT_BITMAP_FONT = "terminus/Terminus-12";
+    private static final String DEFAULT_BITMAP_FONT_BMF = "terminus/Terminus-12.bmf";
+    private static final String DEFAULT_BITMAP_FONT_PNG = "terminus/Terminus-12.png";
 
-    private final Map<String, BitmapFont> bitmapFontMap;
+    private final Map<String, BitmapFont> bitmapFontMap = new HashMap<>();
 
     @Getter
     private final BitmapFont defaultBitmapFont;
 
     public BitmapFontManager() {
-        bitmapFontMap = new HashMap<>();
-
-        defaultBitmapFont = loadBitmapFont(DEFAULT_BITMAP_FONT + ".png", DEFAULT_BITMAP_FONT + ".bmf");
+        defaultBitmapFont = loadBitmapFont(DEFAULT_BITMAP_FONT_PNG, DEFAULT_BITMAP_FONT_BMF);
     }
 
     public BitmapFont loadBitmapFont(InputStream bmfInputStream, InputStream pngInputStream, String name) {
