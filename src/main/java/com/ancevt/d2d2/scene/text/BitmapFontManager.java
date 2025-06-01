@@ -23,10 +23,7 @@ import com.ancevt.d2d2.asset.Assets;
 import com.ancevt.d2d2.util.Args;
 import lombok.Getter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -42,21 +39,16 @@ public class BitmapFontManager {
 
     private final Map<String, BitmapFont> bitmapFontMap;
 
-    @Getter //TODO: make final
-    private BitmapFont defaultBitmapFont;
+    @Getter
+    private final BitmapFont defaultBitmapFont;
 
     public BitmapFontManager() {
         bitmapFontMap = new HashMap<>();
 
-        //TODO: unwrap
-        try {
-            //defaultBitmapFont = loadBitmapFont(DEFAULT_BITMAP_FONT + ".png", DEFAULT_BITMAP_FONT + ".bmf");
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+        defaultBitmapFont = loadBitmapFont(DEFAULT_BITMAP_FONT + ".png", DEFAULT_BITMAP_FONT + ".bmf");
     }
 
-    public BitmapFont loadBitmapFont(InputStream bmfInputStream , InputStream pngInputStream, String name) {
+    public BitmapFont loadBitmapFont(InputStream bmfInputStream, InputStream pngInputStream, String name) {
         BitmapCharInfo[] charInfos = new BitmapCharInfo[MAX_CHARS];
         int spacingX = 0;
         int spacingY = 0;
@@ -103,7 +95,6 @@ public class BitmapFontManager {
 
         BitmapFont bitmapFont = new BitmapFont(name, D2D2.textureManager().loadTexture(pngInputStream), charInfos);
         bitmapFontMap.put(name, bitmapFont);
-
         return bitmapFont;
     }
 
