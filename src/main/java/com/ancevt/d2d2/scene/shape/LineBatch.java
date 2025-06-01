@@ -119,8 +119,8 @@ public class LineBatch extends AbstractNode implements Shape {
     @RequiredArgsConstructor
     @Getter
     public static class Line {
-        private final Vertex vertexA;
-        private final Vertex vertexB;
+        public final Vertex vertexA;
+        public final Vertex vertexB;
         private boolean closing;
     }
 }

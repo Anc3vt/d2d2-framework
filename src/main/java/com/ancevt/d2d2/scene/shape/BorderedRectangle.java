@@ -59,7 +59,7 @@ public class BorderedRectangle extends BasicGroup {
 
         fillRect.setSize(1, 1);
 
-        addChild(fillRect);
+        addChild(fillRect, 0, 1);
 
         setFillColor(fillColor);
         setBorderColor(borderColor);
@@ -69,12 +69,12 @@ public class BorderedRectangle extends BasicGroup {
     }
 
     public void setWidth(float width) {
-        fillRect.setWidth(width);
+        fillRect.setWidth(width - 1);
         rebuildBorders();
     }
 
     public void setHeight(float height) {
-        fillRect.setHeight(height);
+        fillRect.setHeight(height - 1);
         rebuildBorders();
     }
 
@@ -86,12 +86,12 @@ public class BorderedRectangle extends BasicGroup {
 
     @Override
     public float getWidth() {
-        return fillRect.getWidth();
+        return fillRect.getWidth() + 1;
     }
 
     @Override
     public float getHeight() {
-        return fillRect.getHeight();
+        return fillRect.getHeight() + 1;
     }
 
     public void setFillColor(Color color) {
