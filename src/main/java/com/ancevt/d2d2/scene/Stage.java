@@ -59,17 +59,20 @@ public class Stage extends BasicGroup implements Resizable {
                 '}';
     }
 
+    @Override
     public void setSize(float width, float height) {
         this.width = width;
         this.height = height;
         dispatchEvent(CommonEvent.Resize.create(width, height));
     }
 
+    @Override
     public void setWidth(float width) {
         this.width = width;
         dispatchEvent(CommonEvent.Resize.create(width, height));
     }
 
+    @Override
     public void setHeight(float height) {
         this.height = height;
         dispatchEvent(CommonEvent.Resize.create(width, height));

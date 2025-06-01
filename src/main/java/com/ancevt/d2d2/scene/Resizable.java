@@ -18,10 +18,20 @@
 
 package com.ancevt.d2d2.scene;
 
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.core.EventLink;
+import com.ancevt.d2d2.event.core.EventListener;
+
 public interface Resizable extends Node {
     void setSize(float width, float height);
 
     void setWidth(float value);
 
     void setHeight(float value);
+
+
+    @SuppressWarnings("unchecked")
+    default EventLink<CommonEvent.Resize> onResize(EventListener<CommonEvent.Resize> listener) {
+        return on(CommonEvent.Resize.class, listener);
+    }
 }

@@ -122,7 +122,7 @@ public class StarletSpace extends BasicGroup {
                         plume.moveY(0.05f);
                         plume.rotate(1f);
                         plume.scaleY(0.99f);
-                        if (plume.getAlpha() <= 0) {
+                        if (plume.getAlpha() <= 0.025f) {
                             plume.removeFromParent();
                             stage.removeEventListener(plume, StageEvent.Tick.class);
                         }
