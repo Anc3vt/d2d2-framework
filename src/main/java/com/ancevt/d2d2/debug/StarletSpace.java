@@ -91,8 +91,6 @@ public class StarletSpace extends BasicGroup {
             t -= 0.01f;
             if (getAlpha() <= 0.0f) t += 0.1f;
 
-            System.out.println(getAlpha());
-
             float dx = -getScaleX() * starletSpace.velocityX / 75f;
             moveX(dx);
 
@@ -135,7 +133,7 @@ public class StarletSpace extends BasicGroup {
 
             getParent().addChild(plume);
 
-            stage().onTick(e -> {
+            stage().addEventListener(plume, StageEvent.Tick.class,e -> {
                 plume.setAlpha(plume.getAlpha() - 0.01f);
                 plume.moveY(0.05f);
                 plume.rotate(1f);
