@@ -2,7 +2,6 @@ HELP.md
 .gradle
 build/
 **/target
-log/
 **/*.log
 !gradle/wrapper/gradle-wrapper.jar
 src/main/generated
