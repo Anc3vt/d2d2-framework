@@ -1,34 +1,15 @@
 package com.ancevt.d2d2.scene;
 
-public class BitmapCanvas extends AbstractNode {
+import com.ancevt.d2d2.D2D2;
 
-    private final int width;
-    private final int height;
+public interface BitmapCanvas extends Node {
 
-    private final int[][] pixels;
+    void setPixel(int x, int y, int color);
 
-    public BitmapCanvas(int width, int height) {
-        this.width = width;
-        this.height = height;
+    int getPixel(int x, int y);
 
-        pixels = new int[width][height];
+    static BitmapCanvas create(int width, int height) {
+        return D2D2.engine().nodeFactory().createBitmapCanvas(width, height);
     }
 
-    public void setPixel(int x, int y, int color) {
-        pixels[x][y] = color;
-    }
-
-    public int getPixel(int x, int y) {
-        return pixels[x][y];
-    }
-
-    @Override
-    public float getWidth() {
-        return width;
-    }
-
-    @Override
-    public float getHeight() {
-        return height;
-    }
 }

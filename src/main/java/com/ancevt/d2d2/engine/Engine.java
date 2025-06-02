@@ -61,10 +61,6 @@ public interface Engine extends EventDispatcher {
 
     int getTimerCheckFrameFrequency();
 
-    DisplayManager displayManager();
-
-    SoundManager soundManager();
-
     void setCursorXY(int x, int y);
 
     void setCanvasSize(int width, int height);
@@ -74,4 +70,10 @@ public interface Engine extends EventDispatcher {
     int getCanvasHeight();
 
     Logger logger();
+
+    DisplayManager displayManager();
+
+    SoundManager soundManager();
+
+    NodeFactory nodeFactory();
 }
