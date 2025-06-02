@@ -49,10 +49,10 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
     private float height;
 
     @Getter
-    private float maxWidth = 1024f;
+    private float maxWidth = 2000f;
 
     @Getter
-    private float maxHeight = 512f;
+    private float maxHeight = 2000f;
 
     @Getter
     @Setter
