@@ -65,7 +65,7 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
     @Getter
     private ColorTextData colorTextData;
     @Getter
-    private boolean autosize;
+    private boolean autoSize;
     private boolean cacheAsSprite;
 
     @Getter
@@ -124,7 +124,7 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
         bitmapText.setLineSpacing(getLineSpacing());
         bitmapText.setRotation(getRotation());
         bitmapText.setVisible(isVisible());
-        bitmapText.setAutosize(isAutosize());
+        bitmapText.setAutoSize(isAutoSize());
         bitmapText.setMultiline(isMultiline());
         bitmapText.setWordWrap(isWordWrap());
         bitmapText.setCacheAsSprite(isCacheAsSprite());
@@ -165,9 +165,9 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
         if (isCacheAsSprite()) sprite = toSprite();
     }
 
-    public void setAutosize(boolean autosize) {
-        this.autosize = autosize;
-        if (autosize) {
+    public void setAutoSize(boolean autoSize) {
+        this.autoSize = autoSize;
+        if (autoSize) {
             setSize(getTextWidth(), getTextHeight());
         }
         updateCachedSprite();
@@ -231,7 +231,7 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
         if (multicolor) {
             colorTextData = new ColorTextData(getText(), getColor());
         }
-        if (autosize) {
+        if (autoSize) {
             setSize(getTextWidth(), getTextHeight());
         }
 
@@ -337,7 +337,7 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
 
     @Override
     public float getWidth() {
-        if (isAutosize()) {
+        if (isAutoSize()) {
             return getTextWidth();
         }
 
@@ -352,7 +352,7 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
             return bitmapFont.getZeroCharHeight();
         }
 
-        if (isAutosize()) {
+        if (isAutoSize()) {
             return getTextHeight();
         }
 
