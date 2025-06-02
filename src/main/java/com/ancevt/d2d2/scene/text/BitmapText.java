@@ -132,6 +132,7 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
         return bitmapText;
     }
 
+    //TODO: not working how it must. Fix it
     public void setCacheAsSprite(boolean cacheAsSprite) {
         if (cacheAsSprite == this.cacheAsSprite) return;
         this.cacheAsSprite = cacheAsSprite;

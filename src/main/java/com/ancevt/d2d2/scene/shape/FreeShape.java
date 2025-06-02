@@ -87,16 +87,6 @@ public class FreeShape extends AbstractNode implements Shape, Colored {
     }
 
 
-
-
-
-
-
-
-
-
-
-
     public Vertex addVertex(float x, float y) {
         this.currentX = x;
         this.currentY = y;
