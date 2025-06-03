@@ -548,4 +548,110 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
         }
 
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private String text = "";
+        private Color color = Color.WHITE;
+        private BitmapFont font;
+        private float x = 0f, y = 0f;
+        private float width = 256f, height = 128f;
+        private float spacing = 0f;
+        private float lineSpacing = 0f;
+        private boolean autoSize = false;
+        private boolean multiline = true;
+        private boolean wordWrap = true;
+        private boolean multicolor = false;
+        private boolean cacheAsSprite = false;
+
+        private Builder() {
+        }
+
+        public static Builder create() {
+            return new Builder();
+        }
+
+        public Builder text(String text) {
+            this.text = text;
+            return this;
+        }
+
+        public Builder font(BitmapFont font) {
+            this.font = font;
+            return this;
+        }
+
+        public Builder color(Color color) {
+            this.color = color;
+            return this;
+        }
+
+        public Builder position(float x, float y) {
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+
+        public Builder size(float width, float height) {
+            this.width = width;
+            this.height = height;
+            return this;
+        }
+
+        public Builder spacing(float spacing) {
+            this.spacing = spacing;
+            return this;
+        }
+
+        public Builder lineSpacing(float lineSpacing) {
+            this.lineSpacing = lineSpacing;
+            return this;
+        }
+
+        public Builder autoSize(boolean autoSize) {
+            this.autoSize = autoSize;
+            return this;
+        }
+
+        public Builder multiline(boolean multiline) {
+            this.multiline = multiline;
+            return this;
+        }
+
+        public Builder wordWrap(boolean wordWrap) {
+            this.wordWrap = wordWrap;
+            return this;
+        }
+
+        public Builder multicolor(boolean multicolor) {
+            this.multicolor = multicolor;
+            return this;
+        }
+
+        public Builder cacheAsSprite(boolean cacheAsSprite) {
+            this.cacheAsSprite = cacheAsSprite;
+            return this;
+        }
+
+        public BitmapText build() {
+            BitmapText t = new BitmapText();
+            if (font != null) t.setBitmapFont(font);
+            t.setText(text);
+            t.setColor(color);
+            t.setPosition(x, y);
+            t.setSize(width, height);
+            t.setSpacing(spacing);
+            t.setLineSpacing(lineSpacing);
+            t.setAutoSize(autoSize);
+            t.setMultiline(multiline);
+            t.setWordWrap(wordWrap);
+            t.setMulticolor(multicolor);
+            t.setCacheAsSprite(cacheAsSprite);
+            return t;
+        }
+    }
 }

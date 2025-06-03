@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,8 @@ package com.ancevt.d2d2.scene.shape;
 import com.ancevt.d2d2.scene.AbstractNode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Colored;
-import com.ancevt.d2d2.scene.texture.Texture;
+import com.ancevt.d2d2.scene.Textured;
+import com.ancevt.d2d2.scene.texture.TextureRegion;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class FreeShape extends AbstractNode implements Shape, Colored {
+public class FreeShape extends AbstractNode implements Shape, Colored, Textured {
 
     @Getter
     private List<Vertex> vertices = new ArrayList<>();
@@ -37,15 +38,48 @@ public class FreeShape extends AbstractNode implements Shape, Colored {
     @Setter
     private Color color = Color.WHITE;
 
-    @Setter
-    private Texture texture;
     @Getter
     private float currentX;
     @Getter
     private float currentY;
 
     @Getter
+    @Setter
+    private float textureURepeat = 1.0f;
+
+    @Getter
+    @Setter
+    private float textureVRepeat = 1.0f;
+
+    @Getter
+    @Setter
+    private float textureRotation = 0f; // в радианах
+    @Getter
+    @Setter
+    private float textureScaleX = 1f;
+    @Getter
+    @Setter
+    private float textureScaleY = 1f;
+
+    @Getter
+    @Setter
+    private TextureRegion textureRegion;
+
+    @Getter
     private List<Triangle> triangles = new ArrayList<>();
+
+    @Override
+    public void setTextureUVRepeat(float uRepeat, float vRepeat) {
+        this.textureURepeat = uRepeat;
+        this.textureVRepeat = vRepeat;
+    }
+
+
+    @Override
+    public void setTextureScale(float scaleX, float scaleY) {
+        textureScaleX = scaleX;
+        textureScaleY = scaleY;
+    }
 
     public boolean isPointInsideFreeShape(float x, float y) {
         int intersections = 0;
