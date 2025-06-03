@@ -19,6 +19,7 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.event.StageEvent;
 import com.ancevt.d2d2.event.core.EventLink;
@@ -101,18 +102,85 @@ public class Stage extends BasicGroup implements Resizable {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public EventLink<StageEvent.Tick> onTick(EventListener<StageEvent.Tick> listener) {
-        return (EventLink<StageEvent.Tick>) on(StageEvent.Tick.class, listener);
+        return on(StageEvent.Tick.class, listener);
     }
 
-    @SuppressWarnings("unchecked")
+
     public EventLink<StageEvent.PreFrame> onPreFrame(EventListener<StageEvent.PreFrame> listener) {
-        return (EventLink<StageEvent.PreFrame>) on(StageEvent.PreFrame.class, listener);
+        return on(StageEvent.PreFrame.class, listener);
     }
 
-    @SuppressWarnings("unchecked")
+
     public EventLink<StageEvent.PostFrame> onPostFrame(EventListener<StageEvent.PostFrame> listener) {
-        return (EventLink<StageEvent.PostFrame>) on(StageEvent.PostFrame.class, listener);
+        return on(StageEvent.PostFrame.class, listener);
+    }
+
+
+    public EventLink<InputEvent.MouseDown> onMouseDown(EventListener<InputEvent.MouseDown> listener) {
+        return on(InputEvent.MouseDown.class, listener);
+    }
+
+
+    public EventLink<InputEvent.MouseUp> onMouseUp(EventListener<InputEvent.MouseUp> listener) {
+        return on(InputEvent.MouseUp.class, listener);
+    }
+
+
+    public EventLink<InputEvent.MouseMove> onMouseMove(EventListener<InputEvent.MouseMove> listener) {
+        return on(InputEvent.MouseMove.class, listener);
+    }
+
+
+    public EventLink<InputEvent.MouseWheel> onMouseWheel(EventListener<InputEvent.MouseWheel> listener) {
+        return on(InputEvent.MouseWheel.class, listener);
+    }
+
+    public EventLink<InputEvent.MouseHover> onMouseHover(EventListener<InputEvent.MouseHover> listener) {
+        return on(InputEvent.MouseHover.class, listener);
+    }
+
+
+    public EventLink<InputEvent.MouseOut> onMouseOut(EventListener<InputEvent.MouseOut> listener) {
+        return on(InputEvent.MouseOut.class, listener);
+    }
+
+
+    public EventLink<InputEvent.MouseDrag> onMouseDrag(EventListener<InputEvent.MouseDrag> listener) {
+        return on(InputEvent.MouseDrag.class, listener);
+    }
+
+
+    public EventLink<InputEvent.KeyDown> onKeyDown(EventListener<InputEvent.KeyDown> listener) {
+        return on(InputEvent.KeyDown.class, listener);
+    }
+
+
+    public EventLink<InputEvent.KeyRepeat> onKeyRepeat(EventListener<InputEvent.KeyRepeat> listener) {
+        return (EventLink<InputEvent.KeyRepeat>) on(InputEvent.KeyRepeat.class, listener);
+    }
+
+
+    public EventLink<InputEvent.KeyUp> onKeyUp(EventListener<InputEvent.KeyUp> listener) {
+        return (EventLink<InputEvent.KeyUp>) on(InputEvent.KeyUp.class, listener);
+    }
+
+
+    public EventLink<InputEvent.KeyType> onKeyType(EventListener<InputEvent.KeyType> listener) {
+        return (EventLink<InputEvent.KeyType>) on(InputEvent.KeyType.class, listener);
+    }
+
+
+    public EventLink<InputEvent.FocusIn> onFocusIn(EventListener<InputEvent.FocusIn> listener) {
+        return (EventLink<InputEvent.FocusIn>) on(InputEvent.FocusIn.class, listener);
+    }
+
+
+    public EventLink<InputEvent.FocusOut> onFocusOut(EventListener<InputEvent.FocusOut> listener) {
+        return (EventLink<InputEvent.FocusOut>) on(InputEvent.FocusOut.class, listener);
+    }
+
+    public EventLink<InputEvent.MouseUp> onClick(EventListener<InputEvent.MouseUp> listener) {
+        return onMouseUp(listener);
     }
 }

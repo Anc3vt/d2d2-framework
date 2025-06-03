@@ -18,12 +18,15 @@
 
 package com.ancevt.d2d2.scene;
 
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.common.Disposable;
 import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.StageEvent;
 import com.ancevt.d2d2.event.core.EventDispatcher;
 import com.ancevt.d2d2.event.core.EventLink;
 import com.ancevt.d2d2.event.core.EventListener;
 
-public interface Node extends EventDispatcher {
+public interface Node extends EventDispatcher, Disposable {
 
     default void centerX() {
         if (hasParent()) {
@@ -166,6 +169,17 @@ public interface Node extends EventDispatcher {
     @SuppressWarnings("unchecked")
     default EventLink<NodeEvent.RemoveFromScene> onRemoveFromScene(EventListener<NodeEvent.RemoveFromScene> listener) {
         return on(NodeEvent.RemoveFromScene.class, listener);
+    }
+
+    @SuppressWarnings("unchecked")
+    default EventLink<NodeEvent.Dispose> onDispose(EventListener<NodeEvent.Dispose> listener) {
+        return on(NodeEvent.Dispose.class, listener);
+    }
+
+    default EventLink<StageEvent.Tick> onStageTick(EventListener<StageEvent.Tick> listener) {
+        EventLink<StageEvent.Tick> link = D2D2.stage().on(StageEvent.Tick.class, listener);
+        onDispose(e -> link.unregister());
+        return link;
     }
 
 

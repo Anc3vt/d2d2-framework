@@ -64,4 +64,10 @@ public abstract class NodeEvent extends Event {
         }
     }
 
+    @EventPooled
+    public static final class Dispose extends CommonEvent {
+        public static NodeEvent.Dispose create() {
+            return EventPool.obtain(NodeEvent.Dispose.class);
+        }
+    }
 }
