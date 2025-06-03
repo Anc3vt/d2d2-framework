@@ -18,6 +18,7 @@
 
 package com.ancevt.d2d2.scene.texture;
 
+import com.ancevt.d2d2.scene.Group;
 import com.ancevt.d2d2.scene.text.BitmapText;
 
 import java.io.InputStream;
@@ -47,4 +48,5 @@ public interface TextureEngine {
 
     Texture bitmapTextToTexture(BitmapText bitmapText);
 
+    Texture renderGroupToTexture(Group group, int width, int height);
 }

@@ -19,6 +19,9 @@
 package com.ancevt.d2d2.scene;
 
 
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.scene.texture.Texture;
+
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -96,5 +99,20 @@ public interface Group extends Node {
 
     void removeAllChildren();
 
+    default Texture toTexture(int width, int height) {
+        return D2D2.textureManager().getTextureEngine().renderGroupToTexture(
+                this,
+                width,
+                height
+        );
+    }
+
+    default Texture toTexture(float width, float height) {
+        return toTexture((int) width, (int) height);
+    }
+
+    default Texture toTexture() {
+        return toTexture(getWidth(), getHeight());
+    }
 
 }
