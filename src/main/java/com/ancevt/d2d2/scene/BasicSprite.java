@@ -108,7 +108,7 @@ public class BasicSprite extends AbstractNode implements Sprite {
 
     @Override
     public Sprite cloneSprite() {
-        Sprite result = Sprite.create(getTextureRegion());
+        Sprite result = engine.nodeFactory().createSprite(getTextureRegion());
         result.setPosition(getX(), getY());
         result.setRepeat(getRepeatX(), getRepeatY());
         result.setScale(getScaleX(), getScaleY());

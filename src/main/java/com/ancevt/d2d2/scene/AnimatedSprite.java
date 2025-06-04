@@ -54,14 +54,6 @@ public class AnimatedSprite extends BasicSprite implements Animated {
         setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
-    public static AnimatedSprite create() {
-        return new AnimatedSprite();
-    }
-
-    public static AnimatedSprite create(TextureRegion[] textureRegions) {
-        return new AnimatedSprite(textureRegions);
-    }
-
     @Override
     public void processFrame() {
         if (!playing) return;

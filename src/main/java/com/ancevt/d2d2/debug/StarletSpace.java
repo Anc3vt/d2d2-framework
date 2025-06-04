@@ -22,10 +22,10 @@ package com.ancevt.d2d2.debug;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.StageEvent;
-import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.BasicGroup;
-import com.ancevt.d2d2.scene.Stage;
+import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Sprite;
+import com.ancevt.d2d2.scene.Stage;
 import com.ancevt.d2d2.scene.shader.ShaderProgram;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
@@ -34,6 +34,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ancevt.d2d2.D2D2.engine;
 import static com.ancevt.d2d2.D2D2.stage;
 
 public class StarletSpace extends BasicGroup {
@@ -77,7 +78,7 @@ public class StarletSpace extends BasicGroup {
 
         public Starlet(StarletSpace starletSpace) {
             this.starletSpace = starletSpace;
-            sprite = Sprite.load("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
+            sprite = engine.nodeFactory().createSprite("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
             sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
             addChild(sprite);
 
@@ -136,7 +137,7 @@ public class StarletSpace extends BasicGroup {
 
             getParent().addChild(plume);
 
-            stage().addEventListener(plume, StageEvent.Tick.class,e -> {
+            stage().addEventListener(plume, StageEvent.Tick.class, e -> {
                 plume.setAlpha(plume.getAlpha() - 0.01f);
                 plume.moveY(0.05f);
                 plume.rotate(1f);
@@ -147,7 +148,7 @@ public class StarletSpace extends BasicGroup {
                 }
             });
 
-            Timer.setTimeout(1000, timer-> plume.dispose());
+            Timer.setTimeout(1000, timer -> plume.dispose());
         }
     }
 
@@ -196,7 +197,7 @@ public class StarletSpace extends BasicGroup {
 
         Stage stage = stage();
         stage.setBackgroundColor(Color.of(0x000510));
-        d2d2Title = Sprite.load("d2d2-logo.png", 0, 0, 512, 128);
+        d2d2Title = engine().nodeFactory().createSprite("d2d2-logo.png", 0, 0, 512, 128);
         d2d2Title.setColor(Color.LIGHT_GRAY);
         d2d2Title.setShaderProgram(shaderProgram);
 

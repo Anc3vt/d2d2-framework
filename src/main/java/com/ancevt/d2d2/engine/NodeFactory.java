@@ -54,4 +54,6 @@ public interface NodeFactory {
     CircleShape createCircleShape(float radius, int numVertices);
 
     CircleShape createCircleShape(float radius, int numVertices, Color color);
+
+    RoundedCornerShape createRoundCornerShape(float width, float height, float radius, int segments);
 }

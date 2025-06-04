@@ -25,11 +25,9 @@ import com.ancevt.d2d2.scene.texture.Texture;
 import java.util.*;
 import java.util.stream.Stream;
 
-public interface Group extends Node {
+import static com.ancevt.d2d2.D2D2.engine;
 
-    static Group create() {
-        return new BasicGroup();
-    }
+public interface Group extends Node {
 
     @SuppressWarnings("unchecked")
     static <T extends Node> Optional<T> findNodeById(Group fromRoot, int id) {
@@ -116,8 +114,9 @@ public interface Group extends Node {
     }
 
     default Sprite toSprite(int width, int height) {
-        Texture texture = toTexture(width, height);
-        return Sprite.create(texture);
+        return engine()
+                .nodeFactory()
+                .createSprite(toTexture(width, height));
     }
 
     default Sprite toSprite(float width, float height) {

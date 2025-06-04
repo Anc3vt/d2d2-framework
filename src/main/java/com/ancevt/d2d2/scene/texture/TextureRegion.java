@@ -22,6 +22,8 @@ import com.ancevt.d2d2.scene.Sprite;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import static com.ancevt.d2d2.D2D2.engine;
+
 @Getter
 @RequiredArgsConstructor
 public class TextureRegion {
@@ -37,7 +39,9 @@ public class TextureRegion {
     }
 
     public Sprite createSprite() {
-        return Sprite.create(this);
+        return engine()
+                .nodeFactory()
+                .createSprite(this);
     }
 
     public String stringify() {

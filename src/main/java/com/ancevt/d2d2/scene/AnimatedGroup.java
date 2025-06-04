@@ -41,14 +41,6 @@ public class AnimatedGroup extends BasicGroup implements Animated {
         setFrameSprites(frameSprites);
     }
 
-    public static AnimatedGroup create() {
-        return new AnimatedGroup();
-    }
-
-    public static AnimatedGroup create(Sprite[] frameSprites) {
-        return new AnimatedGroup(frameSprites);
-    }
-
     @Override
     public void setBackward(boolean backward) {
         this.backward = backward;

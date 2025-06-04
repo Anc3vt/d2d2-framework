@@ -31,6 +31,8 @@ import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static com.ancevt.d2d2.D2D2.engine;
+
 public class ComplexShapeParser {
 
     public static Group parseAsset(String assetPath) {
@@ -46,7 +48,9 @@ public class ComplexShapeParser {
     }
 
     private static Group parse(String string) {
-        Group result = Group.create();
+        Group result = engine()
+                .nodeFactory()
+                .createGroup();
 
         AtomicReference<FreeShape> shape = new AtomicReference<>();
 
