@@ -19,6 +19,7 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.event.core.EventDispatcherImpl;
 import com.ancevt.d2d2.scene.shader.ShaderProgram;
@@ -42,6 +43,7 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
     private boolean integerPixelAlignmentEnabled = true;
 
     protected final Stage stage = D2D2.stage();
+    protected final Engine engine = D2D2.engine();
     private boolean disposed;
 
     @Getter

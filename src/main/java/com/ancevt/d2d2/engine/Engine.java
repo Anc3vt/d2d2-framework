@@ -28,7 +28,7 @@ import com.ancevt.d2d2.event.core.EventDispatcher;
 
 public interface Engine extends EventDispatcher {
 
-    void create();
+    void init();
 
     Stage getStage();
 

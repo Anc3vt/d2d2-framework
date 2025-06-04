@@ -66,7 +66,7 @@ public class FreeShape extends AbstractNode implements Shape, Colored, Textured 
     private TextureRegion textureRegion;
 
     @Getter
-    private List<Triangle> triangles = new ArrayList<>();
+    private List<TriangleInfo> triangleInfos = new ArrayList<>();
 
     @Override
     public void setTextureUVRepeat(float uRepeat, float vRepeat) {
@@ -170,16 +170,16 @@ public class FreeShape extends AbstractNode implements Shape, Colored, Textured 
         }
         copy.vertices = copyVertices;
 
-        List<Triangle> copyTriangles = new ArrayList<>();
-        for (Triangle t : triangles) {
-            Triangle newTriangle = new Triangle(t.getX1(), t.getY1(), t.getX2(), t.getY2(), t.getX3(), t.getY3());
+        List<TriangleInfo> copyTriangleInfos = new ArrayList<>();
+        for (TriangleInfo t : triangleInfos) {
+            TriangleInfo newTriangleInfo = new TriangleInfo(t.getX1(), t.getY1(), t.getX2(), t.getY2(), t.getX3(), t.getY3());
         }
-        copy.triangles = copyTriangles;
+        copy.triangleInfos = copyTriangleInfos;
         return copy;
     }
 
     public void commit() {
-        triangles.clear();
+        triangleInfos.clear();
 
         List<Double> coords = new ArrayList<>();
         for (Vertex vertex : vertices) {
@@ -202,12 +202,12 @@ public class FreeShape extends AbstractNode implements Shape, Colored, Textured 
             int idx2 = indicesArray[i + 1] * 2;
             int idx3 = indicesArray[i + 2] * 2;
 
-            Triangle t = new Triangle(
+            TriangleInfo t = new TriangleInfo(
                     (float) array[idx1], (float) array[idx1 + 1],
                     (float) array[idx2], (float) array[idx2 + 1],
                     (float) array[idx3], (float) array[idx3 + 1]
             );
-            triangles.add(t);
+            triangleInfos.add(t);
         }
 
 

@@ -90,7 +90,7 @@ public final class D2D2 {
 
     private static Stage createStage(Engine engine) {
         D2D2.engine = engine;
-        engine.create();
+        engine.init();
         bitmapFontManager = new BitmapFontManager();
         return engine.getStage();
     }

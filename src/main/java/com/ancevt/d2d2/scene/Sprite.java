@@ -18,45 +18,11 @@
 
 package com.ancevt.d2d2.scene;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.texture.Texture;
 import com.ancevt.d2d2.scene.texture.TextureRegion;
 
 public interface Sprite extends Node, Colored, Repeatable {
 
     Color DEFAULT_COLOR = Color.WHITE;
-
-    static Sprite create() {
-        Sprite sprite = new BasicSprite();
-        sprite.setColor(BasicSprite.DEFAULT_COLOR);
-        sprite.setRepeat(1, 1);
-        sprite.setName("_" + sprite.getClass().getSimpleName() + sprite.getNodeId());
-        return sprite;
-    }
-
-    static Sprite create(TextureRegion textureRegion) {
-        Sprite sprite = new BasicSprite();
-        sprite.setTextureRegion(textureRegion);
-        sprite.setColor(BasicSprite.DEFAULT_COLOR);
-        sprite.setRepeat(1, 1);
-        return sprite;
-    }
-
-    static Sprite create(Texture texture) {
-        return create(texture.createTextureRegion());
-    }
-
-    static Sprite load(String assetPath) {
-        TextureRegion textureRegion = D2D2.textureManager().loadTexture(assetPath).createTextureRegion();
-        return create(textureRegion);
-    }
-
-    static Sprite load(String assetPath, int textureX, int textureY, int textureWidth, int textureHeight) {
-        TextureRegion textureRegion = D2D2.textureManager()
-                .loadTexture(assetPath)
-                .createTextureRegion(textureX, textureY, textureWidth, textureHeight);
-        return create(textureRegion);
-    }
 
     TextureRegion getTextureRegion();
 

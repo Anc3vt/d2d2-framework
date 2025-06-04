@@ -22,7 +22,7 @@ import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.BasicGroup;
 import lombok.Getter;
 
-public class BorderedRectangle extends BasicGroup {
+public class BorderedRectangleShape extends BasicGroup {
     private static final Color DEFAULT_FILL_COLOR = Color.WHITE;
     private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
 
@@ -34,27 +34,15 @@ public class BorderedRectangle extends BasicGroup {
     @Getter
     private final LineBatch lineBatch = new LineBatch();
 
-    public BorderedRectangle() {
-        this(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_FILL_COLOR, DEFAULT_BORDER_COLOR);
-    }
-
-    public BorderedRectangle(float width, float height) {
+    public BorderedRectangleShape(float width, float height) {
         this(width, height, DEFAULT_FILL_COLOR, DEFAULT_BORDER_COLOR);
     }
 
-    public BorderedRectangle(Color fillColor) {
-        this(DEFAULT_WIDTH, DEFAULT_HEIGHT, fillColor, DEFAULT_BORDER_COLOR);
-    }
-
-    public BorderedRectangle(Color fillColor, Color borderColor) {
-        this(DEFAULT_WIDTH, DEFAULT_HEIGHT, fillColor, borderColor);
-    }
-
-    public BorderedRectangle(float width, float height, Color fillColor) {
+    public BorderedRectangleShape(float width, float height, Color fillColor) {
         this(width, height, fillColor, DEFAULT_BORDER_COLOR);
     }
 
-    public BorderedRectangle(float width, float height, Color fillColor, Color borderColor) {
+    public BorderedRectangleShape(float width, float height, Color fillColor, Color borderColor) {
         fillRect = new RectangleShape();
 
         fillRect.setSize(1, 1);
