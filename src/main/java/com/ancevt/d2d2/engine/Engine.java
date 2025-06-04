@@ -21,6 +21,7 @@ package com.ancevt.d2d2.engine;
 import com.ancevt.d2d2.log.Logger;
 import com.ancevt.d2d2.scene.Renderer;
 import com.ancevt.d2d2.scene.Stage;
+import com.ancevt.d2d2.scene.shader.ShaderProgram;
 import com.ancevt.d2d2.scene.text.BitmapFont;
 import com.ancevt.d2d2.scene.text.FontBuilder;
 import com.ancevt.d2d2.event.core.EventDispatcher;
@@ -76,4 +77,6 @@ public interface Engine extends EventDispatcher {
     SoundManager soundManager();
 
     NodeFactory nodeFactory();
+
+    ShaderProgram createShaderProgram(String vertexShaderSource, String fragmentShaderSource);
 }

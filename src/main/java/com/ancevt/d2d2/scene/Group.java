@@ -115,4 +115,17 @@ public interface Group extends Node {
         return toTexture(getWidth(), getHeight());
     }
 
+    default Sprite toSprite(int width, int height) {
+        Texture texture = toTexture(width, height);
+        return Sprite.create(texture);
+    }
+
+    default Sprite toSprite(float width, float height) {
+        return toSprite((int) width, (int) height);
+    }
+
+    default Sprite toSprite() {
+        return toSprite(getWidth(), getHeight());
+    }
+
 }

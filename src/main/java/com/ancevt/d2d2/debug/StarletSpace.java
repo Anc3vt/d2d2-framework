@@ -26,6 +26,8 @@ import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.Stage;
 import com.ancevt.d2d2.scene.Sprite;
+import com.ancevt.d2d2.scene.shader.ShaderProgram;
+import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +39,7 @@ import static com.ancevt.d2d2.D2D2.stage;
 public class StarletSpace extends BasicGroup {
 
     private static StarletSpace starletSpace;
+    public static Sprite d2d2Title;
     private float velocityX = 30f;
     @Getter
     @Setter
@@ -82,7 +85,7 @@ public class StarletSpace extends BasicGroup {
             sprite.setColor(color);
 
             scale = (float) (Math.random() * 3);
-            setAlpha((float) Math.random());
+            setAlpha((float) Math.random() * 0.3f);
             setScale(scale, scale);
         }
 
@@ -143,16 +146,59 @@ public class StarletSpace extends BasicGroup {
                     stage().removeEventListener(plume, StageEvent.Tick.class);
                 }
             });
+
+            Timer.setTimeout(1000, timer-> plume.dispose());
         }
     }
 
     public static StarletSpace haveFun(boolean logo) {
         if (starletSpace != null) starletSpace.removeFromParent();
 
+        ShaderProgram shaderProgram = ShaderProgram.createShaderProgram(
+                """
+                        #version 330 core
+                                                
+                        layout(location = 0) in vec2 aPosition;
+                        layout(location = 1) in vec2 aUV;
+                        layout(location = 2) in vec4 aColor;
+                                                
+                        uniform mat4 uProjection;
+                                                
+                        out vec2 vUV;
+                        out vec4 vColor;
+                                                
+                        void main() {
+                            vUV = aUV;
+                            vColor = aColor;
+                            gl_Position = uProjection * vec4(aPosition, 0.0, 1.0);
+                        }
+                                       
+                        """,
+                """
+                        #version 330 core
+                        in vec2 vUV;
+                        in vec4 vColor;
+                                                
+                        out vec4 fragColor;
+                                                
+                        uniform sampler2D uTexture;
+                        uniform float uTime;
+                                                
+                        void main() {
+                            vec2 uv = vUV;
+                            float offset = sin(uv.x * 20.0 + uTime * 5.0) * 0.015;
+                            uv.y = clamp(vUV.y + offset, 0.001, 0.999); // 👈 и вниз и вверх в рамках текстуры
+                            fragColor = texture(uTexture, uv) * vColor;
+                        }
+                                                
+                        """);
+
+
         Stage stage = stage();
         stage.setBackgroundColor(Color.of(0x000510));
-        Sprite d2d2Title = Sprite.load("d2d2-core-demo-tileset.png", 0, 160, 512, 128);
+        d2d2Title = Sprite.load("d2d2-logo.png", 0, 0, 512, 128);
         d2d2Title.setColor(Color.LIGHT_GRAY);
+        d2d2Title.setShaderProgram(shaderProgram);
 
         starletSpace = new StarletSpace(count);
         if (logo) starletSpace.addChild(d2d2Title, (stage.getWidth() - d2d2Title.getWidth()) / 2, 45);

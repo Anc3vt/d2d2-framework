@@ -25,6 +25,7 @@ import com.ancevt.d2d2.event.StageEvent;
 import com.ancevt.d2d2.event.core.EventDispatcher;
 import com.ancevt.d2d2.event.core.EventLink;
 import com.ancevt.d2d2.event.core.EventListener;
+import com.ancevt.d2d2.scene.shader.ShaderProgram;
 
 public interface Node extends EventDispatcher, Disposable {
 
@@ -150,6 +151,10 @@ public interface Node extends EventDispatcher, Disposable {
     void setIntegerPixelAlignmentEnabled(boolean value);
 
     boolean isIntegerPixelAlignmentEnabled();
+
+    void setShaderProgram(ShaderProgram shaderProgram);
+
+    ShaderProgram getShaderProgram();
 
     @SuppressWarnings("unchecked")
     default EventLink<NodeEvent.Add> onAdd(EventListener<NodeEvent.Add> listener) {

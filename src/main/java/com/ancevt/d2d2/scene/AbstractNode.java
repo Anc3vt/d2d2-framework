@@ -21,6 +21,9 @@ package com.ancevt.d2d2.scene;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.event.core.EventDispatcherImpl;
+import com.ancevt.d2d2.scene.shader.ShaderProgram;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class AbstractNode extends EventDispatcherImpl implements Node {
 
@@ -40,6 +43,10 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
 
     protected final Stage stage = D2D2.stage();
     private boolean disposed;
+
+    @Getter
+    @Setter
+    private ShaderProgram shaderProgram;
 
     protected AbstractNode() {
         nodeId = displayObjectIdCounter++;
@@ -303,6 +310,7 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
         removeFromParent();
         stage.removeAllEventListenersByKey(this);
         dispatchEvent(NodeEvent.Dispose.create());
+        disposed = true;
     }
 
     @Override
