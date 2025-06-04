@@ -19,6 +19,7 @@
 
 package com.ancevt.d2d2.debug;
 
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.StageEvent;
@@ -34,8 +35,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ancevt.d2d2.D2D2.engine;
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 
 public class StarletSpace extends BasicGroup {
 
@@ -53,12 +53,12 @@ public class StarletSpace extends BasicGroup {
     public StarletSpace(int count) {
         for (int i = 0; i < count; i++) {
             Starlet starlet = new Starlet(this);
-            starlet.setX((float) (Math.random() * stage().getWidth()));
+            starlet.setX((float) (Math.random() * getStage().getWidth()));
             addChild(starlet);
             starlets.add(starlet);
         }
 
-        stage().onTick(e -> tick()); // centralized tick
+        getStage().onTick(e -> tick()); // centralized tick
     }
 
     private void tick() {
@@ -78,7 +78,7 @@ public class StarletSpace extends BasicGroup {
 
         public Starlet(StarletSpace starletSpace) {
             this.starletSpace = starletSpace;
-            sprite = engine.nodeFactory().createSprite("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
+            sprite = engine.getNodeFactory().createSprite("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
             sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
             addChild(sprite);
 
@@ -108,20 +108,20 @@ public class StarletSpace extends BasicGroup {
             }
 
             if (getX() < -16.0f) {
-                setX(stage().getWidth() + 16);
-                setY((float) (stage().getHeight() * Math.random()));
+                setX(getStage().getWidth() + 16);
+                setY((float) (getStage().getHeight() * Math.random()));
             }
 
-            if (getX() > stage().getWidth() + 16.0f) {
+            if (getX() > getStage().getWidth() + 16.0f) {
                 setX(-16.0f);
-                setY((float) (stage().getHeight() * Math.random()));
+                setY((float) (getStage().getHeight() * Math.random()));
             }
 
             if (getY() < -16.0f) {
-                setY(stage().getHeight() + 16);
+                setY(getStage().getHeight() + 16);
             }
 
-            if (getY() > stage().getHeight() + 16.0f) {
+            if (getY() > getStage().getHeight() + 16.0f) {
                 setY(-16.0f);
             }
         }
@@ -137,14 +137,14 @@ public class StarletSpace extends BasicGroup {
 
             getParent().addChild(plume);
 
-            stage().addEventListener(plume, StageEvent.Tick.class, e -> {
+            getStage().addEventListener(plume, StageEvent.Tick.class, e -> {
                 plume.setAlpha(plume.getAlpha() - 0.01f);
                 plume.moveY(0.05f);
                 plume.rotate(1f);
                 plume.scaleY(0.99f);
                 if (plume.getAlpha() <= 0.025f) {
                     plume.removeFromParent();
-                    stage().removeEventListener(plume, StageEvent.Tick.class);
+                    getStage().removeEventListener(plume, StageEvent.Tick.class);
                 }
             });
 
@@ -195,9 +195,9 @@ public class StarletSpace extends BasicGroup {
                         """);
 
 
-        Stage stage = stage();
+        Stage stage = getStage();
         stage.setBackgroundColor(Color.of(0x000510));
-        d2d2Title = engine().nodeFactory().createSprite("d2d2-logo.png", 0, 0, 512, 128);
+        d2d2Title = D2D2.getNodeFactory().createSprite("d2d2-logo.png", 0, 0, 512, 128);
         d2d2Title.setColor(Color.LIGHT_GRAY);
         d2d2Title.setShaderProgram(shaderProgram);
 

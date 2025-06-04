@@ -182,7 +182,7 @@ public interface Node extends EventDispatcher, Disposable {
     }
 
     default EventLink<StageEvent.Tick> onStageTick(EventListener<StageEvent.Tick> listener) {
-        EventLink<StageEvent.Tick> link = D2D2.stage().on(StageEvent.Tick.class, listener);
+        EventLink<StageEvent.Tick> link = D2D2.getStage().on(StageEvent.Tick.class, listener);
         onDispose(e -> link.unregister());
         return link;
     }

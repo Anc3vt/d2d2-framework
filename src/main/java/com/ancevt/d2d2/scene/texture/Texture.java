@@ -25,7 +25,6 @@ import com.ancevt.d2d2.util.Args;
 
 import java.util.StringTokenizer;
 
-import static com.ancevt.d2d2.D2D2.engine;
 import static java.lang.Integer.parseInt;
 
 public class Texture implements Disposable {
@@ -194,16 +193,18 @@ public class Texture implements Disposable {
 
     @Override
     public void dispose() {
-        D2D2.textureManager().unloadTexture(this);
+        D2D2.getTextureManager().unloadTexture(this);
     }
 
     public boolean isDisposed() {
-        return !D2D2.textureManager().containsTexture(this);
+        return !D2D2
+                .getTextureManager()
+                .isTextureActive(this);
     }
 
     public Sprite createSprite() {
-        return engine()
-                .nodeFactory()
+        return D2D2
+                .getNodeFactory()
                 .createSprite(this);
     }
 

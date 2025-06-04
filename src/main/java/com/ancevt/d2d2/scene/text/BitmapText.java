@@ -89,7 +89,7 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
     }
 
     private BitmapText(String text) {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
+        this(D2D2.getBitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
     }
 
     private BitmapText(final BitmapFont bitmapFont) {
@@ -97,11 +97,11 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
     }
 
     private BitmapText(float boundWidth, float boundHeight) {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
+        this(D2D2.getBitmapFontManager().getDefaultBitmapFont(), boundWidth, boundHeight, DEFAULT_TEXT);
     }
 
     public BitmapText() {
-        this(D2D2.bitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
+        this(D2D2.getBitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
     }
 
     public static BitmapText create() {
@@ -132,7 +132,6 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
         return bitmapText;
     }
 
-    //TODO: not working how it must. Fix it
     public void setCacheAsSprite(boolean cacheAsSprite) {
         if (cacheAsSprite == this.cacheAsSprite) return;
         this.cacheAsSprite = cacheAsSprite;
@@ -152,14 +151,14 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
         addEventListener(this, NodeEvent.RemoveFromScene.class, e -> {
             removeEventListener(BitmapText.class, NodeEvent.RemoveFromScene.class);
             if (sprite != null && sprite.getTextureRegion() != null) {
-                D2D2.textureManager().unloadTexture(sprite.getTextureRegion().getTexture());
+                D2D2.getTextureManager().unloadTexture(sprite.getTextureRegion().getTexture());
             }
         });
     }
 
     private void updateCachedSprite() {
         if (sprite != null && sprite.getTextureRegion() != null) {
-            D2D2.textureManager().unloadTexture(sprite.getTextureRegion().getTexture());
+            D2D2.getTextureManager().unloadTexture(sprite.getTextureRegion().getTexture());
         }
 
         if (isCacheAsSprite()) sprite = toSprite();
@@ -199,7 +198,7 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
     }
 
     public Sprite toSprite() {
-        Sprite result = engine.nodeFactory().createSprite(D2D2.textureManager().bitmapTextToTexture(this));
+        Sprite result = engine.getNodeFactory().createSprite(D2D2.getTextureManager().bitmapTextToTexture(this));
         result.setPosition(getX(), getY());
         result.setScale(getScaleX(), getScaleY());
         result.setRotation(getRotation());

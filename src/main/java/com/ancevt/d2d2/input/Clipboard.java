@@ -22,10 +22,10 @@ import com.ancevt.d2d2.D2D2;
 
 public class Clipboard {
     public static void set(String string) {
-        D2D2.engine().putToClipboard(string);
+        D2D2.getEngine().putStringToClipboard(string);
     }
 
     public static String get() {
-        return D2D2.engine().getStringFromClipboard();
+        return D2D2.getEngine().getStringFromClipboard();
     }
 }

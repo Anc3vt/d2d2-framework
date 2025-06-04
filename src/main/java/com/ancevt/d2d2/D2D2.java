@@ -20,6 +20,7 @@ package com.ancevt.d2d2;
 
 import com.ancevt.d2d2.engine.DisplayManager;
 import com.ancevt.d2d2.engine.Engine;
+import com.ancevt.d2d2.engine.NodeFactory;
 import com.ancevt.d2d2.engine.SoundManager;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.StageEvent;
@@ -38,12 +39,13 @@ import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class D2D2 {
-    private static final TextureManager textureManager = new TextureManager();
 
+    @Getter
     private static BitmapFontManager bitmapFontManager;
 
     @Getter
     private static Node cursor;
+    @Getter
     private static Engine engine;
 
     @Getter
@@ -52,6 +54,7 @@ public final class D2D2 {
     @Getter
     private static D2D2Config config;
 
+    @Getter
     private static boolean noScaleMode;
 
     public static Logger log;
@@ -119,7 +122,7 @@ public final class D2D2 {
         D2D2.cursor = cursor;
     }
 
-    public static Stage stage() {
+    public static Stage getStage() {
         return engine.getStage();
     }
 
@@ -131,39 +134,31 @@ public final class D2D2 {
         engine.stop();
     }
 
-    public static TextureManager textureManager() {
-        return textureManager;
-    }
-
-    public static BitmapFontManager bitmapFontManager() {
-        return bitmapFontManager;
-    }
-
-    public static Engine engine() {
-        return engine;
-    }
-
-    public static DisplayManager displayManager() {
-        return engine.displayManager();
-    }
-
-    public static SoundManager soundManager() {
-        return engine().soundManager();
-    }
-
     public static void setNoScaleMode(boolean noScaleMode) {
         D2D2.noScaleMode = noScaleMode;
 
-        engine().removeEventListener(D2D2.class, CommonEvent.Resize.class);
+        getEngine().removeEventListener(D2D2.class, CommonEvent.Resize.class);
         if (noScaleMode) {
-            engine().addEventListener(D2D2.class, CommonEvent.Resize.class, e ->
-                    stage().setSize(engine().getCanvasWidth(), engine().getCanvasHeight())
+            getEngine().addEventListener(D2D2.class, CommonEvent.Resize.class, e ->
+                    getStage().setSize(getEngine().getCanvasWidth(), getEngine().getCanvasHeight())
             );
         }
     }
 
-    public static boolean isNoScaleMode() {
-        return noScaleMode;
+    public static DisplayManager getDisplayManager() {
+        return engine.getDisplayManager();
+    }
+
+    public static SoundManager getSoundManager() {
+        return engine.getSoundManager();
+    }
+
+    public static NodeFactory getNodeFactory() {
+        return engine.getNodeFactory();
+    }
+
+    public static TextureManager getTextureManager() {
+        return getEngine().getTextureManager();
     }
 
 }

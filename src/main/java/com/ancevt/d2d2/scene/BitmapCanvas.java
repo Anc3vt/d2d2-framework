@@ -9,7 +9,7 @@ public interface BitmapCanvas extends Node {
     int getPixel(int x, int y);
 
     static BitmapCanvas create(int width, int height) {
-        return D2D2.engine().nodeFactory().createBitmapCanvas(width, height);
+        return D2D2.getEngine().getNodeFactory().createBitmapCanvas(width, height);
     }
 
 }

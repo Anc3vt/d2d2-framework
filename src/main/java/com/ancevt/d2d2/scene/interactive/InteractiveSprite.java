@@ -56,7 +56,7 @@ public class InteractiveSprite extends BasicSprite implements Interactive {
     }
 
     private InteractiveSprite(String assetPath) {
-        this(D2D2.textureManager().loadTexture(assetPath).createTextureRegion());
+        this(D2D2.getTextureManager().loadTexture(assetPath).createTextureRegion());
     }
 
     public static InteractiveSprite create() {

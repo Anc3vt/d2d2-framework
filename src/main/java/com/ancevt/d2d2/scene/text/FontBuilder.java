@@ -212,7 +212,7 @@ public class FontBuilder {
             }
         }
 
-        return D2D2.engine().generateBitmapFont(this);
+        return D2D2.getEngine().generateBitmapFont(this);
     }
 
 }

@@ -25,8 +25,6 @@ import com.ancevt.d2d2.scene.texture.Texture;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static com.ancevt.d2d2.D2D2.engine;
-
 public interface Group extends Node {
 
     @SuppressWarnings("unchecked")
@@ -98,7 +96,7 @@ public interface Group extends Node {
     void removeAllChildren();
 
     default Texture toTexture(int width, int height) {
-        return D2D2.textureManager().getTextureEngine().renderGroupToTexture(
+        return D2D2.getTextureManager().renderGroupToTexture(
                 this,
                 width,
                 height
@@ -114,8 +112,8 @@ public interface Group extends Node {
     }
 
     default Sprite toSprite(int width, int height) {
-        return engine()
-                .nodeFactory()
+        return D2D2
+                .getNodeFactory()
                 .createSprite(toTexture(width, height));
     }
 

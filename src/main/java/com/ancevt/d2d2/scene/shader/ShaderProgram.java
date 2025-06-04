@@ -21,6 +21,6 @@ public interface ShaderProgram {
     void destroy();
 
     static ShaderProgram createShaderProgram(String vertexShaderSource, String fragmentShaderSource){
-        return D2D2.engine().createShaderProgram(vertexShaderSource, fragmentShaderSource);
+        return D2D2.getEngine().createShaderProgram(vertexShaderSource, fragmentShaderSource);
     }
 }

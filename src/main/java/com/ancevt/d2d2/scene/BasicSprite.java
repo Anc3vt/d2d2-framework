@@ -18,7 +18,6 @@
 
 package com.ancevt.d2d2.scene;
 
-import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.scene.texture.TextureRegion;
 
 public class BasicSprite extends AbstractNode implements Sprite {
@@ -92,11 +91,6 @@ public class BasicSprite extends AbstractNode implements Sprite {
     }
 
     @Override
-    public void setTextureRegion(String textureRegionKey) {
-        setTextureRegion(D2D2.textureManager().getTextureRegion(textureRegionKey));
-    }
-
-    @Override
     public float getWidth() {
         return textureRegion == null ? 0f : textureRegion.getWidth();
     }
@@ -108,7 +102,7 @@ public class BasicSprite extends AbstractNode implements Sprite {
 
     @Override
     public Sprite cloneSprite() {
-        Sprite result = engine.nodeFactory().createSprite(getTextureRegion());
+        Sprite result = engine.getNodeFactory().createSprite(getTextureRegion());
         result.setPosition(getX(), getY());
         result.setRepeat(getRepeatX(), getRepeatY());
         result.setScale(getScaleX(), getScaleY());

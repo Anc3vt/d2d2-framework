@@ -63,7 +63,7 @@ public class TextureUrlLoader extends EventDispatcherImpl {
     }
 
     private byte[] createTexture(byte[] bytes) {
-        this.lastLoadedTexture = D2D2.textureManager().loadTexture(new ByteArrayInputStream(bytes));
+        this.lastLoadedTexture = D2D2.getTextureManager().loadTexture(new ByteArrayInputStream(bytes));
         dispatchEvent(TextureLoaderEvent.LoadComplete.create(lastLoadedTexture, bytes));
         return bytes;
     }

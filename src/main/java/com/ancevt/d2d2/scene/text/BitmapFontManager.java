@@ -92,7 +92,7 @@ public class BitmapFontManager {
             throw new IllegalArgumentException(e);
         }
 
-        BitmapFont bitmapFont = new BitmapFont(name, D2D2.textureManager().loadTexture(pngInputStream), charInfos);
+        BitmapFont bitmapFont = new BitmapFont(name, D2D2.getTextureManager().loadTexture(pngInputStream), charInfos);
         bitmapFontMap.put(name, bitmapFont);
         return bitmapFont;
     }

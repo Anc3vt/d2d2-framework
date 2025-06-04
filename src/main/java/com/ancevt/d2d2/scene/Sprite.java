@@ -28,8 +28,6 @@ public interface Sprite extends Node, Colored, Repeatable {
 
     void setTextureRegion(TextureRegion value);
 
-    void setTextureRegion(String textureRegionKey);
-
     void setTextureBleedingFix(double v);
 
     double getTextureBleedingFix();

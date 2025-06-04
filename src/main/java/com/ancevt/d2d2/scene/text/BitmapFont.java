@@ -124,7 +124,7 @@ public class BitmapFont implements Disposable {
     @Override
     public void dispose() {
         disposed = true;
-        D2D2.textureManager().unloadTexture(getTexture());
+        D2D2.getTextureManager().unloadTexture(getTexture());
     }
 
     @Override

@@ -18,109 +18,28 @@
 
 package com.ancevt.d2d2.scene.texture;
 
+import com.ancevt.d2d2.scene.Group;
 import com.ancevt.d2d2.scene.text.BitmapText;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class TextureManager {
+public interface TextureManager {
 
-    private final List<Texture> textures;
+    Texture loadTexture(InputStream pngInputStream);
 
-    private final Map<String, Texture> textureCache;
+    Texture loadTexture(String assetPath);
 
-    private final Map<String, TextureRegion> textureRegions;
+    void unloadTexture(Texture texture);
 
-    @Getter
-    @Setter
-    private TextureEngine textureEngine;
+    Texture bitmapTextToTexture(BitmapText bitmapText);
 
-    public TextureManager() {
-        textureRegions = new HashMap<>();
-        textures = new ArrayList<>();
-        textureCache = new HashMap<>();
-    }
+    Texture renderGroupToTexture(Group group, int width, int height);
 
-    public Texture loadTexture(InputStream pngInputStream) {
-        final Texture result = textureEngine.createTexture(pngInputStream);
-        textures.add(result);
-        return result;
-    }
+    boolean isTextureActive(Texture texture);
 
-    public Texture loadTexture(String assetPath) {
-        if (textureCache.containsKey(assetPath)) {
-            return textureCache.get(assetPath);
-        }
+    void addTextureRegion(String key, TextureRegion textureRegion);
 
-        final Texture result = textureEngine.createTexture(assetPath);
-        textures.add(result);
-        textureCache.put(assetPath, result);
-        return result;
-    }
+    TextureRegion getTextureRegion(String key);
 
-    public void unloadTexture(Texture texture) {
-        textureEngine.unloadTexture(texture);
-        textures.remove(texture);
-
-        for (Map.Entry<String, Texture> e : textureCache.entrySet()) {
-            if (e.getValue() == texture) {
-                textureCache.remove(e.getKey());
-                break;
-            }
-        }
-    }
-
-    public void clear() {
-        while (!textures.isEmpty()) {
-            unloadTexture(textures.get(0));
-        }
-    }
-
-    public Texture bitmapTextToTexture(BitmapText bitmapText) {
-        Texture texture = textureEngine.bitmapTextToTexture(bitmapText);
-        textures.add(texture);
-        return texture;
-    }
-
-    public int getTextureCount() {
-        return textures.size();
-    }
-
-    public Texture getTexture(int index) {
-        return textures.get(index);
-    }
-
-    public void addTextureRegion(String key, TextureRegion textureRegion) {
-        textureRegions.put(key, textureRegion);
-    }
-
-    public TextureRegion getTextureRegion(String key) {
-        TextureRegion result = textureRegions.get(key);
-        if (result == null) {
-            throw new IllegalArgumentException("No such texture region key: " + key);
-        }
-        return result;
-    }
-
-    public final void loadTextureDataInfo(String assetPath) {
-        try {
-            TextureDataInfoReadHelper.readTextureDataInfoFile(assetPath);
-        } catch (IOException e) {
-            throw new TextureException(e);
-        }
-    }
-
-    public boolean containsTexture(Texture texture) {
-        return textures.contains(texture);
-    }
-
-    public void addTexture(Texture texture) {
-        textures.add(texture);
-    }
+    void loadTextureDataInfo(String assetInfFile);
 }

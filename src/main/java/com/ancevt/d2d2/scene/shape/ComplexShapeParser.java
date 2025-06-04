@@ -18,6 +18,7 @@
 
 package com.ancevt.d2d2.scene.shape;
 
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.asset.Assets;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
@@ -30,8 +31,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-
-import static com.ancevt.d2d2.D2D2.engine;
 
 public class ComplexShapeParser {
 
@@ -48,8 +47,8 @@ public class ComplexShapeParser {
     }
 
     private static Group parse(String string) {
-        Group result = engine()
-                .nodeFactory()
+        Group result = D2D2
+                .getNodeFactory()
                 .createGroup();
 
         AtomicReference<FreeShape> shape = new AtomicReference<>();

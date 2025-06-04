@@ -42,8 +42,8 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
     private int zOrderIndex;
     private boolean integerPixelAlignmentEnabled = true;
 
-    protected final Stage stage = D2D2.stage();
-    protected final Engine engine = D2D2.engine();
+    protected final Stage stage = D2D2.getStage();
+    protected final Engine engine = D2D2.getEngine();
     private boolean disposed;
 
     @Getter
