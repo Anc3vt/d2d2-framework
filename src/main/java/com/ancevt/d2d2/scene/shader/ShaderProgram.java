@@ -20,6 +20,12 @@ public interface ShaderProgram {
 
     void destroy();
 
+    ShaderProgram copy();
+
+    String getVertexSource();
+
+    String getFragmentSource();
+
     static ShaderProgram createShaderProgram(String vertexShaderSource, String fragmentShaderSource){
         return D2D2.getEngine().createShaderProgram(vertexShaderSource, fragmentShaderSource);
     }

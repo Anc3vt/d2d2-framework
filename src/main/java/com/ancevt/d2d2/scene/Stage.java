@@ -102,6 +102,14 @@ public class Stage extends BasicGroup implements Resizable {
         }
     }
 
+    public EventLink<CommonEvent.Start> onStart(EventListener<CommonEvent.Start> listener) {
+        return on(CommonEvent.Start.class, listener);
+    }
+
+    public EventLink<CommonEvent.Stop> onStop(EventListener<CommonEvent.Stop> listener) {
+        return on(CommonEvent.Stop.class, listener);
+    }
+
     public EventLink<StageEvent.Tick> onTick(EventListener<StageEvent.Tick> listener) {
         return on(StageEvent.Tick.class, listener);
     }

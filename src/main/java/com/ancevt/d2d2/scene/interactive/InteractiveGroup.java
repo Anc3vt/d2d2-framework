@@ -22,9 +22,10 @@ import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.exception.InteractiveException;
 import com.ancevt.d2d2.scene.BasicGroup;
+import com.ancevt.d2d2.scene.Resizable;
 import com.ancevt.d2d2.scene.shape.FreeShape;
 
-public class InteractiveGroup extends BasicGroup implements Interactive {
+public class InteractiveGroup extends BasicGroup implements Interactive, Resizable {
 
     private static final float DEFAULT_WIDTH = 1f;
     private static final float DEFAULT_HEIGHT = 1f;

@@ -166,15 +166,15 @@ public class Combined9Sprites extends InteractiveGroup implements Colored {
     }
 
     public void setTextures(String[] textureKeys) {
-//        topLeft.setTextureRegion(D2D2.getTextureEngine().getTextureRegion(textureKeys[0]));
-//        top.setTextureRegion(D2D2.textureManager().getTextureRegion(textureKeys[1]));
-//        topRight.setTextureRegion(D2D2.textureManager().getTextureRegion(textureKeys[2]));
-//        left.setTextureRegion(D2D2.textureManager().getTextureRegion(textureKeys[3]));
-//        center.setTextureRegion(D2D2.textureManager().getTextureRegion(textureKeys[4]));
-//        right.setTextureRegion(D2D2.textureManager().getTextureRegion(textureKeys[5]));
-//        bottomLeft.setTextureRegion(D2D2.textureManager().getTextureRegion(textureKeys[6]));
-//        bottom.setTextureRegion(D2D2.textureManager().getTextureRegion(textureKeys[7]));
-//        bottomRight.setTextureRegion(D2D2.textureManager().getTextureRegion(textureKeys[8]));
+        topLeft.setTextureRegion(D2D2.getTextureManager().getTextureRegion(textureKeys[0]));
+        top.setTextureRegion(D2D2.getTextureManager().getTextureRegion(textureKeys[1]));
+        topRight.setTextureRegion(D2D2.getTextureManager().getTextureRegion(textureKeys[2]));
+        left.setTextureRegion(D2D2.getTextureManager().getTextureRegion(textureKeys[3]));
+        center.setTextureRegion(D2D2.getTextureManager().getTextureRegion(textureKeys[4]));
+        right.setTextureRegion(D2D2.getTextureManager().getTextureRegion(textureKeys[5]));
+        bottomLeft.setTextureRegion(D2D2.getTextureManager().getTextureRegion(textureKeys[6]));
+        bottom.setTextureRegion(D2D2.getTextureManager().getTextureRegion(textureKeys[7]));
+        bottomRight.setTextureRegion(D2D2.getTextureManager().getTextureRegion(textureKeys[8]));
     }
 
     @Override

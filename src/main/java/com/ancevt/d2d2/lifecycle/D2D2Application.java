@@ -23,6 +23,6 @@ import com.ancevt.d2d2.scene.Stage;
 public interface D2D2Application {
     void start(Stage stage);
 
-    default void shutdown() {
+    default void stop() {
     }
 }

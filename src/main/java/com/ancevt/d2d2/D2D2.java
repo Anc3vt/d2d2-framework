@@ -23,11 +23,8 @@ import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.engine.NodeFactory;
 import com.ancevt.d2d2.engine.SoundManager;
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.StageEvent;
-import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
 import com.ancevt.d2d2.log.Logger;
-import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.Stage;
 import com.ancevt.d2d2.scene.text.BitmapFontManager;
 import com.ancevt.d2d2.scene.texture.TextureManager;
@@ -43,8 +40,6 @@ public final class D2D2 {
     @Getter
     private static BitmapFontManager bitmapFontManager;
 
-    @Getter
-    private static Node cursor;
     @Getter
     private static Engine engine;
 
@@ -81,7 +76,11 @@ public final class D2D2 {
         setNoScaleMode(noScaleMode);
         application.start(stage);
         startMainLoop();
-        application.shutdown();
+        application.stop();
+    }
+
+    public static void init(D2D2Application application) {
+        init(application, new D2D2Config());
     }
 
     private static void addPropertiesToSystemProperties(Map<String, String> properties) {
@@ -106,20 +105,6 @@ public final class D2D2 {
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    public static void setCursor(Node cursor) {
-        if (cursor == D2D2.cursor) return;
-
-        if (cursor != null) {
-            Mouse.setVisible(false);
-            cursor.removeEventListener(Mouse.class, StageEvent.Tick.class);
-            cursor.addEventListener(Mouse.class, StageEvent.Tick.class, event -> cursor.setPosition(Mouse.getX(), Mouse.getY()));
-        } else {
-            Mouse.setVisible(true);
-            D2D2.cursor.removeEventListener(Mouse.class, StageEvent.Tick.class);
-        }
-        D2D2.cursor = cursor;
     }
 
     public static Stage getStage() {

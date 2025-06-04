@@ -27,6 +27,10 @@ public class D2D2Config {
 
     private String[] arguments;
 
+    public D2D2Config() {
+        prop(ENGINE, "com.ancevt.d2d2.engine.desktop.DesktopEngine");
+    }
+
     public Args getArgs() {
         if (args == null) {
             if (arguments == null) {

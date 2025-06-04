@@ -41,6 +41,7 @@ public class StarletSpace extends BasicGroup {
 
     private static StarletSpace starletSpace;
     public static Sprite d2d2Title;
+    public static ShaderProgram shaderProgram;
     private float velocityX = 30f;
     @Getter
     @Setter
@@ -71,8 +72,6 @@ public class StarletSpace extends BasicGroup {
         private final Sprite sprite;
         private float t;
         private final StarletSpace starletSpace;
-        private final float scale;
-        private final Color color;
 
         private float plumeDistanceAccumulator = 0f;
 
@@ -81,11 +80,12 @@ public class StarletSpace extends BasicGroup {
             sprite = engine.getNodeFactory().createSprite("d2d2-core-demo-tileset.png", 32, 144, 8, 8);
             sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);
             addChild(sprite);
+            setY((float) (getStage().getHeight() * Math.random()));
 
-            color = new Color(0x88, 0x88, (int) (0x80 + (Math.random() * 0x80)));
+            Color color = new Color(0x88, 0x88, (int) (0x80 + (Math.random() * 0x80)));
             sprite.setColor(color);
 
-            scale = (float) (Math.random() * 3);
+            float scale = (float) (Math.random() * 3);
             setAlpha((float) Math.random() * 0.3f);
             setScale(scale, scale);
         }
@@ -155,7 +155,7 @@ public class StarletSpace extends BasicGroup {
     public static StarletSpace haveFun(boolean logo) {
         if (starletSpace != null) starletSpace.removeFromParent();
 
-        ShaderProgram shaderProgram = ShaderProgram.createShaderProgram(
+        shaderProgram = ShaderProgram.createShaderProgram(
                 """
                         #version 330 core
                                                 
