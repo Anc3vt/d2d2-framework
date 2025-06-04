@@ -43,20 +43,12 @@ public class InteractiveGroup extends BasicGroup implements Interactive, Resizab
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    private InteractiveGroup(float width, float height) {
+    public InteractiveGroup(float width, float height) {
         interactiveArea = new InteractiveArea(0, 0, width, height);
         setName("_" + getClass().getSimpleName() + getNodeId());
         enabled = true;
         pushEventsUp = true;
         InteractiveManager.getInstance().registerInteractive(this);
-    }
-
-    public static InteractiveGroup create() {
-        return new InteractiveGroup();
-    }
-
-    public static InteractiveGroup create(float width, float height) {
-        return new InteractiveGroup(width, height);
     }
 
     @Override
