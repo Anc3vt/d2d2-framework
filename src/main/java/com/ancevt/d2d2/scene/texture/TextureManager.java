@@ -22,8 +22,11 @@ import com.ancevt.d2d2.scene.Group;
 import com.ancevt.d2d2.scene.text.BitmapText;
 
 import java.io.InputStream;
+import java.util.Map;
 
 public interface TextureManager {
+
+    Map<Integer, Texture> getLoadedTextures();
 
     Texture loadTexture(InputStream pngInputStream);
 
@@ -31,15 +34,19 @@ public interface TextureManager {
 
     void unloadTexture(Texture texture);
 
-    Texture bitmapTextToTexture(BitmapText bitmapText);
+    Texture renderBitmapTextToTexture(BitmapText bitmapText);
 
     Texture renderGroupToTexture(Group group, int width, int height);
 
     boolean isTextureActive(Texture texture);
 
-    void addTextureRegion(String key, TextureRegion textureRegion);
+    void registerTextureRegion(String key, TextureRegion textureRegion);
+
+    void removeTextureRegion(String key);
 
     TextureRegion getTextureRegion(String key);
 
-    void loadTextureDataInfo(String assetInfFile);
+    Map<String, TextureRegion> getTextureRegionMap();
+
+    void loadTextureDataInfo(String assetMetaFile);
 }

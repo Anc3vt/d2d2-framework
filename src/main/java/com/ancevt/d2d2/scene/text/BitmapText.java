@@ -198,7 +198,7 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
     }
 
     public Sprite toSprite() {
-        Sprite result = engine.getNodeFactory().createSprite(D2D2.getTextureManager().bitmapTextToTexture(this));
+        Sprite result = engine.getNodeFactory().createSprite(D2D2.getTextureManager().renderBitmapTextToTexture(this));
         result.setPosition(getX(), getY());
         result.setScale(getScaleX(), getScaleY());
         result.setRotation(getRotation());
