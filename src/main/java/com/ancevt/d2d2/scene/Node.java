@@ -185,7 +185,15 @@ public interface Node extends EventDispatcher, Disposable {
         EventLink<StageEvent.Tick> link = D2D2.getStage().onTick(e -> {
             if (isOnScreen()) listener.onEvent(e);
         });
-        onDispose(e -> link.unregister());
+
+        EventLink<NodeEvent.RemoveFromScene> removeFromSceneEventLink = onRemoveFromScene(e -> link.setPaused(true));
+        EventLink<NodeEvent.AddToScene> addToSceneEventLink = onAddToScene(e -> link.setPaused(false));
+
+        onDispose(e -> {
+            link.unregister();
+            removeFromSceneEventLink.unregister();
+            addToSceneEventLink.unregister();
+        });
         return link;
     }
 
