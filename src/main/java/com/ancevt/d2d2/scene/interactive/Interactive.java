@@ -37,9 +37,9 @@ public interface Interactive extends Node, Disposable {
 
     InteractiveArea getInteractiveArea();
 
-    void setEnabled(boolean enabled);
+    void setInteractionEnabled(boolean enabled);
 
-    boolean isEnabled();
+    boolean isInteractionEnabled();
 
     void setDragging(boolean dragging);
 

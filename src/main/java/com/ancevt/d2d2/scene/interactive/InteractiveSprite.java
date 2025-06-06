@@ -148,7 +148,7 @@ public class InteractiveSprite extends BasicSprite implements Interactive {
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public void setInteractionEnabled(boolean enabled) {
         if (this.enabled == enabled) return;
 
         this.enabled = enabled;
@@ -172,7 +172,7 @@ public class InteractiveSprite extends BasicSprite implements Interactive {
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isInteractionEnabled() {
         return enabled;
     }
 

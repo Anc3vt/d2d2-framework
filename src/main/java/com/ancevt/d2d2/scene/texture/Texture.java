@@ -210,7 +210,8 @@ public class Texture implements Disposable {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "{" + "id=" + id + ", width=" + width + ", height=" + height + ", disposed=" + isDisposed() + '}';
+        return this.getClass().getSimpleName() + "{" + "id=" + id + ", " + width + "x" + height +
+                (isDisposed() ? "[disposed]" : "") + "}";
     }
 
 }

@@ -532,7 +532,7 @@ public class InteractiveManager {
 
 
     private static void dispatch(Interactive eventDispatcher, InputEvent event) {
-        if (!eventDispatcher.isEnabled() || !eventDispatcher.isGloballyVisible()) return;
+        if (!eventDispatcher.isInteractionEnabled() || !eventDispatcher.isGloballyVisible()) return;
 
         eventDispatcher.dispatchEvent(event);
 

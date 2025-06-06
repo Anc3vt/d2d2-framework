@@ -62,7 +62,7 @@ public class Combined9Sprites extends InteractiveGroup implements Colored {
         addChild(bottom);
         addChild(bottomRight);
 
-        setEnabled(false);
+        setInteractionEnabled(false);
     }
 
     public Combined9Sprites(String[] textureKeys) {
