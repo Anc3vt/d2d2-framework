@@ -91,6 +91,7 @@ public class InteractiveManager {
             if (focused != null) {
                 dispatch(focused, InputEvent.KeyUp.create(
                         e.getKeyCode(),
+                        e.getCharacter(),
                         e.isAlt(),
                         e.isControl(),
                         e.isShift()

@@ -29,4 +29,6 @@ public interface ShaderProgram {
     static ShaderProgram createShaderProgram(String vertexShaderSource, String fragmentShaderSource){
         return D2D2.getEngine().createShaderProgram(vertexShaderSource, fragmentShaderSource);
     }
+
+    void uploadUniforms();
 }

@@ -35,6 +35,13 @@ public class BasicSprite extends AbstractNode implements Sprite {
         setName("_" + getClass().getSimpleName() + getNodeId());
     }
 
+    public BasicSprite(TextureRegion textureRegion) {
+        setColor(DEFAULT_COLOR);
+        setRepeat(1, 1);
+        setTextureRegion(textureRegion);
+        setName("_" + getClass().getSimpleName() + getNodeId());
+    }
+
     @Override
     public void setColor(Color color) {
         this.color = color;

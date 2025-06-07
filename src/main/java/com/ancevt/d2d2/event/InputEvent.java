@@ -203,16 +203,19 @@ public abstract class InputEvent extends Event {
     @Getter
     public static final class KeyUp extends InputEvent {
         private int keyCode;
+        private char character;
         private boolean alt;
         private boolean control;
         private boolean shift;
 
         public static KeyUp create(int keyCode,
+                                   char character,
                                    boolean alt,
                                    boolean control,
                                    boolean shift) {
             KeyUp e = EventPool.obtain(KeyUp.class);
             e.keyCode = keyCode;
+            e.character = character;
             e.alt = alt;
             e.control = control;
             e.shift = shift;
