@@ -105,6 +105,10 @@ public abstract class InputEvent extends Event {
     public static final class MouseMove extends InputEvent {
         private float x;
         private float y;
+        private int button;
+        private boolean left;
+        private boolean right;
+        private boolean middle;
         private boolean onArea;
         private boolean alt;
         private boolean control;
@@ -112,6 +116,10 @@ public abstract class InputEvent extends Event {
 
         public static MouseMove create(float x,
                                        float y,
+                                       int button,
+                                       boolean left,
+                                       boolean right,
+                                       boolean middle,
                                        boolean onArea,
                                        boolean alt,
                                        boolean control,
@@ -119,6 +127,10 @@ public abstract class InputEvent extends Event {
             MouseMove e = EventPool.obtain(MouseMove.class);
             e.x = x;
             e.y = y;
+            e.button = button;
+            e.left = left;
+            e.right = right;
+            e.middle = middle;
             e.onArea = onArea;
             e.alt = alt;
             e.control = control;

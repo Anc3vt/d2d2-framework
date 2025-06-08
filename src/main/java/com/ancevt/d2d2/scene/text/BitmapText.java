@@ -92,7 +92,7 @@ public class BitmapText extends AbstractNode implements Colored, Resizable {
         this(D2D2.getBitmapFontManager().getDefaultBitmapFont(), DEFAULT_WIDTH, DEFAULT_HEIGHT, text);
     }
 
-    private BitmapText(final BitmapFont bitmapFont) {
+    public BitmapText(final BitmapFont bitmapFont) {
         this(bitmapFont, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TEXT);
     }
 

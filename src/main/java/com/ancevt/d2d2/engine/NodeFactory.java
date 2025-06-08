@@ -9,7 +9,7 @@ import com.ancevt.d2d2.scene.texture.TextureRegion;
 
 public interface NodeFactory {
 
-    BitmapCanvas createBitmapCanvas(int width, int height);
+    Bitmap createBitmapCanvas(int width, int height);
 
     Group createGroup();
 

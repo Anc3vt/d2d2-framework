@@ -296,6 +296,12 @@ public class InteractiveManager {
                         dispatch(interactive, InputEvent.MouseMove.create(
                                 (int) (x - tcX),
                                 (int) (y - tcY),
+                                leftMouseButton ? MouseButton.LEFT :
+                                        rightMouseButton ? MouseButton.RIGHT :
+                                                middleMouseButton ? MouseButton.MIDDLE : -1,
+                                leftMouseButton,
+                                rightMouseButton,
+                                middleMouseButton,
                                 true,
                                 alt,
                                 control,

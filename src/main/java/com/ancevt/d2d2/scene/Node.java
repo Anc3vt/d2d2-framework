@@ -70,6 +70,10 @@ public interface Node extends EventDispatcher, Disposable {
 
     void setPosition(float x, float y);
 
+    default void setPositionAs(Node node) {
+        setPosition(node.getX(), node.getY());
+    }
+
     void setX(float value);
 
     void setY(float value);
