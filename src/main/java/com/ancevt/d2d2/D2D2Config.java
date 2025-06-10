@@ -1,6 +1,6 @@
 package com.ancevt.d2d2;
 
-import com.ancevt.d2d2.asset.Assets;
+import com.ancevt.d2d2.asset.Asset;
 import com.ancevt.d2d2.engine.Engine;
 import com.ancevt.d2d2.util.Args;
 
@@ -89,7 +89,7 @@ public class D2D2Config {
     }
 
     public D2D2Config fromAssets(String propertiesFilename) {
-        InputStream inputStream = Assets.getAsset(propertiesFilename).getInputStream();
+        InputStream inputStream = Asset.getAsset(propertiesFilename).getInputStream();
         try {
             String propertiesString = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 

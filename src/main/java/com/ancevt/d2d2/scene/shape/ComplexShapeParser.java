@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene.shape;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.asset.Assets;
+import com.ancevt.d2d2.asset.Asset;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
 
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class ComplexShapeParser {
 
     public static Group parseAsset(String assetPath) {
-        return parse(Assets.getAsset(assetPath).getInputStream());
+        return parse(Asset.getAsset(assetPath).getInputStream());
     }
 
     public static Group parse(InputStream inputStream) {

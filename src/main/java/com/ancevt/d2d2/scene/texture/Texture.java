@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene.texture;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.Disposable;
+import com.ancevt.d2d2.util.Disposable;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.util.Args;
 

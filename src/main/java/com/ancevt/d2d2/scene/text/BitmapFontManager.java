@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene.text;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.asset.Assets;
+import com.ancevt.d2d2.asset.Asset;
 import com.ancevt.d2d2.util.Args;
 import lombok.Getter;
 
@@ -111,8 +111,8 @@ public class BitmapFontManager {
         }
 
         BitmapFont bitmapFont = loadBitmapFont(
-                Assets.getAsset(BITMAP_FONTS_ASSET_DIR + bmfAssetPath).getInputStream(),
-                Assets.getAsset(BITMAP_FONTS_ASSET_DIR + pngAssetPath).getInputStream(),
+                Asset.getAsset(BITMAP_FONTS_ASSET_DIR + bmfAssetPath).getInputStream(),
+                Asset.getAsset(BITMAP_FONTS_ASSET_DIR + pngAssetPath).getInputStream(),
                 bmfAssetPath
         );
 

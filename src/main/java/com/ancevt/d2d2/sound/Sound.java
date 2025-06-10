@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.sound;
 
-import com.ancevt.d2d2.common.Disposable;
+import com.ancevt.d2d2.util.Disposable;
 
 public interface Sound extends Disposable {
 

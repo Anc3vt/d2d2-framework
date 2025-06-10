@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.ancevt.d2d2.common;
+package com.ancevt.d2d2.util;
 
 public interface Disposable {
     void dispose();

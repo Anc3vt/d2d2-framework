@@ -1,6 +1,7 @@
 package com.ancevt.d2d2.asset;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.exception.AssetException;
 import com.ancevt.d2d2.scene.text.BitmapFont;
 import com.ancevt.d2d2.scene.texture.Texture;
 import com.ancevt.d2d2.sound.Sound;
@@ -12,6 +13,7 @@ import java.io.*;
 @RequiredArgsConstructor
 public class Asset implements AutoCloseable {
 
+    private static final String ASSETS_DIR = "assets/";
     @Getter
     private final InputStream inputStream;
 
@@ -37,6 +39,13 @@ public class Asset implements AutoCloseable {
 
     public static Sound loadSound(InputStream inputStream) {
         return D2D2.getSoundManager().loadSound(inputStream);
+    }
+
+    public static Asset getAsset(String assetPath) {
+        final ClassLoader classLoader = Asset.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(Asset.ASSETS_DIR + assetPath);
+        if (inputStream == null) throw new AssetException("resource " + assetPath + " not found");
+        return new Asset(inputStream);
     }
 
     /**

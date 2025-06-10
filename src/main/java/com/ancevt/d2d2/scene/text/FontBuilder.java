@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.scene.text;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.asset.Assets;
+import com.ancevt.d2d2.asset.Asset;
 import lombok.Getter;
 
 import java.io.InputStream;
@@ -137,7 +137,7 @@ public class FontBuilder {
 
     public FontBuilder assetPath(String assetPath) {
         this.assetPath = assetPath;
-        return inputStream(Assets.getAsset(assetPath).getInputStream());
+        return inputStream(Asset.getAsset(assetPath).getInputStream());
     }
 
     public FontBuilder inputStream(InputStream inputStream) {

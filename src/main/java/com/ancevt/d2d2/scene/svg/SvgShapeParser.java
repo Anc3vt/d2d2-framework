@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.scene.svg;
 
-import com.ancevt.d2d2.asset.Assets;
+import com.ancevt.d2d2.asset.Asset;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
 import com.ancevt.d2d2.scene.BasicGroup;
@@ -55,7 +55,7 @@ public class SvgShapeParser {
     }
 
     public Group parseAsset(String assetPath) {
-        return parse(Assets.getAsset(assetPath).getInputStream());
+        return parse(Asset.getAsset(assetPath).getInputStream());
     }
 
     public Group parse(InputStream inputStream) {

@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.scene.interactive;
 
-import com.ancevt.d2d2.common.Disposable;
+import com.ancevt.d2d2.util.Disposable;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.core.EventLink;
 import com.ancevt.d2d2.event.core.EventListener;

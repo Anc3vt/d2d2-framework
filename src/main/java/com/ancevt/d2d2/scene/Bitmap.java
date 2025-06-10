@@ -12,8 +12,9 @@ public abstract class Bitmap extends AbstractNode {
 
     abstract public void setPixels(int x, int y, int w, int h, byte[] pixels);
 
+    abstract public void clear();
+
     public static Bitmap create(int width, int height) {
         return D2D2.getEngine().getNodeFactory().createBitmapCanvas(width, height);
     }
-
 }
