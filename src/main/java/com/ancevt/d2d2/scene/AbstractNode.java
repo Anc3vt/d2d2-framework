@@ -184,22 +184,6 @@ public abstract class AbstractNode extends EventDispatcherImpl implements Node {
     }
 
     @Override
-    public void moveX(float value) {
-        setX(getX() + value);
-    }
-
-    @Override
-    public void moveY(float value) {
-        setY(getY() + value);
-    }
-
-    @Override
-    public void move(float toX, float toY) {
-        moveX(toX);
-        moveY(toY);
-    }
-
-    @Override
     public void scaleX(float value) {
         setScaleX(getScaleX() * value);
     }

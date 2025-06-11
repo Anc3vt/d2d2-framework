@@ -19,13 +19,13 @@
 package com.ancevt.d2d2.scene;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.util.Disposable;
 import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.event.StageEvent;
 import com.ancevt.d2d2.event.core.EventDispatcher;
 import com.ancevt.d2d2.event.core.EventLink;
 import com.ancevt.d2d2.event.core.EventListener;
 import com.ancevt.d2d2.scene.shader.ShaderProgram;
+import com.ancevt.d2d2.util.Disposable;
 
 public interface Node extends EventDispatcher, Disposable {
 
@@ -108,11 +108,18 @@ public interface Node extends EventDispatcher, Disposable {
 
     void rotate(float toRotation);
 
-    void moveX(float value);
+    default void moveX(float value) {
+        setX(getX() + value);
+    }
 
-    void moveY(float value);
+    default void moveY(float value) {
+        setY(getY() + value);
+    }
 
-    void move(float toX, float toY);
+    default void move(float toX, float toY) {
+        moveX(toX);
+        moveY(toY);
+    }
 
     void scaleX(float value);
 
