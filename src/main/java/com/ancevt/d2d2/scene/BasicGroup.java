@@ -165,6 +165,10 @@ public class BasicGroup extends AbstractNode implements Group {
         float min = MAX_X;
         float max = 0;
 
+        if(children.isEmpty()) {
+            return 0f;
+        }
+
         for (final Node child : children) {
             float x = child.getX();
             float xw = x + child.getWidth();
@@ -180,6 +184,10 @@ public class BasicGroup extends AbstractNode implements Group {
     public float getHeight() {
         float min = MAX_Y;
         float max = 0;
+
+        if(children.isEmpty()) {
+            return 0f;
+        }
 
         for (final Node child : children) {
             float y = child.getY();
