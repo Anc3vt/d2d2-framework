@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,8 +18,8 @@
 
 package com.ancevt.d2d2.scene.shape;
 
-import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.BasicGroup;
+import com.ancevt.d2d2.scene.Color;
 import lombok.Getter;
 
 public class BorderedRectangleShape extends BasicGroup {
@@ -47,7 +47,7 @@ public class BorderedRectangleShape extends BasicGroup {
 
         fillRect.setSize(1, 1);
 
-        addChild(fillRect, 0, 1);
+        addChild(fillRect);
 
         setFillColor(fillColor);
         setBorderColor(borderColor);
@@ -57,12 +57,12 @@ public class BorderedRectangleShape extends BasicGroup {
     }
 
     public void setWidth(float width) {
-        fillRect.setWidth(width - 1);
+        fillRect.setWidth(width);
         rebuildBorders();
     }
 
     public void setHeight(float height) {
-        fillRect.setHeight(height - 1);
+        fillRect.setHeight(height);
         rebuildBorders();
     }
 
@@ -74,12 +74,12 @@ public class BorderedRectangleShape extends BasicGroup {
 
     @Override
     public float getWidth() {
-        return fillRect.getWidth() + 1;
+        return fillRect.getWidth();
     }
 
     @Override
     public float getHeight() {
-        return fillRect.getHeight() + 1;
+        return fillRect.getHeight();
     }
 
     public void setFillColor(Color color) {
