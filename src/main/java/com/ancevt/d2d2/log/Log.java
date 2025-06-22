@@ -1,6 +1,6 @@
 package com.ancevt.d2d2.log;
 
-public interface Logger {
+public interface Log {
 
     int NONE = 0;
     int ERROR = 1;

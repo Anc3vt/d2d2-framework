@@ -24,7 +24,7 @@ import com.ancevt.d2d2.engine.NodeFactory;
 import com.ancevt.d2d2.engine.SoundManager;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.lifecycle.D2D2Application;
-import com.ancevt.d2d2.log.Logger;
+import com.ancevt.d2d2.log.Log;
 import com.ancevt.d2d2.scene.Stage;
 import com.ancevt.d2d2.scene.text.BitmapFontManager;
 import com.ancevt.d2d2.scene.texture.TextureManager;
@@ -52,7 +52,7 @@ public final class D2D2 {
     @Getter
     private static boolean noScaleMode;
 
-    public static Logger log;
+    public static Log log;
 
     public static void init(D2D2Application application, D2D2Config config) {
         D2D2.application = application;

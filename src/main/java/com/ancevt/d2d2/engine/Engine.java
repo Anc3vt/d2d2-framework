@@ -18,7 +18,7 @@
 
 package com.ancevt.d2d2.engine;
 
-import com.ancevt.d2d2.log.Logger;
+import com.ancevt.d2d2.log.Log;
 import com.ancevt.d2d2.scene.Renderer;
 import com.ancevt.d2d2.scene.Stage;
 import com.ancevt.d2d2.scene.shader.ShaderProgram;
@@ -74,7 +74,7 @@ public interface Engine extends EventDispatcher {
 
     int getCanvasHeight();
 
-    Logger logger();
+    Log logger();
 
     ShaderProgram createShaderProgram(String vertexShaderSource, String fragmentShaderSource);
 
